@@ -191,7 +191,6 @@ input[type=checkbox]{
 								</svg>
 							</button>
 				    	</form:form>
-						
 						</li>	
 					</ul>
 				</div>
