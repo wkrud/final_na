@@ -13,7 +13,7 @@ nav {height:60px;}
 
 /********** content **********/
 section#content		{min-height:600px;}
-
+#sign-out{border:0; background-color:#F8F9Fa; cursor:pointer;}
 
 /********** footer **********/
 footer	{background-color:#f8f9fa; background-clip:content-box; clear:both; height:95px; text-align:center;}
