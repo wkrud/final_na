@@ -25,9 +25,11 @@ public class MemberEntity implements Serializable {
 	private Date regDate;
 	private String phone;
 	private String nickname;
+	private String[] hobby;
 	private Search search;
 	private String introduce;
 	private Date birthday;
+	private String authKey;
 	private boolean enabled;
 
 }

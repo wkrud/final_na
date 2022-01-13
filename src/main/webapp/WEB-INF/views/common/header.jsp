@@ -132,6 +132,11 @@ input[type=checkbox]{
 					<!-- 프로필 사진으로 보일시 크기에 맞게 이미지를 넣어야됨, 썸네일용 이미지 따로 저장하는 방법도 좋으나 일이 많아짐.-->
 					<!-- 아래 span에서 동적으로 메시지 갯수다르게 처리하기 필요 -->
 					<!-- 클릭하면 알림창이 나오게 하는 ui는 답이없음. -->
+					<span>
+						<a href="${pageContext.request.contextPath}/member/memberDetail.do">
+							안녕하세요, <sec:authentication property="principal.nickname"/>님
+						</a>
+					</span>
 					<button id="profile" type="button" class="btn btn-primary position-relative bg-light border-light rounded-circle">
 						  <svg height="32" aria-hidden="true" viewBox="0 0 16 16" version="1.1" width="32"data-view-component="true" class="octicon octicon-mark-github">
 						    <path fill-rule="evenodd"d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
@@ -179,25 +184,30 @@ input[type=checkbox]{
 					<!--로그아웃  -->
 					<ul class="navbar-nav justify-content-end">
 						<li class="nav-item">
-						<form:form
+						<form
 				    		name="logoutFrm"
 				    		method="POST"
 				    		action="${pageContext.request.contextPath}/member/memberLogout.do">
-					    	<button type="submit">로그아웃</button>
 					    	<button id="sign-out" class="nav-link" type="submit">
 								<svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 								<path d="M13 12H22M22 12L18.6667 8M22 12L18.6667 16" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 								<path d="M14 7V5.1736C14 4.00352 12.9999 3.08334 11.8339 3.18051L3.83391 3.84717C2.79732 3.93356 2 4.80009 2 5.84027V18.1597C2 19.1999 2.79733 20.0664 3.83391 20.1528L11.8339 20.8195C12.9999 20.9167 14 19.9965 14 18.8264V17" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 								</svg>
 							</button>
+<<<<<<< HEAD
 				    	</form:form>
+=======
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+				    	</form>
+						
+>>>>>>> branch 'master' of https://github.com/wkrud/na_daum.git
 						</li>	
 					</ul>
 				</div>
 			</nav>
 
 		</header>
-		</sec:authorize>
+</sec:authorize>
 		<script>
 			/* 샘플코드 */
 			/*$("#profile").click(function(){
