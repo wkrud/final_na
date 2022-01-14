@@ -14,8 +14,10 @@
 		<org.springframework.security-version>5.1.5.RELEASE</org.springframework.security-version>
 		<org.aspectj-version>1.6.10</org.aspectj-version>
 		<org.slf4j-version>1.6.6</org.slf4j-version>
+		<ojdbc-version>21.4.0.0.1</ojdbc-version>
 	</properties>
 	<dependencies>
+	
 		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -69,6 +71,28 @@
 			<version>${org.slf4j-version}</version>
 			<scope>runtime</scope>
 		</dependency>
+		<!-- ojdbc lib : oraclepki/osdt_core/osdt_cert -->
+        <dependency>
+            <groupId>com.oracle.database.security</groupId>
+            <artifactId>oraclepki</artifactId>
+            <version>${ojdbc-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.oracle.database.security</groupId>
+            <artifactId>osdt_core</artifactId>
+            <version>${ojdbc-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.oracle.database.security</groupId>
+            <artifactId>osdt_cert</artifactId>
+            <version>${ojdbc-version}</version>
+        </dependency>
+        <dependency>
+		    <groupId>com.oracle.database.jdbc</groupId>
+		    <artifactId>ucp</artifactId>
+		    <version>${ojdbc-version}</version>
+		</dependency>
+			
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
@@ -165,28 +189,7 @@
 			<version>21.1.0.0</version>
 		</dependency>
 		
-		<!-- start oci -->
-		<dependency>
-		    <groupId>com.oracle.database.security</groupId>
-		    <artifactId>oraclepki</artifactId>
-		    <version>21.4.0.0.1</version>
-		</dependency>
-		<dependency>
-		    <groupId>com.oracle.database.security</groupId>
-		    <artifactId>osdt_cert</artifactId>
-		    <version>21.4.0.0.1</version>
-		</dependency>
-		<dependency>
-		    <groupId>com.oracle.database.security</groupId>
-		    <artifactId>osdt_core</artifactId>
-		    <version>21.4.0.0.1</version>
-		</dependency>
-		<dependency>
-		    <groupId>com.oracle.database.jdbc</groupId>
-		    <artifactId>ucp</artifactId>
-		    <version>21.4.0.0.1</version>
-		</dependency>		
-		<!-- end oci -->
+
 		
 		<!-- #7. Spring-security 인증관련 의존 -->
 		<dependency>
