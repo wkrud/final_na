@@ -16,6 +16,9 @@
 	<http auto-config="true">
 		<intercept-url pattern="/" access="permitAll"/>
 		
+		<intercept-url pattern="/member/memberEnroll" access="isAnonymous()"/>
+		<intercept-url pattern="/**" access="permitAll"/>
+		
 		<form-login
 			login-page="/member/memberLogin.do"
 			login-processing-url="/member/memberLogin.do"
@@ -29,6 +32,8 @@
 			invalidate-session="true"/>
 			
 		<csrf disabled="false"/>
+		
+		<remember-me data-source-ref="dataSource" token-validity-seconds="604800"/>
 		
 	</http>	
 		

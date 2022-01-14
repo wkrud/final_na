@@ -25,5 +25,7 @@ public class SecurityService implements UserDetailsService {
 			throw new UsernameNotFoundException(username);		
 		return member;
 	}
+	
+	
 
 }

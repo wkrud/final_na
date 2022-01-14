@@ -26,9 +26,10 @@ public class Member extends MemberEntity implements Serializable, UserDetails {
 	private List<SimpleGrantedAuthority> authorities;
 	
 	public Member(String id, String password, String name, String email, String address, Date regDate, String phone,
-			String nickname, Search search, String introduce, Date birthday, boolean enabled,
-			List<SimpleGrantedAuthority> authorities) {
-		super(id, password, name, email, address, regDate, phone, nickname, search, introduce, birthday, enabled);
+			String nickname, String[] hobby, Search search, String introduce, Date birthday, String authKey,
+			boolean enabled, List<SimpleGrantedAuthority> authorities) {
+		super(id, password, name, email, address, regDate, phone, nickname, hobby, search, introduce, birthday, authKey,
+				enabled);
 		this.authorities = authorities;
 	}
 
@@ -50,6 +51,8 @@ public class Member extends MemberEntity implements Serializable, UserDetails {
 
 	@Override
 	public boolean isCredentialsNonExpired() {return true;}
+
+	
 
 
 	

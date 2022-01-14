@@ -5,6 +5,7 @@
 sql
 *.sql
 datasource.properties
+emailsource.properties
 
 ### Eclipse ###
 .metadata
