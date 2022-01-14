@@ -1,14 +1,24 @@
 package com.project.nadaum.member.controller;
 
+import java.beans.PropertyEditor;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,11 +47,7 @@ public class MemberController {
 	@GetMapping("/memberLogin.do")
 	public void memberLogin() {}
 
-	@GetMapping("/memberDetail.do")
-	public void memberDetail(Authentication authentication) {
-		log.debug("authentication = {}", authentication);
-	}
-	
+		
 	@GetMapping("/memberEnroll.do")
 	public void memberEnroll() {}
 	
@@ -83,6 +89,75 @@ public class MemberController {
 		}
 		
 		return "redirect:/";
+	}
+	
+	@GetMapping("/mypage/memberDetail.do")
+	public void memberDetail(@RequestParam String tPage, RedirectAttributes redirectAttr) {
+		log.debug("tPage = {}", tPage);
+		switch(tPage) {
+		case "mypage": break;
+		case "alarm":  break;
+		case "question":  break;
+		case "forCustomer":  break;
+		default : break;
+		}
+	}
+	
+	@GetMapping("/memberAlarm.do")
+	public ResponseEntity<?> memberAlarm(@AuthenticationPrincipal Member member){
+		
+		List<Map<String, Object>> alarm = memberService.selectAllAlarm(member);
+		log.debug("alarm = {}", alarm);
+		
+		return ResponseEntity.ok(alarm);
+	}
+	
+	@GetMapping("/myQList.do")
+	public ResponseEntity<?> myQList(@AuthenticationPrincipal Member member){
+		List<Map<String, Object>> qMap = memberService.selectAllMyQuestions(member);
+		log.debug("qMap = {}", qMap);
+		
+		return ResponseEntity.ok(qMap);
+	}
+	
+	@GetMapping("/selectAllMembersQuestions.do")
+	public ResponseEntity<?> selectAllMembersQuestions(){
+		List<Map<String, Object>> allList = memberService.selectAllMembersQuestions();
+		log.debug("allList = {}", allList);
+		
+		return ResponseEntity.ok(allList);
+	}
+	
+	@PostMapping("/memberUpdate.do")
+	public ResponseEntity<?> memberUpdate(Member member, @AuthenticationPrincipal Member oldMember){
+		log.debug("member = {}", member);
+		log.debug("oldMember = {}", oldMember);
+		
+		int result = memberService.updateMember(member);
+		
+		oldMember.setName(member.getName());
+		oldMember.setEmail(member.getEmail());
+		oldMember.setAddress(member.getAddress());
+		oldMember.setPhone(member.getPhone());
+		oldMember.setNickname(member.getNickname());
+		oldMember.setHobby(member.getHobby());
+		oldMember.setSearch(member.getSearch());
+		oldMember.setIntroduce(member.getIntroduce());
+		oldMember.setBirthday(member.getBirthday());
+		
+		Authentication newAuthentication = new UsernamePasswordAuthenticationToken(oldMember, oldMember.getPassword(), oldMember.getAuthorities());
+		
+		SecurityContextHolder.getContext().setAuthentication(newAuthentication);
+		
+		return ResponseEntity.ok(result);
+		
+	}
+	
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");		
+		PropertyEditor editor = new CustomDateEditor(sdf, true);		
+		binder.registerCustomEditor(Date.class, editor);
 	}
 	
 }
