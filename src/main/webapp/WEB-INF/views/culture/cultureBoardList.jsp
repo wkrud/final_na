@@ -8,7 +8,9 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/culture/cultureBoardList.css" />
 <style>
-
+.search-form label{
+padding-right: 8px;
+}
 </style>
 <body>
 	<div class="container">
@@ -20,8 +22,8 @@
 				 
 				  <div class="form-group">
 				    <label for="Date" class="control-label">기간</label>
-				    <input type="text" class="form-control" id="startDate">
-				    <input type="text" class="form-control" id="endDate">
+				    <input type="date" class="form-control" id="startDate">
+				    <input type="date" class="form-control" id="endDate">
 				  </div>
 				  
 				  <div class="form-group">
