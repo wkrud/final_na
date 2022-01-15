@@ -167,6 +167,9 @@
 			</script>
 		</c:if>
 	</div>
+	
+</div>
+<div class="customer-page-wrap">
 	<c:if test="${param.tPage eq 'forCustomer'}">
 		<div class="question-list-wrap">
 			<div class="question-list-head">
@@ -224,7 +227,6 @@
 		};
 		</script>
 	</c:if>
-	
 </div>
 <script>
 
