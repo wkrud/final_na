@@ -84,10 +84,11 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
-	@RequestMapping("/memberKakaoLogin.do")
+	@GetMapping("/memberKakaoLogin.do")
 	public String memberKakaoLogin(@RequestParam(value = "code", required = false) String code, RedirectAttributes redirectAttr) {
-		
-		Map<String, Object> map = kakaoService.getUserInfo(kakaoService.getAccessToken(code));
+		log.debug("code = {}", code);
+		String access_Token = kakaoService.getAccessToken(code);
+		Map<String, Object> map = kakaoService.getUserInfo(access_Token);
 		log.debug("map = {}", map);
 		String id = (String) map.get("id");
 		Member member = memberService.selectOneMember(id);
@@ -95,6 +96,7 @@ public class MemberController {
 			String rawPassword = id;
 			String encodedPassword = bcryptPasswordEncoder.encode(rawPassword);
 			map.put("password", encodedPassword);
+			map.put("loginType", "K");
 			int result = memberService.insertKakaoMember(map);
 			member = memberService.selectOneMember(id);
 			result = memberService.insertRole(member);
