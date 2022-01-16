@@ -96,8 +96,10 @@ $(() => {
 						<button type="submit" class="btn btn-outline-success">로그인</button>
 						<button type="button" class="btn btn-outline-danger" data-dismiss="modal">닫기</button>
 					</div>
-					<div>
-						<button type="button" id="kakao-login" class="btn btn-outline-success">카카오 로그인</button>
+				</div>
+				<div>
+					<div id="kakao-login">
+						<img src="${pageContext.request.contextPath}/resources/image/member/kakao_login_medium_wide.png" alt="" />
 					</div>
 				</div>
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
