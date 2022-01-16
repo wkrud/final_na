@@ -55,6 +55,11 @@ public class MemberDaoImpl implements MemberDao {
 		return session.selectList("member.selectAllMembersQuestions");
 	}
 
+	@Override
+	public int insertKakaoMember(Map<String, Object> map) {
+		return session.insert("member.insertKakaoMember", map);
+	}
+
 	
 
 }

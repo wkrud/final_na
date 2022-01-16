@@ -16,6 +16,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.project.nadaum.member.model.service.KakaoService;
 import com.project.nadaum.member.model.service.MailSendService;
 import com.project.nadaum.member.model.service.MemberService;
 import com.project.nadaum.member.model.vo.Member;
@@ -43,10 +45,12 @@ public class MemberController {
 	
 	@Autowired
 	private MailSendService mailSendService;
-		
+	
+	@Autowired
+	private KakaoService kakaoService;
+			
 	@GetMapping("/memberLogin.do")
 	public void memberLogin() {}
-
 		
 	@GetMapping("/memberEnroll.do")
 	public void memberEnroll() {}
@@ -80,6 +84,25 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
+	@RequestMapping("/memberKakaoLogin.do")
+	public String memberKakaoLogin(@RequestParam(value = "code", required = false) String code, RedirectAttributes redirectAttr) {
+		
+		Map<String, Object> map = kakaoService.getUserInfo(kakaoService.getAccessToken(code));
+		log.debug("map = {}", map);
+		String id = (String) map.get("id");
+		Member member = memberService.selectOneMember(id);
+		if(member == null) {
+			String rawPassword = id;
+			String encodedPassword = bcryptPasswordEncoder.encode(rawPassword);
+			map.put("password", encodedPassword);
+			int result = memberService.insertKakaoMember(map);
+			member = memberService.selectOneMember(id);
+			result = memberService.insertRole(member);
+		}
+		redirectAttr.addFlashAttribute("member", member);
+		return "redirect:/member/memberLogin.do";
+	}
+	
 	@GetMapping("/memberConfirm.do")
 	public String memberConfirm(@RequestParam Map<String, String> map) {
 		int result = memberService.confirmMember(map);
@@ -92,40 +115,40 @@ public class MemberController {
 	}
 	
 	@GetMapping("/mypage/memberDetail.do")
-	public void memberDetail(@RequestParam String tPage, RedirectAttributes redirectAttr) {
+	public void memberDetail(@AuthenticationPrincipal Member member, @RequestParam String tPage, Model model, RedirectAttributes redirectAttr) {
 		log.debug("tPage = {}", tPage);
-		switch(tPage) {
-		case "mypage": break;
-		case "alarm":  break;
-		case "question":  break;
-		case "forCustomer":  break;
-		default : break;
-		}
-	}
-	
-	@GetMapping("/memberAlarm.do")
-	public ResponseEntity<?> memberAlarm(@AuthenticationPrincipal Member member){
 		
 		List<Map<String, Object>> alarm = memberService.selectAllAlarm(member);
 		log.debug("alarm = {}", alarm);
 		
-		return ResponseEntity.ok(alarm);
+		model.addAttribute("alarmList", alarm);
 	}
 	
-	@GetMapping("/myQList.do")
-	public ResponseEntity<?> myQList(@AuthenticationPrincipal Member member){
+	
+	@GetMapping("/mypage/memberMyHelp.do")
+	public void memberMyHelp(@AuthenticationPrincipal Member member, Model model){
 		List<Map<String, Object>> qMap = memberService.selectAllMyQuestions(member);
 		log.debug("qMap = {}", qMap);
 		
-		return ResponseEntity.ok(qMap);
+		model.addAttribute("qMap", qMap);
 	}
 	
-	@GetMapping("/selectAllMembersQuestions.do")
-	public ResponseEntity<?> selectAllMembersQuestions(){
+	@GetMapping("/mypage/memberHelp.do")
+	public void memberHelp(Model model){
 		List<Map<String, Object>> allList = memberService.selectAllMembersQuestions();
 		log.debug("allList = {}", allList);
 		
-		return ResponseEntity.ok(allList);
+		model.addAttribute("allList", allList);		
+	}
+	
+	@GetMapping("/mypage/memberFriends.do")
+	public void memberFriends() {
+		
+	}
+	
+	@GetMapping("/mypage/memberAnnouncement.do")
+	public void memberAnnouncement() {
+		
 	}
 	
 	@PostMapping("/memberUpdate.do")

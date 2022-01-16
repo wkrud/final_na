@@ -23,5 +23,7 @@ public interface MemberDao {
 
 	List<Map<String, Object>> selectAllMembersQuestions();
 
+	int insertKakaoMember(Map<String, Object> map);
+
 
 }

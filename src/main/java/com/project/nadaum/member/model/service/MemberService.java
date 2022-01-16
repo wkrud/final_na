@@ -23,5 +23,7 @@ public interface MemberService {
 
 	List<Map<String, Object>> selectAllMembersQuestions();
 
+	int insertKakaoMember(Map<String, Object> map);
+
 
 }

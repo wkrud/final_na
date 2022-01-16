@@ -55,6 +55,11 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.selectAllMembersQuestions();
 	}
 
+	@Override
+	public int insertKakaoMember(Map<String, Object> map) {
+		return memberDao.insertKakaoMember(map);
+	}
+
 	
 	
 }

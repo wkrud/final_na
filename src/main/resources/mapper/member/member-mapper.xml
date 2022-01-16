@@ -13,6 +13,11 @@
 		values(#{id}, #{password}, #{name}, #{email}, #{address}, #{nickname}, #{authKey})
 	</insert>
 	
+	<insert id="insertKakaoMember">
+		insert into member(id, password, nickname, enabled, profile)
+		values(#{id}, #{password}, #{nickname}, 1, #{profile_image})
+	</insert>
+	
 	<update id="confirmMember">
 		update member set enabled = 1 where email = #{email} and auth_key = #{authKey}
 	</update>

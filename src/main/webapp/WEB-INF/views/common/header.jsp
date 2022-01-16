@@ -133,7 +133,7 @@ input[type=checkbox]{
 					<!-- 아래 span에서 동적으로 메시지 갯수다르게 처리하기 필요 -->
 					<!-- 클릭하면 알림창이 나오게 하는 ui는 답이없음. -->
 					<span>
-						<a href="${pageContext.request.contextPath}/member/mypage/memberDetail.do?tPage='myPage'">
+						<a href="${pageContext.request.contextPath}/member/mypage/memberDetail.do?tPage=myPage">
 							안녕하세요, <sec:authentication property="principal.nickname"/>님
 						</a>
 					</span>
@@ -230,7 +230,7 @@ input[type=checkbox]{
 			/*실제 넣을 코드 : 알람 영역 있을때 클릭시 알람표시 사라짐*/
 			const $alarmList = $(".alarm-list");
 			$alarmList.hide();
-			$(profile).click((e) => {
+			$("#profile").click((e) => {
 				$alarmList.show();
 			});
 			
