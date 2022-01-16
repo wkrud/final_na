@@ -21,6 +21,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -67,6 +68,18 @@ public class MemberController {
 		return ResponseEntity.ok(map);
 	}
 	
+	@GetMapping("/checkNicknameDuplicate.do")
+	public ResponseEntity<Map<String, Object>> checkNicknameDuplicate(@RequestParam String nickname){
+		Member member = memberService.selectOneMemberNickname(nickname);
+		boolean available = member == null;
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("nickname", nickname);
+		map.put("available", available);		
+		
+		return ResponseEntity.ok(map);
+	}
+	
 	@PostMapping("/memberEnroll.do")
 	public String memberEnroll(Member member, RedirectAttributes redirectAttr) {
 		log.debug("member = {}", member);
@@ -84,8 +97,9 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
-	@GetMapping("/memberKakaoLogin.do")
+	@RequestMapping("/memberKakaoLogin.do")
 	public String memberKakaoLogin(@RequestParam(value = "code", required = false) String code, RedirectAttributes redirectAttr) {
+
 		log.debug("code = {}", code);
 		String access_Token = kakaoService.getAccessToken(code);
 		Map<String, Object> map = kakaoService.getUserInfo(access_Token);

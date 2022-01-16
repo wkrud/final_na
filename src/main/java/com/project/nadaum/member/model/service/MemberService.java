@@ -25,5 +25,7 @@ public interface MemberService {
 
 	int insertKakaoMember(Map<String, Object> map);
 
+	Member selectOneMemberNickname(String nickname);
+
 
 }

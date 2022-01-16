@@ -60,6 +60,11 @@ public class MemberDaoImpl implements MemberDao {
 		return session.insert("member.insertKakaoMember", map);
 	}
 
+	@Override
+	public Member selectOneMemberNickname(String nickname) {
+		return session.selectOne("member.selectOneMemberNickname", nickname);
+	}
+
 	
 
 }
