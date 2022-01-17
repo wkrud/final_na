@@ -23,9 +23,9 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
-	public Culture selectOneBoard(int no) {
-		// 1.board테이블 조회
-		Culture board = boardDao.selectOneBoard(no);
+	public Culture selectOneBoard(String code) {
+		
+		Culture board = boardDao.selectOneBoard(code);
 		
 		return board;
 	}

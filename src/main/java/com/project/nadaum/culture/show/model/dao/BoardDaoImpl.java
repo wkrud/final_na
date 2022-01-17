@@ -19,8 +19,8 @@ public class BoardDaoImpl implements BoardDao {
 	}
 
 	@Override
-	public Culture selectOneBoard(int no) {
-		return session.selectOne("board.selectOneBoard", no);
+	public Culture selectOneBoard(String code) {
+		return session.selectOne("board.selectOneBoard", code);
 	}
 
 }

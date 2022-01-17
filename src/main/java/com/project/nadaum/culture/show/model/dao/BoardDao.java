@@ -9,6 +9,6 @@ public interface BoardDao {
 
 	int selectTotalContent();
 
-	Culture selectOneBoard(int no);
+	Culture selectOneBoard(String code);
 
 }

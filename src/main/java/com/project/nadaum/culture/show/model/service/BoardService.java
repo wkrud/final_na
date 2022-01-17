@@ -6,6 +6,6 @@ public interface BoardService {
 
 	int selectTotalContent();
 
-	Culture selectOneBoard(int no);
+	Culture selectOneBoard(String code);
 
 }

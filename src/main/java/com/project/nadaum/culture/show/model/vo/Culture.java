@@ -24,4 +24,6 @@ public class Culture implements Serializable {
    private String img_url;
    private int gps_x;
    private int gps_y;
+   
+   
 }
