@@ -31,5 +31,6 @@ public interface MemberService {
 
 	int countAllAnnouncementList();
 
+	List<Member> selectAllNotInMe(Member member);
 
 }

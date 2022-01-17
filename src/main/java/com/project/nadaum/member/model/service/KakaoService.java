@@ -105,11 +105,11 @@ public class KakaoService {
 			
 			String id = element.getAsJsonObject().get("id").getAsString();
 			String nickname = properties.getAsJsonObject().get("nickname").getAsString();
-			String profile_image = properties.getAsJsonObject().get("profile_image").getAsString();
+//			String profile_image = properties.getAsJsonObject().get("profile_image").getAsString();
 			
 			userInfo.put("id", id);
 			userInfo.put("nickname", nickname);
-			userInfo.put("profile_image", profile_image);
+//			userInfo.put("profile_image", profile_image);
 			
 		}catch(IOException e) {
 			e.printStackTrace();
