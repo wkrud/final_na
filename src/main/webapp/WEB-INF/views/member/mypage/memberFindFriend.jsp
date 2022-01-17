@@ -57,7 +57,7 @@
 			success(resp) {
 				console.log(resp);
 				if(resp == '1')
-					location.reload();
+					requestAllFriend();
 			},
 			error: console.log
 		});
