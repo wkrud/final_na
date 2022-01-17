@@ -53,20 +53,7 @@ padding-right: 8px;
   <div class="py-5">
     <div class="container">
       <div class="row hidden-md-up">
-       <!-- <div class="col-md-4">
-          <div class="card">
-             <div class="card-block">
-              <h4 class="card-title">[BTS X Futura] HUMBLE SOULS</h4>
-              <p class="card-text p-y-1">HYBE INSIGHT</p>
-              <p class="card-text p-y-1">서울</p>
-              <p class="card-text p-y-1">전시회장</p>
-              <p class="card-text p-y-1">미술</p>
-              <h6 class="card-subtitle text-muted">2021-11-30 ~ 2022-05-29</h6>
-               <img class="content-img" src="http://www.culture.go.kr/upload/rdf/21/11/rdf_2021111913292645184.jpg" class="rounded" alt="Cinque Terre" />
-            </div>
-           
-          </div>
-        </div> -->
+       
         <div class="col-md-4">
           <div class="card">
             <div class="card-block">
@@ -102,43 +89,44 @@ padding-right: 8px;
         </div>
       </div><br>
       <div class="row">
-        <div class="col-md-4">
-          <div class="card">
-            <div class="card-block">
-              <h4 class="card-title">Card title</h4>
-              <h6 class="card-subtitle text-muted">Support card subtitle</h6>
-              <p class="card-text p-y-1">Some quick example text to build on the card title .</p>
-              <a href="#" class="card-link">link</a>
-              <a href="#" class="card-link">Second link</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card">
-            <div class="card-block">
-              <h4 class="card-title">Card title</h4>
-              <h6 class="card-subtitle text-muted">Support card subtitle</h6>
-              <p class="card-text p-y-1">Some quick example text to build on the card title .</p>
-              <a href="#" class="card-link">link</a>
-              <a href="#" class="card-link">Second link</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card">
-            <div class="card-block">
-              <h4 class="card-title">Card title</h4>
-              <h6 class="card-subtitle text-muted">Support card subtitle</h6>
-              <p class="card-text p-y-1">Some quick example text to build on the card title .</p>
-              <a href="#" class="card-link">link</a>
-              <a href="#" class="card-link">Second link</a>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
 	</div>
+	<script>
+function goBoardForm(){
+	location.href = "${pageContext.request.contextPath}/board/boardForm.do";
+}
+
+$(() => {
+	$("tr[data-no]").click((e) => {
+		// console.log(e.target); // td
+		const $tr = $(e.target).parent();
+		const no = $tr.data("no");
+		location.href = `${pageContext.request.contextPath}/board/boardDetail.do?no=\${no}`;
+	});
+});
+</script>
+<section id="board-container" class="container">
+	<table id="tbl-board" class="table table-striped table-hover">
+		<tr>
+			<th>번호</th>
+			<th>제목</th>
+			<th>작성자</th>
+			<th>작성일</th>
+		</tr>
+		<c:forEach items="${list}" var="board">
+			<tr data-no="${board.no}">
+				<td>${board.no}</td>
+				<td>${board.title}</td>
+				<td>${board.memberId}</td>
+				<td><fmt:formatDate value="${board.regDate}" pattern="yy/MM/dd HH:mm"/> </td>
+			</tr>
+		</c:forEach>
+	</table>
+	
+	${pagebar}
+</section> 
 </body>
   <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>

@@ -13,4 +13,6 @@ public class CultureController {
 
 	@GetMapping("/cultureBoardList.do")
 	public void boardList() {}
+	
+	
 }
