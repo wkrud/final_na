@@ -16,14 +16,12 @@ public class Culture implements Serializable {
 
    private String code;
    private String title;
-   private Date start_date;
-   private Date end_date;
+   private Date startDate;
+   private Date endDate;
    private String area;
    private String place;
-   private String realm_name;
-   private String img_url;
-   private int gps_x;
-   private int gps_y;
-   
-   
+   private String realmName;
+   private String imgUrl;
+   private double gpsX;
+   private double gpsY;
 }
