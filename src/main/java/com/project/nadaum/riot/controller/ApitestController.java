@@ -30,17 +30,17 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ApitestController {
 
-	final static String API_KEY = "RGAPI-ec4c8ed4-5e09-4970-b546-46c02932cd31";
+	final static String API_KEY = "RGAPI-dd3554e4-31d1-48dd-9398-821873ca80c8";
 
 	@RequestMapping("/riotheader.do")
 	public String riotheader() {
 		return "riot/riotheader";
 	}
 
-	@RequestMapping(value = "/riotmain.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/riot1.do", method = RequestMethod.GET)
 	public String searchSummoner(Model model, HttpServletRequest httpServletRequest) {
 		BufferedReader br = null;
-		String SummonerName = httpServletRequest.getParameter("title");
+		String SummonerName = httpServletRequest.getParameter("nickname").replaceAll(" ", "%20");
 		log.info("dev = {}", SummonerName);
 		Summoner temp = null;
 		Gson gson = new GsonBuilder().create();
@@ -79,7 +79,7 @@ public class ApitestController {
 		log.info("dev = {}", temp);
 		model.addAttribute("summoner", temp);
 		model.addAttribute("imgURL",
-				"http://ddragon.leagueoflegends.com/cdn/9.16.1/img/profileicon/" + temp.getProfileIconId() + ".png");
+				"http://ddragon.leagueoflegends.com/cdn/12.1.1/img/profileicon/" + temp.getProfileIconId() + ".png");
 		return "riot/riotheader";
 
 	}

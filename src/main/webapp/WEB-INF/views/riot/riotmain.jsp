@@ -6,7 +6,7 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="Dev등록" name="title"/>
 </jsp:include>
-
+<br><br><br><br><br><br>
 <p>${summoner.name}</p>
 <img alt="아이콘" src=${ imgURL}>
 
