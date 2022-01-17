@@ -75,6 +75,10 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.countAllAnnouncementList();
 	}
 
+	@Override
+	public List<Member> selectAllNotInMe(Member member) {
+		return memberDao.selectAllNotInMe(member);
+	}
 	
 	
 }
