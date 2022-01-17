@@ -31,5 +31,7 @@ public interface MemberDao {
 
 	int countAllAnnouncementList();
 
+	List<Member> selectAllNotInMe(Member member);
+
 
 }

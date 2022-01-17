@@ -75,6 +75,11 @@ public class MemberDaoImpl implements MemberDao {
 		return session.selectOne("member.countAllAnnouncementList");
 	}
 
+	@Override
+	public List<Member> selectAllNotInMe(Member member) {
+		return session.selectList("member.selectAllNotInMe", member);
+	}
+
 	
 
 }

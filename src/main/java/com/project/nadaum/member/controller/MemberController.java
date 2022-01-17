@@ -164,6 +164,15 @@ public class MemberController {
 		
 	}
 	
+	@GetMapping("/mypage/memberFindFriend.do")
+	public void memberFindFriend(@AuthenticationPrincipal Member member, Model model) {
+		log.debug("member = {}", member);
+		List<Member> memberList = memberService.selectAllNotInMe(member);
+		log.debug("memberList = {}", memberList);
+		
+		model.addAttribute("memberList", memberList);
+	}
+	
 	@GetMapping("/mypage/memberAnnouncement.do")
 	public void memberAnnouncement(@RequestParam(defaultValue = "1") int cPage, Model model, HttpServletRequest request) {
 		int limit = 10;
