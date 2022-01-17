@@ -36,9 +36,7 @@
 		</c:forEach>
 	</datalist>
 	<div class="recommend-friends">
-		<c:forEach items="${memberList}" var="fr">
-			<%-- <c:if test="${not empty fr.hobby && }"></c:if> --%>
-		</c:forEach>
+		
 	</div>
 	<div class="selected-friend"></div>
 	

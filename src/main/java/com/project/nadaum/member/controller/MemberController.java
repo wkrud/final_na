@@ -169,6 +169,7 @@ public class MemberController {
 		log.debug("member = {}", member);
 		List<Member> memberList = memberService.selectAllNotInMe(member);
 		log.debug("memberList = {}", memberList);
+		model.addAttribute("memberList", memberList);
 	}
 
 	@GetMapping("/mypage/memberAnnouncement.do")
