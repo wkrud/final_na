@@ -79,7 +79,6 @@ public class MemberDaoImpl implements MemberDao {
 	public List<Member> selectAllNotInMe(Member member) {
 		return session.selectList("member.selectAllNotInMe", member);
 	}
-
 	
 
 }

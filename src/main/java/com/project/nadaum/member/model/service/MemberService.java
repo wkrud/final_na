@@ -33,5 +33,4 @@ public interface MemberService {
 
 	List<Member> selectAllNotInMe(Member member);
 
-
 }

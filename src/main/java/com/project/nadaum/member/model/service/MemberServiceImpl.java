@@ -79,7 +79,6 @@ public class MemberServiceImpl implements MemberService {
 	public List<Member> selectAllNotInMe(Member member) {
 		return memberDao.selectAllNotInMe(member);
 	}
-
 	
 	
 }
