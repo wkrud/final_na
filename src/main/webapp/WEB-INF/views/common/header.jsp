@@ -126,7 +126,7 @@ input[type=checkbox]{
 									<a class="dropdown-item" href="${pageContext.request.contextPath}/culture/cultureBoardList.do">문화생활</a>
 									<a class="dropdown-item" href="${pageContext.request.contextPath}/movie/movieBoardList.do">영화</a> 
 									<a class="dropdown-item" href="https://audioclip.naver.com/">오디오북</a> <a
-									class="dropdown-item" href="https://your.gg/">롤전적</a>
+									class="dropdown-item" href="${pageContext.request.contextPath}/riot/riotheader.do">롤전적</a>
 							</div></li>
 					</ul>
 					<!-- 뱃지생성완료, 클릭시 알람 영역 숨기기 완료 비동기 통신후 알람이 있을경우 다시 표기.-->
