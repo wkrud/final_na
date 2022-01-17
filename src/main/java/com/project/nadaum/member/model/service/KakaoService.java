@@ -25,10 +25,10 @@ public class KakaoService {
 		String access_Token = "";
 		String refresh_Token = "";
 		String reqURL = "https://kauth.kakao.com/oauth/token";
-		
+		log.debug("reqURL={}",reqURL);
 		try {
 			URL url = new URL(reqURL);
-			
+			log.debug("reqURL={}",reqURL);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			
 			conn.setRequestMethod("POST");
