@@ -118,8 +118,12 @@ public class MemberController {
 			result = memberService.insertRole(member);
 		}
 		// 프사 변경시 동기화
+		log.debug("프사 = {}", member.getProfile());
+		log.debug("프사 = {}", member.getProfile());
 		if(!member.getProfile().equals((String)map.get("profile_image"))) {
 			member.setProfile((String)map.get("profile_image"));
+			int result = memberService.updateMemberProfile(member);
+			log.debug("프사변경 = {}", result);
 		}
 		redirectAttr.addFlashAttribute("member", member);
 		return "redirect:/member/memberLogin.do";

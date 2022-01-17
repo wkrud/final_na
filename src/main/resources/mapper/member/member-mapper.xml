@@ -36,6 +36,10 @@
 		select * from request_friend where follower = #{id} and is_friend = 'F'
 	</select>
 	
+	<update id="updateMemberProfile">
+		update member set profile = #{profile} where id = #{id}
+	</update>
+	
 	<!-- 친구 crud 시작 -->
 	
 	<insert id="insertRequestFriend">

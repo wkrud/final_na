@@ -120,6 +120,11 @@ public class MemberDaoImpl implements MemberDao {
 		return session.delete("member.deleteFriend", param);
 	}
 
+	@Override
+	public int updateMemberProfile(Member member) {
+		return session.update("member.updateMemberProfile", member);
+	}
+
 	
 	
 

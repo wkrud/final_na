@@ -49,5 +49,7 @@ public interface MemberService {
 
 	int deleteFriend(Map<String, Object> param);
 
+	int updateMemberProfile(Member member);
+
 
 }

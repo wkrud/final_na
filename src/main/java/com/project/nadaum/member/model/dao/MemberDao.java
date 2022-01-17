@@ -49,6 +49,8 @@ public interface MemberDao {
 
 	int deleteFriend(Map<String, Object> param);
 
+	int updateMemberProfile(Member member);
+
 
 
 }

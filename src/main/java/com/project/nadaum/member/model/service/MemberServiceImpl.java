@@ -120,6 +120,11 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.deleteFriend(param);
 	}
 
+	@Override
+	public int updateMemberProfile(Member member) {
+		return memberDao.updateMemberProfile(member);
+	}
+
 	
 	
 	
