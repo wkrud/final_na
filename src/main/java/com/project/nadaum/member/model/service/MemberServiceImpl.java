@@ -65,6 +65,16 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.selectOneMemberNickname(nickname);
 	}
 
+	@Override
+	public List<Map<String, Object>> selectAllAnnouncement(Map<String, Object> param) {
+		return memberDao.selectAllAnnouncement(param);
+	}
+
+	@Override
+	public int countAllAnnouncementList() {
+		return memberDao.countAllAnnouncementList();
+	}
+
 	
 	
 }

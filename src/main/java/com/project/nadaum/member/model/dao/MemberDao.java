@@ -27,5 +27,9 @@ public interface MemberDao {
 
 	Member selectOneMemberNickname(String nickname);
 
+	List<Map<String, Object>> selectAllAnnouncement(Map<String, Object> param);
+
+	int countAllAnnouncementList();
+
 
 }
