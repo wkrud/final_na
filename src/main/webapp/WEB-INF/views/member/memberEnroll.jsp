@@ -58,7 +58,7 @@ $(() => {
 								<div class="carousel-item active">
 									<label for="id">아이디</label>						
 									<input
-										type="text" class="form-control" name="id" id="id" value=""
+										type="text" class="form-control" name="id" id="id" value="testid"
 										placeholder="영문으로 시작하고 숫자포함 4~20글자 입니다." required>
 									<span class="text-success guide ok">이 아이디는 사용가능합니다.</span>
 									<span class="text-danger guide error">이 아이디는 사용불가능합니다.</span>
@@ -66,16 +66,16 @@ $(() => {
 									<br /> 
 									<label for="password">비밀번호</label>
 									<input
-										type="password" class="form-control" name="password" id="password" value=""
+										type="password" class="form-control" name="password" id="password" value="qwer1234"
 										placeholder="비밀번호는 숫자, 영어포함 8 ~ 15자리 사이 입니다." required>									
 									<br /> 
 									<label for="passwordCheck">비밀번호 확인</label>
 									<input
-										type="password" class="form-control" id="passwordCheck" value=""
+										type="password" class="form-control" id="passwordCheck" value="qwer1234"
 										placeholder="비밀번호 확인" required>
 									<br /> 
 									<label for="nickname">별명</label>
-									<input type="text" class="form-control" name="nickname" id="nickname" value=""
+									<input type="text" class="form-control" name="nickname" id="nickname" value="qwer1234"
 										placeholder="한글과 영어 숫자만 사용 가능합니다." required>
 									<span class="text-success guide n-ok">사용가능한 별명입니다.</span>
 									<span class="text-danger guide n-error">사용할 수 없는 별명입니다.</span>
@@ -84,25 +84,25 @@ $(() => {
 								<div class="carousel-item">
 									<label for="name">이름</label>
 									<input
-										type="text" class="form-control" name="name" id="name" value=""
+										type="text" class="form-control" name="name" id="name" value="dlfma"
 										placeholder="이름" required>									
 									<br /> 
 									<label for="birthday">생일</label>
 									<input type="date" class="form-control" name="birthday" id="birthday">
 									<br />
 									<label for="phone">핸드폰</label>
-									<input type="tel" class="form-control" name="phone" id="phone">
+									<input type="tel" class="form-control" name="phone" id="phone" value="01051515151">
 									<br />
 									<label for="email">이메일</label>
 									<input
-										type="text" id="email" value=""
+										type="text" id="email" value="testid"
 										placeholder="이메일" required>@
 									<input type="text" id="selfWrite" />
 									<input type="hidden" name="email" id="addEmail" required/>
 									<select id="siteSelect">
 										<option value="">선택</option>
 										<option value="self">직접입력</option>
-										<option value="naver.com">네이버</option>
+										<option value="naver.com" selected>네이버</option>
 										<option value="gmail.com">구글</option>
 									</select>
 									<br /> 
@@ -222,10 +222,10 @@ $("#memberEnrollFrm").submit((e) => {
     	alert("이름을 입력해 주세요.");
         return false;
     }
-    if(!/^[가-힣]{2,5}$/.test($name.val())){
+    /* if(!/^[가-힣]{2,5}$/.test($name.val())){
     	alert("이름은 한글로만 이루어져야 합니다.");
     	return false;
-    }
+    } */
     
     // 핸드폰 번호
     if(!/^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/.test($phone.val())){
