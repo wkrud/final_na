@@ -25,5 +25,13 @@ public interface MemberDao {
 
 	int insertKakaoMember(Map<String, Object> map);
 
+	Member selectOneMemberNickname(String nickname);
+
+	List<Map<String, Object>> selectAllAnnouncement(Map<String, Object> param);
+
+	int countAllAnnouncementList();
+
+	List<Member> selectAllNotInMe(Member member);
+
 
 }

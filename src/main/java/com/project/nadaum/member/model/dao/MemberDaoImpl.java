@@ -60,6 +60,25 @@ public class MemberDaoImpl implements MemberDao {
 		return session.insert("member.insertKakaoMember", map);
 	}
 
+	@Override
+	public Member selectOneMemberNickname(String nickname) {
+		return session.selectOne("member.selectOneMemberNickname", nickname);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectAllAnnouncement(Map<String, Object> param) {
+		return session.selectList("member.selectAllAnnouncement", param);
+	}
+
+	@Override
+	public int countAllAnnouncementList() {
+		return session.selectOne("member.countAllAnnouncementList");
+	}
+
+	@Override
+	public List<Member> selectAllNotInMe(Member member) {
+		return session.selectList("member.selectAllNotInMe", member);
+	}
 	
 
 }
