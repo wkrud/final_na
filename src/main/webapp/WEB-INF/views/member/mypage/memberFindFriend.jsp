@@ -22,7 +22,7 @@
 	integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
 	crossorigin="anonymous"></script>
 <link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"ajax csrf 토큰
 	integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
 	crossorigin="anonymous">
 </head>
@@ -30,41 +30,163 @@
 	<sec:authentication property="principal" var="loginMember"/>
 	<label for="find-friends">친구검색</label>
 	<input type="text" list="all-friends" name="friend" id="find-friends" />
-	<datalist id="all-friends">
-		<c:forEach items="${memberList}" var="fr">
-			<option value="${fr.nickname}"/>
-		</c:forEach>
-	</datalist>
+	<datalist id="all-friends"></datalist>
 	<div class="recommend-friends">
 		
 	</div>
 	<div class="selected-friend"></div>
 	
 	<script>
+	$(() => {
+		requestAllFriend();
+	});
 	
-	// 친구 검색시 친구추가 버튼 생성
-	$("#find-friends").change(() => {
-		let selected = '';
+	const requestFriend = (name, flag) => {
 		
-		<c:forEach items="${memberList}" var="fr">
-			if('${fr.nickname}' == $("#find-friends").val()){
-				selected = $("#find-friends").val();
-				let button = `<span>\${selected}</span>
-				<input type="checkbox" class="btn-check addFriend" id="btn-check-outlined" autocomplete="off" style="display:none;">
-				<label class="btn btn-outline-primary" for="btn-check-outlined">친구추가</label>
-				`;
-				$(".selected-friend")
+		const csrfHeader = "${_csrf.headerName}";
+		const csrfToken = "${_csrf.token}";
+		const headers = {};
+		headers[csrfHeader] = csrfToken;
+		
+		$.ajax({
+			url: `${pageContext.request.contextPath}/member/mypage/requestFriend.do`,
+			data: {name,flag},
+			/* csrf token */
+			headers: headers,
+			type: "POST",
+			success(resp) {
+				console.log(resp);
+				if(resp == '1')
+					location.reload();
+			},
+			error: console.log
+		});
+		
+	};
+	
+	
+	// 시작시 불러오는 정보
+	const requestAllFriend = () => {
+		$.ajax({
+			url: "${pageContext.request.contextPath}/member/mypage/requestAllFriend.do",
+			success(resp){
+				const $dList = $("#all-friends");
+				$dList.empty();
+				$(resp).each((e, v) => {
+					/* 내가 팔로잉 ff */
+					var ff = [];
+					$(v.ffriend).each((i, ffr) => {
+						ff.push(ffr.id);
+					});
+					/* 맞팔 fr */
+					var fr = [];
+					$(v.friend).each((i, frr) => {
+						fr.push(frr.friendId);
+					});
+					/* 나를 팔로우 rf */
+					var rf = [];
+					$(v.rfriend).each((i, rfr) => {
+						rf.push(rfr.follower);
+					});
+					/* 전체 회원 m 닉네임 */
+					var noRelation = [];
+					var follower = [];
+					var friend = [];
+					var following = [];
+					$(v.memberList).each((i, ml) => {
+						if(ff.includes(ml.id)){
+							following.push(ml.nickname);
+						}else if(fr.includes(ml.id)){
+							friend.push(ml.nickname);
+						}else if(rf.includes(ml.id)){
+							follower.push(ml.nickname);
+						}
+						
+						if(!ff.includes(ml.id)){
+							if(!fr.includes(ml.id)){
+								if(!rf.includes(ml.id)){
+									noRelation.push(ml.nickname);									
+								}
+							}
+						}
+						
+						let op = `<option value="\${ml.nickname}"/>`;					
+						$dList.append(op);
+						
+					});					
+					
+					makeButton(noRelation, follower, friend, following);
+					
+				});
+			}
+		});
+	};
+	
+	const makeButton = (noRelation, follower, friend, following) => {
+		console.log(noRelation, follower, friend, following);
+		$("#find-friends").change(() => {
+			
+			const $selectedFriend = $(".selected-friend");
+			let button = '';
+			let flag = '';
+			let findVal = $("#find-friends").val();
+			if(noRelation.includes(findVal)){
+				flag = 'noRelation';				
+				button = `<span>\${findVal}</span>
+					<input type="checkbox" class="btn-check addFriend" id="btn-check-outlined" autocomplete="off" style="display:none;">
+					<label class="btn btn-outline-warning" for="btn-check-outlined">친구추가</label>`;
+			}else if(follower.includes(findVal)){
+				flag = 'follower';
+				button = `<span>\${findVal}</span>
+					<input type="checkbox" class="btn-check addFriend" id="btn-check-outlined" autocomplete="off" style="display:none;">
+					<label class="btn btn-outline-warning" for="btn-check-outlined">친구수락</label>`;
+			}else if(friend.includes(findVal)){
+				flag = 'friend';
+				button = `<span>\${findVal}</span>
+					<input type="checkbox" class="btn-check addFriend" checked id="btn-check-outlined" autocomplete="off" style="display:none;">
+					<label class="btn btn-success" for="btn-check-outlined">친구</label>`;
+			}else if(following.includes(findVal)){
+				flag = 'following';
+				button = `<span>\${findVal}</span>
+					<input type="checkbox" class="btn-check addFriend" checked id="btn-check-outlined" autocomplete="off" style="display:none;">
+					<label class="btn btn-success" for="btn-check-outlined">친추중</label>`;
+			}
+			
+			$selectedFriend
+				.empty()
+				.append(button);
+		
+			$("#btn-check-outlined").change((e) => {
+				console.log(flag);
+				
+				if(flag == 'noRelation'){			
+					button = `<span>\${findVal}</span>
+						<input type="checkbox" class="btn-check addFriend" checked id="btn-check-outlined" autocomplete="off" style="display:none;">
+						<label class="btn btn-success" for="btn-check-outlined">친추중</label>`;
+				}else if(flag == 'follower'){
+					button = `<span>\${findVal}</span>
+						<input type="checkbox" class="btn-check addFriend" checked id="btn-check-outlined" autocomplete="off" style="display:none;">
+						<label class="btn btn-success" for="btn-check-outlined">친구</label>`;
+				}else if(flag == 'friend'){
+					button = `<span>\${findVal}</span>
+						<input type="checkbox" class="btn-check addFriend" id="btn-check-outlined" autocomplete="off" style="display:none;">
+						<label class="btn btn-outline-warning" for="btn-check-outlined">친구추가</label>`;
+				}else if(flag == 'following'){
+					button = `<span>\${findVal}</span>
+						<input type="checkbox" class="btn-check addFriend" id="btn-check-outlined" autocomplete="off" style="display:none;">
+						<label class="btn btn-outline-warning" for="btn-check-outlined">친구추가</label>`;
+				}
+				
+				$selectedFriend
 					.empty()
 					.append(button);
-				$(".selected-friend").change((e) => {
-					console.log("1");
-				});
-			}else{
-				selected = '';
-			}
-		</c:forEach>		
-		
-	});
+				
+				requestFriend(findVal, flag);				
+			});
+			
+		});
+	};
+	
 	</script>
 
 </body>
