@@ -251,7 +251,7 @@ input[type=checkbox]{
 			    - 알람보낼부분이 있다면 .css("display","");
 			    - 알람보낼개수는 .text(alarm_num);		
 			*/
-			$.ajax()			
+						
 			
 			/*비동기 통신하고 알람영역 보이게 할때 다음 함수 적용하세요  */
 			/*  
