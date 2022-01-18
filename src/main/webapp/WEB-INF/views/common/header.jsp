@@ -141,18 +141,20 @@ input[type=checkbox]{
 					</span>
 					<div class="profile-wrap">
 						<button id="profile" type="button" class="btn btn-primary position-relative bg-light border-light rounded-circle">
-						    <svg height="32" aria-hidden="true" viewBox="0 0 16 16" version="1.1" width="32"data-view-component="true" class="octicon octicon-mark-github">
 								<c:if test="${loginMember.loginType eq 'K'}">
-									<%-- <img src="${loginMember.profile}" alt="" /> --%>
+									<div class="kakao_thumbnail" style="border-radius:50%; width:45px; height: 45px; overflow:hidden; padding: 0;">
+										<img src="${loginMember.profile}" alt="" style="width:45px; height:45px; object-fit:cover;" />
+									</div>
 								</c:if>
-							</svg> 
+						    <!-- <svg height="32" aria-hidden="true" viewBox="0 0 16 16" version="1.1" width="32"data-view-component="true" class="octicon octicon-mark-github">
+							</svg>  -->
 						    
 						</button>
-					    <div class="alarm-list">
+					    <!-- <div class="alarm-list">
 					        <a class="dropdown-item" href="#">Action</a>
 					  	    <a class="dropdown-item" href="#">Another action</a>
 					  	    <a class="dropdown-item" href="#">Something else here</a>
-					    </div>
+					    </div> -->
 					</div>
 
 					<ul class="navbar-nav justify-content-end">
@@ -231,7 +233,7 @@ input[type=checkbox]{
 			
 						
 			/*실제 넣을 코드 : 알람 영역 있을때 클릭시 알람표시 사라짐*/
-			const $alarmList = $(".alarm-list");
+			/* const $alarmList = $(".alarm-list");
 			$alarmList.hide();
 			$("#profile").click((e) => {
 				$alarmList.show();
@@ -242,7 +244,7 @@ input[type=checkbox]{
 				
 				
 				$("#bg-alarm").text(alarm_num);
-			}); 
+			});  */
 			
 
 			
