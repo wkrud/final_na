@@ -32,10 +32,11 @@ public class EchoHandler extends TextWebSocketHandler {
 		
 		log.info("#ChattingHandler, afterConnectionEstablished");
 		sessionList.add(session);
-		userMap.put(session.getPrincipal().getName(), session);
+		
+		userMap.put(session.getPrincipal().getName(), session);			
 		
 		log.debug("userMap = {}", userMap);
-		log.info(session.getPrincipal().getName() + "님이 입장하셨습니다.");
+		log.info(session.getPrincipal().getName() + "접속");
 	}
 	
 	@Override
@@ -91,7 +92,8 @@ public class EchoHandler extends TextWebSocketHandler {
 
 		sessionList.remove(session);
 		
-		log.info(session.getPrincipal().getName() + "님이 퇴장하셨습니다.");
+		log.info(session.getPrincipal().getName() + "연결종료");
 	}
 	
+		
 }

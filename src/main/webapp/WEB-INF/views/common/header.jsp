@@ -214,7 +214,7 @@ input[type=checkbox]{
 			</nav>
 
 		</header>
-</sec:authorize>
+
 		<script>
 			$(() => {
 				countBedge();
@@ -317,4 +317,5 @@ input[type=checkbox]{
 				});	
 		    };
 		</script>
+</sec:authorize>
 		<section id="content">
