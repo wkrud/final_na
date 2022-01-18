@@ -182,8 +182,8 @@
 						<label class="btn btn-outline-warning" for="btn-check-outlined">친구추가</label>`;
 				}
 				
-				let socketMsg = flag + "," + '${loginMember.id}' + "," + findVal;
-				socket.send(socketMsg);
+				let senderId = '${loginMember.id}';
+				alarmSave(flag, senderId, findVal);
 												
 				$selectedFriend
 					.empty()
@@ -196,29 +196,34 @@
 		});
 	};
 	
+	const alarmSave = (flag, senderId, findVal) => {
+		let socketMsg = flag + "," + senderId + "," + findVal;
+		socket.send(socketMsg);		
+	};
+	
 	var socket = null;
 
     $(document).ready(function (){
 	    connectWs();
     });
     function connectWs(){
-   	sock = new SockJS("<c:url value='/echo'/>");
-   	//sock = new SockJS('/replyEcho');
-   	socket = sock;
+   		sock = new SockJS("<c:url value='/echo'/>");
+   		socket = sock;
 
-   	sock.onopen = function() {
+   		sock.onopen = function() {
            console.log('info: connection opened.');
-	};
-	sock.onmessage = function(evt) {
-		var data = evt.data;
-		console.log("ReceivMessage : " + data + "\n");
-	};
-	sock.onclose = function() {
-      	console.log('connect close');
-      	/* setTimeout(function(){conntectWs();} , 1000); */
-    };
-
-    sock.onerror = function (err) {console.log('Errors : ' , err);};}
+		};
+		sock.onmessage = function(evt) {
+			var data = evt.data;
+			console.log("ReceivMessage : " + data + "\n");
+		};
+		sock.onclose = function() {
+	      	console.log('connect close');
+	      	/* setTimeout(function(){conntectWs();} , 1000); */
+	    };
+	
+	    sock.onerror = function (err) {console.log('Errors : ' , err);};
+    }
 	</script>
 
 </body>

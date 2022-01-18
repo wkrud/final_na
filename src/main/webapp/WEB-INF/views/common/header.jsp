@@ -214,12 +214,15 @@ input[type=checkbox]{
 		</header>
 </sec:authorize>
 		<script>
+			$(() => {
+				countBedge();
+			});
 			/* 샘플코드 */
-			/*$("#profile").click(function(){
+			$("#profile").click(function(){
 				$("#bg-alarm").css("display","");
 				let alarm_num = 1;
 				$("#bg-alarm").text(alarm_num);
-			});*/ 
+			});
 			$("#sign-out").click(function(){
 				alert("로그아웃되었습니다.");
 			});
@@ -267,36 +270,52 @@ input[type=checkbox]{
 		    });
 		    function connectWs(){
 			   	sock = new SockJS("<c:url value='/echo'/>");
-			   	//sock = new SockJS('/replyEcho');
 			   	socket = sock;
 	
 			   	sock.onopen = function() {
 		           console.log('info: connection opened.');
-			   	}
-			};
-			sock.onmessage = function(evt) {
-				var data = evt.data;
-				console.log("ReceivMessage : " + data + "\n");
-				
-				$.ajax({
+			   	};
+			
+				sock.onmessage = function(evt) {
+					var data = evt.data;
+					console.log("ReceivMessage : " + data + "\n");
+					
+					countBdege();
+					
+				};
+				sock.onclose = function() {
+			      	console.log('connect close');
+			      	/* setTimeout(function(){conntectWs();} , 1000); */
+			    };
+	
+			    sock.onerror = function (err) {console.log('Errors : ' , err);};
+		    };
+		    
+		    const countBedge = () => {
+		    	$.ajax({
 					url: `${pageContext.request.contextPath}/websocket/wsCountAlarm.do`,
 					success(resp){
 						if(resp != '0'){
-							let bedge = '
-							<span id='bg-alarm' class='position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger'>resp</span>
-							';
+							let bedge = `
+							<span id='bg-alarm' class='position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger'>\${resp}</span>
+							`;
 							
-							$(profile).append();
+							$(profile).append(bedge);
 						}
-					}
-				});				
-				
-			};
-			sock.onclose = function() {
-		      	console.log('connect close');
-		      	/* setTimeout(function(){conntectWs();} , 1000); */
+					},
+					error: console.log
+				});		
 		    };
-
-		    sock.onerror = function (err) {console.log('Errors : ' , err);};		
+		    
+		    const checkBedge = () => {
+		    	$.ajax({
+					url: `${pageContext.request.contextPath}/websocket/checkAlarm.do`,
+					success(resp){
+						if(resp != '0'){
+						}
+					},
+					error: console.log
+				});	
+		    };
 		</script>
 		<section id="content">

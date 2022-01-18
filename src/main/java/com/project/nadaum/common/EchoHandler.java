@@ -80,8 +80,7 @@ public class EchoHandler extends TextWebSocketHandler {
 					friendSession.sendMessage(tMsg);
 				}
 			}
-			
-			
+				
 		}
 	}
 	
