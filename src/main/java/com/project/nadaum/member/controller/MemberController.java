@@ -218,7 +218,19 @@ public class MemberController {
 		
 		// 관계없음 -> 팔로잉
 		if("noRelation".equals(flag)) {
-			result = memberService.insertRequestFriend(reverse);	
+			Map<String, Object> check = new HashMap<>();
+			try {
+				check = memberService.selectOneRequestFriendForCheck(param);
+			} catch (Exception e) {
+				log.error(e.getMessage(), e);
+			}
+			if(check != null && !check.isEmpty()) {
+				result = memberService.updateRequestFriend(param);
+				result = memberService.insertFriend(param);
+				result = memberService.insertFriend(reverse);
+			}			
+			else
+				result = memberService.insertRequestFriend(reverse);
 			log.debug("noRelation = {}", "성공");
 		// 팔로워 -> 맞팔
 		}else if("follower".equals(flag)) {

@@ -125,6 +125,11 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.updateMemberProfile(member);
 	}
 
+	@Override
+	public Map<String, Object> selectOneRequestFriendForCheck(Map<String, Object> param) {
+		return memberDao.selectOneRequestFriendForCheck(param);
+	}
+
 	
 	
 	

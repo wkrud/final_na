@@ -125,6 +125,11 @@ public class MemberDaoImpl implements MemberDao {
 		return session.update("member.updateMemberProfile", member);
 	}
 
+	@Override
+	public Map<String, Object> selectOneRequestFriendForCheck(Map<String, Object> param) {
+		return session.selectOne("member.selectOneRequestFriendForCheck", param);
+	}
+
 	
 	
 

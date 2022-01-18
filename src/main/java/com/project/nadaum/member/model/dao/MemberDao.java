@@ -51,6 +51,8 @@ public interface MemberDao {
 
 	int updateMemberProfile(Member member);
 
+	Map<String, Object> selectOneRequestFriendForCheck(Map<String, Object> param);
+
 
 
 }

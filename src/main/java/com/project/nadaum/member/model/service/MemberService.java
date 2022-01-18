@@ -51,5 +51,7 @@ public interface MemberService {
 
 	int updateMemberProfile(Member member);
 
+	Map<String, Object> selectOneRequestFriendForCheck(Map<String, Object> param);
+
 
 }

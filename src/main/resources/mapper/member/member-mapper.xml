@@ -42,6 +42,10 @@
 	
 	<!-- 친구 crud 시작 -->
 	
+	<select id="selectOneRequestFriendForCheck" resultMap="requestFriendMap">
+		select * from request_friend where id = #{id} and follower = #{name}
+	</select>
+	
 	<insert id="insertRequestFriend">
 		insert into request_friend (no, id, follower) values(seq_request_friend_no.nextval, #{id}, #{name})
 	</insert>
