@@ -35,18 +35,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/culture")
 public class GetApi {
 	
-	//*tag 값의 정보를 가져오는 메소드
-		private static String getTagValue(String tag, Element eElement) {
-			
-			NodeList nList = eElement.getElementsByTagName(tag).item(0).getChildNodes();
-			Node nValue = (Node)nList.item(0);
-			
-			if(nValue == null) {
-				return null;
-			}
-			return nValue.getNodeValue();
-			
-		}
 	@GetMapping("/xmlParser.do")
     public static Map<String, Object> GetApi(Model model) throws IOException {
         

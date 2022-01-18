@@ -123,7 +123,7 @@ input[type=checkbox]{
 							<!-- 각자페이지 링크거시면 됩니다 -->
 								<a class="dropdown-item" href="https://www.naver.com/">메인</a> <a
 									class="dropdown-item" href="https://nid.naver.com/nidlogin.login?mode=form&url=https%3A%2F%2Fmemo.naver.com%2Fmain.nhn">ToDoList</a> 
-									<a class="dropdown-item" href="${pageContext.request.contextPath}/culture/cultureBoardList.do">문화생활</a>
+									<a class="dropdown-item" href="${pageContext.request.contextPath}/culture/culture.do">문화생활</a>
 									<a class="dropdown-item" href="${pageContext.request.contextPath}/movie/movieBoardList.do">영화</a> 
 									<a class="dropdown-item" href="https://audioclip.naver.com/">오디오북</a> <a
 									class="dropdown-item" href="${pageContext.request.contextPath}/riot/riotheader.do">롤전적</a>
@@ -251,7 +251,7 @@ input[type=checkbox]{
 			    - 알람보낼부분이 있다면 .css("display","");
 			    - 알람보낼개수는 .text(alarm_num);		
 			*/
-			$.ajax()			
+			/*$.ajax()*/			
 			
 			/*비동기 통신하고 알람영역 보이게 할때 다음 함수 적용하세요  */
 			/*  

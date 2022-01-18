@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.project.nadaum.culture.show.model.dao.CultureDao;
 import com.project.nadaum.culture.show.model.vo.Culture;
-import com.project.nadaum.memo.model.service.MemoServiceImpl;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -20,6 +18,11 @@ public class CultureServiceImpl implements CultureService {
 	@Override
 	public List<Culture> selectCultureList() {
 		return cultureDao.selectMemoList();
+	}
+	@Override
+	public Culture selectOneCulture(String code) {
+			Culture culture = cultureDao.selectOneCulture(code);
+			return culture;
 	}
 
 }

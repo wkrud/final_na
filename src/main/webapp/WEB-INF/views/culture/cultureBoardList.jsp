@@ -5,12 +5,16 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<jsp:include page="/WEB-INF/views/common/header.jsp"/>
+<jsp:include page="/WEB-INF/views/common/header.jsp">
+	<jsp:param value="문화" name="title"/>
+</jsp:include>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/culture/cultureBoardList.css" />
 <style>
 .search-form label{
 padding-right: 8px;
 }
+div#culture-container{width:100%; margin:0 auto;text-align:center;}
+.thumnail{width: 20%; }
 </style>
 <body>
 	<div class="container">
@@ -92,41 +96,7 @@ padding-right: 8px;
       </div>
     </div>
   </div>
-	</div>
-	<script>
-function goBoardForm(){
-	location.href = "${pageContext.request.contextPath}/board/boardForm.do";
-}
-
-$(() => {
-	$("tr[data-no]").click((e) => {
-		// console.log(e.target); // td
-		const $tr = $(e.target).parent();
-		const no = $tr.data("no");
-		location.href = `${pageContext.request.contextPath}/board/boardDetail.do?no=\${no}`;
-	});
-});
-</script>
-<section id="board-container" class="container">
-	<table id="tbl-board" class="table table-striped table-hover">
-		<tr>
-			<th>번호</th>
-			<th>제목</th>
-			<th>작성자</th>
-			<th>작성일</th>
-		</tr>
-		<c:forEach items="${list}" var="board">
-			<tr data-no="${board.no}">
-				<td>${board.no}</td>
-				<td>${board.title}</td>
-				<td>${board.memberId}</td>
-				<td><fmt:formatDate value="${board.regDate}" pattern="yy/MM/dd HH:mm"/> </td>
-			</tr>
-		</c:forEach>
-	</table>
-	
-	${pagebar}
-</section> 
+  </div>
 </body>
   <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>

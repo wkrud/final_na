@@ -8,4 +8,6 @@ public interface CultureService {
 
 	List<Culture> selectCultureList();
 
+	Culture selectOneCulture(String code);
+
 }
