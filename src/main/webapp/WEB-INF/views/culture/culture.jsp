@@ -22,13 +22,14 @@ div#culture-container{width:100%; margin:0 auto;text-align:center;}
 </style>
 <script>
 //cultureDetail
+$(() => {
 	$(".card[data-code]").click((e) => {
-		e.preventDefault();
 		 //console.log(e.target); // td
 		const $card = $(e.target).parent().parent();
 		const code = $card.data("code");
 		location.href = `${pageContext.request.contextPath}/culture/cultureDetail.do?code=\${code}`;
 	});
+});
 </script>
 <body>
 	<div class="container">

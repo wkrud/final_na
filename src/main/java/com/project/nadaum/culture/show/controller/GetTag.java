@@ -64,6 +64,7 @@ public class GetTag {
 						System.out.println("######################");
 						
 //						System.out.println(eElement.getTextContent());
+						String seq = getTagValue("seq", eElement);
 						String title = getTagValue("title", eElement);
 						String startDate = getTagValue("startDate", eElement);
 						String endDate = getTagValue("endDate", eElement);
