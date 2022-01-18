@@ -219,9 +219,7 @@ input[type=checkbox]{
 			});
 			/* 샘플코드 */
 			$("#profile").click(function(){
-				$("#bg-alarm").css("display","");
-				let alarm_num = 1;
-				$("#bg-alarm").text(alarm_num);
+				checkBedge();
 			});
 			$("#sign-out").click(function(){
 				alert("로그아웃되었습니다.");
@@ -311,8 +309,7 @@ input[type=checkbox]{
 		    	$.ajax({
 					url: `${pageContext.request.contextPath}/websocket/checkAlarm.do`,
 					success(resp){
-						if(resp != '0'){
-						}
+						countBedge();
 					},
 					error: console.log
 				});	
