@@ -8,10 +8,36 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="가계부" name="title"/>
 </jsp:include>
+<sec:authentication property="principal" var="loginMember"/>
 
 <link href='${pageContext.request.contextPath}/resources/css/accountbook/main.css' rel='stylesheet' />
+<script src='${pageContext.request.contextPath}/resources/js/accountbook/main.js'></script>
+<link href='https://use.fontawesome.com/releases/v5.0.6/css/all.css' rel='stylesheet'>
 
-<div class="wrap_box">
+	<div class="insertAccount box">
+		<h2>가계부 테스트</h2>
+		<form action="">
+			<input type="date" name="reg_date" id="reg_date" value="" />
+			<label for="reg_date">날짜</label>
+			<input type="checkbox" name="income_expense" id="income_checkbox" value="I" />
+			<label for="income_checkbox">수입</label>
+			<input type="checkbox" name="income_expense" id="income_checkbox" value="E"/>
+			<label for="income_checkbox">지출</label>
+			<br />
+			<label for="detail">내역</label>
+			<input type="text" name="detail" id="detail" placeholder="내역을 입력하세요." />
+			<br />
+			<label for="price">가격</label>
+			<input type="text" name="price" id="price" placeholder="가격을 입력하세요." />
+			<select name="payment" id="payment">
+				<option value="cash" name="payment">현금</option>
+				<option value="card" name="payment">카드</option>
+			</select>
+			<input type="submit" value="제출하기" />
+			<input type="hidden" name="Id" value="${loginMember.id}" />
+		</form>
+	</div>
+
 	<section class="box1">
 		<div class="account_tip">
 			<h3>1월의 소비 목표 : 500,000</h3>
@@ -27,24 +53,11 @@
 		<div class="search_box">
 			<form action="">
 				<h3>검색</h3>
-				<select name="" id="">
+				<select name="mainCategory" id="mainCategory">
 					<option value="">대분류</option>
-					<option value="income">수입</option>
-					<option value="expense">지출</option>
 				</select>
-				<select name="" id="">
+				<select name="subCategory" id="subCategory">
 					<option value="">소분류</option>
-					<option value="">급여</option>
-					<option value="">용돈</option>
-					<option value="">기타</option>
-					<option value="">-------</option>
-					<option value="">생활비</option>
-					<option value="">식비</option>
-					<option value="">쇼핑</option>
-					<option value="">저축</option>
-					<option value="">유흥</option>
-					<option value="">자기계발</option>
-					<option value="">기타</option>
 				</select>
 				<input type="text" name="search" id="search">
 				<input type="submit" value="검색">
@@ -114,7 +127,7 @@
 		<div class="account">
 			<table class="account-info">
 				<tr>
-					<td colspan="2">ㅇㅇ님의</td>
+					<td colspan="2">${loginMember.name}님의</td>
 				</tr>
 				<tr>
 					<td colspan="2">1월 총 자산</td>
@@ -133,14 +146,9 @@
 			</table>
 		</div>
 		<div class="insertForm">
-			<form action="insertForm" method="">
-				<p>거래내역 추가하기<br>누르면 모달로 입력</p>
-			</form>
+			<button id="btn1"><i class="fas fa-plus plus"></i><br />거래내역 입력하기</button>
 		</div>
 	</section>
-</div>
-
-
 
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
