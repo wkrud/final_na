@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>친구찾기</title>
+<title>나:다움 친구찾기</title>
 
 <script src="https://code.jquery.com/jquery-3.6.0.js"
 	integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
@@ -61,7 +61,7 @@
 			success(resp) {
 				console.log(resp);
 				if(resp == '1')									
-					location.reload();
+					requestAllFriend();
 				
 			},
 			error: console.log
@@ -219,7 +219,7 @@
 		};
 		sock.onclose = function() {
 	      	console.log('connect close');
-	      	/* setTimeout(function(){conntectWs();} , 1000); */
+	      	
 	    };
 	
 	    sock.onerror = function (err) {console.log('Errors : ' , err);};

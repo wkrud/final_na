@@ -68,6 +68,30 @@
 	
 	<!-- 친구 crud 끝 -->
 	
+	<!-- help 시작 -->
+	
+	<select id="selectAllMyQuestions" resultMap="helpMap">
+		select * from help where id = #{id}
+	</select>
+	
+	<select id="selectAllMembersQuestions" resultMap="helpMap">
+		select * from help order by status desc
+	</select>
+	
+	<select id="selectAllHelpTitle" resultType="string">
+		select title from help where title like '%'||#{value}||'%'
+	</select>
+	
+	<select id="selectHelpByInput" resultType="map">
+		select code code, id id, category category, title title, reg_date regDate, status status from help where title like '%'||#{value}||'%'
+	</select>
+	
+	<select id="selectOneSelectedHelp" resultMap="helpMap">
+		select * from help where code = #{code}
+	</select>
+	
+	<!-- help 끝 -->
+		
 	<insert id="insertMember">
 		insert into member(id, password, name, email, address, nickname, auth_key)
 		values(#{id}, #{password}, #{name}, #{email}, #{address}, #{nickname}, #{authKey})
@@ -115,16 +139,8 @@
 		<result column="all_day" property="allDay"/>
 		<result column="id" property="id"/>
 	</resultMap>
-	
-	<select id="selectAllMyQuestions" resultMap="myQ">
-		select * from help where id = #{id}
-	</select>
-	
-	<select id="selectAllMembersQuestions" resultMap="myQ">
-		select * from help order by status desc
-	</select>
-	
-	<resultMap type="map" id="myQ">
+			
+	<resultMap type="map" id="helpMap">
 		<id column="code" property="code"/>
 		<result column="id" property="id"/>
 		<result column="category" property="category"/>
@@ -132,9 +148,9 @@
 		<result column="content" property="content"/>
 		<result column="reg_date" property="regDate"/>
 		<result column="status" property="status"/>
-		<result column="a_code" property="a_code"/>
-		<result column="a_title" property="a_title"/>
-		<result column="a_content" property="a_content"/>
+		<result column="a_code" property="aCode"/>
+		<result column="a_title" property="aTitle"/>
+		<result column="a_content" property="aContent"/>
 		<result column="a_reg_date" property="aRegDate"/>
 	</resultMap>
 	
@@ -159,6 +175,7 @@
 		<result column="follower" property="follower"/>
 		<result column="is_friend" property="isFriend"/>
 	</resultMap>
+	
 	
 </mapper>
 

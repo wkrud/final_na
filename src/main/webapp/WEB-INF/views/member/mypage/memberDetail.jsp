@@ -7,7 +7,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <jsp:include page="/WEB-INF/views/common/header.jsp">
-	<jsp:param value="회원정보" name="title"/>
+	<jsp:param value="나:다움 회원정보" name="title"/>
 </jsp:include>
 <sec:authentication property="principal" var="loginMember"/>
 <div class="section">
@@ -18,7 +18,7 @@
 			<li class="list-group-item"><a href="${pageContext.request.contextPath}/member/mypage/memberDetail.do?tPage=alarm">알림</a></li>
 			<li class="list-group-item"><a href="${pageContext.request.contextPath}/member/mypage/memberMyHelp.do">내가 한 질문</a></li>
 			<li class="list-group-item"><a href="${pageContext.request.contextPath}/member/mypage/memberFriends.do">친구관리</a></li>
-			<li class="list-group-item"><a href="${pageContext.request.contextPath}/member/mypage/memberHelp.do">고객센터</a></li>
+			<li class="list-group-item"><a href="${pageContext.request.contextPath}/member/mypage/memberHelp.do">질문모음</a></li>
 			<li class="list-group-item"><a href="${pageContext.request.contextPath}/member/mypage/memberAnnouncement.do">공지사항</a></li>
 		</ul>
 		<!-- 메뉴리스트 하단 작게 -->

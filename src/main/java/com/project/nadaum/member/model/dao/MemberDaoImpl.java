@@ -130,6 +130,21 @@ public class MemberDaoImpl implements MemberDao {
 		return session.selectOne("member.selectOneRequestFriendForCheck", param);
 	}
 
+	@Override
+	public List<Map<String, Object>> selectAllHelpTitle(String value) {
+		return session.selectList("member.selectAllHelpTitle", value);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectHelpByInput(String title) {
+		return session.selectList("member.selectHelpByInput", title);
+	}
+
+	@Override
+	public Map<String, Object> selectOneSelectedHelp(String code) {
+		return session.selectOne("member.selectOneSelectedHelp", code);
+	}
+
 	
 	
 

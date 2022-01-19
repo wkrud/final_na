@@ -53,5 +53,11 @@ public interface MemberService {
 
 	Map<String, Object> selectOneRequestFriendForCheck(Map<String, Object> param);
 
+	List<Map<String, Object>> selectAllHelpTitle(String value);
+
+	List<Map<String, Object>> selectHelpByInput(String title);
+
+	Map<String, Object> selectOneSelectedHelp(String code);
+
 
 }

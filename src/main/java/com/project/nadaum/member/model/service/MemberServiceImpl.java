@@ -130,6 +130,21 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.selectOneRequestFriendForCheck(param);
 	}
 
+	@Override
+	public List<Map<String, Object>> selectAllHelpTitle(String value) {
+		return memberDao.selectAllHelpTitle(value);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectHelpByInput(String title) {
+		return memberDao.selectHelpByInput(title);
+	}
+
+	@Override
+	public Map<String, Object> selectOneSelectedHelp(String code) {
+		return memberDao.selectOneSelectedHelp(code);
+	}
+
 	
 	
 	

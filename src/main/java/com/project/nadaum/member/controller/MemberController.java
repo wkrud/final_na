@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.gson.Gson;
 import com.project.nadaum.common.NadaumUtils;
 import com.project.nadaum.member.model.service.KakaoService;
 import com.project.nadaum.member.model.service.MailSendService;
@@ -165,9 +166,41 @@ public class MemberController {
 		model.addAttribute("helpList", helpList);		
 	}
 	
+	@GetMapping("/mypage/searchHelpTitle.do")
+	public ResponseEntity<?> searchHelpTitle(@RequestParam String value){
+		List<Map<String, Object>> titles = memberService.selectAllHelpTitle(value);		
+		return ResponseEntity.ok(titles);
+	}
+	
+	@GetMapping("/mypage/searchStart.do")
+	public ResponseEntity<?> searchHelpFrm(@RequestParam String title) {
+		log.debug("title = {}", title);
+		List<Map<String, Object>> searchResult = memberService.selectHelpByInput(title);
+		if(searchResult != null && !searchResult.isEmpty())
+			return ResponseEntity.ok(searchResult);
+		else
+			return ResponseEntity.ok(0);
+	}
+	
+	@GetMapping("/mypage/memberHelpDetail.do")
+	public void memberHelpDetail(@RequestParam String code, Model model) {
+		log.debug("code = {}", code);
+		Map<String, Object> helpDetail = memberService.selectOneSelectedHelp(code);
+		log.debug("helpDetail = {}", helpDetail);
+		model.addAttribute("helpDetail", helpDetail);
+	}
+	
 	@GetMapping("/mypage/memberFriends.do")
-	public void memberFriends() {
+	public void memberFriends(@AuthenticationPrincipal Member member, Model model) {
+		List<Map<String, Object>> friends = memberService.selectAllFriend(member);
+		List<Map<String, Object>> follower = memberService.selectAllRequestFriend(member);
+		List<Member> memberList = memberService.selectAllNotInMe(member);
+		log.debug("friends = {}", friends);
+		log.debug("follower = {}", follower);
 		
+		model.addAttribute("memberList", memberList);
+		model.addAttribute("friends", friends);
+		model.addAttribute("follower", follower);
 	}
 
 	@GetMapping("/mypage/memberFindFriend.do")
