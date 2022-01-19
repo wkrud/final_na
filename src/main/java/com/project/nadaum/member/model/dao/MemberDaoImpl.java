@@ -96,38 +96,8 @@ public class MemberDaoImpl implements MemberDao {
 	}
 
 	@Override
-	public int insertRequestFriend(Map<String, Object> param) {
-		return session.insert("member.insertRequestFriend", param);
-	}
-
-	@Override
-	public int updateRequestFriend(Map<String, Object> param) {
-		return session.update("member.updateRequestFriend", param);
-	}
-
-	@Override
-	public int insertFriend(Map<String, Object> param) {
-		return session.insert("member.insertFriend", param);
-	}
-
-	@Override
-	public int deleteRequestFriend(Map<String, Object> param) {
-		return session.delete("member.deleteRequestFriend", param);
-	}
-
-	@Override
-	public int deleteFriend(Map<String, Object> param) {
-		return session.delete("member.deleteFriend", param);
-	}
-
-	@Override
 	public int updateMemberProfile(Member member) {
 		return session.update("member.updateMemberProfile", member);
-	}
-
-	@Override
-	public Map<String, Object> selectOneRequestFriendForCheck(Map<String, Object> param) {
-		return session.selectOne("member.selectOneRequestFriendForCheck", param);
 	}
 
 	@Override
@@ -145,6 +115,62 @@ public class MemberDaoImpl implements MemberDao {
 		return session.selectOne("member.selectOneSelectedHelp", code);
 	}
 
+	@Override
+	public List<Map<String, Object>> selectSearchMemberNickname(String value) {
+		return session.selectList("member.selectSearchMemberNickname", value);
+	}
+
+	@Override
+	public Member selectOneMemberNicknameNotMe(Map<String, Object> nicknames) {
+		return session.selectOne("member.selectOneMemberNicknameNotMe", nicknames);
+	}
+
+	@Override
+	public Map<String, Object> selectFollower(Map<String, Object> nicknames) {
+		return session.selectOne("member.selectFollower", nicknames);
+	}
+
+	@Override
+	public Map<String, Object> selectFollowing(Map<String, Object> nicknames) {
+		return session.selectOne("member.selectFollowing", nicknames);
+	}
+
+	@Override
+	public Map<String, Object> selectFriend(Map<String, Object> nicknames) {
+		return session.selectOne("member.selectFriend", nicknames);
+	}
+
+	@Override
+	public int updateRequestFriend(Map<String, Object> nicknames) {
+		return session.update("member.updateRequestFriend", nicknames);
+	}
+
+	@Override
+	public int insertFriend(Map<String, Object> nicknames) {
+		return session.insert("member.insertFriend", nicknames);
+	}
+
+	@Override
+	public int insertAlarm(Map<String, Object> alarm) {
+		return session.insert("member.insertAlarm", alarm);
+	}
+
+	@Override
+	public int deleteRequestFriend(Map<String, Object> nicknames) {
+		return session.delete("member.deleteRequestFriend", nicknames);
+	}
+
+	@Override
+	public int deleteFriend(Map<String, Object> nicknames) {
+		return session.delete("member.deleteFriend", nicknames);
+	}
+
+	@Override
+	public int insertRequestFriend(Map<String, Object> nicknames) {
+		return session.insert("member.insertRequestFriend", nicknames);
+	}
+
+	
 	
 	
 

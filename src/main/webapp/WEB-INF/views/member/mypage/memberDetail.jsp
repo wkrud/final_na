@@ -72,10 +72,10 @@
 				<ul class="list-group">
 					<c:forEach items="${alarmList}" var="al">
 						<c:if test="${al.status eq 'F'}">
-							<li class="list-group-item">${al.code}</li>
+							<li class="list-group-item">${al.content}</li>
 						</c:if>
 						<c:if test="${al.status eq 'T'}">
-							<li class="list-group-item list-group-item-secondary">${al.code}</li>
+							<li class="list-group-item list-group-item-secondary">${al.content}</li>
 						</c:if>
 					</c:forEach>
 				</ul>

@@ -282,7 +282,19 @@ input[type=checkbox]{
 					var data = evt.data;
 					console.log("ReceivMessage : " + data + "\n");
 					
-					countBdege();
+					$.ajax({
+						url: `${pageContext.request.contextPath}/websocket/wsCountAlarm.do`,
+						success(resp){
+							if(resp != '0'){
+								let bedge = `
+								<span id='bg-alarm' class='position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger'>\${resp}</span>
+								`;
+								
+								$(profile).append(bedge);
+							}
+						},
+						error: console.log
+					});		
 					
 				};
 				sock.onclose = function() {

@@ -96,38 +96,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public int insertRequestFriend(Map<String, Object> param) {
-		return memberDao.insertRequestFriend(param);
-	}
-
-	@Override
-	public int updateRequestFriend(Map<String, Object> param) {
-		return memberDao.updateRequestFriend(param);
-	}
-
-	@Override
-	public int insertFriend(Map<String, Object> param) {
-		return memberDao.insertFriend(param);
-	}
-
-	@Override
-	public int deleteRequestFriend(Map<String, Object> param) {
-		return memberDao.deleteRequestFriend(param);
-	}
-
-	@Override
-	public int deleteFriend(Map<String, Object> param) {
-		return memberDao.deleteFriend(param);
-	}
-
-	@Override
 	public int updateMemberProfile(Member member) {
 		return memberDao.updateMemberProfile(member);
-	}
-
-	@Override
-	public Map<String, Object> selectOneRequestFriendForCheck(Map<String, Object> param) {
-		return memberDao.selectOneRequestFriendForCheck(param);
 	}
 
 	@Override
@@ -145,6 +115,62 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.selectOneSelectedHelp(code);
 	}
 
+	@Override
+	public List<Map<String, Object>> selectSearchMemberNickname(String value) {
+		return memberDao.selectSearchMemberNickname(value);
+	}
+
+	@Override
+	public Member selectOneMemberNicknameNotMe(Map<String, Object> nicknames) {
+		return memberDao.selectOneMemberNicknameNotMe(nicknames);
+	}
+
+	@Override
+	public Map<String, Object> selectFollower(Map<String, Object> nicknames) {
+		return memberDao.selectFollower(nicknames);
+	}
+
+	@Override
+	public Map<String, Object> selectFollowing(Map<String, Object> nicknames) {
+		return memberDao.selectFollowing(nicknames);
+	}
+
+	@Override
+	public Map<String, Object> selectFriend(Map<String, Object> nicknames) {
+		return memberDao.selectFriend(nicknames);
+	}
+
+	@Override
+	public int updateRequestFriend(Map<String, Object> nicknames) {
+		return memberDao.updateRequestFriend(nicknames);
+	}
+
+	@Override
+	public int insertFriend(Map<String, Object> nicknames) {
+		return memberDao.insertFriend(nicknames);
+	}
+
+	@Override
+	public int insertAlarm(Map<String, Object> alarm) {
+		return memberDao.insertAlarm(alarm);
+	}
+
+	@Override
+	public int deleteRequestFriend(Map<String, Object> nicknames) {
+		return memberDao.deleteRequestFriend(nicknames);
+	}
+
+	@Override
+	public int deleteFriend(Map<String, Object> nicknames) {
+		return memberDao.deleteFriend(nicknames);
+	}
+
+	@Override
+	public int insertRequestFriend(Map<String, Object> nicknames) {
+		return memberDao.insertRequestFriend(nicknames);
+	}
+
+	
 	
 	
 	

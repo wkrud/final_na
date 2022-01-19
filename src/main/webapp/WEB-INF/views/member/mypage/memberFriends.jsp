@@ -18,7 +18,7 @@
 		<div class="friends-section">
 			<c:forEach items="${memberList}" var="ml">
 				<c:forEach items="${friends}" var="fr">
-					<c:if test="${ml.id eq fr.friendId}">
+					<c:if test="${ml.nickname eq fr.friendNickname}">
 						<div class="friend-wrap">
 							<c:if test="${ml.loginType eq 'K'}">
 								<div class="kakao_thumbnail" style="border-radius:50%; width:45px; height: 45px; overflow:hidden; padding: 0;">
@@ -40,7 +40,7 @@
 		<div class="followers-section">
 			<c:forEach items="${memberList}" var="ml">
 				<c:forEach items="${follower}" var="fo">
-					<c:if test="${ml.id eq fo.follower}">
+					<c:if test="${ml.nickname eq fo.followerNickname}">
 						<div class="follower-wrap">
 							<c:if test="${ml.loginType eq 'K'}">
 								<div class="kakao_thumbnail" style="border-radius:50%; width:45px; height: 45px; overflow:hidden; padding: 0;">
