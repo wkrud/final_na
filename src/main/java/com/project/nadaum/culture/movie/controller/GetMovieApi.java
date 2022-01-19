@@ -36,7 +36,7 @@ public class GetMovieApi {
 		
 		@GetMapping("/getTagValue.do")
 		public void getTag(Model model) {
-			Map<Object, String> map = new HashMap();
+			Map<String, Object> map = new HashMap();
 			List<Map<Object, String>> list = new ArrayList();
 			int page = 1;			
 //			int itemPerPage = 10;			
@@ -88,7 +88,7 @@ public class GetMovieApi {
 							map.put("genreAlt", genreAlt);
 							map.put("peopleNm", peopleNm);
 							
-							list.add(map);
+//							list.add(map);
 							
 							System.out.println(map);
 //							log.debug("movieCd = {}", movieCd);
