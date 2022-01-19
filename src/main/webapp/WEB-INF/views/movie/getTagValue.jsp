@@ -5,7 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@page import="com.project.nadaum.culture.movie.controller.MovieApi"%>
+<%@page import="com.project.nadaum.culture.movie.controller.GetMovieApi"%>
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/movie/movieList.css" />
@@ -35,19 +35,20 @@
 	</thead>
 
 	<tbody>
-	 <c:forEach items="${nNode}" var="">
+	 <c:forEach items="${list}" var="list">
 		<tr>
-			<th>${movieCd}</th>
-			<th>${movieNm}</th>
-			<th>${prdYear}</th>
-			<th>${openDt}</th>
-			<th>${typeNm}</th>
-			<th>${nationAlt}</th>
-			<th>${genreAlt}</th>
-			<th>${peopleNm}</th>
+			<th>${list.movieCd}</th>
+			<th>${list.movieNm}</th>
+			<th>${list.prdYear}</th>
+			<th>${list.openDt}</th>
+			<th>${list.typeNm}</th>
+			<th>${list.nationAlt}</th>
+			<th>${list.genreAlt}</th>
+			<th>${list.peopleNm}</th>
 		</tr>
 	</c:forEach>
 	</tbody>
+	
 </table>
 
 </div>
