@@ -23,7 +23,7 @@
 <script
 	src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
 	integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-	crossorigin="anonymous"></script>
+	crossorigin="anonymous"></script> 
 
 <!-- bootstrap css -->
 <link rel="stylesheet"
@@ -123,7 +123,7 @@ input[type=checkbox]{
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 							<!-- 각자페이지 링크거시면 됩니다 -->
 								<a class="dropdown-item" href="https://www.naver.com/">메인</a> <a
-									class="dropdown-item" href="https://nid.naver.com/nidlogin.login?mode=form&url=https%3A%2F%2Fmemo.naver.com%2Fmain.nhn">ToDoList</a> 
+									class="dropdown-item" href="${pageContext.request.contextPath}/accountbook/accountbook.do">가계부</a> 
 									<a class="dropdown-item" href="${pageContext.request.contextPath}/culture/culture.do">문화생활</a>
 									<a class="dropdown-item" href="${pageContext.request.contextPath}/movie/movieBoardList.do">영화</a> 
 									<a class="dropdown-item" href="https://audioclip.naver.com/">오디오북</a> <a
