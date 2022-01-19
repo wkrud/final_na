@@ -7,11 +7,90 @@
 	<jsp:param value="게시판 상세보기" name="title"/>
 </jsp:include>
 <style>
-div#culture-container{width:400px;}
+body{
+
+}
+
+div#culture-container{
+width: 1300px;
+
+background: #FFFFFF;
+border-radius: 30px;
+
+}
 input, button, textarea {margin-bottom:15px;}
 button { overflow: hidden; }
 /* 부트스트랩 : 파일라벨명 정렬*/
-div#board-container label.custom-file-label{text-align:left;}
+div#board-container label.custom-file-label{text-align:left;
+}
+
+input[type="text"]{
+font-family: Lato;
+font-style: normal;
+display:block;
+vertical-align: right;
+margin:0;
+
+}
+
+#thumail {
+float:left;
+width: 35%;
+height: 35%;
+display : block;
+
+filter: drop-shadow(0px 20px 20px rgba(0, 0, 0, 0.25));
+}
+
+#title{
+font-weight: 500;
+font-size: 40px;
+line-height: 48px;
+color: #000000;
+
+width: 1000px;
+height: 59px;
+}
+
+#area{
+
+top: 40%;
+width: 327px;
+height: 28px;
+
+font-size: 20px;
+}
+#place{
+
+width:50%;
+
+font-size: 20px;
+}
+#genre{
+
+
+font-size: 20px;
+}
+#startDate{
+display:inline-block;
+vertical-align: left;
+font-size: 20px;
+}
+#endDate{
+display:inline-block;
+vertical-align: left;
+font-size: 20px;
+}
+
+input{
+border:none
+
+}
+
+
+
+
+
 
 /*카카오 Api style */
     .map_wrap {position:relative;width:100%;height:350px;}
@@ -21,30 +100,39 @@ div#board-container label.custom-file-label{text-align:left;}
     .bAddr {padding:5px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
 </style>
 
+
 <div id="culture-container" class="mx-auto text-center">
-	<input type="text" class="form-control" 
+	
+	<!-- 상세내용 -->
+	<div class="culture_detail">
+	<input type="image" class="form-control-" name="thumnail" title="썸네일" id="thumail"
+		   src="${culture.imgUrl}" readonly>
+	<input type="text" class="form-control-" 
 		   placeholder="제목" name="title" id="title" 
 		   value="${culture.title}" readonly>
 	
-	<input type="text" class="form-control" name="area" title="지역"
+	<input type="text" class="form-control-" name="area" title="지역" id="area"
 		   value="${culture.area}" readonly>
-	<input type="text" class="form-control" name="place" title="장소"
+	<input type="text" class="form-control-" name="place" title="장소" id="place"
 		   value="${culture.place}" readonly>
-	<input type="text" class="form-control" name="realmName" title="장르"
+	<input type="text" class="form-control-" name="realmName" title="장르" id="genre"
 		   value="${culture.realmName}" readonly>
-	<input type="image" class="form-control" name="thumnail" title="썸네일"
-		   src="${culture.imgUrl}" readonly>
-	<input type="text" class="form-control" name="startDate" 
-		   value='<fmt:formatDate value="${culture.startDate}" pattern="yyyy/MM/dd"/>'>
-	<input type="text" class="form-control" name="endDate" 
+	<input type="text" class="form-control-" name="startDate" id="startDate"
+		   value='<fmt:formatDate value="${culture.startDate}" pattern="yyyy/MM/dd"/>'> 
+	<input type="text" class="form-control-" name="endDate" id="endDate"
 		   value='<fmt:formatDate value="${culture.endDate}" pattern="yyyy/MM/dd"/>'>
-		   
+	</div>
+	
+	<hr style="border: solid 2px grey;">
+	
+	<!-- 지도 -->	   
 	<div class="map_wrap">
     <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
     <div class="hAddr">
         <span class="title">지도중심기준 행정동 주소정보</span>
         <span id="centerAddr"></span>
     </div>
+    
 </div>
 </div>
 
@@ -124,3 +212,5 @@ function displayCenterInfo(result, status) {
 }
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
+cultureDetail.jsp
+7KB
