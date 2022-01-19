@@ -6,11 +6,12 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <jsp:include page="/WEB-INF/views/common/header.jsp">
-<jsp:param value="가계부" name="title"/>
+	<jsp:param value="가계부" name="title"/>
 </jsp:include>
 
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
 
-<h2>testttttttttttttttt</h2>
+<h2>갑자기 왜 오류 나지요...?</h2>
 
 
 

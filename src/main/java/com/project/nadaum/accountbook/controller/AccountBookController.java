@@ -6,15 +6,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import lombok.extern.slf4j.Slf4j;
 
+	
+@Slf4j
+@Controller
+@RequestMapping("/accountbook")
 public class AccountBookController {
 	
-	@Controller
-//	@Slf4j
-	@RequestMapping("/accountbook")
-	public class AccountBookCountroller {
-
-		@GetMapping("/accountbookView.do")
-		public void accountbookView() {}
+	@GetMapping("/accountbook.do")
+	public void accountbook() {}
 	}
 
-}
+
