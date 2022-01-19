@@ -122,11 +122,11 @@ input[type=checkbox]{
                             aria-expanded="false"> </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <!-- 각자페이지 링크거시면 됩니다 -->
-                                <a class="dropdown-item" href="https://www.naver.com/%22%3E메인</a> 
+                                <a class="dropdown-item" href="https://www.naver.com/%22%3E">메인</a> 
                                 <a class="dropdown-item" href="${pageContext.request.contextPath}/accountbook/accountbook.do">가계부</a> 
                                 <a class="dropdown-item" href="${pageContext.request.contextPath}/culture/cultureBoardList.do">문화생활</a>
                                 <a class="dropdown-item" href="${pageContext.request.contextPath}/movie/movieBoardList.do">영화</a> 
-                                <a class="dropdown-item" href="https://audioclip.naver.com/%22%3E오디오북</a> 
+                                <a class="dropdown-item" href="https://audioclip.naver.com/%22%3E">오디오북</a> 
                                 <a class="dropdown-item" href="${pageContext.request.contextPath}/riot/riotheader.do">롤전적</a>
                             </div></li>
                     </ul>
