@@ -51,6 +51,7 @@ $(() => {
 				
 				<form
 					id="memberEnrollFrm"
+					enctype="multipart/form-data"
 					method="post">
 					<div class="modal-body">	
 						<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
