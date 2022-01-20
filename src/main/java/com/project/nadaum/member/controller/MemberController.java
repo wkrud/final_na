@@ -1,12 +1,15 @@
 package com.project.nadaum.member.controller;
 
 import java.beans.PropertyEditor;
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +28,11 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.project.nadaum.common.NadaumUtils;
+import com.project.nadaum.common.vo.Attachment;
 import com.project.nadaum.member.model.service.KakaoService;
 import com.project.nadaum.member.model.service.MailSendService;
 import com.project.nadaum.member.model.service.MemberService;
@@ -51,6 +56,9 @@ public class MemberController {
 	
 	@Autowired
 	private KakaoService kakaoService;
+	
+	@Autowired
+	private ServletContext application;
 			
 	@GetMapping("/memberLogin.do")
 	public void memberLogin() {}
@@ -85,17 +93,22 @@ public class MemberController {
 	@PostMapping("/memberEnroll.do")
 	public String memberEnroll(Member member, RedirectAttributes redirectAttr) {
 		log.debug("member = {}", member);
-		String rawPassword = member.getPassword();
-		String encodedPassword = bcryptPasswordEncoder.encode(rawPassword);
-		member.setPassword(encodedPassword);
 		
-		String authKey = mailSendService.sendAuthMail(member.getEmail());
-		member.setAuthKey(authKey);
-		log.debug("authKey = {}", authKey);
-		int result = memberService.insertMember(member);
-		result = memberService.insertRole(member);
-		
-		redirectAttr.addFlashAttribute("result", result);
+		try {
+			String rawPassword = member.getPassword();
+			String encodedPassword = bcryptPasswordEncoder.encode(rawPassword);
+			member.setPassword(encodedPassword);
+			
+			String authKey = mailSendService.sendAuthMail(member.getEmail());
+			member.setAuthKey(authKey);
+			log.debug("authKey = {}", authKey);
+			int result = memberService.insertMember(member);
+			result = memberService.insertRole(member);
+			
+			redirectAttr.addFlashAttribute("result", result);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+		}
 		return "redirect:/";
 	}
 	
@@ -141,11 +154,11 @@ public class MemberController {
 	@GetMapping("/mypage/memberDetail.do")
 	public void memberDetail(@AuthenticationPrincipal Member member, @RequestParam String tPage, Model model, RedirectAttributes redirectAttr) {
 		log.debug("tPage = {}", tPage);
-		Map<String, Object> memberInfo = memberService.selectOneMemberAndAttachment(member);
+		Attachment attach = memberService.selectMemberProfile(member);
 		List<Map<String, Object>> alarm = memberService.selectAllAlarm(member);
 		log.debug("alarm = {}", alarm);
-		log.debug("memberInfo = {}", memberInfo);
-		model.addAttribute("memberInfo", memberInfo);
+		log.debug("attach = {}", attach);
+		model.addAttribute("attach", attach);
 		model.addAttribute("alarmList", alarm);
 	}
 	

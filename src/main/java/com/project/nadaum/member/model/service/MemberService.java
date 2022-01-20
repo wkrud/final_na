@@ -3,6 +3,7 @@ package com.project.nadaum.member.model.service;
 import java.util.List;
 import java.util.Map;
 
+import com.project.nadaum.common.vo.Attachment;
 import com.project.nadaum.member.model.vo.Member;
 
 public interface MemberService {
@@ -69,7 +70,7 @@ public interface MemberService {
 
 	int insertRequestFriend(Map<String, Object> nicknames);
 
-	Map<String, Object> selectOneMemberAndAttachment(Member member);
+	Attachment selectMemberProfile(Member member);
 
 
 
