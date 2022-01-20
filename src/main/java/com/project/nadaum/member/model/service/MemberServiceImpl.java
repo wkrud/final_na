@@ -176,6 +176,11 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.selectMemberProfile(member);
 	}
 
+	@Override
+	public int updateMemberNickname(Member member) {
+		return memberDao.updateMemberNickname(member);
+	}
+
 	
 	
 	

@@ -25,15 +25,15 @@
 	</select>
 	
 	<select id="selectAllFriend" resultMap="friendMap">
-		select * from friend where my_nickname = #{nickname}
+		select * from friend where my_id = #{id}
 	</select>
 	
 	<select id="selectAllRequestFriend" resultMap="requestFriendMap">
-		select * from request_friend where my_nickname = #{nickname} and is_friend = 'F'
+		select * from request_friend where my_id = #{id} and is_friend = 'F'
 	</select>
 	
 	<select id="selectAllRequestFriendByMe" resultMap="requestFriendMap">
-		select * from request_friend where follower_nickname = #{nickname} and is_friend = 'F'
+		select * from request_friend where follower_id = #{id} and is_friend = 'F'
 	</select>
 	
 	<update id="updateMemberProfile">
@@ -43,6 +43,10 @@
 	<select id="selectMemberProfile" resultType="attachment">
 		select * from attachment where code = #{id}
 	</select>
+	
+	<update id="updateMemberNickname">
+		update member set nickname = #{nickname} where id = #{id}
+	</update>
 	
 	<!-- 친구 crud 시작 -->	
 	
@@ -55,23 +59,23 @@
 	</select>
 	
 	<select id="selectFollower" resultMap="requestFriendMap">
-		select * from request_friend where is_friend = 'F' and my_nickname = #{myNickname} and follower_nickname = #{friendNickname}
+		select * from request_friend where is_friend = 'F' and my_id = #{id} and follower_id = #{friendId}
 	</select>
 	
 	<select id="selectFollowing" resultMap="requestFriendMap">
-		select * from request_friend where is_friend = 'F' and my_nickname = #{friendNickname} and follower_nickname = #{myNickname}
+		select * from request_friend where is_friend = 'F' and my_id = #{friendId} and follower_id = #{id}
 	</select>
 	
 	<select id="selectFriend" resultMap="friendMap">
-		select * from friend where my_nickname = #{myNickname} and friend_nickname = #{friendNickname}
+		select * from friend where my_id = #{id} and friend_id = #{friendId}
 	</select>
 	
 	<update id="updateRequestFriend">
-		update request_friend set is_friend = 'T' where my_nickname = #{myNickname} and follower_nickname = #{friendNickname}
+		update request_friend set is_friend = 'T' where my_id = #{id} and follower_id = #{friendId}
 	</update>
 	
 	<insert id="insertFriend">
-		insert into friend values(concat('fr-',seq_friend_no.nextval), #{myNickname}, #{friendNickname})
+		insert into friend values(concat('fr-',seq_friend_no.nextval), #{id}, #{friendId})
 	</insert>
 	
 	<insert id="insertAlarm">
@@ -80,16 +84,16 @@
 	</insert>
 	
 	<delete id="deleteRequestFriend">
-		delete from request_friend where my_nickname = #{myNickname} and follower_nickname = #{friendNickname}
+		delete from request_friend where my_id = #{id} and follower_id = #{friendId}
 	</delete>
 	
 	<delete id="deleteFriend">
-		delete from friend where my_nickname = #{myNickname} and friend_nickname = #{friendNickname}
+		delete from friend where my_id = #{id} and friend_id = #{friendId}
 	</delete>
 	
 	<insert id="insertRequestFriend">
-		insert into request_friend (code, my_nickname, follower_nickname)
-		values(concat('rf-', seq_request_friend_no.nextval), #{friendNickname}, #{myNickname})
+		insert into request_friend (code, my_id, follower_id)
+		values(concat('rf-', seq_request_friend_no.nextval), #{friendId}, #{id})
 	</insert>
 	
 	<!-- 친구 crud 끝 -->
@@ -194,14 +198,14 @@
 	
 	<resultMap type="map" id="friendMap">
 		<id column="code" property="code"/>
-		<result column="my_nickname" property="myNickname"/>
-		<result column="friend_nickname" property="friendNickname"/>
+		<result column="my_id" property="id"/>
+		<result column="friend_id" property="friendId"/>
 	</resultMap>
 	
 	<resultMap type="map" id="requestFriendMap">
 		<id column="code" property="code"/>
-		<result column="my_nickname" property="myNickname"/>
-		<result column="follower_nickname" property="followerNickname"/>
+		<result column="my_id" property="id"/>
+		<result column="follower_id" property="followerId"/>
 		<result column="is_friend" property="isFriend"/>
 	</resultMap>
 	

@@ -151,6 +151,10 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
+	@GetMapping("/mypage/memberModifyNickname.do")
+	public void memberModifyNickname() {}	
+	
+	
 	@GetMapping("/mypage/memberDetail.do")
 	public void memberDetail(@AuthenticationPrincipal Member member, @RequestParam String tPage, Model model, RedirectAttributes redirectAttr) {
 		log.debug("tPage = {}", tPage);
@@ -207,26 +211,29 @@ public class MemberController {
 	public ResponseEntity<?> updateFriend(@AuthenticationPrincipal Member member, @RequestParam String check, @RequestParam String friendNickname){
 		log.debug("check = {}, friendNickname = {}", check, friendNickname);
 		int result = 0;
-		Map<String, Object> nicknames = new HashMap<>();
+		Member friendInfo = memberService.selectOneMemberNickname(friendNickname);
+		Map<String, Object> param = new HashMap<>();
 		Map<String, Object> reverse = new HashMap<>();
 		Map<String, Object> alarm = new HashMap<>();
 		
-		nicknames.put("friendNickname", friendNickname);
-		nicknames.put("id", member.getId());
-		nicknames.put("myNickname", member.getNickname());
+		param.put("friendId", friendInfo.getId());
+		param.put("friendNickname", friendNickname);
+		param.put("id", member.getId());
+		param.put("myNickname", member.getNickname());
 		reverse.put("friendNickname", member.getNickname());
 		reverse.put("myNickname", friendNickname);
+		reverse.put("id", friendInfo.getId());
+		reverse.put("friendId", member.getId());
 		
-		Member friendInfo = memberService.selectOneMemberNickname(friendNickname);
 		alarm.put("id", friendInfo.getId());
 		
 		if("follower".equals(check)) {
 			// -> friend
-			Map<String, Object> isFollower = memberService.selectFollower(nicknames);
+			Map<String, Object> isFollower = memberService.selectFollower(param);
 			if(isFollower != null) {
 				alarm.put("content", member.getNickname() + "님과 친구가 되었습니다.");
-				result = memberService.updateRequestFriend(nicknames);
-				result = memberService.insertFriend(nicknames);
+				result = memberService.updateRequestFriend(param);
+				result = memberService.insertFriend(param);
 				result = memberService.insertFriend(reverse);
 				result = memberService.insertAlarm(alarm);
 				return ResponseEntity.ok(1);
@@ -235,7 +242,7 @@ public class MemberController {
 			
 		}else if("following".equals(check)) {
 			// -> free
-			Map<String, Object> isFollowing = memberService.selectFollowing(nicknames);
+			Map<String, Object> isFollowing = memberService.selectFollowing(param);
 			if(isFollowing != null) {
 				alarm.put("content", member.getNickname() + "님이 친구신청을 끊었습니다.");
 				result = memberService.deleteRequestFriend(reverse);
@@ -245,12 +252,12 @@ public class MemberController {
 			return ResponseEntity.ok(0);
 		}else if("friend".equals(check)) {
 			// -> free
-			Map<String, Object> isFriend = memberService.selectFriend(nicknames);
+			Map<String, Object> isFriend = memberService.selectFriend(param);
 			if(isFriend != null) {
 				alarm.put("content", member.getNickname() + "님과 더이상 친구가 아니에요");
-				result = memberService.deleteRequestFriend(nicknames);
+				result = memberService.deleteRequestFriend(param);
 				result = memberService.deleteRequestFriend(reverse);
-				result = memberService.deleteFriend(nicknames);
+				result = memberService.deleteFriend(param);
 				result = memberService.deleteFriend(reverse);	
 				result = memberService.insertAlarm(alarm);
 				return ResponseEntity.ok(1);
@@ -262,7 +269,7 @@ public class MemberController {
 			log.debug("isFollower = {}", isFollower);
 			if(isFollower == null) {
 				alarm.put("content", member.getNickname() + "님이 회원님을 팔로우하기 시작했습니다.");
-				result = memberService.insertRequestFriend(nicknames);
+				result = memberService.insertRequestFriend(param);
 				result = memberService.insertAlarm(alarm);
 				return ResponseEntity.ok(1);
 			}
@@ -274,17 +281,18 @@ public class MemberController {
 	@GetMapping("/mypage/searchStartFriend.do")
 	public ResponseEntity<?> searchStartFriend(@AuthenticationPrincipal Member member, @RequestParam String friend){
 		log.debug("friend = {}", friend);
-		Map<String, Object> nicknames = new HashMap<>();
+		Map<String, Object> param = new HashMap<>();
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put("nickname", friend);
-		nicknames.put("id", member.getId());
-		nicknames.put("myNickname", member.getNickname());
-		nicknames.put("friendNickname", friend);
-		Member friendInfo = memberService.selectOneMemberNicknameNotMe(nicknames);
+		param.put("id", member.getId());
+		param.put("friendNickname", friend);
+		Member friendInfo = memberService.selectOneMemberNicknameNotMe(param);
+		param.put("friendId", friendInfo.getId());
+		log.debug("param = {}", param);
 		if(friendInfo != null) {
-			Map<String, Object> isFollower = memberService.selectFollower(nicknames);
-			Map<String, Object> isFollowing = memberService.selectFollowing(nicknames);
-			Map<String, Object> isFriend = memberService.selectFriend(nicknames);
+			Map<String, Object> isFollower = memberService.selectFollower(param);
+			Map<String, Object> isFollowing = memberService.selectFollowing(param);
+			Map<String, Object> isFriend = memberService.selectFriend(param);
 			if(isFollower != null) {
 				resultMap.put("check", "follower");				
 			}else if(isFollowing != null) {
@@ -294,6 +302,7 @@ public class MemberController {
 			}else {
 				resultMap.put("check", "free");
 			}
+			log.debug("resultMap = {}", resultMap);
 			return ResponseEntity.ok(resultMap);
 		}else
 			return ResponseEntity.ok(0);
@@ -341,6 +350,19 @@ public class MemberController {
 		model.addAttribute("announceList", announceList);
 	}
 	
+	@PostMapping("/memberModifyNickname.do")
+	public String memberModifyNickname(Member member, RedirectAttributes redirectAttr, @AuthenticationPrincipal Member oldMember) {
+		log.debug("member = {}", member);
+		int result = memberService.updateMemberNickname(member);
+		
+		oldMember.setNickname(member.getNickname());		
+		Authentication newAuthentication = new UsernamePasswordAuthenticationToken(oldMember, oldMember.getPassword(), oldMember.getAuthorities());		
+		SecurityContextHolder.getContext().setAuthentication(newAuthentication);
+		
+		redirectAttr.addFlashAttribute("msg", "별명 수정 성공!!");
+		return "redirect:/member/mypage/memberDetail.do?tPage=myPage";
+	}
+	
 	@PostMapping("/memberUpdate.do")
 	public ResponseEntity<?> memberUpdate(Member member, @AuthenticationPrincipal Member oldMember){
 		log.debug("member = {}", member);
@@ -352,16 +374,13 @@ public class MemberController {
 		oldMember.setEmail(member.getEmail());
 		oldMember.setAddress(member.getAddress());
 		oldMember.setPhone(member.getPhone());
-		oldMember.setNickname(member.getNickname());
 		oldMember.setHobby(member.getHobby());
 		oldMember.setSearch(member.getSearch());
 		oldMember.setIntroduce(member.getIntroduce());
 		oldMember.setBirthday(member.getBirthday());
 		
-		Authentication newAuthentication = new UsernamePasswordAuthenticationToken(oldMember, oldMember.getPassword(), oldMember.getAuthorities());
-		
-		SecurityContextHolder.getContext().setAuthentication(newAuthentication);
-		
+		Authentication newAuthentication = new UsernamePasswordAuthenticationToken(oldMember, oldMember.getPassword(), oldMember.getAuthorities());		
+		SecurityContextHolder.getContext().setAuthentication(newAuthentication);		
 		return ResponseEntity.ok(result);
 		
 	}

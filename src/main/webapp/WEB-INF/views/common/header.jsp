@@ -147,13 +147,13 @@ input[type=checkbox]{
 									<c:if test="${loginMember.loginType eq 'K'}">
 										<img src="${loginMember.profile}" alt="" style="width:45px; height:45px; object-fit:cover;" />
 									</c:if>	
-									<c:if test="${loginMember.loginType eq 'D'}">		
-										<c:if test="${loginMember.profileStatus eq 'Y'}">		
-											<img src="${pageContext.request.contextPath}/resources/upload/member/profile/${attach.renamedFilename}" alt="" style="width:45px; height:45px; object-fit:cover;" />										 		
-										</c:if>								
+									<c:if test="${loginMember.loginType eq 'D'}">
 										<c:if test="${loginMember.profileStatus eq 'N'}">							 		
 											<img src="${pageContext.request.contextPath}/resources/upload/member/profile/default_profile_cat.png" alt="" style="width:45px; height:45px; object-fit:cover;" />
 										</c:if>						
+										<c:if test="${loginMember.profileStatus eq 'Y'}">		
+											<img src="${pageContext.request.contextPath}/resources/upload/member/profile/${attach.renamedFilename}" alt="" style="width:45px; height:45px; object-fit:cover;" />										 		
+										</c:if>								
 									</c:if>								
 								</div>
 						    <!-- <svg height="32" aria-hidden="true" viewBox="0 0 16 16" version="1.1" width="32"data-view-component="true" class="octicon octicon-mark-github">

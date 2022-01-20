@@ -176,6 +176,11 @@ public class MemberDaoImpl implements MemberDao {
 		return session.selectOne("member.selectMemberProfile", member);
 	}
 
+	@Override
+	public int updateMemberNickname(Member member) {
+		return session.update("member.updateMemberNickname", member);
+	}
+
 	
 	
 	

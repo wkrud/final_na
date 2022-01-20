@@ -72,6 +72,8 @@ public interface MemberDao {
 
 	Attachment selectMemberProfile(Member member);
 
+	int updateMemberNickname(Member member);
+
 
 
 

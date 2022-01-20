@@ -72,6 +72,8 @@ public interface MemberService {
 
 	Attachment selectMemberProfile(Member member);
 
+	int updateMemberNickname(Member member);
+
 
 
 }
