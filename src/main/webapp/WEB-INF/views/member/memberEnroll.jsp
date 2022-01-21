@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>회원가입</title>
+<title>나:다움 회원가입</title>
 <script src="https://code.jquery.com/jquery-3.6.0.js"
 	integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
 	crossorigin="anonymous"></script>
@@ -51,6 +51,7 @@ $(() => {
 				
 				<form
 					id="memberEnrollFrm"
+					enctype="multipart/form-data"
 					method="post">
 					<div class="modal-body">	
 						<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">

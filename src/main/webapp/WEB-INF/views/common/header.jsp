@@ -25,6 +25,8 @@
 	integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
 	crossorigin="anonymous"></script> 
 
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <!-- bootstrap css -->
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
@@ -141,11 +143,19 @@ input[type=checkbox]{
 					</span>
 					<div class="profile-wrap">
 						<button id="profile" type="button" class="btn btn-primary position-relative bg-light border-light rounded-circle">
-								<c:if test="${loginMember.loginType eq 'K'}">
-									<div class="kakao_thumbnail" style="border-radius:50%; width:45px; height: 45px; overflow:hidden; padding: 0;">
+								<div class="thumbnail-wrap" style="border-radius:50%; width:45px; height: 45px; overflow:hidden; padding: 0;">
+									<c:if test="${loginMember.loginType eq 'K'}">
 										<img src="${loginMember.profile}" alt="" style="width:45px; height:45px; object-fit:cover;" />
-									</div>
-								</c:if>
+									</c:if>	
+									<c:if test="${loginMember.loginType eq 'D'}">
+										<c:if test="${loginMember.profileStatus eq 'N'}">							 		
+											<img src="${pageContext.request.contextPath}/resources/upload/member/profile/default_profile_cat.png" alt="" style="width:45px; height:45px; object-fit:cover;" />
+										</c:if>						
+										<c:if test="${loginMember.profileStatus eq 'Y'}">		
+											<img src="${pageContext.request.contextPath}/resources/upload/member/profile/${attach.renamedFilename}" alt="" style="width:45px; height:45px; object-fit:cover;" />										 		
+										</c:if>								
+									</c:if>								
+								</div>
 						    <!-- <svg height="32" aria-hidden="true" viewBox="0 0 16 16" version="1.1" width="32"data-view-component="true" class="octicon octicon-mark-github">
 							</svg>  -->
 						    
@@ -280,7 +290,19 @@ input[type=checkbox]{
 					var data = evt.data;
 					console.log("ReceivMessage : " + data + "\n");
 					
-					countBdege();
+					$.ajax({
+						url: `${pageContext.request.contextPath}/websocket/wsCountAlarm.do`,
+						success(resp){
+							if(resp != '0'){
+								let bedge = `
+								<span id='bg-alarm' class='position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger'>\${resp}</span>
+								`;
+								
+								$(profile).append(bedge);
+							}
+						},
+						error: console.log
+					});		
 					
 				};
 				sock.onclose = function() {
@@ -316,6 +338,12 @@ input[type=checkbox]{
 					error: console.log
 				});	
 		    };
+		    
+		   
+		    
+		    
+		    
+		    
 		</script>
 </sec:authorize>
 		<section id="content">
