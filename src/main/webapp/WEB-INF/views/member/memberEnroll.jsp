@@ -41,14 +41,14 @@
 			<div id="enrollFrmCarousel" class="carousel slide" data-ride="carousel">
 				<div class="carousel-inner">
 					<div class="carousel-item active">
-						<label for="id">아이디</label>						
+						<label for="id">아이디<span class="text-danger must-need"> 필수</span></label>						
 						<input type="text" class="form-control" name="id" id="id" value="wowo" 
 							placeholder="영문 한글 숫자 4~10 글자입니다." required>
 						<span class="text-success guide ok">이 아이디는 사용가능합니다.</span>
 						<span class="text-danger guide error">이 아이디는 사용불가능합니다.</span>
 						<input type="hidden" id="idValid" value="0" />
 						<br /> 
-						<label for="password">비밀번호</label>
+						<label for="password">비밀번호<span class="text-danger must-need"> 필수</span></label>
 						<input type="password" class="form-control" name="password" id="password" value="qwer1234"
 							placeholder="비밀번호는 숫자, 영어포함 8 ~ 15자리 사이 입니다." required>									
 						<br /> 
@@ -56,7 +56,7 @@
 						<input type="password" class="form-control" id="passwordCheck" value="qwer1234"
 							placeholder="비밀번호 확인" required>
 						<br /> 
-						<label for="nickname">별명</label>
+						<label for="nickname">별명<span class="text-danger must-need"> 필수</span></label>
 						<input type="text" class="form-control" name="nickname" id="nickname" value="qwer1234"
 							placeholder="한글과 영어 숫자 사용 4~8 글자입니다." required>
 						<span class="text-success guide n-ok">사용가능한 별명입니다.</span>
@@ -64,68 +64,65 @@
 						<input type="hidden" id="nValid" value="0" />
 					</div>
 					<div class="carousel-item">
-						<label for="name">이름</label>
-						<input type="text" class="form-control" name="name" id="name" value="dlfma"
-							placeholder="이름" required>									
+						<label for="nameCheck">이름<span class="text-danger must-need"> 필수</span></label>
+						<input type="text" class="form-control" name="name" id="nameCheck" value="dlfma" placeholder="이름" required>									
 						<br /> 
-						<label for="birthday">생일</label>
-						<input type="date" class="form-control" name="birthday" id="birthday">
-						<br />
-						<label for="phone">핸드폰</label>
-						<input type="tel" class="form-control" name="phone" id="phone" value="01051515151">
-						<br />
-						<label for="email">이메일</label>
-						<input type="text" id="email" value="testid"
-							placeholder="이메일" required>@
-						<input type="text" id="selfWrite" />
-						<input type="hidden" name="email" id="addEmail" required/>
-						<select id="siteSelect">
-							<option value="">선택</option>
-							<option value="self">직접입력</option>
-							<option value="naver.com" selected>네이버</option>
-							<option value="gmail.com">구글</option>
-						</select>
-						<br /> 
-						<!-- <div class="phone-wrap">
-							<input type="text" />
-						</div> -->									
-					</div>
-					<div class="carousel-item">									
-						<div>
-							<div class="address-wrap">
-								<input type="text" id="postcode" readonly="readonly"/>
-								<input type="button" class="address_button" onclick="findAddress()" value="주소검색"><br />											
-								<input type="text" id="allAddress" class="form-control" readonly="readonly"/><br />
-								<input type="text" id="detailAddress" class="form-control" readonly="readonly"/>
-								<input type="hidden" name="address" class="form-control addAddress" required />
-							
-								<input type="submit" id="enroll-btn" class="btn btn-outline-success enroll" value="회원가입">
-								<button type="button" class="btn btn-outline-danger" data-dismiss="modal">닫기</button>
+					<label for="email">이메일<span class="text-danger must-need"> 필수</span></label>						
+						<div class="input-group mb-3" >
+							<input type="text" id="email" class="form-control" placeholder="이메일" aria-label="Recipient's username" aria-describedby="basic-addon2">
+							<div class="input-group-append">
+								<span class="input-group-text" id="basic-addon2">@</span>
 							</div>
-						</div>
-						<br />									
+							<input type="text" class="form-control" id="selfWrite" readonly="readonly"/>
+							<select id="siteSelect" class="custom-select">
+								<option value="" selected>선택</option>
+								<option value="self">직접입력</option>
+								<option value="naver">네이버</option>
+								<option value="gmail">구글</option>
+							</select>
+						</div>						
+						<input type="hidden" name="email" id="addEmail"/>
+						
+						<br /> 
+						<div class="address-wrap">
+						
+							<label for="postcode">주소</label>
+							<div class="input-group mb-3">
+								<input type="text" class="form-control" id="postcode" aria-label="Recipient's username" aria-describedby="button-addon2" readonly="readonly">
+								<div class="input-group-append">
+									<button class="btn btn-outline-secondary address_button" type="button" id="button-addon2" onclick="findAddress();">주소검색</button>
+								</div>
+							</div>
+									
+							<input type="text" id="allAddress" class="form-control" readonly="readonly"/><br />
+							<input type="text" id="detailAddress" class="form-control" readonly="readonly"/>
+							<input type="hidden" name="address" class="form-control addAddress" required />
+							<div class="enroll-btn-wrap">
+								<button type="button" id="enroll-btn" class="btn btn-outline-success enroll">회원가입</button>
+							</div>
+						</div>				
 					</div>
+					
 					<div class="page-move-btn-wrap">
 						<div class="page-move-btn">
-							<button type="button" id="prev-page" class="btn btn-outline-warning">
+							<button type="button" id="prev-page" class="btn btn-warning">
 								<span class="carousel-control-prev-icon" aria-hidden="true"></span>
 							</button>
-							<button type="button" id="next-page" class="btn btn-outline-warning">
+							<button type="button" id="next-page" class="btn btn-warning">
 								<span class="carousel-control-next-icon" aria-hidden="false"></span>
 							</button>
 						</div>
 					</div>
-				</div>
-				
+				</div>	
+							
 			</div>
-			
-			
 		</div>
 		
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 	</form>
 </div>	
 <script>
+
 const $enrollCarousel = $("#enrollFrmCarousel");
 $enrollCarousel.carousel({
 	interval: false,
@@ -139,37 +136,41 @@ $("#next-page").on("click", () => {
 	$enrollCarousel.carousel('next');
 });
 
-
 // 이메일
-$(selfWrite).hide();
-
-$(siteSelect).change(() => {
-	if($(siteSelect).val() == 'self'){
-		$(selfWrite).show();
+const $siteSelect = $("#siteSelect");
+const $selfWrite = $("#selfWrite");
+$siteSelect.change(() => {
+	if($siteSelect.val() == 'naver'){
+		$selfWrite
+			.attr('readonly', true)
+			.val('naver.com');		
+		$(addEmail).val($(email).val() + '@naver.com');
+	}else if($siteSelect.val() == 'gmail'){
+		$selfWrite
+			.attr('readonly', true)
+			.val('gmail.com');
+		$(addEmail).val($(email).val() + '@gmail.com');
 	}else{
-		$(selfWrite).hide();
+		$selfWrite
+			.attr('readonly', false)
+			.val('');
+		$selfWrite.blur(() => {
+			$(addEmail).val($(email).val() + '@' + $siteSelect.val());
+		});
 	}
-	
-	$(addEmail).val($(email).val() + '@' + $(siteSelect).val())
-	
 });
 
-$(selfWrite).blur(() => {
-	$(addEmail).val($(email).val() + '@' + $(selfWrite).val());
-});
+
 
 
 // 유효성 검사
-/* $("#enroll-btn").click((e) => {
-	e.preventDefault(); */
-$(enrollFrmCarousel).submit((e) => {
+$("#enroll-btn").click((e) => {
+	e.preventDefault();
 	
 	const $password = $(password);
 	const $passwordCheck = $(passwordCheck);
 	const $nickname = $(nickname);
-	const $name = $(name);
-	const $phone = $(phone);
-	let $email = $(addEmail).val();
+	const $name = $(nameCheck);
 
 	// 아이디
 	if($idValid.val() == '0'){
@@ -179,18 +180,12 @@ $(enrollFrmCarousel).submit((e) => {
 		return false;
 	}
 
-	// 별명
-	if($nValid.val() == '0'){
-		alert("사용할 수 없는 별명 입니다.");
-		$enrollCarousel.carousel(0);
-		$nickname.focus();
-	}
-
 	// 비밀번호	
 	if(! /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,15}$/.test($password.val())){
         alert("비밀번호는 숫자와 영문이 포함되야 합니다.");
         $enrollCarousel.carousel(0);
 		$password.focus();
+		return false;
     }
 	
 	// 비밀번호 일치 확인
@@ -198,37 +193,50 @@ $(enrollFrmCarousel).submit((e) => {
     	alert("비밀번호가 일치하지 않습니다.");
     	$enrollCarousel.carousel(0);
 		$passwordCheck.focus();
+		return false;
+	}
+	
+	// 별명
+	if($nValid.val() == '0'){
+		alert("사용할 수 없는 별명 입니다.");
+		$enrollCarousel.carousel(0);
+		$nickname.focus();
+		return false;
+	}
+	
+	// 이름
+	if(!/^[가-힣]{2,5}$/.test($name.val())){
+    	alert("이름은 한글로만 이루어져야 합니다.");
+    	$enrollCarousel.carousel(1);
+    	$name.focus();
+    	return false;
+    }
+	
+	// 이메일
+	if($(email).val() == ''){
+    	alert("이메일을 입력해 주세요.");
+    	$enrollCarousel.carousel(1);
+    	$(email).focus();
+    	return false;
+    }
+	if($siteSelect.val() == ''){
+    	alert("이메일 주소를 선택해 주세요.");
+    	$enrollCarousel.carousel(1);
+    	$(siteSelect).focus();
+    	return false;
+    }
+	if($siteSelect.val() == 'self'){
+		if($selfWrite.val() == ''){
+			alert("이메일 주소를 입력해 주세요.");
+			$enrollCarousel.carousel(1);
+			$selfWrite.focus();
+	    	return false;
+		}
 	}
 	
 	return false;
 });	
-	/*
-	
-    
-    // 이름
-    if($name.val() == ''){
-    	alert("이름을 입력해 주세요.");
-        return false;
-    }
-    /* if(!/^[가-힣]{2,5}$/.test($name.val())){
-    	alert("이름은 한글로만 이루어져야 합니다.");
-    	return false;
-    } */
-    
-    // 핸드폰 번호
-    /*if(!/^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/.test($phone.val())){
-    	alert("잘못된 번호입니다.");
-    	return false;
-    }*/
-    
-    // 이메일
-    /*if($email == ''){
-    	alert("이메일을 입력해 주세요.");
-    	return false;
-    } */
-
-	
-    
+   
 
 
 // 별명 중복 검사
