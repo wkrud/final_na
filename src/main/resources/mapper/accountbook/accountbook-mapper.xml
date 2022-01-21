@@ -18,6 +18,26 @@
 			0
 		)	
 	</insert>
+	
+	<select id="selectAllAccountList" resultMap="accountbookMap">
+		select
+    		*
+    	from 
+    		account_book 
+    	where
+	    	id=#{id}
+	</select>
+	
+	<resultMap type="Map" id="accountbookMap">
+		<id column="code" property="code"/>
+		<result column="id" property="id"/>
+		<result column="detail" property="detail"/>
+		<result column="price" property="price"/>
+		<result column="reg_date" property="regDate"/>
+		<result column="income_expense" property="incomeExpense"/>
+		<result column="payment" property="payment"/>
+		<result column="goal" property="goal"/>
+	</resultMap>
 
 </mapper>
 

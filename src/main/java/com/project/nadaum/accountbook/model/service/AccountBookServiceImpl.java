@@ -1,5 +1,7 @@
 package com.project.nadaum.accountbook.model.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,12 @@ public class AccountBookServiceImpl implements AccountBookService {
 	public int insertAccount(AccountBook account) {
 		return accountBookDao.insertAccount(account);
 	}
+
+	@Override
+	public List<AccountBook> selectAllAccountList() {
+		return accountBookDao.selectAllAccountList();
+	}
+	
 	
 	
 

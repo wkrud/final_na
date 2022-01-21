@@ -1,5 +1,7 @@
 package com.project.nadaum.accountbook.model.dao;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -15,6 +17,11 @@ public class AccountBookDaoImpl implements AccountBookDao {
 	@Override
 	public int insertAccount(AccountBook account) {
 		return session.insert("accountbook.insertAccount", account);
+	}
+
+	@Override
+	public List<AccountBook> selectAllAccountList() {
+		return session.selectList("accountbook.selectAllAccountList");
 	}
 	
 	

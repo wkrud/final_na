@@ -97,8 +97,8 @@
 			<hr>
 				<tr>
 					<td rowspan="2">용돈</td>
-					<td colspan="2">2022-01-17</td>
-					<td rowspan="2" class="income">+18,000</td>
+					<td colspan="2"><!-- ${accountList.regDate} --></td>
+					<td rowspan="2" class="income"></td>
 				</tr>
 				<tr>
 					<td>용돈 받았음</td>
@@ -178,13 +178,5 @@
 		</div>
 	</section>
 	
-	
-<!-- <script>
-const submit = (name) => {
-	$(insertFrm)
-		.attr("action", `${pageContext.request.contextPath}/accountbook/\${name}.do`)
-		.submit();	
-};
-</script> -->
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
