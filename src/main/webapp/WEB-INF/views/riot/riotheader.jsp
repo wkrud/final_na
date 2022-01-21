@@ -33,7 +33,7 @@
 <br>
 <p>${leagueentry.tier}${leagueentry.rank}</p>
 <img alt="랭크"
-	src="${pageContext.request.contextPath}/resources/image/riot/${leagueentry.tier}.png">
+	src="${pageContext.request.contextPath}/resources/images/riot/${leagueentry.tier}.png">
 
 <script>
 const submit = (name) => {
