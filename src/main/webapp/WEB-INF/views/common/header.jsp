@@ -229,10 +229,14 @@ input[type=checkbox]{
 			$(() => {
 				countBedge();
 			});
-			/* 샘플코드 */
+			
 			$("#profile").click(function(){
-				checkBedge();
+				if($("#alarmList").hasClass("show")){
+					console.log($("#alarmList").hasClass("show"));
+					checkBedge();
+				}
 			});
+			/* 샘플코드 */
 			$("#sign-out").click(function(){
 				alert("로그아웃되었습니다.");
 			});
@@ -318,11 +322,14 @@ input[type=checkbox]{
 							$alarmList.append(alarmDiv);
 						});						
 						
-						let bedge = `
-						<span id='bg-alarm' class='badge rounded-pill bg-danger'>\${count}</span>
-						`;
+						if(count > 0){
+							let bedge = `
+							<span id='bg-alarm' class='badge rounded-pill bg-danger'>\${count}</span>
+							`;
+							
+							$bedgeWrap.append(bedge);
+						}
 						
-						$bedgeWrap.append(bedge);
 						
 					},
 					error: console.log
