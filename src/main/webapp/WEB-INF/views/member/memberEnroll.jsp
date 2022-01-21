@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>회원가입</title>
+<title>나:다움 회원가입</title>
 <script src="https://code.jquery.com/jquery-3.6.0.js"
 	integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
 	crossorigin="anonymous"></script>
@@ -26,125 +26,105 @@
 	integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
 	crossorigin="anonymous">
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<link href='${pageContext.request.contextPath}/resources/css/member/enroll.css' rel='stylesheet' />
 <script>
-$(() => {
-	$(enrollModal)
-		.modal()
-		.on("hide.bs.modal", (e) => {
-			location.href='${empty header.referer || header.referer.contains('/member/memberLogin.do') ? pageContext.request.contextPath : header.referer}';
-		});
-});
 </script>
 </head>
 <body>
-	<!-- Modal -->
-	<div class="modal fade" id="enrollModal" tabindex="-1" role="dialog"
-		aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">회원가입</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
+<div class="enroll-wrapper">	
+	
+	<form id="memberEnrollFrm" method="post">
+		<div class="enroll-body">	
+			<div class="logo-wrap">
+				<div class="logo">나:다움</div>
+			</div>
+			<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+				<div class="carousel-inner">
+					<div class="carousel-item active">
+						<label for="id">아이디</label>						
+						<input type="text" class="form-control" name="id" id="id" value="testid" 
+							placeholder="영문으로 시작하고 숫자포함 4~20글자 입니다." required>
+						<span class="text-success guide ok">이 아이디는 사용가능합니다.</span>
+						<span class="text-danger guide error">이 아이디는 사용불가능합니다.</span>
+						<input type="hidden" id="idValid" value="0" />
+						<br /> 
+						<label for="password">비밀번호</label>
+						<input type="password" class="form-control" name="password" id="password" value="qwer1234"
+							placeholder="비밀번호는 숫자, 영어포함 8 ~ 15자리 사이 입니다." required>									
+						<br /> 
+						<label for="passwordCheck">비밀번호 확인</label>
+						<input type="password" class="form-control" id="passwordCheck" value="qwer1234"
+							placeholder="비밀번호 확인" required>
+						<br /> 
+						<label for="nickname">별명</label>
+						<input type="text" class="form-control" name="nickname" id="nickname" value="qwer1234"
+							placeholder="한글과 영어 숫자만 사용 가능합니다." required>
+						<span class="text-success guide n-ok">사용가능한 별명입니다.</span>
+						<span class="text-danger guide n-error">사용할 수 없는 별명입니다.</span>
+						<input type="hidden" id="nValid" value="0" />
+					</div>
+					<div class="carousel-item">
+						<label for="name">이름</label>
+						<input type="text" class="form-control" name="name" id="name" value="dlfma"
+							placeholder="이름" required>									
+						<br /> 
+						<label for="birthday">생일</label>
+						<input type="date" class="form-control" name="birthday" id="birthday">
+						<br />
+						<label for="phone">핸드폰</label>
+						<input type="tel" class="form-control" name="phone" id="phone" value="01051515151">
+						<br />
+						<label for="email">이메일</label>
+						<input type="text" id="email" value="testid"
+							placeholder="이메일" required>@
+						<input type="text" id="selfWrite" />
+						<input type="hidden" name="email" id="addEmail" required/>
+						<select id="siteSelect">
+							<option value="">선택</option>
+							<option value="self">직접입력</option>
+							<option value="naver.com" selected>네이버</option>
+							<option value="gmail.com">구글</option>
+						</select>
+						<br /> 
+						<!-- <div class="phone-wrap">
+							<input type="text" />
+						</div> -->									
+					</div>
+					<div class="carousel-item">									
+						<div>
+							<div class="address-wrap">
+								<input type="text" id="postcode" readonly="readonly"/>
+								<input type="button" class="address_button" onclick="findAddress()" value="주소검색"><br />											
+								<input type="text" id="allAddress" class="form-control" readonly="readonly"/><br />
+								<input type="text" id="detailAddress" class="form-control" readonly="readonly"/>
+								<input type="hidden" name="address" class="form-control addAddress" required />
+
+							</div>
+							<input type="submit" class="btn btn-outline-success enroll" value="회원가입">
+							<button type="button" class="btn btn-outline-danger" data-dismiss="modal">닫기</button>
+						</div>
+						<br />									
+					</div>
+					<div class="page-move-btn-wrap">
+						<div class="page-move-btn">
+							<button type="button" id="prev-page" class="btn btn-outline-warning">
+								<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+							</button>
+							<button type="button" id="next-page" class="btn btn-outline-warning">
+								<span class="carousel-control-next-icon" aria-hidden="false"></span>
+							</button>
+						</div>
+					</div>
 				</div>
 				
-				<form
-					id="memberEnrollFrm"
-					method="post">
-					<div class="modal-body">	
-						<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-							<div class="carousel-inner">
-								<div class="carousel-item active">
-									<label for="id">아이디</label>						
-									<input
-										type="text" class="form-control" name="id" id="id" value="testid"
-										placeholder="영문으로 시작하고 숫자포함 4~20글자 입니다." required>
-									<span class="text-success guide ok">이 아이디는 사용가능합니다.</span>
-									<span class="text-danger guide error">이 아이디는 사용불가능합니다.</span>
-									<input type="hidden" id="idValid" value="0" />
-									<br /> 
-									<label for="password">비밀번호</label>
-									<input
-										type="password" class="form-control" name="password" id="password" value="qwer1234"
-										placeholder="비밀번호는 숫자, 영어포함 8 ~ 15자리 사이 입니다." required>									
-									<br /> 
-									<label for="passwordCheck">비밀번호 확인</label>
-									<input
-										type="password" class="form-control" id="passwordCheck" value="qwer1234"
-										placeholder="비밀번호 확인" required>
-									<br /> 
-									<label for="nickname">별명</label>
-									<input type="text" class="form-control" name="nickname" id="nickname" value="qwer1234"
-										placeholder="한글과 영어 숫자만 사용 가능합니다." required>
-									<span class="text-success guide n-ok">사용가능한 별명입니다.</span>
-									<span class="text-danger guide n-error">사용할 수 없는 별명입니다.</span>
-									<input type="hidden" id="nValid" value="0" />
-								</div>
-								<div class="carousel-item">
-									<label for="name">이름</label>
-									<input
-										type="text" class="form-control" name="name" id="name" value="dlfma"
-										placeholder="이름" required>									
-									<br /> 
-									<label for="birthday">생일</label>
-									<input type="date" class="form-control" name="birthday" id="birthday">
-									<br />
-									<label for="phone">핸드폰</label>
-									<input type="tel" class="form-control" name="phone" id="phone" value="01051515151">
-									<br />
-									<label for="email">이메일</label>
-									<input
-										type="text" id="email" value="testid"
-										placeholder="이메일" required>@
-									<input type="text" id="selfWrite" />
-									<input type="hidden" name="email" id="addEmail" required/>
-									<select id="siteSelect">
-										<option value="">선택</option>
-										<option value="self">직접입력</option>
-										<option value="naver.com" selected>네이버</option>
-										<option value="gmail.com">구글</option>
-									</select>
-									<br /> 
-									<!-- <div class="phone-wrap">
-										<input type="text" />
-									</div> -->									
-								</div>
-								<div class="carousel-item">									
-									<div>
-										<div class="address-wrap">
-											<input type="text" id="postcode" readonly="readonly"/>
-											<input type="button" class="address_button" onclick="findAddress()" value="주소검색"><br />											
-											<input type="text" id="allAddress" class="form-control" readonly="readonly"/><br />
-											<input type="text" id="detailAddress" class="form-control" readonly="readonly"/>
-											<input type="hidden" name="address" class="form-control addAddress" required />
-										</div>
-										<input type="submit" class="btn btn-outline-success enroll" value="회원가입">
-										<button type="button" class="btn btn-outline-danger" data-dismiss="modal">닫기</button>
-									</div>
-									<br />									
-								</div>
-								<div class="modal-footer space-between">
-									<button type="button" id="prev-page" class="btn btn-info">
-										<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-									</button>
-									<button type="button" id="next-page" class="btn btn-info">
-										<span class="carousel-control-next-icon" aria-hidden="false"></span>
-									</button>
-								</div>
-							</div>
-							
-						</div>
-						
-						
-					</div>
-					
-					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-				</form>
 			</div>
+			
+			
 		</div>
-	</div>
-	
+		
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+	</form>
+</div>	
 <script>
 $('.carousel').carousel({
 	interval: false,

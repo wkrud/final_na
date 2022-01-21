@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="culture">
+	<select id="selectCultureList" resultType="culture">
+		select
+			*
+		from
+			culture
+	</select>
+	<select id="selectOneCulture" resultType="culture">
+		select
+			*
+		from
+			culture
+		where
+			code = #{code}
+	</select>
+	<!--  <insert id="insertCultureApi"  parameterType="culture">
+		insert 
+			into 
+		culture 
+			values 
+			(concat('cu-',seq_culture_no.nextval),
+			#{title},
+			to_date(#{startDate}, 'yyyymmdd'),
+			to_date(#{endDate}, 'yyyymmdd'),
+			#{area},
+			#{place},
+			#{realmName},
+			#{imgUrl},
+			#{gpsX},
+			#{gpsY})
+	</insert>-->
+</mapper>
+

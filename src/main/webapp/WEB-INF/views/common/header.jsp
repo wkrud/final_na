@@ -14,6 +14,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js"
 	integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
 	crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <!-- bootstrap js: jquery load 이후에 작성할것.-->
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
@@ -22,8 +23,10 @@
 <script
 	src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
 	integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-	crossorigin="anonymous"></script>
+	crossorigin="anonymous"></script> 
 
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <!-- bootstrap css -->
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
@@ -115,20 +118,20 @@ input[type=checkbox]{
 								❄ </a></li>
 					</ul>
 					<ul class="navbar-nav justify-content-end">
-						<li class="nav-item dropdown"><a
-							class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
-							role="button" data-toggle="dropdown" aria-haspopup="true"
-							aria-expanded="false"> </a>
-							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-							<!-- 각자페이지 링크거시면 됩니다 -->
-								<a class="dropdown-item" href="https://www.naver.com/">메인</a> <a
-									class="dropdown-item" href="https://nid.naver.com/nidlogin.login?mode=form&url=https%3A%2F%2Fmemo.naver.com%2Fmain.nhn">ToDoList</a> <a
-									class="dropdown-item" href="https://news.naver.com/">뉴스</a> 
-									<a class="dropdown-item"href="https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&query=%EC%84%9C%EC%9A%B8%EC%8B%9C+%EC%A0%84%EC%8B%9C&oquery=%EC%84%9C%EC%9A%B8%EC%8B%9C+%EB%AC%B8%ED%99%94&tqi=hOH1KdprvhGssTAhLkKssssstz4-386194">문화생활</a> 
-									<a class="dropdown-item" href="https://audioclip.naver.com/">오디오북</a> <a
-									class="dropdown-item" href="${pageContext.request.contextPath}/riot/riotheader.do">롤전적</a>
-							</div></li>
-					</ul>
+                        <li class="nav-item dropdown"><a
+                            class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+                            role="button" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false"> </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <!-- 각자페이지 링크거시면 됩니다 -->
+                                <a class="dropdown-item" href="https://www.naver.com">메인</a> 
+                                <a class="dropdown-item" href="${pageContext.request.contextPath}/accountbook/accountbook.do">가계부</a> 
+                                <a class="dropdown-item" href="${pageContext.request.contextPath}/culture/cultureBoardList.do">문화생활</a>
+                                <a class="dropdown-item" href="${pageContext.request.contextPath}/movie/movieList.do">영화</a> 
+                                <a class="dropdown-item" href="https://audioclip.naver.com">오디오북</a> 
+                                <a class="dropdown-item" href="${pageContext.request.contextPath}/riot/riotheader.do">롤전적</a>
+                            </div></li>
+                    </ul>
 					<!-- 뱃지생성완료, 클릭시 알람 영역 숨기기 완료 비동기 통신후 알람이 있을경우 다시 표기.-->
 					<!-- 프로필 사진으로 보일시 크기에 맞게 이미지를 넣어야됨, 썸네일용 이미지 따로 저장하는 방법도 좋으나 일이 많아짐.-->
 					<!-- 아래 span에서 동적으로 메시지 갯수다르게 처리하기 필요 -->
@@ -140,20 +143,28 @@ input[type=checkbox]{
 					</span>
 					<div class="profile-wrap">
 						<button id="profile" type="button" class="btn btn-primary position-relative bg-light border-light rounded-circle">
-						    <svg height="32" aria-hidden="true" viewBox="0 0 16 16" version="1.1" width="32"data-view-component="true" class="octicon octicon-mark-github">
-								<c:if test="${not empty loginMember.profile}">
-									<%-- <img src="${loginMember.profile}" alt="" /> --%>
-								</c:if>
-							</svg> 
-						    <span id="bg-alarm" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-							    9
-						    </span>
+								<div class="thumbnail-wrap" style="border-radius:50%; width:45px; height: 45px; overflow:hidden; padding: 0;">
+									<c:if test="${loginMember.loginType eq 'K'}">
+										<img src="${loginMember.profile}" alt="" style="width:45px; height:45px; object-fit:cover;" />
+									</c:if>	
+									<c:if test="${loginMember.loginType eq 'D'}">
+										<c:if test="${loginMember.profileStatus eq 'N'}">							 		
+											<img src="${pageContext.request.contextPath}/resources/upload/member/profile/default_profile_cat.png" alt="" style="width:45px; height:45px; object-fit:cover;" />
+										</c:if>						
+										<c:if test="${loginMember.profileStatus eq 'Y'}">		
+											<img src="${pageContext.request.contextPath}/resources/upload/member/profile/${attach.renamedFilename}" alt="" style="width:45px; height:45px; object-fit:cover;" />										 		
+										</c:if>								
+									</c:if>								
+								</div>
+						    <!-- <svg height="32" aria-hidden="true" viewBox="0 0 16 16" version="1.1" width="32"data-view-component="true" class="octicon octicon-mark-github">
+							</svg>  -->
+						    
 						</button>
-					    <div class="alarm-list">
+					    <!-- <div class="alarm-list">
 					        <a class="dropdown-item" href="#">Action</a>
 					  	    <a class="dropdown-item" href="#">Another action</a>
 					  	    <a class="dropdown-item" href="#">Something else here</a>
-					    </div>
+					    </div> -->
 					</div>
 
 					<ul class="navbar-nav justify-content-end">
@@ -213,14 +224,15 @@ input[type=checkbox]{
 			</nav>
 
 		</header>
-</sec:authorize>
+
 		<script>
+			$(() => {
+				countBedge();
+			});
 			/* 샘플코드 */
-			/*$("#profile").click(function(){
-				$("#bg-alarm").css("display","");
-				let alarm_num = 1;
-				$("#bg-alarm").text(alarm_num);
-			});*/ 
+			$("#profile").click(function(){
+				checkBedge();
+			});
 			$("#sign-out").click(function(){
 				alert("로그아웃되었습니다.");
 			});
@@ -231,7 +243,7 @@ input[type=checkbox]{
 			
 						
 			/*실제 넣을 코드 : 알람 영역 있을때 클릭시 알람표시 사라짐*/
-			const $alarmList = $(".alarm-list");
+			/* const $alarmList = $(".alarm-list");
 			$alarmList.hide();
 			$("#profile").click((e) => {
 				$alarmList.show();
@@ -242,7 +254,7 @@ input[type=checkbox]{
 				
 				
 				$("#bg-alarm").text(alarm_num);
-			}); 
+			});  */
 			
 
 			
@@ -250,8 +262,8 @@ input[type=checkbox]{
 			    - 알람보낼부분이 없거나 사용자 클릭시 .css("display","none");
 			    - 알람보낼부분이 있다면 .css("display","");
 			    - 알람보낼개수는 .text(alarm_num);		
-			*/
-						
+			*/			
+			/*$.ajax()*/			
 			
 			/*비동기 통신하고 알람영역 보이게 할때 다음 함수 적용하세요  */
 			/*  
@@ -261,6 +273,77 @@ input[type=checkbox]{
 				$("#bg-alarm").text(alarm_num);
 			*/
 	
+			var socket = null;
+
+		    $(document).ready(function (){
+			    connectWs();
+		    });
+		    function connectWs(){
+			   	sock = new SockJS("<c:url value='/echo'/>");
+			   	socket = sock;
+	
+			   	sock.onopen = function() {
+		           console.log('info: connection opened.');
+			   	};
 			
+				sock.onmessage = function(evt) {
+					var data = evt.data;
+					console.log("ReceivMessage : " + data + "\n");
+					
+					$.ajax({
+						url: `${pageContext.request.contextPath}/websocket/wsCountAlarm.do`,
+						success(resp){
+							if(resp != '0'){
+								let bedge = `
+								<span id='bg-alarm' class='position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger'>\${resp}</span>
+								`;
+								
+								$(profile).append(bedge);
+							}
+						},
+						error: console.log
+					});		
+					
+				};
+				sock.onclose = function() {
+			      	console.log('connect close');
+			      	/* setTimeout(function(){conntectWs();} , 1000); */
+			    };
+	
+			    sock.onerror = function (err) {console.log('Errors : ' , err);};
+		    };
+		    
+		    const countBedge = () => {
+		    	$.ajax({
+					url: `${pageContext.request.contextPath}/websocket/wsCountAlarm.do`,
+					success(resp){
+						if(resp != '0'){
+							let bedge = `
+							<span id='bg-alarm' class='position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger'>\${resp}</span>
+							`;
+							
+							$(profile).append(bedge);
+						}
+					},
+					error: console.log
+				});		
+		    };
+		    
+		    const checkBedge = () => {
+		    	$.ajax({
+					url: `${pageContext.request.contextPath}/websocket/checkAlarm.do`,
+					success(resp){
+						countBedge();
+					},
+					error: console.log
+				});	
+		    };
+		    
+		   
+		    
+		    
+		    
+		    
 		</script>
+</sec:authorize>
 		<section id="content">

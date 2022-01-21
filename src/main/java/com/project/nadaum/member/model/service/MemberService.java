@@ -3,6 +3,7 @@ package com.project.nadaum.member.model.service;
 import java.util.List;
 import java.util.Map;
 
+import com.project.nadaum.common.vo.Attachment;
 import com.project.nadaum.member.model.vo.Member;
 
 public interface MemberService {
@@ -39,15 +40,40 @@ public interface MemberService {
 
 	List<Map<String, Object>> selectAllRequestFriendByMe(Member member);
 
-	int insertRequestFriend(Map<String, Object> param);
+	int updateMemberProfile(Member member);
 
-	int updateRequestFriend(Map<String, Object> param);
+	List<Map<String, Object>> selectAllHelpTitle(String value);
 
-	int insertFriend(Map<String, Object> param);
+	List<Map<String, Object>> selectHelpByInput(String title);
 
-	int deleteRequestFriend(Map<String, Object> param);
+	Map<String, Object> selectOneSelectedHelp(String code);
 
-	int deleteFriend(Map<String, Object> param);
+	List<Map<String, Object>> selectSearchMemberNickname(String value);
+
+	Member selectOneMemberNicknameNotMe(Map<String, Object> nicknames);
+
+	Map<String, Object> selectFollower(Map<String, Object> nicknames);
+
+	Map<String, Object> selectFollowing(Map<String, Object> nicknames);
+
+	Map<String, Object> selectFriend(Map<String, Object> nicknames);
+
+	int updateRequestFriend(Map<String, Object> nicknames);
+
+	int insertFriend(Map<String, Object> nicknames);
+
+	int insertAlarm(Map<String, Object> alarm);
+
+	int deleteRequestFriend(Map<String, Object> nicknames);
+
+	int deleteFriend(Map<String, Object> nicknames);
+
+	int insertRequestFriend(Map<String, Object> nicknames);
+
+	Attachment selectMemberProfile(Member member);
+
+	int updateMemberNickname(Member member);
+
 
 
 }

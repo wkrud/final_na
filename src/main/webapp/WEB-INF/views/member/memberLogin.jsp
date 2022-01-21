@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>로그인</title>
+<title>나:다움 로그인</title>
 <script type="text/javascript" src="https://developers.kakao.com/sdk/js/kakao.min.js" charset="utf-8"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.js"
 	integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
@@ -88,7 +88,7 @@ $(() => {
 					<div>
 						<a href="#">비밀번호 찾기</a>
 						<a href="#">아이디 찾기</a>
-						<a href="${pageContext.request.contextPath}/member/memberEnroll.do">처음이신가요?</a>
+						<a href="${pageContext.request.contextPath}/member/memberEnrollAgreement.do">처음이신가요?</a>
 					</div>
 					<div>
 						<button type="submit" class="btn btn-outline-success">로그인</button>
@@ -97,7 +97,7 @@ $(() => {
 				</div>
 				<div>
 					<div id="kakao-login">
-						<img src="${pageContext.request.contextPath}/resources/image/member/kakao_login_medium_wide.png" alt="" />
+						<img src="${pageContext.request.contextPath}/resources/images/member/kakao_login_medium_wide.png" alt="" />
 					</div>
 				</div>
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>

@@ -1,0 +1,15 @@
+
+.enroll-wrapper{
+	display: flex;
+	justify-content: center;
+	padding-top: 80px;
+}
+
+.carousel-item{
+	height: 400px;
+	width: 450px;
+}
+
+.input-wrap{
+	
+}
