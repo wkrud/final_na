@@ -36,6 +36,7 @@
 <!-- 사용자작성 css -->
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/common/style.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/profile.css" />
 
 <!-- 토글용 테스트용 다른 ui속성과 충돌나는중-->
 <link rel="stylesheet"
@@ -142,30 +143,37 @@ input[type=checkbox]{
 						</a>
 					</span>
 					<div class="profile-wrap">
-						<button id="profile" type="button" class="btn btn-primary position-relative bg-light border-light rounded-circle">
-								<div class="thumbnail-wrap" style="border-radius:50%; width:45px; height: 45px; overflow:hidden; padding: 0;">
-									<c:if test="${loginMember.loginType eq 'K'}">
-										<img src="${loginMember.profile}" alt="" style="width:45px; height:45px; object-fit:cover;" />
-									</c:if>	
-									<c:if test="${loginMember.loginType eq 'D'}">
-										<c:if test="${loginMember.profileStatus eq 'N'}">							 		
-											<img src="${pageContext.request.contextPath}/resources/upload/member/profile/default_profile_cat.png" alt="" style="width:45px; height:45px; object-fit:cover;" />
-										</c:if>						
-										<c:if test="${loginMember.profileStatus eq 'Y'}">		
-											<img src="${pageContext.request.contextPath}/resources/upload/member/profile/${attach.renamedFilename}" alt="" style="width:45px; height:45px; object-fit:cover;" />										 		
-										</c:if>								
+					 <!-- class="btn btn-primary position-relative bg-light border-light rounded-circle" -->
+						<button id="profile" type="button"
+							data-toggle="collapse" data-target="#alarmList" aria-expanded="false" aria-controls="alarmList">
+							<div class="thumbnail-wrap" style="border-radius:50%; width:45px; height: 45px; overflow:hidden; padding: 0;">
+								<c:if test="${loginMember.loginType eq 'K'}">
+									<img src="${loginMember.profile}" alt="" style="width:45px; height:45px; object-fit:cover;" />
+								</c:if>	
+								<c:if test="${loginMember.loginType eq 'D'}">
+									<c:if test="${loginMember.profileStatus eq 'N'}">							 		
+										<img src="${pageContext.request.contextPath}/resources/upload/member/profile/default_profile_cat.png" alt="" style="width:45px; height:45px; object-fit:cover;" />
+									</c:if>						
+									<c:if test="${loginMember.profileStatus eq 'Y'}">		
+										<img src="${pageContext.request.contextPath}/resources/upload/member/profile/${attach.renamedFilename}" alt="" style="width:45px; height:45px; object-fit:cover;" />										 		
 									</c:if>								
-								</div>
+								</c:if>								
+							</div>
 						    <!-- <svg height="32" aria-hidden="true" viewBox="0 0 16 16" version="1.1" width="32"data-view-component="true" class="octicon octicon-mark-github">
 							</svg>  -->
 						    
 						</button>
+						<div class="collapse" id="alarmList">
+							<div class="card card-body alarmContent">ㅎㅇ</div>
+						</div>
+						
 					    <!-- <div class="alarm-list">
 					        <a class="dropdown-item" href="#">Action</a>
 					  	    <a class="dropdown-item" href="#">Another action</a>
 					  	    <a class="dropdown-item" href="#">Something else here</a>
 					    </div> -->
 					</div>
+					
 
 					<ul class="navbar-nav justify-content-end">
 						<li class="nav-item">

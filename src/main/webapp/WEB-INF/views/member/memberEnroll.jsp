@@ -123,6 +123,9 @@
 	</form>
 </div>	
 <script>
+$(".logo").click((e) => {
+	location.replace('${pageContext.request.contextPath}/member/memberLogin.do');
+});
 
 const $enrollCarousel = $("#enrollFrmCarousel");
 $enrollCarousel.carousel({
