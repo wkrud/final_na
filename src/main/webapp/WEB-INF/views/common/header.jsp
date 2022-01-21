@@ -146,6 +146,7 @@ input[type=checkbox]{
 					 <!-- class="btn btn-primary position-relative bg-light border-light rounded-circle" -->
 						<button id="profile" type="button"
 							data-toggle="collapse" data-target="#alarmList" aria-expanded="false" aria-controls="alarmList">
+							<div class="bedge-wrap"></div>
 							<div class="thumbnail-wrap" style="border-radius:50%; width:45px; height: 45px; overflow:hidden; padding: 0;">
 								<c:if test="${loginMember.loginType eq 'K'}">
 									<img src="${loginMember.profile}" alt="" style="width:45px; height:45px; object-fit:cover;" />
@@ -163,17 +164,8 @@ input[type=checkbox]{
 							</svg>  -->
 						    
 						</button>
-						<div class="collapse" id="alarmList">
-							<div class="card card-body alarmContent">ㅎㅇ</div>
-						</div>
-						
-					    <!-- <div class="alarm-list">
-					        <a class="dropdown-item" href="#">Action</a>
-					  	    <a class="dropdown-item" href="#">Another action</a>
-					  	    <a class="dropdown-item" href="#">Something else here</a>
-					    </div> -->
-					</div>
-					
+						<div class="collapse" id="alarmList"></div>
+					</div>					
 
 					<ul class="navbar-nav justify-content-end">
 						<li class="nav-item">
@@ -298,19 +290,7 @@ input[type=checkbox]{
 					var data = evt.data;
 					console.log("ReceivMessage : " + data + "\n");
 					
-					$.ajax({
-						url: `${pageContext.request.contextPath}/websocket/wsCountAlarm.do`,
-						success(resp){
-							if(resp != '0'){
-								let bedge = `
-								<span id='bg-alarm' class='position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger'>\${resp}</span>
-								`;
-								
-								$(profile).append(bedge);
-							}
-						},
-						error: console.log
-					});		
+					countBedge();
 					
 				};
 				sock.onclose = function() {
@@ -325,13 +305,25 @@ input[type=checkbox]{
 		    	$.ajax({
 					url: `${pageContext.request.contextPath}/websocket/wsCountAlarm.do`,
 					success(resp){
-						if(resp != '0'){
-							let bedge = `
-							<span id='bg-alarm' class='position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger'>\${resp}</span>
-							`;
-							
-							$(profile).append(bedge);
-						}
+						
+						const $alarmList = $("#alarmList");
+						const $bedgeWrap = $(".bedge-wrap");
+						$alarmList.empty();
+						$bedgeWrap.empty();
+						
+						let count = 0;
+						$(resp).each((i, v) => {
+							count++;
+							let alarmDiv = `<div class="card card-body alarmContent">\${v.content}</div>`;
+							$alarmList.append(alarmDiv);
+						});						
+						
+						let bedge = `
+						<span id='bg-alarm' class='badge rounded-pill bg-danger'>\${count}</span>
+						`;
+						
+						$bedgeWrap.append(bedge);
+						
 					},
 					error: console.log
 				});		

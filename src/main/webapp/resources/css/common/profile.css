@@ -4,6 +4,20 @@
 	outline: 0;
 	border-radius: 50%;
 }
+#profile:hover .thumbnail-wrap{
+	box-shadow: 1px 1px 3px #AAAAAA;
+	transition: .5s;
+}
+
+.bedge-wrap{
+	position: absolute;
+	padding: 0;
+}
+#bg-alarm{
+	position: absolute;
+	top: -5px;
+	right: -53px;
+}
 
 #alarmList{
 	position:absolute;

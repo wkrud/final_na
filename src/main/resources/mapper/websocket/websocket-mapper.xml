@@ -13,9 +13,11 @@
 	
 	<resultMap type="map" id="alarmMap">
 		<id column="no" property="no"/>
-		<result column="" property=""/>
-		<result column="" property=""/>
-		<result column="" property=""/>
+		<result column="code" property="code"/>
+		<result column="id" property="id"/>
+		<result column="status" property="status"/>
+		<result column="content" property="content"/>
+		<result column="reg_date" property="regDate"/>
 	</resultMap>
 </mapper>
 
