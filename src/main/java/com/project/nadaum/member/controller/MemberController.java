@@ -290,9 +290,11 @@ public class MemberController {
 		param.put("id", member.getId());
 		param.put("friendNickname", friend);
 		Member friendInfo = memberService.selectOneMemberNicknameNotMe(param);
-		param.put("friendId", friendInfo.getId());
 		log.debug("param = {}", param);
-		if(friendInfo != null) {
+		if(friendInfo == null) {			
+			return ResponseEntity.ok(0);
+		}else {
+			param.put("friendId", friendInfo.getId());
 			Map<String, Object> isFollower = memberService.selectFollower(param);
 			Map<String, Object> isFollowing = memberService.selectFollowing(param);
 			Map<String, Object> isFriend = memberService.selectFriend(param);
@@ -307,8 +309,7 @@ public class MemberController {
 			}
 			log.debug("resultMap = {}", resultMap);
 			return ResponseEntity.ok(resultMap);
-		}else
-			return ResponseEntity.ok(0);
+		}
 	}
 	
 	@GetMapping("/mypage/searchFriendsByNickname.do")
