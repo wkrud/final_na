@@ -64,10 +64,20 @@ public class MemberController {
 	public void memberLogin() {}
 		
 	@GetMapping("/memberEnroll.do")
-	public void memberEnroll() {}
+	public void memberEnroll(@RequestParam String agree) {
+	}
 	
 	@GetMapping("/memberEnrollAgreement.do")
 	public void memberEnrollAgreement() {}	
+	
+	@PostMapping("/memberAgreementCheck.do")
+	public ResponseEntity<?> memberAgreementCheck(@RequestParam String agree){
+		log.debug("agree = {}", agree);
+		Map<String, Object> map = new HashMap<>();
+		Date date = new Date();
+		map.put("agree", date);
+		return ResponseEntity.ok(map);
+	}
 	
 	@GetMapping("/checkIdDuplicate.do")
 	public ResponseEntity<Map<String, Object>> checkIdDuplicate(@RequestParam String id){

@@ -31,7 +31,7 @@ $(() => {
 	$(enrollAgreementModal)
 		.modal()
 		.on("hide.bs.modal", (e) => {
-			location.href='${empty header.referer ? pageContext.request.contextPath : header.referer}';
+			location.href='${pageContext.request.contextPath}';
 		});
 });
 </script>
@@ -106,9 +106,25 @@ $("#agreement-btn").click((e) => {
 	const $collapse1 = $("#collapseOne");
 	const $collapse2 = $("#collapseTwo");
 	
-	if($agree1 && $agree2)
-		location.href="${pageContext.request.contextPath}/member/memberEnroll.do";
-	else if(!$agree1){
+	if($agree1 && $agree2){
+		
+		const csrfHeader = "${_csrf.headerName}";
+		const csrfToken = "${_csrf.token}";
+		const headers = {};
+		headers[csrfHeader] = csrfToken;
+		
+		$.ajax({
+			url: '${pageContext.request.contextPath}/member/memberAgreementCheck.do',
+			headers: headers,
+			method: "POST",
+			data: {agree:'agree'},
+			success(resp){
+				console.log(resp);
+				 location.href=`${pageContext.request.contextPath}/member/memberEnroll.do?agree=\${resp.agree}`;
+			}
+		});
+		
+	}else if(!$agree1){
 		alert("동의사항을 읽고 모두 동의해주세요");		
 		$collapse1.addClass('show');
 	}else if(!$agree2){

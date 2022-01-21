@@ -31,6 +31,7 @@
 </script>
 </head>
 <body>
+
 <div class="enroll-wrapper">	
 	
 	<form id="memberEnrollFrm" method="post">
@@ -39,7 +40,7 @@
 				<div class="logo">나:다움</div>
 			</div>
 			<div id="enrollFrmCarousel" class="carousel slide" data-ride="carousel">
-				<div class="carousel-inner">
+				<div class="carousel-inner">				
 					<div class="carousel-item active">
 						<label for="id">아이디<span class="text-danger must-need"> 필수</span></label>						
 						<input type="text" class="form-control" name="id" id="id" value="wowo" 
@@ -98,7 +99,7 @@
 							<input type="text" id="detailAddress" class="form-control" readonly="readonly"/>
 							<input type="hidden" name="address" class="form-control addAddress" required />
 							<div class="enroll-btn-wrap">
-								<button type="button" id="enroll-btn" class="btn btn-outline-success enroll">회원가입</button>
+								<button type="submit" id="enroll-btn" class="btn btn-outline-success enroll">회원가입</button>
 							</div>
 						</div>				
 					</div>
@@ -165,8 +166,7 @@ $siteSelect.change(() => {
 
 // 유효성 검사
 $("#enroll-btn").click((e) => {
-	e.preventDefault();
-	
+		
 	const $password = $(password);
 	const $passwordCheck = $(passwordCheck);
 	const $nickname = $(nickname);
@@ -234,7 +234,7 @@ $("#enroll-btn").click((e) => {
 		}
 	}
 	
-	return false;
+	return true;
 });	
    
 
