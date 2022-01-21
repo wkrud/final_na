@@ -38,7 +38,7 @@
 			<div class="logo-wrap">
 				<div class="logo">나:다움</div>
 			</div>
-			<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+			<div id="enrollFrmCarousel" class="carousel slide" data-ride="carousel">
 				<div class="carousel-inner">
 					<div class="carousel-item active">
 						<label for="id">아이디</label>						
@@ -99,9 +99,9 @@
 								<input type="text" id="detailAddress" class="form-control" readonly="readonly"/>
 								<input type="hidden" name="address" class="form-control addAddress" required />
 							
+								<input type="submit" id="enroll-btn" class="btn btn-outline-success enroll" value="회원가입">
+								<button type="button" class="btn btn-outline-danger" data-dismiss="modal">닫기</button>
 							</div>
-							<input type="submit" class="btn btn-outline-success enroll" value="회원가입">
-							<button type="button" class="btn btn-outline-danger" data-dismiss="modal">닫기</button>
 						</div>
 						<br />									
 					</div>
@@ -126,16 +126,17 @@
 	</form>
 </div>	
 <script>
-$('.carousel').carousel({
+const $enrollCarousel = $("#enrollFrmCarousel");
+$enrollCarousel.carousel({
 	interval: false,
 	wrap: false
 });
 
 $("#prev-page").on("click", () => {
-	$(".carousel").carousel('prev');
+	$enrollCarousel.carousel('prev');
 });
 $("#next-page").on("click", () => {
-	$(".carousel").carousel('next');
+	$enrollCarousel.carousel('next');
 });
 
 
@@ -159,7 +160,9 @@ $(selfWrite).blur(() => {
 
 
 // 유효성 검사
-$("#memberEnrollFrm").submit((e) => {
+$("#enroll-btn").click((e) => {
+	e.preventDefault();
+	
 	const $password = $(password);
 	const $passwordCheck = $(passwordCheck);
 	const $nickname = $(nickname);
@@ -168,12 +171,12 @@ $("#memberEnrollFrm").submit((e) => {
 	let $email = $(addEmail).val();
 
 	// 아이디
-	if($(idValid) == '0'){
+	/* if($(idValid) == '0'){
 		alert("사용할 수 없는 아이디 입니다.");
-        return false;
-	}
+		$('.carousel').carousel(0);
+	} */
 	
-	// 별명
+	/* // 별명
 	if($(nValid) == '0'){
 		alert("사용할 수 없는 아이디 입니다.");
         return false;
@@ -217,11 +220,10 @@ $("#memberEnrollFrm").submit((e) => {
     if($email == ''){
     	alert("이메일을 입력해 주세요.");
     	return false;
-    }
-    
-    return true
-	
+    } */
 });
+	
+    
 
 
 // 별명 중복 검사

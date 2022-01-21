@@ -101,10 +101,20 @@ $(() => {
 
 <script>
 $("#agreement-btn").click((e) => {
-	if($("#agree1").is(':checked') && $("#agree2").is(':checked'))
+	let $agree1 = $("#agree1").is(':checked');
+	let $agree2 = $("#agree2").is(':checked');
+	const $collapse1 = $("#collapseOne");
+	const $collapse2 = $("#collapseTwo");
+	
+	if($agree1 && $agree2)
 		location.href="${pageContext.request.contextPath}/member/memberEnroll.do";
-	else
+	else if(!$agree1){
 		alert("동의사항을 읽고 모두 동의해주세요");		
+		$collapse1.addClass('show');
+	}else if(!$agree2){
+		alert("동의사항을 읽고 모두 동의해주세요");		
+		$collapse2.addClass('show');
+	}
 });
 </script>
 
