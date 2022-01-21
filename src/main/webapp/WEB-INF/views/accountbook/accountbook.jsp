@@ -18,7 +18,8 @@
 		<h2>가계부 테스트</h2>
 		<form 
 			name="insertFrm" 
-			method="POST">
+			method="POST"
+			action="${pageContext.request.contextPath}/accountbook/accountInsert.do">
 		<table>
 			<tr>
 				<td colspan="2">
@@ -46,7 +47,7 @@
 			<tr>
 				<td colspan="2">
 					<label for="detail">내역</label>
-					<input type="text" name="" id="" placeholder="내역을 입력하세요." value="용돈" />
+					<input type="text" name="detail" id="" placeholder="내역을 입력하세요." value="용돈" />
 				</td>
 			</tr>
 			<tr>
@@ -61,8 +62,8 @@
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 			</tr>
 		</table>
+		<td><input type="submit" value="제출하기" /></td>
 		</form>
-		<td><button type="button" onclick="submit('insertAccount');">등록하기</button></td>
 	</div>
 
 	<section class="box1">
@@ -178,12 +179,12 @@
 	</section>
 	
 	
-<script>
+<!-- <script>
 const submit = (name) => {
 	$(insertFrm)
 		.attr("action", `${pageContext.request.contextPath}/accountbook/\${name}.do`)
 		.submit();	
 };
-</script>
+</script> -->
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />

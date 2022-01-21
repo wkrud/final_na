@@ -9,7 +9,7 @@
 			account_book
 		values(
 			concat('ab-', seq_account_book_no.nextval),
-			seq_account_book_no.nextval,
+			#{id},
 			#{detail},
 			#{price},
 			#{reg_date},

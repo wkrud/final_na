@@ -18,8 +18,8 @@ public class AccountBook implements Serializable {
    private String id;
    private String detail;
    private int price;
-   private Date reg_date;
-   private String income_expensive;
+   private String reg_date;
+   private String income_expense;
    private String payment;
    private int goal;
 }
