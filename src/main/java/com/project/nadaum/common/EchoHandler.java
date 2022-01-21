@@ -36,6 +36,7 @@ public class EchoHandler extends TextWebSocketHandler {
 		userMap.put(session.getPrincipal().getName(), session);			
 		
 		log.debug("userMap = {}", userMap);
+		log.debug("session = {}", session.getPrincipal());
 		log.info(session.getPrincipal().getName() + "접속");
 	}
 	
