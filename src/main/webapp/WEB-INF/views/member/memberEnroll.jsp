@@ -98,6 +98,7 @@
 								<input type="text" id="allAddress" class="form-control" readonly="readonly"/><br />
 								<input type="text" id="detailAddress" class="form-control" readonly="readonly"/>
 								<input type="hidden" name="address" class="form-control addAddress" required />
+							
 							</div>
 							<input type="submit" class="btn btn-outline-success enroll" value="회원가입">
 							<button type="button" class="btn btn-outline-danger" data-dismiss="modal">닫기</button>
