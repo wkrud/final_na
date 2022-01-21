@@ -328,9 +328,7 @@ input[type=checkbox]{
 							`;
 							
 							$bedgeWrap.append(bedge);
-						}
-						
-						
+						}						
 					},
 					error: console.log
 				});		
