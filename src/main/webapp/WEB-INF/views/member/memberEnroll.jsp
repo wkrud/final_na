@@ -42,8 +42,8 @@
 				<div class="carousel-inner">
 					<div class="carousel-item active">
 						<label for="id">아이디</label>						
-						<input type="text" class="form-control" name="id" id="id" value="testid" 
-							placeholder="영문으로 시작하고 숫자포함 4~20글자 입니다." required>
+						<input type="text" class="form-control" name="id" id="id" value="wowo" 
+							placeholder="영문 한글 숫자 4~10 글자입니다." required>
 						<span class="text-success guide ok">이 아이디는 사용가능합니다.</span>
 						<span class="text-danger guide error">이 아이디는 사용불가능합니다.</span>
 						<input type="hidden" id="idValid" value="0" />
@@ -58,7 +58,7 @@
 						<br /> 
 						<label for="nickname">별명</label>
 						<input type="text" class="form-control" name="nickname" id="nickname" value="qwer1234"
-							placeholder="한글과 영어 숫자만 사용 가능합니다." required>
+							placeholder="한글과 영어 숫자 사용 4~8 글자입니다." required>
 						<span class="text-success guide n-ok">사용가능한 별명입니다.</span>
 						<span class="text-danger guide n-error">사용할 수 없는 별명입니다.</span>
 						<input type="hidden" id="nValid" value="0" />
@@ -160,8 +160,9 @@ $(selfWrite).blur(() => {
 
 
 // 유효성 검사
-$("#enroll-btn").click((e) => {
-	e.preventDefault();
+/* $("#enroll-btn").click((e) => {
+	e.preventDefault(); */
+$(enrollFrmCarousel).submit((e) => {
 	
 	const $password = $(password);
 	const $passwordCheck = $(passwordCheck);
@@ -171,34 +172,38 @@ $("#enroll-btn").click((e) => {
 	let $email = $(addEmail).val();
 
 	// 아이디
-	/* if($(idValid) == '0'){
+	if($idValid.val() == '0'){
 		alert("사용할 수 없는 아이디 입니다.");
-		$('.carousel').carousel(0);
-	} */
-	
-	/* // 별명
-	if($(nValid) == '0'){
-		alert("사용할 수 없는 아이디 입니다.");
-        return false;
-	}
-	
-	// 비밀번호
-	if($password.val() == ''){
-		alert("비밀번호를 입력해 주세요");
-        return false;
-	}
-	if(!/^.{8,15}$/.test($password.val())){
-		alert("비밀번호는 8~15자리 입니다.");
-        return false;
-    }
-    if(!/[0-9]/.test($password.val()) || !/[a-zA-Z]/.test($password.val())){
-        alert("비밀번호는 숫자와 영문이 포함되야 합니다.");
-        return false;
-    }
-    if($password.val() != $passwordCheck.val()){
-    	alert("비밀번호가 일치하지 않습니다.");
+		$enrollCarousel.carousel(0);
+		$(id).focus();
 		return false;
 	}
+
+	// 별명
+	if($nValid.val() == '0'){
+		alert("사용할 수 없는 별명 입니다.");
+		$enrollCarousel.carousel(0);
+		$nickname.focus();
+	}
+
+	// 비밀번호	
+	if(! /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,15}$/.test($password.val())){
+        alert("비밀번호는 숫자와 영문이 포함되야 합니다.");
+        $enrollCarousel.carousel(0);
+		$password.focus();
+    }
+	
+	// 비밀번호 일치 확인
+	if($password.val() != $passwordCheck.val()){
+    	alert("비밀번호가 일치하지 않습니다.");
+    	$enrollCarousel.carousel(0);
+		$passwordCheck.focus();
+	}
+	
+	return false;
+});	
+	/*
+	
     
     // 이름
     if($name.val() == ''){
@@ -211,29 +216,30 @@ $("#enroll-btn").click((e) => {
     } */
     
     // 핸드폰 번호
-    if(!/^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/.test($phone.val())){
+    /*if(!/^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/.test($phone.val())){
     	alert("잘못된 번호입니다.");
     	return false;
-    }
+    }*/
     
     // 이메일
-    if($email == ''){
+    /*if($email == ''){
     	alert("이메일을 입력해 주세요.");
     	return false;
     } */
-});
+
 	
     
 
 
 // 별명 중복 검사
 const $nError = $(".guide.n-error");
-const $nOk = $(".guide.n-ok");
+const $nOk = $(".guide.n-ok");	
+const $nValid = $("#nValid");
 $nError.hide();
 $nOk.hide();
 $(nickname).keyup((e) => {
-	const nVal = $(e.target).val();	
-	const $nValid = $(nValid);
+	
+	const nVal = $(e.target).val();
 	
 	if(nVal.length < 2){
 		$nError.hide();
@@ -251,9 +257,15 @@ $(nickname).keyup((e) => {
 			console.log(resp);
 			const {available} = resp;
 			if(available){
-				$nError.hide();
-				$nOk.show();
-				$nValid.val(1);
+				if(/^[A-Z|가-힣|0-9|a-z]{4,10}$/.test(nVal)){
+					$nError.hide();
+					$nOk.show();
+					$nValid.val(1);					
+				}else{
+					$nError.show();
+					$nOk.hide();
+					$nValid.val(0);
+				}
 			}else{
 				$nError.show();
 				$nOk.hide();
@@ -267,11 +279,12 @@ $(nickname).keyup((e) => {
 // 아이디 중복 검사
 const $idError = $(".guide.error");
 const $idOk = $(".guide.ok");
+const $idValid = $("#idValid");
 $idError.hide();
 $idOk.hide();
 $(id).keyup((e) => {
-	const idVal = $(e.target).val();	
-	const $idValid = $(idValid);
+	
+	const idVal = $(e.target).val();		
 	
 	if(idVal.length < 4){
 		$idError.hide();
@@ -289,9 +302,15 @@ $(id).keyup((e) => {
 			console.log(resp);
 			const {available} = resp;
 			if(available){
-				$idError.hide();
-				$idOk.show();
-				$idValid.val(1);
+				if(/^[A-Z|가-힣|0-9|a-z]{4,10}$/.test(idVal)){
+					$idError.hide();
+					$idOk.show();
+					$idValid.val(1);					
+				}else{
+					$idError.show();
+					$idOk.hide();
+					$idValid.val(0);
+				}
 			}else{
 				$idError.show();
 				$idOk.hide();
