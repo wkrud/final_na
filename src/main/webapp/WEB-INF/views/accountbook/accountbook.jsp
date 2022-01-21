@@ -14,28 +14,55 @@
 <script src='${pageContext.request.contextPath}/resources/js/accountbook/main.js'></script>
 <link href='https://use.fontawesome.com/releases/v5.0.6/css/all.css' rel='stylesheet'>
 
-	<div class="insertAccount box">
+<div class="insertAccount box">
 		<h2>가계부 테스트</h2>
-		<form action="">
-			<input type="date" name="reg_date" id="reg_date" value="" />
-			<label for="reg_date">날짜</label>
-			<input type="checkbox" name="income_expense" id="income_checkbox" value="I" />
-			<label for="income_checkbox">수입</label>
-			<input type="checkbox" name="income_expense" id="income_checkbox" value="E"/>
-			<label for="income_checkbox">지출</label>
-			<br />
-			<label for="detail">내역</label>
-			<input type="text" name="detail" id="detail" placeholder="내역을 입력하세요." />
-			<br />
-			<label for="price">가격</label>
-			<input type="text" name="price" id="price" placeholder="가격을 입력하세요." />
-			<select name="payment" id="payment">
-				<option value="cash" name="payment">현금</option>
-				<option value="card" name="payment">카드</option>
-			</select>
-			<input type="submit" value="제출하기" />
-			<input type="hidden" name="Id" value="${loginMember.id}" />
+		<form 
+			name="insertFrm" 
+			method="POST">
+		<table>
+			<tr>
+				<td colspan="2">
+					<input type="date" name="reg_date" id="reg_date" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="income_expense">수입</label>
+					<input type="radio" name="income_expense" id="" value="I" checked/>
+				</td>
+				<td>
+					<label for="income_expense">지출</label>
+					<input type="radio" name="income_expense" id="" value="E"/>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<select name="payment" id="">
+						<option value="cash" name="payment">현금</option>
+						<option value="card" name="payment">카드</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<label for="detail">내역</label>
+					<input type="text" name="" id="" placeholder="내역을 입력하세요." value="용돈" />
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2"> 
+					<label for="price">금액</label>
+					<input type="text" name="price" id="" placeholder="금액을 입력하세요" value="300000" />
+				</td>
+			</tr>
+			<tr>
+				<input type="hidden" name="Id" value="${loginMember.id}" />
+				<!-- 시큐리티 권한ㄴㄴㄴㄴ 복습하기... -->
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+			</tr>
+		</table>
 		</form>
+		<td><button type="button" onclick="submit('insertAccount');">등록하기</button></td>
 	</div>
 
 	<section class="box1">
@@ -149,6 +176,14 @@
 			<button id="btn1"><i class="fas fa-plus plus"></i><br />거래내역 입력하기</button>
 		</div>
 	</section>
-
+	
+	
+<script>
+const submit = (name) => {
+	$(insertFrm)
+		.attr("action", `${pageContext.request.contextPath}/accountbook/\${name}.do`)
+		.submit();	
+};
+</script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
