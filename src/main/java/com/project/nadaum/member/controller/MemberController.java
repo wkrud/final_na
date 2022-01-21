@@ -66,6 +66,9 @@ public class MemberController {
 	@GetMapping("/memberEnroll.do")
 	public void memberEnroll() {}
 	
+	@GetMapping("/memberEnrollAgreement.do")
+	public void memberEnrollAgreement() {}	
+	
 	@GetMapping("/checkIdDuplicate.do")
 	public ResponseEntity<Map<String, Object>> checkIdDuplicate(@RequestParam String id){
 		Member member = memberService.selectOneMember(id);
