@@ -54,6 +54,14 @@
 		select * from member where email = #{email}
 	</select>
 	
+	<select id="selectOneMemberByIdEmail" resultType="member">
+		select * from member where id = #{id} and email = #{email}
+	</select>
+	
+	<update id="updateMemberPassword">
+		update member set password = #{password} where email = #{email}
+	</update>
+	
 	<!-- 회원정보 찾기 끝 -->
 	
 	<!-- 친구 crud 시작 -->	

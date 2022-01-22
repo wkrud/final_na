@@ -186,6 +186,16 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.selectOneMemberByEmail(email);
 	}
 
+	@Override
+	public Member selectOneMemberByIdEmail(Map<String, Object> map) {
+		return memberDao.selectOneMemberByIdEmail(map);
+	}
+
+	@Override
+	public int updateMemberPassword(Map<String, Object> map) {
+		return memberDao.updateMemberPassword(map);
+	}
+
 	
 	
 	

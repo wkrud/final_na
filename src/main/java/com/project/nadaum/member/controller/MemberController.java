@@ -97,25 +97,29 @@ public class MemberController {
 	}
 	
 	@PostMapping("/memberFindPassword.do")
-	public String memberFindPassword(String id, String methodEmail, String methodPhone, String email, String phone) throws Exception {
+	public String memberFindPassword(@RequestParam Map<String, Object> map) throws Exception {
 		try {
-			Map<String, Object> map = new HashMap<>();
-			map.put("id", id);
-			map.put("email", email);
-			map.put("phone", phone);
 			log.debug("map = {}", map);
-			if("on".equals(methodEmail)) {
-				log.debug("methodEmail = {}", methodEmail);
-//				Member member = memberService.selectOneMemberByEmail(map);
-//				mailSendService.sendIdByEmail(member);
-			}else if("on".equals(methodPhone)) {
-				log.debug("methodPhone = {}", methodPhone);
+			if("on".equals(map.get("methodEmail"))) {
+				Member member = memberService.selectOneMemberByIdEmail(map);
+				mailSendService.sendTemporaryPassword(member);
+			}else if("on".equals(map.get("methodPhone"))) {
+//				log.debug("methodPhone = {}", methodPhone);
 			}
 			return "redirect:/member/memberFindPassword.do";
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			throw e;
 		}		
+	}
+	
+	@GetMapping("/memberTemporaryPassword.do")
+	public String memberTemporaryPassword(@RequestParam Map<String, Object> map) {
+		String rawPassword = (String) map.get("tempPw");
+		String encodedPassword = bcryptPasswordEncoder.encode(rawPassword);
+		map.put("password", encodedPassword);
+		int result = memberService.updateMemberPassword(map);
+		return "redirect:/member/memberLogin.do";
 	}
 	
 	@PostMapping("/memberAgreementCheck.do")
@@ -220,13 +224,13 @@ public class MemberController {
 	
 	@GetMapping("/memberConfirm.do")
 	public String memberConfirm(@RequestParam Map<String, String> map) {
-		int result = memberService.confirmMember(map);
-		
-		if(result > 0) {
-			return "member/memberLogin";
-		}
-		
-		return "redirect:/";
+		try {
+			int result = memberService.confirmMember(map);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw e;
+		}		
+		return "member/memberLogin";
 	}
 	
 	@GetMapping("/mypage/memberModifyNickname.do")

@@ -76,6 +76,10 @@ public interface MemberDao {
 
 	Member selectOneMemberByEmail(Map<String, Object> email);
 
+	Member selectOneMemberByIdEmail(Map<String, Object> map);
+
+	int updateMemberPassword(Map<String, Object> map);
+
 
 
 

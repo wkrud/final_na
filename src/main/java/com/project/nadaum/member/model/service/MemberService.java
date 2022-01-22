@@ -76,6 +76,10 @@ public interface MemberService {
 
 	Member selectOneMemberByEmail(Map<String, Object> map);
 
+	Member selectOneMemberByIdEmail(Map<String, Object> map);
+
+	int updateMemberPassword(Map<String, Object> map);
+
 
 
 }
