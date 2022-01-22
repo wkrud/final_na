@@ -271,7 +271,7 @@ $(email).keyup((e) => {
 			console.log(resp);
 			const {available} = resp;
 			if(available){
-				if(/^[A-Z|가-힣|0-9|a-z]{4,20}$/.test(emailVal)){
+				if(/^[A-Za-z0-9가-힣._+%-]{4,20}$/.test(emailVal)){
 					$emailError.hide();
 					$emailOk.show();
 					$emailValid.val(1);					
