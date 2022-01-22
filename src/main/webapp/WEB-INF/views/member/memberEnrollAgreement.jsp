@@ -31,7 +31,7 @@ $(() => {
 	$(enrollAgreementModal)
 		.modal()
 		.on("hide.bs.modal", (e) => {
-			location.href='${empty header.referer ? pageContext.request.contextPath : header.referer}';
+			location.href='${pageContext.request.contextPath}';
 		});
 });
 </script>
@@ -48,8 +48,7 @@ $(() => {
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<div class="modal-body">
-								
+			<div class="modal-body">								
 				<div id="accordion">
 					<div class="card">
 						<div class="card-header" id="headingOne">
@@ -57,7 +56,6 @@ $(() => {
 								<button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
 									개인정보 이용 동의
 								</button>
-								<span class="text-success agree1-success">동의완료</span>
 								<span class="text-danger agree1-fail">동의미완료</span>
 							</h5>
 						</div>
@@ -76,7 +74,6 @@ $(() => {
 								<button class="btn btn-link" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
 									개인정보 이용 동의
 								</button>
-								<span class="text-success agree2-success">동의완료</span>
 								<span class="text-danger agree2-fail">동의미완료</span>
 							</h5>
 						</div>
@@ -100,19 +97,42 @@ $(() => {
 </div>
 
 <script>
+const $agreeFail1 = $(".agree1-fail");
+const $agreeFail2 = $(".agree2-fail");
+$agreeFail1.hide();
+$agreeFail2.hide();
+
 $("#agreement-btn").click((e) => {
 	let $agree1 = $("#agree1").is(':checked');
 	let $agree2 = $("#agree2").is(':checked');
 	const $collapse1 = $("#collapseOne");
 	const $collapse2 = $("#collapseTwo");
 	
-	if($agree1 && $agree2)
-		location.href="${pageContext.request.contextPath}/member/memberEnroll.do";
-	else if(!$agree1){
-		alert("동의사항을 읽고 모두 동의해주세요");		
+	if($agree1 && $agree2){
+		
+		const csrfHeader = "${_csrf.headerName}";
+		const csrfToken = "${_csrf.token}";
+		const headers = {};
+		headers[csrfHeader] = csrfToken;
+		
+		$.ajax({
+			url: '${pageContext.request.contextPath}/member/memberAgreementCheck.do',
+			headers: headers,
+			method: "POST",
+			data: {agree:'agree'},
+			success(resp){
+				console.log(resp);
+				 location.href=`${pageContext.request.contextPath}/member/memberEnroll.do?agree=\${resp.agree}`;
+			}
+		});
+		
+	}else if(!$agree1){
+		alert("동의사항을 읽고 모두 동의해주세요");	
+		$agreeFail1.show();
 		$collapse1.addClass('show');
 	}else if(!$agree2){
-		alert("동의사항을 읽고 모두 동의해주세요");		
+		alert("동의사항을 읽고 모두 동의해주세요");	
+		$agreeFail2.show();
 		$collapse2.addClass('show');
 	}
 });

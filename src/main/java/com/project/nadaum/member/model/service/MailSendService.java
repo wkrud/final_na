@@ -6,13 +6,17 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 
+import com.project.nadaum.member.model.vo.Member;
+
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class MailSendService {
 
 	@Autowired
@@ -38,7 +42,7 @@ public class MailSendService {
 		return buffer.toString();
 	}
 	
-	public String sendAuthMail(String email) {
+	public String sendAuthMail(String email) throws MessagingException {
 		String authKey = getKey(6);
 		
 		MimeMessage mimeMessage = mailSender.createMimeMessage();
@@ -52,10 +56,32 @@ public class MailSendService {
 			mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
 			mailSender.send(mimeMessage);
 		} catch (MessagingException e) {
-			e.printStackTrace();
+			log.error(e.getMessage(), e);
+			throw e;
 		}
 				
 		return authKey;
+	}
+
+	public void sendIdByEmail(Member member) throws MessagingException {
+		
+		String AllId = member.getId();
+		String id = AllId.substring(AllId.length() - 4, AllId.length());
+		id += "****";
+		
+		MimeMessage mimeMessage = mailSender.createMimeMessage();
+		String mailContent = "<h1>나:다움 아이디 찾기(이메일로 찾기)</h1><br/><span>아이디 : " + id + "</span><br />"
+						   + "<p><a href='http://localhost:9090/nadaum/member/memberLogin.do'>나:다움 로그인하기</a> "
+						   + "링크를 통해 로그인 하실 수 있습니다.</p>";
+		try {
+			mimeMessage.setSubject("아이디 찾기 이메일 ", "utf-8");
+			mimeMessage.setText(mailContent, "utf-8", "html");
+			mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(member.getEmail()));
+			mailSender.send(mimeMessage);
+		}catch(MessagingException e) {
+			log.error(e.getMessage(), e);
+			throw e;
+		}
 	}
 	
 }
