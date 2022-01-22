@@ -31,6 +31,7 @@
 </script>
 </head>
 <body>
+
 <div class="enroll-wrapper">	
 	
 	<form id="memberEnrollFrm" method="post">
@@ -39,7 +40,7 @@
 				<div class="logo">나:다움</div>
 			</div>
 			<div id="enrollFrmCarousel" class="carousel slide" data-ride="carousel">
-				<div class="carousel-inner">
+				<div class="carousel-inner">				
 					<div class="carousel-item active">
 						<label for="id">아이디<span class="text-danger must-need"> 필수</span></label>						
 						<input type="text" class="form-control" name="id" id="id" value="wowo" 
@@ -80,9 +81,11 @@
 								<option value="naver">네이버</option>
 								<option value="gmail">구글</option>
 							</select>
-						</div>						
-						<input type="hidden" name="email" id="addEmail"/>
-						
+						</div>	
+						<span class="text-success email-ok">사용가능한 이메일입니다.</span>
+						<span class="text-danger email-error">사용할 수 없는 이메일입니다.</span>	
+						<input type="hidden" id="emailValid" value="0" />				
+						<input type="hidden" name="email" id="addEmail"/>						
 						<br /> 
 						<div class="address-wrap">
 						
@@ -98,7 +101,7 @@
 							<input type="text" id="detailAddress" class="form-control" readonly="readonly"/>
 							<input type="hidden" name="address" class="form-control addAddress" required />
 							<div class="enroll-btn-wrap">
-								<button type="button" id="enroll-btn" class="btn btn-outline-success enroll">회원가입</button>
+								<button type="submit" id="enroll-btn" class="btn btn-outline-success enroll">회원가입</button>
 							</div>
 						</div>				
 					</div>
@@ -122,6 +125,9 @@
 	</form>
 </div>	
 <script>
+$(".logo").click((e) => {
+	location.replace('${pageContext.request.contextPath}/member/memberLogin.do');
+});
 
 const $enrollCarousel = $("#enrollFrmCarousel");
 $enrollCarousel.carousel({
@@ -161,12 +167,9 @@ $siteSelect.change(() => {
 });
 
 
-
-
 // 유효성 검사
 $("#enroll-btn").click((e) => {
-	e.preventDefault();
-	
+		
 	const $password = $(password);
 	const $passwordCheck = $(passwordCheck);
 	const $nickname = $(nickname);
@@ -212,13 +215,19 @@ $("#enroll-btn").click((e) => {
     	return false;
     }
 	
-	// 이메일
+	// 이메일	
 	if($(email).val() == ''){
     	alert("이메일을 입력해 주세요.");
     	$enrollCarousel.carousel(1);
     	$(email).focus();
     	return false;
     }
+	if($emailValid.val() == '0'){
+		alert("사용할 수 없는 이메일 입니다.");
+    	$enrollCarousel.carousel(1);
+    	$(email).focus();
+    	return false;
+	}
 	if($siteSelect.val() == ''){
     	alert("이메일 주소를 선택해 주세요.");
     	$enrollCarousel.carousel(1);
@@ -234,10 +243,52 @@ $("#enroll-btn").click((e) => {
 		}
 	}
 	
-	return false;
+	
+	return true;
 });	
-   
 
+const $emailError = $(".email-error");
+const $emailOk = $(".email-ok");
+const $emailValid = $("#emailValid");
+$emailError.hide();
+$emailOk.hide();
+$(email).keyup((e) => {
+	const emailVal = $(e.target).val();
+	
+	if(emailVal.length < 4){
+		$emailError.hide();
+		$emailOk.hide();
+		$emailValid.val(0);
+		return;
+	};
+	
+	$.ajax({
+		url: "${pageContext.request.contextPath}/member/checkEmailDuplicate.do",
+		data:{
+			email: emailVal
+		},
+		success(resp){
+			console.log(resp);
+			const {available} = resp;
+			if(available){
+				if(/^[A-Z|가-힣|0-9|a-z]{4,20}$/.test(emailVal)){
+					$emailError.hide();
+					$emailOk.show();
+					$emailValid.val(1);					
+				}else{
+					$emailError.show();
+					$emailOk.hide();
+					$emailValid.val(0);
+				}
+			}else{
+				$emailError.show();
+				$emailOk.hide();
+				$emailValid.val(0);
+			}
+		},
+		error: console.log
+	})
+});
 
 // 별명 중복 검사
 const $nError = $(".guide.n-error");
