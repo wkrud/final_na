@@ -74,6 +74,8 @@ public interface MemberService {
 
 	int updateMemberNickname(Member member);
 
+	Member selectOneMemberByEmail(Map<String, Object> map);
+
 
 
 }

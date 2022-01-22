@@ -42,22 +42,94 @@ $(() => {
 	aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">아이디 찾기</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-			
-			</div>
-			<div class="modal-footer">
-				<button type="button" id="agreement-btn" class="btn btn-primary">동의합니다.</button>
-       			<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-			</div>
+			<form id="findIdFrm" method="POST">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">아이디 찾기</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="select-find-id-method">
+						<label for="methodEmail">이메일로 찾기</label>
+						<input type="checkbox" id="methodEmail" name="methodEmail"/>
+						<label for="methodPhone">핸드폰으로 찾기</label>
+						<input type="checkbox" id="methodPhone" name="methodPhone"/>
+					</div>
+					<div class="mothod-wrap">						
+						<div class="find-by-email">
+							<label for="email">이메일</label>
+							<input type="text" name="email" id="email" class="form-control" placeholder="등록된 이메일" aria-label="Recipient's username" aria-describedby="basic-addon2">
+								
+						</div>
+						<div class="find-by-phone">
+							<label for="phone">핸드폰</label>
+							<input type="tel" id="phone" class="form-control" name="phone" placeholder="등록된 핸드폰을 입력해주세요"/>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" id="agreement-btn" class="btn btn-primary">확인</button>
+	       			<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+				</div>
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+			</form>
 		</div>
 	</div>
 </div>
 
+<script>
+const $methodEmail = $("#methodEmail");
+const $methodPhone = $("#methodPhone");
+const $findByEmail = $(".find-by-email");
+const $findByPhone = $(".find-by-phone");
+const $email = $("#email");
+const $phone = $("#phone");
+
+$findByEmail.hide();
+$findByPhone.hide();
+
+$methodEmail.change((e) => {			
+	if($methodEmail.is(':checked')){
+		$methodPhone.prop('checked', false);
+		$findByEmail.show();
+		$findByPhone.hide();		
+	}else{
+		$findByEmail.hide();
+	}
+});
+
+$methodPhone.change((e) => {
+	if($methodPhone.is(':checked')){
+		$methodEmail.prop('checked', false);
+		$findByPhone.show();
+		$findByEmail.hide();		
+	}else{
+		$findByPhone.hide();
+	}
+});
+
+$("#agreement-btn").click((e) => {
+	if(($methodEmail.is(':checked') == false) && ($methodPhone.is(':checked') == false)){
+		alert('방법을 선택해주세요');
+		return false;
+	}
+	if($methodEmail.is(':checked')){
+		if($email.val() == ''){
+			alert('이메일을 입력해주세요');
+			$email.focus();
+			return false;
+		};
+	};
+	if($methodPhone.is(':checked')){
+		if($phone.val() == ''){
+			alert('핸드폰을 입력해주세요');
+			$phone.focus();
+			return false;
+		};
+	};
+	return true;
+});
+</script>
 </body>
 </html>

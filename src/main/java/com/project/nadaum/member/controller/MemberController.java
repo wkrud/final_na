@@ -62,6 +62,9 @@ public class MemberController {
 			
 	@GetMapping("/memberLogin.do")
 	public void memberLogin() {}
+	
+	@GetMapping("/memberFindId.do")
+	public void memberFindId() {}
 		
 	@GetMapping("/memberEnroll.do")
 	public void memberEnroll(@RequestParam String agree) {
@@ -69,6 +72,28 @@ public class MemberController {
 	
 	@GetMapping("/memberEnrollAgreement.do")
 	public void memberEnrollAgreement() {}	
+	
+	@PostMapping("/memberFindId.do")
+	public String memberFindId(String methodEmail, String methodPhone, String email, String phone) throws Exception {
+		try {
+			Map<String, Object> map = new HashMap<>();
+			map.put("email", email);
+			map.put("phone", phone);
+			if("on".equals(methodEmail)) {
+				log.debug("methodEmail = {}", methodEmail);
+				Member member = memberService.selectOneMemberByEmail(map);
+				mailSendService.sendIdByEmail(member);
+			}else if("on".equals(methodPhone)) {
+				log.debug("methodPhone = {}", methodPhone);
+			}
+			return "redirect:/member/memberLogin.do";
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw e;
+		}
+		
+		
+	}
 	
 	@PostMapping("/memberAgreementCheck.do")
 	public ResponseEntity<?> memberAgreementCheck(@RequestParam String agree){

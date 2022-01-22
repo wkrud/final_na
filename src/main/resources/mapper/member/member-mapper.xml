@@ -48,6 +48,14 @@
 		update member set nickname = #{nickname} where id = #{id}
 	</update>
 	
+	<!-- 회원정보 찾기 시작 -->
+	
+	<select id="selectOneMemberByEmail" resultType="member">
+		select * from member where email = #{email}
+	</select>
+	
+	<!-- 회원정보 찾기 끝 -->
+	
 	<!-- 친구 crud 시작 -->	
 	
 	<select id="selectSearchMemberNickname" resultType="string">

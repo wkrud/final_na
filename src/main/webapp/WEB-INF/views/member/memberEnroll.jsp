@@ -81,9 +81,11 @@
 								<option value="naver">네이버</option>
 								<option value="gmail">구글</option>
 							</select>
-						</div>						
-						<input type="hidden" name="email" id="addEmail"/>
-						
+						</div>	
+						<span class="text-success email-ok">사용가능한 이메일입니다.</span>
+						<span class="text-danger email-error">사용할 수 없는 이메일입니다.</span>	
+						<input type="hidden" id="emailValid" value="0" />				
+						<input type="hidden" name="email" id="addEmail"/>						
 						<br /> 
 						<div class="address-wrap">
 						
@@ -165,8 +167,6 @@ $siteSelect.change(() => {
 });
 
 
-
-
 // 유효성 검사
 $("#enroll-btn").click((e) => {
 		
@@ -239,8 +239,26 @@ $("#enroll-btn").click((e) => {
 	
 	return true;
 });	
-   
 
+const $emailError = $(".email-error");
+const $emailOk = $(".email-ok");
+const $emailValid = $("#emailValid");
+$emailError.hide();
+$emailOk.hide();
+$(email).keyup((e) => {
+	const emailVal = $(e.target).val();
+	
+	if(emailVal.length < 4){
+		$emailError.hide();
+		$emailOk.hide();
+		$emailValid.val(0);
+		return;
+	};
+	
+	$.ajax({
+		url: "${pageContext.request.contextPath}"
+	})
+});
 
 // 별명 중복 검사
 const $nError = $(".guide.n-error");
