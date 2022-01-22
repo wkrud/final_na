@@ -97,11 +97,16 @@ public class MemberController {
 	
 	@PostMapping("/memberAgreementCheck.do")
 	public ResponseEntity<?> memberAgreementCheck(@RequestParam String agree){
-		log.debug("agree = {}", agree);
-		Map<String, Object> map = new HashMap<>();
-		Date date = new Date();
-		map.put("agree", date);
-		return ResponseEntity.ok(map);
+		try {
+			log.debug("agree = {}", agree);
+			Map<String, Object> map = new HashMap<>();
+			Date date = new Date();
+			map.put("agree", date);
+			return ResponseEntity.ok(map);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw e;
+		}
 	}
 	
 	@GetMapping("/checkIdDuplicate.do")
@@ -111,6 +116,18 @@ public class MemberController {
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("id", id);
+		map.put("available", available);		
+		
+		return ResponseEntity.ok(map);
+	}
+	
+	@GetMapping("/checkEmailDuplicate.do")
+	public ResponseEntity<Map<String, Object>> checkEmailDuplicate(@RequestParam String email){
+		Map<String, Object> map = new HashMap<>();
+		map.put("email", email);
+		Member member = memberService.selectOneMemberByEmail(map);
+		boolean available = member == null;
+		
 		map.put("available", available);		
 		
 		return ResponseEntity.ok(map);

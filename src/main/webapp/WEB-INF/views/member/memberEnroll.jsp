@@ -215,13 +215,19 @@ $("#enroll-btn").click((e) => {
     	return false;
     }
 	
-	// 이메일
+	// 이메일	
 	if($(email).val() == ''){
     	alert("이메일을 입력해 주세요.");
     	$enrollCarousel.carousel(1);
     	$(email).focus();
     	return false;
     }
+	if($emailValid.val() == '0'){
+		alert("사용할 수 없는 이메일 입니다.");
+    	$enrollCarousel.carousel(1);
+    	$(email).focus();
+    	return false;
+	}
 	if($siteSelect.val() == ''){
     	alert("이메일 주소를 선택해 주세요.");
     	$enrollCarousel.carousel(1);
@@ -236,6 +242,7 @@ $("#enroll-btn").click((e) => {
 	    	return false;
 		}
 	}
+	
 	
 	return true;
 });	
@@ -256,7 +263,30 @@ $(email).keyup((e) => {
 	};
 	
 	$.ajax({
-		url: "${pageContext.request.contextPath}"
+		url: "${pageContext.request.contextPath}/member/checkEmailDuplicate.do",
+		data:{
+			email: emailVal
+		},
+		success(resp){
+			console.log(resp);
+			const {available} = resp;
+			if(available){
+				if(/^[A-Z|가-힣|0-9|a-z]{4,20}$/.test(emailVal)){
+					$emailError.hide();
+					$emailOk.show();
+					$emailValid.val(1);					
+				}else{
+					$emailError.show();
+					$emailOk.hide();
+					$emailValid.val(0);
+				}
+			}else{
+				$emailError.show();
+				$emailOk.hide();
+				$emailValid.val(0);
+			}
+		},
+		error: console.log
 	})
 });
 
