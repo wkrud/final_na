@@ -36,6 +36,7 @@
 <!-- 사용자작성 css -->
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/common/style.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/profile.css" />
 
 <!-- 토글용 테스트용 다른 ui속성과 충돌나는중-->
 <link rel="stylesheet"
@@ -142,30 +143,29 @@ input[type=checkbox]{
 						</a>
 					</span>
 					<div class="profile-wrap">
-						<button id="profile" type="button" class="btn btn-primary position-relative bg-light border-light rounded-circle">
-								<div class="thumbnail-wrap" style="border-radius:50%; width:45px; height: 45px; overflow:hidden; padding: 0;">
-									<c:if test="${loginMember.loginType eq 'K'}">
-										<img src="${loginMember.profile}" alt="" style="width:45px; height:45px; object-fit:cover;" />
-									</c:if>	
-									<c:if test="${loginMember.loginType eq 'D'}">
-										<c:if test="${loginMember.profileStatus eq 'N'}">							 		
-											<img src="${pageContext.request.contextPath}/resources/upload/member/profile/default_profile_cat.png" alt="" style="width:45px; height:45px; object-fit:cover;" />
-										</c:if>						
-										<c:if test="${loginMember.profileStatus eq 'Y'}">		
-											<img src="${pageContext.request.contextPath}/resources/upload/member/profile/${attach.renamedFilename}" alt="" style="width:45px; height:45px; object-fit:cover;" />										 		
-										</c:if>								
+					 <!-- class="btn btn-primary position-relative bg-light border-light rounded-circle" -->
+						<button id="profile" type="button"
+							data-toggle="collapse" data-target="#alarmList" aria-expanded="false" aria-controls="alarmList">
+							<div class="bedge-wrap"></div>
+							<div class="thumbnail-wrap" style="border-radius:50%; width:45px; height: 45px; overflow:hidden; padding: 0;">
+								<c:if test="${loginMember.loginType eq 'K'}">
+									<img src="${loginMember.profile}" alt="" style="width:45px; height:45px; object-fit:cover;" />
+								</c:if>	
+								<c:if test="${loginMember.loginType eq 'D'}">
+									<c:if test="${loginMember.profileStatus eq 'N'}">							 		
+										<img src="${pageContext.request.contextPath}/resources/upload/member/profile/default_profile_cat.png" alt="" style="width:45px; height:45px; object-fit:cover;" />
+									</c:if>						
+									<c:if test="${loginMember.profileStatus eq 'Y'}">		
+										<img src="${pageContext.request.contextPath}/resources/upload/member/profile/${attach.renamedFilename}" alt="" style="width:45px; height:45px; object-fit:cover;" />										 		
 									</c:if>								
-								</div>
+								</c:if>								
+							</div>
 						    <!-- <svg height="32" aria-hidden="true" viewBox="0 0 16 16" version="1.1" width="32"data-view-component="true" class="octicon octicon-mark-github">
 							</svg>  -->
 						    
 						</button>
-					    <!-- <div class="alarm-list">
-					        <a class="dropdown-item" href="#">Action</a>
-					  	    <a class="dropdown-item" href="#">Another action</a>
-					  	    <a class="dropdown-item" href="#">Something else here</a>
-					    </div> -->
-					</div>
+						<div class="collapse" id="alarmList"></div>
+					</div>					
 
 					<ul class="navbar-nav justify-content-end">
 						<li class="nav-item">
@@ -229,10 +229,14 @@ input[type=checkbox]{
 			$(() => {
 				countBedge();
 			});
-			/* 샘플코드 */
+			
 			$("#profile").click(function(){
-				checkBedge();
+				if($("#alarmList").hasClass("show")){
+					console.log($("#alarmList").hasClass("show"));
+					checkBedge();
+				}
 			});
+			/* 샘플코드 */
 			$("#sign-out").click(function(){
 				alert("로그아웃되었습니다.");
 			});
@@ -290,19 +294,7 @@ input[type=checkbox]{
 					var data = evt.data;
 					console.log("ReceivMessage : " + data + "\n");
 					
-					$.ajax({
-						url: `${pageContext.request.contextPath}/websocket/wsCountAlarm.do`,
-						success(resp){
-							if(resp != '0'){
-								let bedge = `
-								<span id='bg-alarm' class='position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger'>\${resp}</span>
-								`;
-								
-								$(profile).append(bedge);
-							}
-						},
-						error: console.log
-					});		
+					countBedge();
 					
 				};
 				sock.onclose = function() {
@@ -317,13 +309,26 @@ input[type=checkbox]{
 		    	$.ajax({
 					url: `${pageContext.request.contextPath}/websocket/wsCountAlarm.do`,
 					success(resp){
-						if(resp != '0'){
+						
+						const $alarmList = $("#alarmList");
+						const $bedgeWrap = $(".bedge-wrap");
+						$alarmList.empty();
+						$bedgeWrap.empty();
+						
+						let count = 0;
+						$(resp).each((i, v) => {
+							count++;
+							let alarmDiv = `<div class="card card-body alarmContent">\${v.content}</div>`;
+							$alarmList.append(alarmDiv);
+						});						
+						
+						if(count > 0){
 							let bedge = `
-							<span id='bg-alarm' class='position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger'>\${resp}</span>
+							<span id='bg-alarm' class='badge rounded-pill bg-danger'>\${count}</span>
 							`;
 							
-							$(profile).append(bedge);
-						}
+							$bedgeWrap.append(bedge);
+						}						
 					},
 					error: console.log
 				});		

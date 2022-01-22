@@ -87,7 +87,7 @@ $(() => {
 					</div>
 					<div>
 						<a href="#">비밀번호 찾기</a>
-						<a href="#">아이디 찾기</a>
+						<a href="${pageContext.request.contextPath}/member/memberFindId.do">아이디 찾기</a>
 						<a href="${pageContext.request.contextPath}/member/memberEnrollAgreement.do">처음이신가요?</a>
 					</div>
 					<div>

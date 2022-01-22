@@ -74,6 +74,8 @@ public interface MemberDao {
 
 	int updateMemberNickname(Member member);
 
+	Member selectOneMemberByEmail(Map<String, Object> email);
+
 
 
 

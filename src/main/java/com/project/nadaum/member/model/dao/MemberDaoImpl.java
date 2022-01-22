@@ -181,6 +181,11 @@ public class MemberDaoImpl implements MemberDao {
 		return session.update("member.updateMemberNickname", member);
 	}
 
+	@Override
+	public Member selectOneMemberByEmail(Map<String, Object> email) {
+		return session.selectOne("member.selectOneMemberByEmail", email);
+	}
+
 	
 	
 	

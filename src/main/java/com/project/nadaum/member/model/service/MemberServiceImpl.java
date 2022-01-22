@@ -181,6 +181,11 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.updateMemberNickname(member);
 	}
 
+	@Override
+	public Member selectOneMemberByEmail(Map<String, Object> email) {
+		return memberDao.selectOneMemberByEmail(email);
+	}
+
 	
 	
 	
