@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.project.nadaum.common.vo.Attachment;
 import com.project.nadaum.member.model.vo.Member;
 
 @Repository
@@ -171,8 +172,13 @@ public class MemberDaoImpl implements MemberDao {
 	}
 
 	@Override
-	public Map<String, Object> selectOneMemberAndAttachment(Member member) {
-		return session.selectOne("member.selectOneMemberAndAttachment", member);
+	public Attachment selectMemberProfile(Member member) {
+		return session.selectOne("member.selectMemberProfile", member);
+	}
+
+	@Override
+	public int updateMemberNickname(Member member) {
+		return session.update("member.updateMemberNickname", member);
 	}
 
 	
