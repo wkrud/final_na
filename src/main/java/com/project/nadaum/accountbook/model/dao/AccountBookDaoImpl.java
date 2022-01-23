@@ -20,8 +20,8 @@ public class AccountBookDaoImpl implements AccountBookDao {
 	}
 
 	@Override
-	public List<AccountBook> selectAllAccountList() {
-		return session.selectList("accountbook.selectAllAccountList");
+	public List<AccountBook> selectAllAccountList(String id) {
+		return session.selectList("accountbook.selectAllAccountList", id);
 	}
 
 	@Override

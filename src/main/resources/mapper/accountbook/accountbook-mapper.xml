@@ -31,6 +31,8 @@
     		*
     	from 
     		account_book
+    	where
+    		id = #{id}
     	order by
     		reg_date desc
 	</select>

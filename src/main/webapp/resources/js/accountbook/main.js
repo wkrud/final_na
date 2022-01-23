@@ -37,14 +37,34 @@
 });*/
 
 
-
 /*버튼 테스트*/
 
 $("#closeBtn").on('click', function(){
-		$(".modal-background").fadeOut();
-	});
+	$(".modal-background").fadeOut();
+});
 	
-	$("#btn1").on('click', function(){
-		$(".modal-background").fadeIn();
-	});
+$("#btn1").on('click', function(){
+	$(".modal-background").fadeIn();
+});
 
+
+/* id값 가져오는 ajax*/
+	const csrfHeader = "${_csrf.headerName}";
+    const csrfToken = "${_csrf.token}";
+    const headers = {};
+    headers[csrfHeader] = csrfToken;
+  
+    var id = $("#id").val();
+    console.log(id);
+    
+   $.ajax({
+	url : "/accountbook/selectAllAccountList.do",
+	type : "GET",
+	data : {
+		id : id
+		}
+	}).done(function(accountList){
+		console.log(accountList);
+	});
+    
+    

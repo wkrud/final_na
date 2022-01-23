@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,9 +26,16 @@ public class AccountBookController {
 	private AccountBookService accountBookService;
 
 	@RequestMapping(value="/accountbook.do")
-	public void accountbook() {
-		 
-	}
+	public void accountbook() { }
+	
+	@GetMapping(value="/selectAllAccountList.do")
+	public String selectAllAccountList (@RequestBody String id, Model model) { 
+		log.info("id={}", id);
+		List<AccountBook> accountList = accountBookService.selectAllAccountList(id); 
+		log.info("accountList={}",accountList);
+		model.addAttribute("accountList",accountList); 
+		
+		return "/accountbook.do"; }
 	
 	@RequestMapping(value="/accountInsert.do", method=RequestMethod.POST)
 	public String insertAccount(AccountBook account) {
@@ -43,14 +52,8 @@ public class AccountBookController {
 		return "redirect:/accountbook/accountbook.do";
 	}
 	
-	@RequestMapping(value="/selectAllAccountList.do", method=RequestMethod.POST) 
-	public String selectAllAccountList (@RequestParam("id") String id, Model model) {		
-		List<AccountBook> accountList = accountBookService.selectAllAccountList();
-		model.addAttribute("accountList", accountList);
-		log.info("accountList={}",accountList); 
-		
-		return "/accountbook.do";
-	}
+	
+	
 }
 
 	

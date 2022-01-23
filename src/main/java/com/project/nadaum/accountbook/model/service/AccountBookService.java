@@ -8,7 +8,7 @@ public interface AccountBookService {
 
 	int insertAccount(AccountBook account);
 
-	List<AccountBook> selectAllAccountList();
+	List<AccountBook> selectAllAccountList(String id);
 
 	int deleteAccount(String code);
 

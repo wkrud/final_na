@@ -20,8 +20,8 @@ public class AccountBookServiceImpl implements AccountBookService {
 	}
 
 	@Override
-	public List<AccountBook> selectAllAccountList() {
-		return accountBookDao.selectAllAccountList();
+	public List<AccountBook> selectAllAccountList(String id) {
+		return accountBookDao.selectAllAccountList(id);
 	}
 
 	@Override

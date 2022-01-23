@@ -11,7 +11,6 @@
 <sec:authentication property="principal" var="loginMember"/>
 
 <link href='${pageContext.request.contextPath}/resources/css/accountbook/main.css' rel='stylesheet' />
-<script src='${pageContext.request.contextPath}/resources/js/accountbook/main.js'></script>
 <link href='https://use.fontawesome.com/releases/v5.0.6/css/all.css' rel='stylesheet'>
 
 	<div class="modal-background">
@@ -58,7 +57,7 @@
 				</td>
 			</tr>
 			<tr>
-				<input type="hidden" name="id" value="${loginMember.id}" />
+				<input type="hidden" name="id" id="id" value="${loginMember.id}" />
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 			</tr>
 		</table>
@@ -149,15 +148,10 @@
 	</section>
 
 	
+	<script src='${pageContext.request.contextPath}/resources/js/accountbook/main.js'></script>
+	
+	
 	<script>
-	/* $("#closeBtn").on('click', function(){
-		$(".modal-background").fadeOut();
-	});
-	
-	$("#btn1").on('click', function(){
-		$(".modal-background").fadeIn();
-	}); */
-	
 	$(deleteBtn).click((e) => {
 		$.ajax({
 			url : "${pageContext.request.contextPath}/accountbook/accountDelete.do",
