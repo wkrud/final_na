@@ -120,7 +120,7 @@ public class GetApi {
 				// parsing할 url 지정(API 키 포함해서)
 				String url = "http://www.culture.go.kr/openapi/rest/publicperformancedisplays/d/"
 						+ "?serviceKey=p%2B16HHPYFEvCkanGQCoGc9CAAG7x66tc5u3xrBmJpM8avVLTGiJ%2FjJaIvItRCggk79J9k%2Byn47IjYUHr%2FdzlgA%3D%3D"
-						+ "&seq=166147";
+						+ "&seq="+seq;
 				
 				DocumentBuilderFactory dbFactoty = DocumentBuilderFactory.newInstance();
 				DocumentBuilder dBuilder = dbFactoty.newDocumentBuilder();

@@ -38,6 +38,7 @@ $(() => {
 		location.href = `${pageContext.request.contextPath}/culture/cultureView.do?code=\${code}`;
 	});
 });
+
 </script>
 <body>
 	<div class="container">
