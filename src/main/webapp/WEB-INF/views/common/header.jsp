@@ -135,13 +135,12 @@ input[type=checkbox]{
 					<!-- 프로필 사진으로 보일시 크기에 맞게 이미지를 넣어야됨, 썸네일용 이미지 따로 저장하는 방법도 좋으나 일이 많아짐.-->
 					<!-- 아래 span에서 동적으로 메시지 갯수다르게 처리하기 필요 -->
 					<!-- 클릭하면 알림창이 나오게 하는 ui는 답이없음. -->
-					<span>
+					<span class="head-nickname-span">
 						<a href="${pageContext.request.contextPath}/member/mypage/memberDetail.do?tPage=myPage">
 							안녕하세요, <sec:authentication property="principal.nickname"/>님
 						</a>
 					</span>
 					<div class="profile-wrap">
-					 <!-- class="btn btn-primary position-relative bg-light border-light rounded-circle" -->
 						<button id="profile" type="button"
 							data-toggle="collapse" data-target="#alarmList" aria-expanded="false" aria-controls="alarmList">
 							<div class="bedge-wrap"></div>
