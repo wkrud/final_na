@@ -23,6 +23,11 @@ public class AccountBookDaoImpl implements AccountBookDao {
 	public List<AccountBook> selectAllAccountList() {
 		return session.selectList("accountbook.selectAllAccountList");
 	}
+
+	@Override
+	public int deleteAccount(String code) {
+		return session.delete("accountbook.deleteAccount", code);
+	}
 	
 	
 

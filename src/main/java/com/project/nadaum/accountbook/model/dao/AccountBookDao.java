@@ -10,4 +10,6 @@ public interface AccountBookDao {
 
 	List<AccountBook> selectAllAccountList();
 
+	int deleteAccount(String code);
+
 }

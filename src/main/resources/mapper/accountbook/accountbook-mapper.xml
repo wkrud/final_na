@@ -19,14 +19,23 @@
 		)	
 	</insert>
 	
+	<delete id="deleteAccount">
+		delete
+			account_book
+		where
+			code = #{code}
+	</delete>
+	
 	<select id="selectAllAccountList" resultMap="accountbookMap">
 		select
     		*
     	from 
-    		account_book 
-    	where
-	    	id=#{id}
+    		account_book
+    	order by
+    		reg_date desc
 	</select>
+	
+	
 	
 	<resultMap type="Map" id="accountbookMap">
 		<id column="code" property="code"/>

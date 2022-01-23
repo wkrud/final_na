@@ -23,6 +23,11 @@ public class AccountBookServiceImpl implements AccountBookService {
 	public List<AccountBook> selectAllAccountList() {
 		return accountBookDao.selectAllAccountList();
 	}
+
+	@Override
+	public int deleteAccount(String code) {
+		return accountBookDao.deleteAccount(code);
+	}
 	
 	
 	

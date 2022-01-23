@@ -40,8 +40,11 @@
 
 /*버튼 테스트*/
 
-$('#btn1').on('click', function() {
-	    // 모달창 띄우기
-	    console.log("콘솔로그가 안 찍혀요 ㅠ");
+$("#closeBtn").on('click', function(){
+		$(".modal-background").fadeOut();
+	});
+	
+	$("#btn1").on('click', function(){
+		$(".modal-background").fadeIn();
 	});
 

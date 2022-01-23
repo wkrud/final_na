@@ -14,7 +14,8 @@
 <script src='${pageContext.request.contextPath}/resources/js/accountbook/main.js'></script>
 <link href='https://use.fontawesome.com/releases/v5.0.6/css/all.css' rel='stylesheet'>
 
-<div class="insertAccount box">
+	<div class="modal-background">
+	<div class="insertAccountModal">
 		<h2>가계부 테스트</h2>
 		<form 
 			name="insertFrm" 
@@ -57,13 +58,14 @@
 				</td>
 			</tr>
 			<tr>
-				<input type="hidden" name="Id" value="${loginMember.id}" />
-				<!-- 시큐리티 권한ㄴㄴㄴㄴ 복습하기... -->
+				<input type="hidden" name="id" value="${loginMember.id}" />
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 			</tr>
 		</table>
-		<td><input type="submit" value="제출하기" /></td>
+			<input type="submit" value="제출하기" />
+			<button id="closeBtn">닫기</button>
 		</form>
+	</div>
 	</div>
 
 	<section class="box1">
@@ -93,62 +95,30 @@
 		</div>
 		<!-- 화면만 잡고 리스트 싹 불러오기 -->
 		<div class="account_list">
-			<table class="account_list_table">
-			<hr>
-				<tr>
-					<td rowspan="2">용돈</td>
-					<td colspan="2"><!-- ${accountList.regDate} --></td>
-					<td rowspan="2" class="income"></td>
-				</tr>
-				<tr>
-					<td>용돈 받았음</td>
-				</tr>
-			</table>
-			<hr>
-			<table class="account_list_table">
-				<tr>
-					<td rowspan="2">식비</td>
-					<td colspan="2">2022-01-15</td>
-					<td rowspan="2" class="expense">-20,000</td>
-				</tr>
-				<tr>
-					<td>배달 음식</td>
-				</tr>
-			</table>
-			<hr>
-			<table class="account_list_table">
-				<tr>
-					<td rowspan="2">생활비</td>
-					<td colspan="2">2022-01-13</td>
-					<td rowspan="2" class="expense">-66,000</td>
-				</tr>
-				<tr>
-					<td>교통비</td>
-				</tr>
-			</table>
-			<hr>
-			<table class="account_list_table">
-				<tr>
-					<td rowspan="2">급여</td>
-					<td colspan="2">2022-01-10</td>
-					<td rowspan="2" class="income">+3,000,000</td>
-				</tr>
-				<tr>
-					<td>월급</td>
-				</tr>
-			</table>
-			<hr>
-			<table class="account_list_table">
-				<tr>
-					<td rowspan="2">쇼핑</td>
-					<td colspan="2">2022-01-04</td>
-					<td rowspan="2" class="expense">-99,000</td>
-				</tr>
-				<tr>
-					<td>신발</td>
-				</tr>
-			</table>
-			<hr>
+				<c:forEach items="${accountList}" var="account">
+				<form 
+					action="${pageContext.request.contextPath}/accountbook/accountDelete.do"
+					method="POST"
+					name="deleteFrm">
+					<hr>
+					<table class="account_list_table">
+						<tr>
+							<td rowspan="2">${account.incomeExpense}</td>
+							<td colspan="2">${account.regDate}</td>
+							<td rowspan=>${account.price}</td>
+						</tr>		
+						<tr>
+							<td>${account.detail}</td>
+							<td><button id="deleteBtn">삭제하기</button></td>
+						</tr>
+						<tr>
+							<input type="hidden" name="id" value="${loginMember.id}" />
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+							<input type="hidden" name="code" value="${account.code}" />
+						</tr>
+					</table>
+				</form>
+				</c:forEach>
 		</div>
 	</section>
 	<section class="box3">
@@ -177,6 +147,24 @@
 			<button id="btn1"><i class="fas fa-plus plus"></i><br />거래내역 입력하기</button>
 		</div>
 	</section>
+
 	
+	<script>
+	/* $("#closeBtn").on('click', function(){
+		$(".modal-background").fadeOut();
+	});
+	
+	$("#btn1").on('click', function(){
+		$(".modal-background").fadeIn();
+	}); */
+	
+	$(deleteBtn).click((e) => {
+		$.ajax({
+			url : "${pageContext.request.contextPath}/accountbook/accountDelete.do",
+			
+		})
+	})
+
+	</script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />

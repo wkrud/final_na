@@ -10,4 +10,6 @@ public interface AccountBookService {
 
 	List<AccountBook> selectAllAccountList();
 
+	int deleteAccount(String code);
+
 }
