@@ -57,8 +57,15 @@ public class MessageService {
 		Map<String, String> map = new HashMap<>();
 		
 		String AllId = member.getId();
-		String id = AllId.substring(AllId.length() - 4, AllId.length());
-		id += "****";	
+		String id = "";
+		if(AllId.length() >= 8) {
+			id = AllId.substring(0, AllId.length() - 4);
+			id += "****";			
+		}
+		else {
+			id = AllId.substring(0, AllId.length() - 3);
+			id += "***";
+		}
 		String text = "[나:다움] 아이디 찾기 문자입니다. 회원님의 아이디는 " + id + "입니다.";
 		
 		map.put("to", member.getPhone());
