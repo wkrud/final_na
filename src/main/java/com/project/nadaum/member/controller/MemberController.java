@@ -101,7 +101,15 @@ public class MemberController {
 				mailSendService.sendTemporaryPassword(member);
 			}else if("on".equals(map.get("methodPhone"))) {
 				Member member = memberService.selectOneMemberByIdPhone(map);
-//				messageService.sendTemporaryPassword
+				Map<String, Object> param = new HashMap<>();
+				String rawPassword = mailSendService.getTemporaryPassword();
+				String encodedPassword = bcryptPasswordEncoder.encode(rawPassword);
+				member.setPassword(rawPassword);
+				param.put("email", member.getEmail());
+				param.put("password", encodedPassword);
+				int result = memberService.updateMemberPassword(param);
+				messageService.sendPw(member);
+				return "redirect:/member/memberLogin.do";
 			}
 			return "redirect:/";
 		} catch (Exception e) {
