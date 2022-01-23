@@ -1,14 +1,15 @@
 @charset "UTF-8";
 
 body {font-family:"휴먼모음T";}
-/* div, section, header, aside, footer {padding:10px;} */
+.head-header{padding:10px;}
+.head-header nav{padding:10px;}
 
 /********** 전체컨테이너 **********/
-div#container	{}
+div#container {padding: 10px;}
 
 /********** header **********/
-header div#header-container {height:80px;}
-header div#header-container h2 	{margin:30px 10px 0px 10px;}
+.head-header div#header-container {height:80px;}
+.head-header div#header-container h2 	{margin:30px 10px 0px 10px;}
 nav {height:60px;}
 
 /********** content **********/
@@ -16,5 +17,5 @@ section#content		{min-height:600px;}
 #sign-out{border:0; background-color:#F8F9Fa; cursor:pointer;}
 
 /********** footer **********/
-footer	{background-color:#f8f9fa; background-clip:content-box; clear:both; height:95px; text-align:center;}
-footer p 	{margin-top:30px;}
+.main-footer	{background-color:#f8f9fa; background-clip:content-box; clear:both; height:95px; text-align:center;}
+.main-footer p 	{margin-top:30px;}
