@@ -37,18 +37,18 @@ var newEvent = function (start, end, eventType) {
     $('#save-event').unbind();
     $('#save-event').on('click', function () {
 
-        var eventData = {
-			id : id,
-            title: editTitle.val(),
-            start: editStart.val(),
-            end: editEnd.val(),
-            description: editDesc.val(),
-            type: editType.val(),
-            username: '',
-            backgroundColor: editColor.val(),
-            textColor: '#ffffff',
-            allDay: ''
-        };
+		var eventData = {
+			"id" : id,
+			title : editTitle.val(),
+			start : editStart.val(),
+			end : editEnd.val(),
+			description : editDesc.val(),
+			type : editType.val(),
+			username : '',
+			backgroundColor : editColor.val(),
+			textColor : '#ffffff',
+			allDay : ''
+		};
 
 
         if (eventData.start > eventData.end) {
@@ -85,8 +85,6 @@ var newEvent = function (start, end, eventType) {
 		headers[csrfHeader] = csrfToken;
 		//console.log(headers);
 		
-		var addEvent = [];
-		addEvent.push(eventData);
         //새로운 일정 저장
         $.ajax({
             type: "post",
@@ -94,7 +92,9 @@ var newEvent = function (start, end, eventType) {
             url: "/nadaum/calendar/addCalendar.do",
 			dataType: "json",
 			contentType: "application/json",
-            data: JSON.stringify({addEvent}),
+            data: JSON.stringify(
+				eventData
+			),
             success: function (response) {
 				console.log("캘린더 등록");
 				console.log(response);

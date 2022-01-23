@@ -11,7 +11,7 @@ public interface CalendarService {
 
 	List<Calendar> calendarList(String id);
 
-	int addCalendar(Map<String, Object> params);
+	int addCalendar(Map<String, Object> map);
 
 	
 }

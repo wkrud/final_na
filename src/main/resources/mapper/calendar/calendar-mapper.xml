@@ -13,17 +13,17 @@
 			calendar 
 		values(
 			seq_calendar_no.nextval,
-			'',
+			'testcode',
 			'',
 			#{id},
 			#{title}, 
-			#{description},
-			#{start}, 
-			#{end},
+			#{content}, 
+			to_date(#{startDate}, 'YYYY-MM-DD HH24:MI'), 
+			to_date(#{endDate}, 'YYYY-MM-DD HH24:MI'),
 			#{allDay},
-			#{backgroundColor},
 			#{textColor},
-			'',
+			#{backgroundColor},
+			#{backgroundColor},
 			#{type}
 	)
 	</insert>

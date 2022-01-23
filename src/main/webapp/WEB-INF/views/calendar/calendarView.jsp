@@ -85,10 +85,12 @@
                             <div class="col-xs-12">
                                 <label class="col-xs-4" for="edit-type">구분</label>
                                 <select class="inputModal" type="text" name="edit-type" id="edit-type">
-                                    <option value="카테고리1">카테고리1</option>
-                                    <option value="카테고리2">카테고리2</option>
-                                    <option value="카테고리3">카테고리3</option>
-                                    <option value="카테고리4">카테고리4</option>
+                                    <option value="일정">일정</option>
+                                    <option value="일기">일기</option>
+                                    <option value="가계부">가계부</option>
+                                    <option value="문화생활">문화생활</option>
+                                    <option value="영화">영화</option>
+                                    <option value="롤">롤</option>
                                 </select>
                             </div>
                         </div>
@@ -141,15 +143,17 @@
                     <label for="calendar_view">구분별</label>
                     <div class="input-group">
                         <select class="filter" id="type_filter" multiple="multiple">
-                            <option value="카테고리1">카테고리1</option>
-                            <option value="카테고리2">카테고리2</option>
-                            <option value="카테고리3">카테고리3</option>
-                            <option value="카테고리4">카테고리4</option>
+                            <option value="일정">일정</option>
+                            <option value="일기">일기</option>
+                            <option value="가계부">가계부</option>
+                            <option value="문화생활">문화생활</option>
+                            <option value="영화">영화</option>
+                            <option value="롤">롤</option>
                         </select>
                     </div>
                 </div>
 
-                <div class="col-lg-6">
+                <!-- <div class="col-lg-6">
                     <label for="calendar_view">등록자별</label>
                     <div class="input-group">
                         <label class="checkbox-inline"><input class='filter' type="checkbox" value="정연"
@@ -163,7 +167,7 @@
                         <label class="checkbox-inline"><input class='filter' type="checkbox" value="지효"
                                 checked>지효</label>
                     </div>
-                </div>
+                </div> -->
 
             </div>
         </div>
