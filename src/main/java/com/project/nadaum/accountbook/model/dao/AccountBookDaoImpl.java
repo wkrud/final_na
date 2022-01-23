@@ -1,6 +1,7 @@
 package com.project.nadaum.accountbook.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,11 @@ public class AccountBookDaoImpl implements AccountBookDao {
 	@Override
 	public int deleteAccount(String code) {
 		return session.delete("accountbook.deleteAccount", code);
+	}
+
+	@Override
+	public Map<String, Object> monthlyTotalIncome(String id) {
+		return session.selectOne("accountbook.monthlyTotalIncome", id);
 	}
 	
 	

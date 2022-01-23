@@ -57,6 +57,8 @@ $("#btn1").on('click', function(){
     var $id = $("#id").val();
     console.log($id);
     
+    
+    //가계부 리스트 조회
  	$.ajax({
 		url: "/nadaum/accountbook/selectAllAccountList.do",
 		type: "GET",
@@ -65,8 +67,27 @@ $("#btn1").on('click', function(){
 		},
 		dataType : "json",
 		contentType : "application/json; charset=UTF-8",
-		success : function(data){
-			console.log(data);
+		success(list){
+			
+			//if조건으로 가계부 리스트 있/없 나눠주기
+			
+			$.each(list, function(i, account) {
+			var result = `
+				<tr>
+					<td rowspan="2">${account.incomeExpense}</td>
+					<td colspan="2">${account.regDate}</td>
+					<td>${account.price}</td>
+				</tr>		
+				<tr>
+					<td>${account.detail}</td>
+					<td>${account.code}</td>
+
+				`
+			console.log(result);
+			$('#account_list_table').append(result);
+			})
+			
+			
 		},
 		error : function(data){
 			console.log(data);
@@ -74,13 +95,17 @@ $("#btn1").on('click', function(){
 		}	
 	});
 	
-	/*url : "/accountbook/selectAllAccountList.do",
-	type : "GET",
-	data : {
-		id : id
-		}
-	}).done(function(accountList){
-		console.log(accountList);
-	});*/
-    
+	
+    $.ajax({
+		url: "/nadaum/accountbook/monthlyTotalIncome.do",
+		type: "GET",
+		data: {
+			id : $id
+		},
+		dataType : "json",
+		contentType : "application/json; charset=UTF-8",
+		success(income){
+			console.log(income);
+			}
+		});
     

@@ -24,5 +24,5 @@ public class AccountBook implements Serializable {
    private Date reg_date;
    private String income_expense;
    private String payment;
-   private int goal;
+   private String category;
 }

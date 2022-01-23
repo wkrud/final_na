@@ -1,6 +1,7 @@
 package com.project.nadaum.accountbook.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,11 @@ public class AccountBookServiceImpl implements AccountBookService {
 	@Override
 	public int deleteAccount(String code) {
 		return accountBookDao.deleteAccount(code);
+	}
+
+	@Override
+	public Map<String, Object> monthlyTotalIncome(String id) {
+		return accountBookDao.monthlyTotalIncome(id);
 	}
 	
 	

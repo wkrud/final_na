@@ -29,19 +29,34 @@
 			<tr>
 				<td>
 					<label for="income_expense">수입</label>
-					<input type="radio" name="income_expense" id="" value="I" checked/>
+					<input type="radio" name="income_expense" id="income" value="I" checked/>
 				</td>
 				<td>
 					<label for="income_expense">지출</label>
-					<input type="radio" name="income_expense" id="" value="E"/>
+					<input type="radio" name="income_expense" id="expense" value="E"/>
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2">
+				<td colspan="">
 					<select name="payment" id="">
 						<option value="cash" name="payment">현금</option>
 						<option value="card" name="payment">카드</option>
 					</select>
+					<select name="category" id="income_category">
+						<option value="급여">급여</option>
+						<option value="용돈">용돈</option>
+						<option value="기타(i)">기타</option>
+					</select>
+					<select name="category" id="expense_cateogory">
+						<option value="식비">식비</option>
+						<option value="쇼핑">쇼핑</option>
+						<option value="저축">저축</option>
+						<option value="유흥">유흥</option>
+						<option value="생활비">생활비</option>
+						<option value="자기계발">자기계발</option>
+						<option value="기타(e)">기타</option>
+					</select>
+						
 				</td>
 			</tr>
 			<tr>
@@ -94,30 +109,27 @@
 		</div>
 		<!-- 화면만 잡고 리스트 싹 불러오기 -->
 		<div class="account_list">
-				<c:forEach items="${accountList}" var="account">
-				<form 
-					action="${pageContext.request.contextPath}/accountbook/accountDelete.do"
-					method="POST"
-					name="deleteFrm">
-					<hr>
-					<table class="account_list_table">
-						<tr>
-							<td rowspan="2">${account.incomeExpense}</td>
-							<td colspan="2"><fmt:formatDate pattern="yyyy-MM-dd" value="${account.regDate}"/></td>
-							<td rowspan=>${account.price}</td>
-						</tr>		
-						<tr>
-							<td>${account.detail}</td>
-							<td><button id="deleteBtn">삭제하기</button></td>
-						</tr>
-						<tr>
-							<input type="hidden" name="id" value="${loginMember.id}" />
-							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-							<input type="hidden" name="code" value="${account.code}" />
-						</tr>
-					</table>
-				</form>
-				</c:forEach>
+			<form 
+				action="${pageContext.request.contextPath}/accountbook/accountDelete.do"
+				method="POST"
+				name="deleteFrm">
+				<hr>
+				<table id="account_list_table">
+					<%-- <tr>
+						<td rowspan="2">${account.incomeExpense}</td>
+						<td colspan="2"><fmt:formatDate pattern="yyyy-MM-dd" value="${account.regDate}"/></td>
+						<td>${account.price}</td>
+					</tr>		
+					<tr id="testTd">
+					<tr>
+						<td>${account.detail}</td> --%>
+						<td><button id="deleteBtn">삭제하기</button></td>				
+				</table>
+						<input type="hidden" name="id" value="${loginMember.id}" />
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+						<input type="hidden" name="code" value="${account.code}" />
+			</form>
+
 		</div>
 	</section>
 	<section class="box3">
@@ -151,13 +163,13 @@
 	<script src='${pageContext.request.contextPath}/resources/js/accountbook/main.js'></script>
 	
 	
-	<script>
-	$(deleteBtn).click((e) => {
+<script>	
+	document.on('click','btn[id^='deleteBtn']', function()) {
+		console.log("클릭");
 		$.ajax({
-			url : "${pageContext.request.contextPath}/accountbook/accountDelete.do",
-			
-		})
-	})
+			url : "${pageContext.request.contextPath}/accountbook/accountDelete.do",			
+		});
+	});
 
 	</script>
 

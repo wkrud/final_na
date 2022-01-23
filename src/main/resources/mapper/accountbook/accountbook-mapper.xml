@@ -15,7 +15,7 @@
 			#{reg_date},
 			#{income_expense},
 			#{payment},
-			0
+			#{category}
 		)	
 	</insert>
 	
@@ -37,6 +37,17 @@
     		reg_date desc
 	</select>
 	
+	<select id="monthlyTotalIncome" resultType="hashMap">
+		select
+    		income_expense,
+   			 sum(price)
+		from
+  			 account_book
+		where
+   			 id = #{id}
+		group by rollup(income_expense)
+	</select>
+	
 	
 	
 	<resultMap type="Map" id="accountbookMap">
@@ -47,7 +58,7 @@
 		<result column="reg_date" property="regDate"/>
 		<result column="income_expense" property="incomeExpense"/>
 		<result column="payment" property="payment"/>
-		<result column="goal" property="goal"/>
+		<result column="cateogory" property="category"/>
 	</resultMap>
 
 </mapper>
