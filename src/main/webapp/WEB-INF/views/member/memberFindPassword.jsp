@@ -57,16 +57,13 @@ $(() => {
 						<input type="checkbox" id="methodPhone" name="methodPhone"/>
 					</div>
 					<div class="mothod-wrap">						
+						<label for="id">아이디</label>
+						<input type="text" name="id" id="id" class="form-control" placeholder="아이디를 입력하세요">
 						<div class="find-by-email">
-							<label for="emailId">아이디</label>
-							<input type="text" name="id" id="emailId" class="form-control" placeholder="아이디를 입력하세요">
 							<label for="email">이메일</label>
-							<input type="text" name="email" id="email" class="form-control" placeholder="등록된 이메일" aria-label="Recipient's username" aria-describedby="basic-addon2">
-								
+							<input type="text" name="email" id="email" class="form-control" placeholder="등록된 이메일">								
 						</div>
 						<div class="find-by-phone">
-							<label for="phoneId">아이디</label>
-							<input type="text" name="id" id="phoneId" class="form-control" placeholder="아이디를 입력하세요">
 							<label for="phone">핸드폰</label>
 							<input type="tel" id="phone" class="form-control" name="phone" placeholder="등록된 핸드폰을 입력해주세요"/>
 						</div>
@@ -98,7 +95,6 @@ $methodEmail.change((e) => {
 		$methodPhone.prop('checked', false);
 		$findByEmail.show();
 		$findByPhone.hide();		
-		$(phoneId).val()
 	}else{
 		$findByEmail.hide();
 	}
