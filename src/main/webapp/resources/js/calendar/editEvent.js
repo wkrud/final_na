@@ -80,7 +80,7 @@ var editEvent = function (event, element, view) {
 
         //일정 업데이트
         $.ajax({
-            type: "get",
+            type: "post",
             url: "",
             data: {
                 //...
