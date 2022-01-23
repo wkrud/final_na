@@ -31,7 +31,7 @@ $(() => {
 	$(findPasswordModal)
 		.modal()
 		.on("hide.bs.modal", (e) => {
-			location.href='${pageContext.request.contextPath}/member/memberLogin.do';
+			location.href='${pageContext.request.contextPath}';
 		});
 });
 </script>
