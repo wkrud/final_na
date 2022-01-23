@@ -65,6 +65,9 @@ public class MemberController {
 	
 	@GetMapping("/memberFindId.do")
 	public void memberFindId() {}
+	
+	@GetMapping("/memberFindPassword.do")
+	public void memberFindPassword() {}
 		
 	@GetMapping("/memberEnroll.do")
 	public void memberEnroll(@RequestParam String agree) {
@@ -90,9 +93,29 @@ public class MemberController {
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			throw e;
-		}
-		
-		
+		}		
+	}
+	
+	@PostMapping("/memberFindPassword.do")
+	public String memberFindPassword(String id, String methodEmail, String methodPhone, String email, String phone) throws Exception {
+		try {
+			Map<String, Object> map = new HashMap<>();
+			map.put("id", id);
+			map.put("email", email);
+			map.put("phone", phone);
+			log.debug("map = {}", map);
+			if("on".equals(methodEmail)) {
+				log.debug("methodEmail = {}", methodEmail);
+//				Member member = memberService.selectOneMemberByEmail(map);
+//				mailSendService.sendIdByEmail(member);
+			}else if("on".equals(methodPhone)) {
+				log.debug("methodPhone = {}", methodPhone);
+			}
+			return "redirect:/member/memberFindPassword.do";
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw e;
+		}		
 	}
 	
 	@PostMapping("/memberAgreementCheck.do")
