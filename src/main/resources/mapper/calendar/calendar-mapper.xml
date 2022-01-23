@@ -8,24 +8,24 @@
 		select * from calendar where id = #{id}
 	</select>
 	
-	<insert id="AddCalendar">
-		INSERT INTO 
+	<insert id="addCalendar">
+		insert into 
 			calendar 
 		values(
 			seq_calendar_no.nextval,
-			#{code},
-			#{groundId},
+			'',
+			'',
 			#{id},
 			#{title}, 
-			#{content},
-			to_date(#{start}, 'YYYY-MM-DD'), 
-			to_date(#{end}, 'YYYY-MM-DD'),
+			#{description},
+			#{start}, 
+			#{end},
 			#{allDay},
 			#{backgroundColor},
-			#{backgroundColor},
-			#{borderColor},
+			#{textColor},
+			'',
 			#{type}
-)
+	)
 	</insert>
 	
 	<resultMap type="calendar" id="calendar">

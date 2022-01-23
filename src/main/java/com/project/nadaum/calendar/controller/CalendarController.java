@@ -47,16 +47,14 @@ public class CalendarController {
 	}
 
 	// 달력데이터 추가
-	//@ResponseBody
+	@ResponseBody
 	@PostMapping("/addCalendar.do")
-	public String addCalendar(@RequestBody Map<String, Object> param) {
-		System.out.println(String.valueOf(param.get("id")));
-		JSONObject jsonObject = null;
-		
-		jsonObject = new JSONObject();
-		jsonObject.put("id", String.valueOf(param.get("id")));
-		log.debug("param = " + param);		
-		return jsonObject.toString();	
+	public Map<String, Object> addCalendar(@RequestBody Map<String, Object> params) {
+		log.debug("params = " + params);
+		System.out.println(params.get("id"));
+		System.out.println(params.get("title"));
+//		int result = calendarService.addCalendar(params);
+		return params;
 	}
 	
 	

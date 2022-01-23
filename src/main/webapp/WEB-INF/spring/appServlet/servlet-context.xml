@@ -76,5 +76,7 @@
 		<websocket:sockjs/>
 	</websocket:handlers>
 	
+	<!-- 문자(coolsms)관련 -->
+	<beans:bean id="messageService" class="com.project.nadaum.member.model.service.MessageService"/>
 	
 </beans:beans>

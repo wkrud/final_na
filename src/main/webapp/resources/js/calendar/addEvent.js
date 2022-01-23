@@ -33,10 +33,6 @@ var newEvent = function (start, end, eventType) {
     modifyBtnContainer.hide();
     eventModal.modal('show');
 
-    /******** 임시 RAMDON ID - 실제 DB 연동시 삭제 **********/
-    //var eventId = 1 + Math.floor(Math.random() * 1000);
-    /******** 임시 RAMDON ID - 실제 DB 연동시 삭제 **********/
-
     //새로운 일정 저장버튼 클릭
     $('#save-event').unbind();
     $('#save-event').on('click', function () {
@@ -48,10 +44,10 @@ var newEvent = function (start, end, eventType) {
             end: editEnd.val(),
             description: editDesc.val(),
             type: editType.val(),
-            //username: '',
+            username: '',
             backgroundColor: editColor.val(),
             textColor: '#ffffff',
-            allDay: false
+            allDay: ''
         };
 
 
@@ -74,7 +70,7 @@ var newEvent = function (start, end, eventType) {
             //DB에 넣을때(선택)
             realEndDay = moment(eventData.end).format('YYYY-MM-DD');
 
-            eventData.allDay = true;
+            eventData.allDay = 1;
         }
 
         $("#calendar").fullCalendar('renderEvent', eventData, true);
@@ -82,24 +78,23 @@ var newEvent = function (start, end, eventType) {
         editAllDay.prop('checked', false);
         eventModal.modal('hide');
 
-		var addEvent = JSON.stringify(eventData);
-		
 		// 403에러방지 csrf토큰 headers
-		const csrfHeader = "${_csrf.headerName}";
-		const csrfToken = "${_csrf.token}";
+		const csrfToken = $("meta[name='_csrf']").attr("content");
+		const csrfHeader = $("meta[name='_csrf_header']").attr("content");
 		const headers = {};
 		headers[csrfHeader] = csrfToken;
+		//console.log(headers);
 		
+		var addEvent = [];
+		addEvent.push(eventData);
         //새로운 일정 저장
         $.ajax({
             type: "post",
 			headers: headers,
             url: "/nadaum/calendar/addCalendar.do",
 			dataType: "json",
-			contentType: "application/json; charset=utf-8;",
-            data: {
-				addEvent
-            },
+			contentType: "application/json",
+            data: JSON.stringify({addEvent}),
             success: function (response) {
 				console.log("캘린더 등록");
 				console.log(response);
@@ -108,6 +103,7 @@ var newEvent = function (start, end, eventType) {
                 $('#calendar').fullCalendar('refetchEvents');
             },
 			error: function(response){
+				console.log(response);
 				console.log("캘린더 등록 실패");
 			}
         });
