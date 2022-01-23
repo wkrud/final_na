@@ -346,3 +346,6 @@ input[type=checkbox]{
 		</script>
 </sec:authorize>
 		<section id="content">
+			<sec:authorize access="isAnonymous()">
+				<a href="${pageContext.request.contextPath}/member/memberLogin.do">로그인폼</a>
+			</sec:authorize>

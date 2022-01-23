@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.project.nadaum.member.model.vo.Member;
@@ -19,6 +21,8 @@ import net.nurigo.sdk.message.response.SingleMessageSentResponse;
 import net.nurigo.sdk.message.service.DefaultMessageService;
 
 @Slf4j
+@Service
+@PropertySource("classpath:smssource.properties")
 public class MessageService {
 	
 	private DefaultMessageService messageService;
@@ -53,9 +57,29 @@ public class MessageService {
 		Map<String, String> map = new HashMap<>();
 		
 		String AllId = member.getId();
-		String id = AllId.substring(AllId.length() - 4, AllId.length());
-		id += "****";	
+		String id = "";
+		if(AllId.length() >= 8) {
+			id = AllId.substring(0, AllId.length() - 4);
+			id += "****";			
+		}
+		else {
+			id = AllId.substring(0, AllId.length() - 3);
+			id += "***";
+		}
 		String text = "[나:다움] 아이디 찾기 문자입니다. 회원님의 아이디는 " + id + "입니다.";
+		
+		map.put("to", member.getPhone());
+		map.put("from", "01099276140");
+		map.put("text", text);
+		
+		sendMessage(map);
+	}
+	
+	public void sendPw(Member member) {
+		Map<String, String> map = new HashMap<>();
+		
+		String password = member.getPassword();
+		String text = "[나:다움] 비밀번호 찾기 문자입니다. 임시 비밀번호 : " + password;
 		
 		map.put("to", member.getPhone());
 		map.put("from", "01099276140");
