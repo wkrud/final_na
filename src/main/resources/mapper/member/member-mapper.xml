@@ -66,6 +66,10 @@
 		select * from member where phone = #{phone}
 	</select>
 	
+	<select id="selectOneMemberByIdPhone" resultType="member">
+		select * from member where id = #{id} and phone = #{phone}
+	</select>
+	
 	<!-- 회원정보 찾기 끝 -->
 	
 	<!-- 친구 crud 시작 -->	

@@ -100,7 +100,8 @@ public class MemberController {
 				Member member = memberService.selectOneMemberByIdEmail(map);
 				mailSendService.sendTemporaryPassword(member);
 			}else if("on".equals(map.get("methodPhone"))) {
-//				log.debug("methodPhone = {}", methodPhone);
+				Member member = memberService.selectOneMemberByIdPhone(map);
+//				messageService.sendTemporaryPassword
 			}
 			return "redirect:/";
 		} catch (Exception e) {

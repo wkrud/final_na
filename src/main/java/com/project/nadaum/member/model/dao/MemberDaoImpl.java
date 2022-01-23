@@ -201,6 +201,11 @@ public class MemberDaoImpl implements MemberDao {
 		return session.selectOne("member.selectOneMemberByPhone", map);
 	}
 
+	@Override
+	public Member selectOneMemberByIdPhone(Map<String, Object> map) {
+		return session.selectOne("member.selectOneMemberByIdPhone", map);
+	}
+
 	
 	
 	
