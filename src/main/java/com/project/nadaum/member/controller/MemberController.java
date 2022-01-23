@@ -62,12 +62,75 @@ public class MemberController {
 			
 	@GetMapping("/memberLogin.do")
 	public void memberLogin() {}
+	
+	@GetMapping("/memberFindId.do")
+	public void memberFindId() {}
+	
+	@GetMapping("/memberFindPassword.do")
+	public void memberFindPassword() {}
 		
 	@GetMapping("/memberEnroll.do")
-	public void memberEnroll() {}
+	public void memberEnroll(@RequestParam String agree) {
+	}
 	
 	@GetMapping("/memberEnrollAgreement.do")
 	public void memberEnrollAgreement() {}	
+	
+	@PostMapping("/memberFindId.do")
+	public String memberFindId(String methodEmail, String methodPhone, String email, String phone) throws Exception {
+		try {
+			Map<String, Object> map = new HashMap<>();
+			map.put("email", email);
+			map.put("phone", phone);
+			if("on".equals(methodEmail)) {
+				log.debug("methodEmail = {}", methodEmail);
+				Member member = memberService.selectOneMemberByEmail(map);
+				mailSendService.sendIdByEmail(member);
+			}else if("on".equals(methodPhone)) {
+				log.debug("methodPhone = {}", methodPhone);
+			}
+			return "redirect:/member/memberLogin.do";
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw e;
+		}		
+	}
+	
+	@PostMapping("/memberFindPassword.do")
+	public String memberFindPassword(String id, String methodEmail, String methodPhone, String email, String phone) throws Exception {
+		try {
+			Map<String, Object> map = new HashMap<>();
+			map.put("id", id);
+			map.put("email", email);
+			map.put("phone", phone);
+			log.debug("map = {}", map);
+			if("on".equals(methodEmail)) {
+				log.debug("methodEmail = {}", methodEmail);
+//				Member member = memberService.selectOneMemberByEmail(map);
+//				mailSendService.sendIdByEmail(member);
+			}else if("on".equals(methodPhone)) {
+				log.debug("methodPhone = {}", methodPhone);
+			}
+			return "redirect:/member/memberFindPassword.do";
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw e;
+		}		
+	}
+	
+	@PostMapping("/memberAgreementCheck.do")
+	public ResponseEntity<?> memberAgreementCheck(@RequestParam String agree){
+		try {
+			log.debug("agree = {}", agree);
+			Map<String, Object> map = new HashMap<>();
+			Date date = new Date();
+			map.put("agree", date);
+			return ResponseEntity.ok(map);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw e;
+		}
+	}
 	
 	@GetMapping("/checkIdDuplicate.do")
 	public ResponseEntity<Map<String, Object>> checkIdDuplicate(@RequestParam String id){
@@ -76,6 +139,18 @@ public class MemberController {
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("id", id);
+		map.put("available", available);		
+		
+		return ResponseEntity.ok(map);
+	}
+	
+	@GetMapping("/checkEmailDuplicate.do")
+	public ResponseEntity<Map<String, Object>> checkEmailDuplicate(@RequestParam String email){
+		Map<String, Object> map = new HashMap<>();
+		map.put("email", email);
+		Member member = memberService.selectOneMemberByEmail(map);
+		boolean available = member == null;
+		
 		map.put("available", available);		
 		
 		return ResponseEntity.ok(map);
@@ -290,9 +365,11 @@ public class MemberController {
 		param.put("id", member.getId());
 		param.put("friendNickname", friend);
 		Member friendInfo = memberService.selectOneMemberNicknameNotMe(param);
-		param.put("friendId", friendInfo.getId());
 		log.debug("param = {}", param);
-		if(friendInfo != null) {
+		if(friendInfo == null) {			
+			return ResponseEntity.ok(0);
+		}else {
+			param.put("friendId", friendInfo.getId());
 			Map<String, Object> isFollower = memberService.selectFollower(param);
 			Map<String, Object> isFollowing = memberService.selectFollowing(param);
 			Map<String, Object> isFriend = memberService.selectFriend(param);
@@ -307,8 +384,7 @@ public class MemberController {
 			}
 			log.debug("resultMap = {}", resultMap);
 			return ResponseEntity.ok(resultMap);
-		}else
-			return ResponseEntity.ok(0);
+		}
 	}
 	
 	@GetMapping("/mypage/searchFriendsByNickname.do")
