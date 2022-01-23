@@ -11,7 +11,7 @@ public interface CalendarDao {
 
 	List<Calendar> calendarList(String id);
 
-	int addCalendar(Calendar calendar);
+	int addCalendar(Map<String, Object> map);
 
 
 }

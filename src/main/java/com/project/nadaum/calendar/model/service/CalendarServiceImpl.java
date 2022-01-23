@@ -25,8 +25,8 @@ public class CalendarServiceImpl implements CalendarService {
 
 
 	@Override
-	public int addCalendar(Calendar calendar) {
-		return calendarDao.addCalendar(calendar);
+	public int addCalendar(Map<String, Object> map) {
+		return calendarDao.addCalendar(map);
 	}
 
 }

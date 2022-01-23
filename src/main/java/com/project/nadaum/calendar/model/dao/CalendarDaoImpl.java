@@ -23,8 +23,8 @@ public class CalendarDaoImpl implements CalendarDao {
 	}
 
 	@Override
-	public int addCalendar(Calendar calendar) {
-		return session.insert("calendar.addCalendar", calendar);
+	public int addCalendar(Map<String, Object> map) {
+		return session.insert("calendar.addCalendar", map);
 	}
 	
 }
