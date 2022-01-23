@@ -156,10 +156,7 @@ input[type=checkbox]{
 										<img src="${pageContext.request.contextPath}/resources/upload/member/profile/${attach.renamedFilename}" alt="" style="width:45px; height:45px; object-fit:cover;" />										 		
 									</c:if>								
 								</c:if>								
-							</div>
-						    <!-- <svg height="32" aria-hidden="true" viewBox="0 0 16 16" version="1.1" width="32"data-view-component="true" class="octicon octicon-mark-github">
-							</svg>  -->
-						    
+							</div>						    
 						</button>
 						<div class="collapse" id="alarmList"></div>
 					</div>					
