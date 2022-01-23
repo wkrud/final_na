@@ -49,22 +49,38 @@ $("#btn1").on('click', function(){
 
 
 /* id값 가져오는 ajax*/
-	const csrfHeader = "${_csrf.headerName}";
+	/*const csrfHeader = "${_csrf.headerName}";
     const csrfToken = "${_csrf.token}";
     const headers = {};
-    headers[csrfHeader] = csrfToken;
+    headers[csrfHeader] = csrfToken;*/
   
-    var id = $("#id").val();
-    console.log(id);
+    var $id = $("#id").val();
+    console.log($id);
     
-   $.ajax({
-	url : "/accountbook/selectAllAccountList.do",
+ 	$.ajax({
+		url: "/nadaum/accountbook/selectAllAccountList.do",
+		type: "GET",
+		data: {
+			id : $id
+		},
+		dataType : "json",
+		contentType : "application/json; charset=UTF-8",
+		success : function(data){
+			console.log(data);
+		},
+		error : function(data){
+			console.log(data);
+			console.log("어디가 문제일까,,,,,,,,,,,");
+		}	
+	});
+	
+	/*url : "/accountbook/selectAllAccountList.do",
 	type : "GET",
 	data : {
 		id : id
 		}
 	}).done(function(accountList){
 		console.log(accountList);
-	});
+	});*/
     
     

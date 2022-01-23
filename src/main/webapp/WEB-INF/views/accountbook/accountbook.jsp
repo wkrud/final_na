@@ -103,7 +103,7 @@
 					<table class="account_list_table">
 						<tr>
 							<td rowspan="2">${account.incomeExpense}</td>
-							<td colspan="2">${account.regDate}</td>
+							<td colspan="2"><fmt:formatDate pattern="yyyy-MM-dd" value="${account.regDate}"/></td>
 							<td rowspan=>${account.price}</td>
 						</tr>		
 						<tr>
