@@ -80,6 +80,8 @@ public interface MemberService {
 
 	int updateMemberPassword(Map<String, Object> map);
 
+	Member selectOneMemberByPhone(Map<String, Object> map);
+
 
 
 }

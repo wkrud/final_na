@@ -62,6 +62,10 @@
 		update member set password = #{password} where email = #{email}
 	</update>
 	
+	<select id="selectOneMemberByPhone" resultType="member">
+		select * from member where phone = #{phone}
+	</select>
+	
 	<!-- 회원정보 찾기 끝 -->
 	
 	<!-- 친구 crud 시작 -->	

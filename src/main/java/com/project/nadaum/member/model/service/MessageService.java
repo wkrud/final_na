@@ -1,8 +1,15 @@
 package com.project.nadaum.member.model.service;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import org.springframework.web.bind.annotation.PostMapping;
+
+import com.project.nadaum.member.model.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
 import net.nurigo.sdk.NurigoApp;
@@ -16,8 +23,17 @@ public class MessageService {
 	
 	private DefaultMessageService messageService;
 	
-	public MessageService() {
-		this.messageService = NurigoApp.INSTANCE.initialize("api-key", "api-secret-key", "https://api.coolsms.co.kr");
+	private Properties prop = new Properties();
+	
+	public MessageService() throws IOException {
+		File filepath = new File(MessageService.class.getResource("/smssource.properties").getPath());
+		try {
+			prop.load(new FileReader(filepath));
+		} catch (IOException e) {
+			log.error(e.getMessage(), e);
+			throw e;
+		}
+		this.messageService = NurigoApp.INSTANCE.initialize(prop.getProperty("apiKey"), prop.getProperty("apiKeySecret"), prop.getProperty("url"));
 	}
 	
 	@PostMapping("/send-one")
@@ -31,6 +47,21 @@ public class MessageService {
 		log.debug("response = {}", response);
 		
 		return response;
+	}
+	
+	public void sendId(Member member){
+		Map<String, String> map = new HashMap<>();
+		
+		String AllId = member.getId();
+		String id = AllId.substring(AllId.length() - 4, AllId.length());
+		id += "****";	
+		String text = "[나:다움] 아이디 찾기 문자입니다. 회원님의 아이디는 " + id + "입니다.";
+		
+		map.put("to", member.getPhone());
+		map.put("from", "01099276140");
+		map.put("text", text);
+		
+		sendMessage(map);
 	}
 
 }

@@ -196,6 +196,11 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.updateMemberPassword(map);
 	}
 
+	@Override
+	public Member selectOneMemberByPhone(Map<String, Object> map) {
+		return memberDao.selectOneMemberByPhone(map);
+	}
+
 	
 	
 	

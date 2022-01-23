@@ -1,15 +1,12 @@
 package com.project.nadaum.member.controller;
 
 import java.beans.PropertyEditor;
-import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +25,6 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.project.nadaum.common.NadaumUtils;
@@ -37,6 +32,7 @@ import com.project.nadaum.common.vo.Attachment;
 import com.project.nadaum.member.model.service.KakaoService;
 import com.project.nadaum.member.model.service.MailSendService;
 import com.project.nadaum.member.model.service.MemberService;
+import com.project.nadaum.member.model.service.MessageService;
 import com.project.nadaum.member.model.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
@@ -57,6 +53,9 @@ public class MemberController {
 	
 	@Autowired
 	private KakaoService kakaoService;
+	
+	@Autowired
+	private MessageService messageService;
 			
 	@GetMapping("/memberLogin.do")
 	public void memberLogin() {}
@@ -74,17 +73,17 @@ public class MemberController {
 	public void memberEnrollAgreement() {}	
 	
 	@PostMapping("/memberFindId.do")
-	public String memberFindId(String methodEmail, String methodPhone, String email, String phone) throws Exception {
+	public String memberFindId(@RequestParam Map<String, Object> map) throws Exception {
 		try {
-			Map<String, Object> map = new HashMap<>();
-			map.put("email", email);
-			map.put("phone", phone);
-			if("on".equals(methodEmail)) {
-				log.debug("methodEmail = {}", methodEmail);
+			if("on".equals(map.get("methodEmail"))) {
 				Member member = memberService.selectOneMemberByEmail(map);
 				mailSendService.sendIdByEmail(member);
-			}else if("on".equals(methodPhone)) {
-				log.debug("methodPhone = {}", methodPhone);
+			}else if("on".equals(map.get("methodPhone"))) {
+				Member member = memberService.selectOneMemberByPhone(map);
+				if(member.getPhone() != null && !member.getPhone().isEmpty()) {
+					log.debug("성공");
+					messageService.sendId(member);
+				}
 			}
 			return "redirect:/member/memberLogin.do";
 		} catch (Exception e) {
