@@ -29,4 +29,10 @@ public class CalendarServiceImpl implements CalendarService {
 		return calendarDao.addCalendar(map);
 	}
 
+
+	@Override
+	public int changeDate(Map<String, Object> map) {
+		return calendarDao.changeDate(map);
+	}
+
 }

@@ -26,5 +26,10 @@ public class CalendarDaoImpl implements CalendarDao {
 	public int addCalendar(Map<String, Object> map) {
 		return session.insert("calendar.addCalendar", map);
 	}
+
+	@Override
+	public int changeDate(Map<String, Object> map) {
+		return session.update("calendar.changeDate", map);
+	}
 	
 }

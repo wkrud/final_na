@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,7 +53,8 @@ public class CalendarController {
 	@ResponseBody
 	@PostMapping("/addCalendar.do")
 	public Map<String, Object> addCalendar(@RequestBody Map<String, Object> eventData) {
-		Map<String, Object> map = new HashMap<String, Object>();	
+		Map<String, Object> map = new HashMap<String, Object>();
+		log.debug("eventData = " + eventData);
 		map.put("id", eventData.get("id"));
 		map.put("title", eventData.get("title"));
 		map.put("startDate", eventData.get("start"));
@@ -62,11 +64,23 @@ public class CalendarController {
 		map.put("backgroundColor", eventData.get("backgroundColor"));
 		map.put("textColor", eventData.get("textColor"));
 		map.put("allDay", eventData.get("allDay"));
-		System.out.println(map);
 		int result = calendarService.addCalendar(map);
 		return map;
 		
 	}
 	
-	
+	// 드랍시 날짜 변경
+	@ResponseBody
+	@PostMapping("/changeDate.do")
+	public Map<String, Object> changeDate(@RequestBody Map<String, Object> changeDate) {
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("startDate", changeDate.get("startDate"));
+		map.put("endDate", changeDate.get("endDate"));
+		map.put("no", changeDate.get("no"));
+		
+		int result = calendarService.changeDate(map);
+		return map;
+		
+	}
 }
