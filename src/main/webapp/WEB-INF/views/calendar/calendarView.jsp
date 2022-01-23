@@ -30,10 +30,12 @@
         <div id="contextMenu" class="dropdown clearfix">
             <ul class="dropdown-menu dropNewEvent" role="menu" aria-labelledby="dropdownMenu"
                 style="display:block;position:static;margin-bottom:5px;">
-                <li><a tabindex="-1" href="#">카테고리1</a></li>
-                <li><a tabindex="-1" href="#">카테고리2</a></li>
-                <li><a tabindex="-1" href="#">카테고리3</a></li>
-                <li><a tabindex="-1" href="#">카테고리4</a></li>
+                <li><a tabindex="-1" href="#">일정</a></li>
+                <li><a tabindex="-1" href="#">일기</a></li>
+                <li><a tabindex="-1" href="#">가계부</a></li>
+                <li><a tabindex="-1" href="#">문화생활</a></li>
+                <li><a tabindex="-1" href="#">영화</a></li>
+                <li><a tabindex="-1" href="#">롤</a></li>
                 <li class="divider"></li>
                 <li><a tabindex="-1" href="#" data-role="close">Close</a></li>
             </ul>
