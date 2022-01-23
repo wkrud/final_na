@@ -1,6 +1,7 @@
 package com.project.nadaum.member.model.service;
 
 import java.util.Random;
+import java.util.UUID;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -82,6 +83,41 @@ public class MailSendService {
 			log.error(e.getMessage(), e);
 			throw e;
 		}
+	}
+
+	public void sendTemporaryPassword(Member member) throws MessagingException {
+		
+		String temporaryPw = getTemporaryPassword();
+
+		MimeMessage mimeMessage = mailSender.createMimeMessage();
+		String mailContent = "<h1>나:다움 임시 비밀번호 발급</h1><br/><span>임시 비밀번호 : " + temporaryPw + "</span><br />"
+						   + "<a href='http://localhost:9090/nadaum/member/memberTemporaryPassword.do?email=" + member.getEmail()
+						   + "&tempPw=" + temporaryPw + "'>나:다움 로그인하기</a><br /><p>링크를 클릭하여 로그인하시고 비밀번호를 수정시기 바랍니다.</p>";
+		
+		try {
+			mimeMessage.setSubject("임시 비밀번호 이메일 ", "utf-8");
+			mimeMessage.setText(mailContent, "utf-8", "html");
+			mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(member.getEmail()));
+			mailSender.send(mimeMessage);
+		} catch (MessagingException e) {
+			log.error(e.getMessage(), e);
+			throw e;
+		}
+		
+	}
+	
+	public String getTemporaryPassword() {
+		
+		String temporaryPassword = "";
+		try {
+			temporaryPassword = UUID.randomUUID().toString().replaceAll("-", "");
+			temporaryPassword = temporaryPassword.substring(0, 10);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw e;
+		}
+		return temporaryPassword;
+		
 	}
 	
 }

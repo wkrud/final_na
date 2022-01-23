@@ -59,7 +59,7 @@ $(() => {
 					<div class="mothod-wrap">						
 						<div class="find-by-email">
 							<label for="email">이메일</label>
-							<input type="text" name="email" id="email" class="form-control" placeholder="등록된 이메일" aria-label="Recipient's username" aria-describedby="basic-addon2">
+							<input type="text" name="email" id="email" class="form-control" placeholder="등록된 이메일">
 								
 						</div>
 						<div class="find-by-phone">
