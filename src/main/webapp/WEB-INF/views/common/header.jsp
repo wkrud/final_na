@@ -34,13 +34,11 @@
 	crossorigin="anonymous">
 
 <!-- 사용자작성 css -->
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/common/style.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/style.css" /> 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/profile.css" />
 
 <!-- 토글용 테스트용 다른 ui속성과 충돌나는중-->
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/darkmode.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/darkmode.css" />
 <!-- 토글용 css 파일 로딩이 안되서 직접 붙여놓음. -->
 <style>
 input[type=checkbox]{
@@ -95,7 +93,7 @@ input[type=checkbox]{
 <sec:authorize access="isAuthenticated()">
 <sec:authentication property="principal" var="loginMember"/>
 	<div id="container">
-		<header>
+		<header class="head-header">
 			<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
 				<!-- 타이틀 클릭시 메인으로 -->
 				<a id="main-link" class="navbar-brand" href="#">나:다움</a>
