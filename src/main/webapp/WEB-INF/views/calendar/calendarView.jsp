@@ -87,12 +87,12 @@
                             <div class="col-xs-12">
                                 <label class="col-xs-4" for="edit-type">구분</label>
                                 <select class="inputModal" type="text" name="edit-type" id="edit-type">
-                                    <option value="일정">일정</option>
-                                    <option value="일기">일기</option>
-                                    <option value="가계부">가계부</option>
-                                    <option value="문화생활">문화생활</option>
-                                    <option value="영화">영화</option>
-                                    <option value="롤">롤</option>
+                                    <option value="schedule">일정</option>
+                                    <option value="diary">일기</option>
+                                    <option value="accountBook">가계부</option>
+                                    <option value="culture">문화생활</option>
+                                    <option value="movie">영화</option>
+                                    <option value="lol">롤</option>
                                 </select>
                             </div>
                         </div>
@@ -145,12 +145,12 @@
                     <label for="calendar_view">구분별</label>
                     <div class="input-group">
                         <select class="filter" id="type_filter" multiple="multiple">
-                            <option value="일정">일정</option>
-                            <option value="일기">일기</option>
-                            <option value="가계부">가계부</option>
-                            <option value="문화생활">문화생활</option>
-                            <option value="영화">영화</option>
-                            <option value="롤">롤</option>
+	                    	<option value="schedule">일정</option>
+	                    	<option value="diary">일기</option>
+	                        <option value="accountBook">가계부</option>
+	                        <option value="culture">문화생활</option>
+	                        <option value="movie">영화</option>
+	                        <option value="lol">롤</option>
                         </select>
                     </div>
                 </div>
