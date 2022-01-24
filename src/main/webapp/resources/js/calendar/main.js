@@ -71,39 +71,6 @@ var calendar = $('#calendar').fullCalendar({
                                 }
                                },
 
-
-//eventRender: 
-function (event, element, view) {
-
-    //일정에 hover시 요약
-    element.popover({
-      title: $('<div />', {
-        class: 'popoverTitleCalendar',
-        text: event.title
-      }).css({
-        'background': event.backgroundColor,
-        'color': event.textColor
-      }),
-      content: $('<div />', {
-          class: 'popoverInfoCalendar'
-        }).append('<p><strong>등록자:</strong> ' + event.username + '</p>')
-        .append('<p><strong>구분:</strong> ' + event.type + '</p>')
-        .append('<p><strong>시간:</strong> ' + getDisplayEventDate(event) + '</p>')
-        .append('<div class="popoverDescCalendar"><strong>설명:</strong> ' + event.description + '</div>'),
-      delay: {
-        show: "800",
-        hide: "50"
-      },
-      trigger: 'hover',
-      placement: 'top',
-      html: true,
-      container: 'body'
-    });
-
-    return filtering(event);
-
-  },
-
   /* ****************
    *  일정 받아옴 
    * ************** */
@@ -155,6 +122,39 @@ function (event, element, view) {
 
   eventAfterAllRender: function (view) {
     if (view.name == "month") $(".fc-content").css('height', 'auto');
+  },
+
+// hover 일정 view
+  eventRender: 
+	function (event, element, view) {
+
+    //일정에 hover시 요약
+    element.popover({
+      title: $('<div />', {
+        class: 'popoverTitleCalendar',
+        text: event.title
+      }).css({
+        'background': event.backgroundColor,
+        'color': event.textColor
+      }),
+      content: $('<div />', {
+          class: 'popoverInfoCalendar'
+        }).append('<p><strong>등록자:</strong> ' + event.username + '</p>')
+        .append('<p><strong>구분:</strong> ' + event.type + '</p>')
+        .append('<p><strong>시간:</strong> ' + getDisplayEventDate(event) + '</p>')
+        .append('<div class="popoverDescCalendar"><strong>설명:</strong> ' + event.description + '</div>'),
+      delay: {
+        show: "800",
+        hide: "50"
+      },
+      trigger: 'hover',
+      placement: 'top',
+      html: true,
+      container: 'body'
+    });
+
+    return filtering(event);
+
   },
 
   //일정 리사이즈
