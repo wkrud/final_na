@@ -9,9 +9,9 @@ var editEvent = function (event, element, view) {
     $(element).popover("hide");
 
     if (event.allDay === true) {
-        editAllDay.prop('checked', true);
+        editAllDay.prop('checked', 1);
     } else {
-        editAllDay.prop('checked', false);
+        editAllDay.prop('checked', 0);
     }
 
     if (event.end === null) {
@@ -76,18 +76,41 @@ var editEvent = function (event, element, view) {
         event.backgroundColor = editColor.val();
         event.description = editDesc.val();
 
+		var updateCalendar = {
+			allDay : event.allDay,
+	        title : event.title,
+	        startDate : event.start,
+	        endDate : event.end,
+	        type : event.type, 
+	        backgroundColor : event.backgroundColor,
+	        content : event.description,
+			no : event.id
+		}
+		console.log(updateCalendar);
+
         $("#calendar").fullCalendar('updateEvent', event);
 
+		// 403에러방지 csrf토큰 headers
+		const csrfToken = $("meta[name='_csrf']").attr("content");
+		const csrfHeader = $("meta[name='_csrf_header']").attr("content");
+		const headers = {};
+		headers[csrfHeader] = csrfToken;
+		
         //일정 업데이트
         $.ajax({
             type: "post",
-            url: "",
-            data: {
-                //...
-            },
+			headers: headers,
+            url: "/nadaum/calendar/updateCalendar.do",
+			dataType: "json",
+			contentType: "application/json",
+            data: JSON.stringify(updateCalendar),
             success: function (response) {
-                alert('수정되었습니다.')
-            }
+				console.log(updateCalendar);
+				alert("수정하였습니다.");
+            },
+			error: function(response){
+			console.log("캘린더 수정 실패");
+			} 
         });
 
     });
