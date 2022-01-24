@@ -121,8 +121,6 @@ function (event, element, view) {
        			//endDate   : moment(end).format('YYYY-MM-DD')
 			},
 			success: function(response) {
-				console.log("캘린더 조회");
-				console.log(response);
 				
 				var events = [];
 				var eventList = response;
@@ -295,6 +293,7 @@ function (event, element, view) {
 
 });
 
+// 일정 시간
 function getDisplayEventDate(event) {
 
   var displayEventDate;
@@ -310,26 +309,21 @@ function getDisplayEventDate(event) {
   return displayEventDate;
 }
 
-function filtering(event) {
-  var show_username = true;
-  var show_type = true;
-
-  var username = $('input:checkbox.filter:checked').map(function () {
-    return $(this).val();
-  }).get();
-  var types = $('#type_filter').val();
-
-  show_username = username.indexOf(event.username) >= 0;
-
-  if (types && types.length > 0) {
-    if (types[0] == "all") {
-      show_type = true;
-    } else {
-      show_type = types.indexOf(event.type) >= 0;
-    }
-  }
-
-  return show_username && show_type;
+// 필터링
+function filtering(event){
+	var show_type = true;
+	var types = $('#type_filter').val();
+	console.log(types);
+	
+	if(types && types.length > 0){
+		if(types[0] == "all"){
+			show_type = true;
+		} 
+		else {
+			show_type = types.indexOf(event.type) >= 0;
+		}
+	}
+	return show_type;
 }
 
 function calDateWhenResize(event) {
