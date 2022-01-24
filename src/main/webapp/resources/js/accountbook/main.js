@@ -58,7 +58,7 @@ $("#btn1").on('click', function(){
     console.log($id);
     
     
-    //가계부 리스트 조회
+   //가계부 리스트 조회
  	$.ajax({
 		url: "/nadaum/accountbook/selectAllAccountList.do",
 		type: "GET",
@@ -83,7 +83,6 @@ $("#btn1").on('click', function(){
 					<td>${account.code}</td>
 
 				`
-			console.log(result);
 			$('#account_list_table').append(result);
 			})
 			
@@ -96,6 +95,7 @@ $("#btn1").on('click', function(){
 	});
 	
 	
+	//수입 지출 조회
     $.ajax({
 		url: "/nadaum/accountbook/monthlyTotalIncome.do",
 		type: "GET",
