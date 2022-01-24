@@ -84,6 +84,8 @@ public interface MemberDao {
 
 	Member selectOneMemberByIdPhone(Map<String, Object> map);
 
+	int insertMemberHelp(Map<String, Object> map);
+
 
 
 
