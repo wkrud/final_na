@@ -89,44 +89,48 @@ public class MemberController {
 	@GetMapping("/memberEnrollAgreement.do")
 	public void memberEnrollAgreement() {}	
 	
+	@PostMapping("/mypage/memberHelpEnroll.do")
+	public String memberHelpEnroll(@AuthenticationPrincipal Member member, @RequestParam Map<String, Object> map) {
+		log.debug("map = {}", map);
+		map.put("id", member.getId());
+		int result = memberService.insertMemberHelp(map);
+		return "redirect:/member/mypage/memberHelpEnroll.do";
+	}
+	
 	@RequestMapping(value="/mypage/uploadSummernoteImageFile.do", produces = "application/json; charset=utf8")
 	@ResponseBody
 	public String uploadSummernoteImageFile(@RequestParam("file") MultipartFile file, HttpServletRequest request )  {
 		JsonObject jsonObject = new JsonObject();
-		log.debug("multipartFile = {}", file.getOriginalFilename());
-        /*
-		 * String fileRoot = "C:\\summernote_image\\"; // 외부경로로 저장을 희망할때.
-		 */
 		
-		// 내부경로로 저장
 		String fileRoot = application.getRealPath("/resources/upload/member/img/");
 		log.debug("fileRoot = {}", fileRoot);
-		String originalFileName = file.getOriginalFilename();	//오리지날 파일명
-		String savedFileName = NadaumUtils.rename(originalFileName);
+		String originalFileName = file.getOriginalFilename();
+		String renamedFileName = NadaumUtils.rename(originalFileName);
 		
-		File targetFile = new File(fileRoot, savedFileName);	
+		File targetFile = new File(fileRoot, renamedFileName);	
 		try {
 			file.transferTo(targetFile);
 		} catch (IllegalStateException | IOException e) {
 			log.error(e.getMessage(), e);
 		}
-		jsonObject.addProperty("url", fileRoot + savedFileName); // contextroot + resources + 저장할 내부 폴더명
+		jsonObject.addProperty("url", "/nadaum/resources/upload/member/img/" + renamedFileName);
 		jsonObject.addProperty("responseCode", "success");
-	
+		log.debug("root = {}", jsonObject.toString());
 		return jsonObject.toString();
 	}
 	
 	@PostMapping(value="/mypage/deleteSummernoteImageFile.do")
 	public ResponseEntity<?> deleteSummernoteImageFile(@RequestParam Map<String, Object> map)  {
-		log.debug("map = {}", map);
+//		log.debug("map = {}", map);
+		String fileRoot = application.getRealPath("/resources/upload/member/img/");
 		String url = (String) map.get("val");
 		String[] strs = url.split("/");
 		String filename = strs[strs.length - 1];
-		log.debug("filename = {}", filename);
+//		log.debug("filename = {}", filename);
 		String lastDest = url.substring(url.length() - 26, url.length());
-		log.debug("lastDest = {}", lastDest);
-		String allDest = "C:\\summernoteImg\\" + lastDest;
-		log.debug("allDest = {}", allDest);
+//		log.debug("lastDest = {}", lastDest);
+		String allDest = fileRoot + lastDest;
+//		log.debug("allDest = {}", allDest);
 		File img = new File(allDest);
 		img.delete();
 		return ResponseEntity.ok(1);
