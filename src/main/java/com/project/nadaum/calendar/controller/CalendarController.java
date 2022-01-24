@@ -83,4 +83,27 @@ public class CalendarController {
 		return map;
 		
 	}
+	
+	// 캘린더 상세 수정
+	@ResponseBody
+	@PostMapping("/updateCalendar.do")
+	public Map<String, Object> updateCalendar(@RequestBody Map<String, Object> updateCalendar) {
+
+		System.out.println("updateCalendar = " + updateCalendar);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("no", updateCalendar.get("no"));
+		map.put("title", updateCalendar.get("title"));
+		map.put("startDate", updateCalendar.get("startDate"));
+		map.put("endDate", updateCalendar.get("endDate"));
+		map.put("content", updateCalendar.get("content"));
+		map.put("type", updateCalendar.get("type"));
+		map.put("backgroundColor", updateCalendar.get("backgroundColor"));
+		map.put("allDay", updateCalendar.get("allDay"));
+		
+		System.out.println(map);
+		
+		int result = calendarService.updateCalendar(map);
+		return map;
+		
+	}
 }

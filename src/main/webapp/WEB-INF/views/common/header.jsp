@@ -44,8 +44,8 @@
 input[type=checkbox]{
   height: 0;
   width: 0;
-  visibility: hidden;
-}
+  visibility: hidden; 
+} 
 
 .dk-tg {
   cursor: pointer;
@@ -129,6 +129,7 @@ input[type=checkbox]{
                                 <a class="dropdown-item" href="${pageContext.request.contextPath}/movie/movieList.do">영화</a> 
                                 <a class="dropdown-item" href="https://audioclip.naver.com">오디오북</a> 
                                 <a class="dropdown-item" href="${pageContext.request.contextPath}/riot/riotheader.do">롤전적</a>
+                                <a class="dropdown-item" href="${pageContext.request.contextPath}/calendar/calendarView.do">캘린더</a>
                             </div></li>
                     </ul>
 					<!-- 뱃지생성완료, 클릭시 알람 영역 숨기기 완료 비동기 통신후 알람이 있을경우 다시 표기.-->
