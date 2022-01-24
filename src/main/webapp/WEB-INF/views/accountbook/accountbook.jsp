@@ -47,7 +47,7 @@
 						<option value="용돈">용돈</option>
 						<option value="기타(i)">기타</option>
 					</select>
-					<select name="category" id="expense_cateogory">
+					<!-- <select name="category" id="expense_cateogory">
 						<option value="식비">식비</option>
 						<option value="쇼핑">쇼핑</option>
 						<option value="저축">저축</option>
@@ -55,7 +55,7 @@
 						<option value="생활비">생활비</option>
 						<option value="자기계발">자기계발</option>
 						<option value="기타(e)">기타</option>
-					</select>
+					</select> -->
 						
 				</td>
 			</tr>
@@ -77,8 +77,8 @@
 			</tr>
 		</table>
 			<input type="submit" value="제출하기" />
-			<button id="closeBtn">닫기</button>
 		</form>
+			<button id="closeBtn">닫기</button>
 	</div>
 	</div>
 
@@ -98,7 +98,8 @@
 			<form action="">
 				<h3>검색</h3>
 				<select name="mainCategory" id="mainCategory">
-					<option value="">대분류</option>
+					<option value="" selected>대분류</option>
+					<option value=""></option>
 				</select>
 				<select name="subCategory" id="subCategory">
 					<option value="">소분류</option>
@@ -111,13 +112,11 @@
 		<div class="account_list">
 		<button id="income_filter_btn")>수입</button>
 		<button id="expense_filter_btn">지출</button>
-		<a href="#">상세보기</a>
-		<c:forEach items="${accountList}" var="account">
+		<a href="#">전체보기</a>
 			<form 
 				action="${pageContext.request.contextPath}/accountbook/accountDelete.do"
 				method="POST"
 				name="deleteFrm">
-				<hr>
 				<table class="account_list_table">
 					<%-- <tr>
 						<td rowspan="2">${account.incomeExpense}</td>
@@ -125,11 +124,8 @@
 						<td>${account.price}</td>
 					</tr>		 --%>			
 				</table>
-						<input type="hidden" name="id" value="${loginMember.id}" />
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-						<input type="hidden" name="code" value="${account.code}" />
 			</form>
-		</c:forEach>
 
 		</div>
 	</section>

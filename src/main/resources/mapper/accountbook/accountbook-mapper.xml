@@ -90,7 +90,7 @@
 	where
     	id = #{id}
 		and 
-		income_expense= #{income_expense}
+		income_expense = #{income_expense}
 	</select>
 	
 	

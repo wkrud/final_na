@@ -47,10 +47,26 @@ $("#btn1").on('click', function(){
 	$(".modal-background").fadeIn();
 });
 
-  
+  	//ajax 로딩시 필요한 값 변수 선언
     var $id = $("#id").val();
    	var $income = $("#income").val();
 	var $expense = $("#expense").val();
+	
+	//수입 지출 변환 함수
+	function IE(x) {
+		if(x == 'I')
+			return "수입";
+		else if(x == 'E')
+			return "지출";
+	}
+	
+	//날짜 기본값 세팅
+	window.onload = function() {
+		today = new Date();
+		today = today.toISOString().slice(0, 10);
+		bir = document.getElementById("reg_date");
+		bir.value = today;
+	}
     
    //가계부 리스트 조회
  	$.ajax({
@@ -67,13 +83,14 @@ $("#btn1").on('click', function(){
 			$.each(accountList, function(i, account) {
 			var result = `
 				<tr>
-					<td rowspan="2">${account.incomeExpense}</td>
+					<td rowspan="2">`+IE(`${account.incomeExpense}`)+`</td>
 					<td colspan="2">${account.regDate}</td>
 					<td>`+numberWithCommas(`${account.price}`)+`</td>
 				</tr>		
 				<tr>
 					<td>${account.detail}</td>
 					<td><button id="deleteBtn" onclick="deleteDetail();">삭제하기</button></td>	
+					<input type="hidden" name="code" value="${account.code}" />
 				</tr>
 				`
 			$('.account_list').append(result);
@@ -85,6 +102,9 @@ $("#btn1").on('click', function(){
 			console.log("어디가 문제일까,,,,,,,,,,,");
 		}	
 	});
+	
+	//삭제
+
 	
 	
 	//원화표시 정규식
@@ -165,6 +185,7 @@ $("#btn1").on('click', function(){
 			dataType : "json",
 			contentType : "application/json; charset=UTF-8",
 			success(incomeList) {
+				console.log($expense);
 				console.log(incomeList);
 			},
 			error(xhr, testStatus, err) {

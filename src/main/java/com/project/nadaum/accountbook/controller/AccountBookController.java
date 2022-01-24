@@ -91,6 +91,8 @@ public class AccountBookController {
 	@ResponseBody
 	@GetMapping(value="/income_expense_filter.do")
 	public Map<String, String> income_expense_filter(String id, String income_expense, Model model) {
+		log.info("id={}",id);
+		log.info("income_expense={}",income_expense);
 		Map<String, String> incomeList = accountBookService.income_expense_filter(id, income_expense);
 		log.info("incomeList={}", incomeList);
 		model.addAttribute(incomeList);
