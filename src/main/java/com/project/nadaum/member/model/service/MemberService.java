@@ -92,6 +92,10 @@ public interface MemberService {
 
 	List<Map<String, Object>> selectLikesCheck(Map<String, Object> param);
 
+	int insertHelpLike(Map<String, Object> map);
+
+	int deleteHelpLike(Map<String, Object> map);
+
 
 
 }

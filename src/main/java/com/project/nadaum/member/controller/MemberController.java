@@ -635,6 +635,20 @@ public class MemberController {
 		
 	}
 	
+	@PostMapping("/memberChangeLike.do")
+	public ResponseEntity<?> memberChangeLike(@RequestParam Map<String, Object> map, @AuthenticationPrincipal Member member){
+		map.put("id", member.getId());
+		log.debug("map = {}", map);
+		int result = 0;
+		if("t".equals(map.get("flag"))) {
+			result = memberService.insertHelpLike(map);
+		}else {
+			result = memberService.deleteHelpLike(map);
+		}
+		map.put("result", result);
+		return ResponseEntity.ok(map);
+	}
+	
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 		try {
