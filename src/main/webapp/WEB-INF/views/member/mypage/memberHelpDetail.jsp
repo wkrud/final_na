@@ -61,7 +61,6 @@
 	<button type="button" id="backToList" class="btn btn-warning">전체목록</button>
 </div>
 <script>
-/* const helpACode = ${helpDetail.aCode}; */
 const helpCode = '${helpDetail.code}';
 $("#empathy").change((e) => {
 	if($("#empathy").is(":checked")){
@@ -70,6 +69,17 @@ $("#empathy").change((e) => {
 		likeChange('f', helpCode);
 	}
 });
+
+<c:if test="${not empty helpDetail.aCode}">
+const helpACode = '${helpDetail.aCode}';
+$("#good").change((e) => {
+	if($("#good").is(":checked")){
+		likeChange('t', helpACode);
+	}else{
+		likeChange('f', helpACode);
+	}
+});
+</c:if>
 
 const likeChange = (flag, code) => {
 	
