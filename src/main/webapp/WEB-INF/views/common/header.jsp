@@ -41,11 +41,11 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/darkmode.css" />
 <!-- 토글용 css 파일 로딩이 안되서 직접 붙여놓음. -->
 <style>
-input[type=checkbox]{
+input[id="switch"]{
   height: 0;
   width: 0;
-  visibility: hidden; 
-} 
+  visibility: hidden;
+}
 
 .dk-tg {
   cursor: pointer;
@@ -113,14 +113,14 @@ input[type=checkbox]{
 						<fmt:formatDate value="${now}" pattern="yyyy-MM-dd" />
 						</a></li>
 						<!--날씨에 따라서 출력값이 바뀌게하기 -->
-						<li class="nav-item active"><a class="nav-link" href="https://weather.naver.com/">
-								❄ </a></li>
+						<li class="nav-item active">
+							<a class="nav-link" href="https://weather.naver.com/"> ❄ </a>
+						</li>
 					</ul>
 					<ul class="navbar-nav justify-content-end">
-                        <li class="nav-item dropdown"><a
-                            class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
-                            role="button" data-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false"> </a>
+                        <li class="nav-item dropdown">
+                        	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" 
+                        	data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <!-- 각자페이지 링크거시면 됩니다 -->
                                 <a class="dropdown-item" href="https://www.naver.com">메인</a> 
@@ -170,14 +170,13 @@ input[type=checkbox]{
 						</li>
 					</ul>
 					<ul class="navbar-nav justify-content-end">
-						<li class="nav-item">
-							<div class="form-check pl-0 toggle darkmode">
-							  <input id="switch" type="checkbox" name="theme" class="darkmode">
-  							  <label for="switch" class="dk-tg">Toggle</label>
-
-							</div>
-						</li>
-					</ul>
+					    <li class="nav-item">
+					        <div class="form-check pl-0 toggle darkmode">
+					            <input id="switch" type="checkbox" name="theme" class="darkmode">
+					            <label for="switch" class="dk-tg">Toggle</label>
+					        </div>
+					    </li>
+					</ul> 
 					<!-- 다크모드 실험 중 -->
 					<!-- <button onclick='changeToDarkMode();' class="btn btn-light">Dark</button> -->
 					
