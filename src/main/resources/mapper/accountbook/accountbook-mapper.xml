@@ -37,15 +37,49 @@
     		reg_date desc
 	</select>
 	
-	<select id="monthlyTotalIncome" resultType="hashMap">
+	<select id="monthlyTotalIncome" resultMap="accountbookMap">
 		select
-    		income_expense,
-   			 sum(price)
-		from
-  			 account_book
-		where
-   			 id = #{id}
-		group by rollup(income_expense)
+        *
+    	from (
+	        select
+	            nvl(income_expense, 0) as income_expense,
+	            sum(price) as total
+	         from (
+	                select
+	                    *
+	                from
+	                    account_book
+	                where
+	                    to_char(reg_date, 'mm') = to_char((sysdate), 'mm')
+          		)
+	    where
+	        id = #{id}
+	    group by rollup(income_expense)
+	    )
+	</select>
+	
+	<select id="monthlyAccount" resultType="String">
+		select
+	    sum(plus_minus)
+			from (
+				select
+				    case 
+				        when income_expense = 'E' then price * -1
+				        when income_expense ='I' then  price * 1
+				    end as plus_minus
+				from (
+				    select
+				        *
+				    from
+				        account_book
+				    where
+				        to_char(reg_date, 'mm') = to_char((sysdate), 'mm')
+				        and
+				        id = #{id}
+				    order by
+				        reg_date desc
+			    )
+		)
 	</select>
 	
 	
@@ -59,6 +93,7 @@
 		<result column="income_expense" property="incomeExpense"/>
 		<result column="payment" property="payment"/>
 		<result column="cateogory" property="category"/>
+		<result column="total" property="total"/>
 	</resultMap>
 
 </mapper>

@@ -1,8 +1,8 @@
 package com.project.nadaum.accountbook.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,20 +30,31 @@ public class AccountBookController {
 	@RequestMapping(value="/accountbook.do")
 	public void accountbook() { }
 	
-	@ResponseBody
+	@RequestMapping(value="/accountList.do")
+	public void accountList() { }
+	
+	/*
+	 * @ResponseBody
+	 * 
+	 * @RequestMapping(value="/selectAllAccountList.do") public List<AccountBook>
+	 * selectAllAccountList (String id, Model model) { log.info("id={}", id);
+	 * List<AccountBook> accountList = accountBookService.selectAllAccountList(id);
+	 * log.info("accountList={}",accountList);
+	 * model.addAttribute("accountList",accountList);
+	 * 
+	 * return accountList; }
+	 */
+	
 	@RequestMapping(value="/selectAllAccountList.do")
-	public List<AccountBook> selectAllAccountList (String id, Model model) { 
-		log.info("id={}", id);
+	public String selectAllAccountList (HttpServletRequest request, String id, Model model) { 		
 		List<AccountBook> accountList = accountBookService.selectAllAccountList(id); 
-		log.info("accountList={}",accountList);
 		model.addAttribute("accountList",accountList); 
 		
-		return accountList; 
+		return "accountbook/accountList.do"; 
 	}
 	
 	@RequestMapping(value="/accountInsert.do", method=RequestMethod.POST)
 	public String insertAccount(AccountBook account) {
-		 log.info("account={}", account); 
 		 int result = accountBookService.insertAccount(account); 
 		 
 		return "redirect:/accountbook/accountbook.do";
@@ -58,15 +69,22 @@ public class AccountBookController {
 	
 	@ResponseBody
 	@GetMapping(value="/monthlyTotalIncome.do")
-	public Map<String, Object> monthlyTotalIncome(String id, Model model) {
-		Map<String, Object> map = new HashMap<>();
-		map = accountBookService.monthlyTotalIncome(id);
-		log.info("map", map);
-		model.addAttribute(map);
+	public List<AccountBook> monthlyTotalIncome(String id, Model model) {
+		List<AccountBook> incomeList = accountBookService.monthlyTotalIncome(id);
+		model.addAttribute(incomeList);
 		
-		return map;
-		
+		return incomeList;
 	}
+	
+	@ResponseBody
+	@GetMapping(value="/monthlyAccount.do")
+	public String monthlyAccount(String id, Model model) {
+		String monthlyAccount = accountBookService.monthlyAccount(id);
+		model.addAttribute(monthlyAccount);
+		
+		return monthlyAccount;
+	}
+	
 }
 
 	

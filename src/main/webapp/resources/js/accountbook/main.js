@@ -68,10 +68,14 @@ $("#btn1").on('click', function(){
 		dataType : "json",
 		contentType : "application/json; charset=UTF-8",
 		success(list){
+			console.log(list);
+			/*var html = jQuery('<div>').html(list);
+				var contents = html.find("div#account_list").html();
+				$('#list').html(contents);*/
 			
 			//if조건으로 가계부 리스트 있/없 나눠주기
 			
-			$.each(list, function(i, account) {
+			/*$.each(list, function(i, account) {
 			var result = `
 				<tr>
 					<td rowspan="2">${account.incomeExpense}</td>
@@ -84,9 +88,8 @@ $("#btn1").on('click', function(){
 
 				`
 			$('#account_list_table').append(result);
-			})
-			
-			
+			})*/
+		
 		},
 		error : function(data){
 			console.log(data);
@@ -104,8 +107,32 @@ $("#btn1").on('click', function(){
 		},
 		dataType : "json",
 		contentType : "application/json; charset=UTF-8",
-		success(income){
-			console.log(income);
-			}
-		});
+		success(incomeList){
+			
+				console.log(incomeList[0].total);
+				
+				var result = `
+					<td><span style="color:green">`+incomeList[1].total+`</span>원</td>
+					<td><span style="color:red">`+incomeList[0].total+`</span>원</td>`	
+				console.log(result);		
+			$('.user_income_expense').append(result);
+
+		}
+	});
     
+    //이달의 총 소비
+    $.ajax({
+		url: "/nadaum/accountbook/monthlyAccount.do",
+		type: "GET",
+		data: {
+			id : $id
+		},
+		dataType : "json",
+		contentType : "application/json; charset=UTF-8",
+		success(monthlyAccount){
+			var result = 
+					`<td colspan="2" style="font-size:40px">`+monthlyAccount+`원 </td>`
+			$('#total_income').append(result);
+
+		}
+	});

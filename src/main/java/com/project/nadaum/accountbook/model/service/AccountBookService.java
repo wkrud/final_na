@@ -13,6 +13,8 @@ public interface AccountBookService {
 
 	int deleteAccount(String code);
 
-	Map<String, Object> monthlyTotalIncome(String id);
+	List<AccountBook> monthlyTotalIncome(String id);
+
+	String monthlyAccount(String id);
 
 }

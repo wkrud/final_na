@@ -108,29 +108,32 @@
 			</form>
 		</div>
 		<!-- 화면만 잡고 리스트 싹 불러오기 -->
-		<div class="account_list">
+		<div id="list"></div>
+		<%-- <div class="account_list">
+		<c:forEach items="${accountList}" var="account">
 			<form 
 				action="${pageContext.request.contextPath}/accountbook/accountDelete.do"
 				method="POST"
 				name="deleteFrm">
 				<hr>
 				<table id="account_list_table">
-					<%-- <tr>
+					<tr>
 						<td rowspan="2">${account.incomeExpense}</td>
 						<td colspan="2"><fmt:formatDate pattern="yyyy-MM-dd" value="${account.regDate}"/></td>
 						<td>${account.price}</td>
 					</tr>		
 					<tr id="testTd">
 					<tr>
-						<td>${account.detail}</td> --%>
+						<td>${account.detail}</td>
 						<td><button id="deleteBtn">삭제하기</button></td>				
 				</table>
 						<input type="hidden" name="id" value="${loginMember.id}" />
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 						<input type="hidden" name="code" value="${account.code}" />
 			</form>
+		</c:forEach> 
 
-		</div>
+		</div>--%>
 	</section>
 	<section class="box3">
 		<div class="account">
@@ -141,16 +144,13 @@
 				<tr>
 					<td colspan="2">1월 총 자산</td>
 				</tr>
-				<tr>
-					<td colspan="2">2,833,000원</td>
+				<tr id="total_income">
 				</tr>
 				<tr>
 					<td>수입</td>
 					<td>지출</td>
 				</tr>
-				<tr>
-					<td><span class="income">3,018,000</span>원</td>
-					<td><span class="expense">185,000</span>원</td>
+				<tr class="user_income_expense">
 				</tr>
 			</table>
 		</div>
@@ -161,16 +161,6 @@
 
 	
 	<script src='${pageContext.request.contextPath}/resources/js/accountbook/main.js'></script>
-	
-	
-<script>	
-	document.on('click','btn[id^='deleteBtn']', function()) {
-		console.log("클릭");
-		$.ajax({
-			url : "${pageContext.request.contextPath}/accountbook/accountDelete.do",			
-		});
-	});
 
-	</script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
