@@ -1,14 +1,22 @@
 package com.project.nadaum.member.controller;
 
 import java.beans.PropertyEditor;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.jsp.PageContext;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +33,11 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.gson.JsonObject;
 import com.project.nadaum.common.NadaumUtils;
 import com.project.nadaum.common.vo.Attachment;
 import com.project.nadaum.member.model.service.KakaoService;
@@ -49,6 +60,9 @@ public class MemberController {
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
 	
 	@Autowired
+	private ServletContext application;
+	
+	@Autowired
 	private MailSendService mailSendService;
 	
 	@Autowired
@@ -59,6 +73,9 @@ public class MemberController {
 			
 	@GetMapping("/memberLogin.do")
 	public void memberLogin() {}
+	
+	@GetMapping("/mypage/memberHelpEnroll.do")
+	public void memberHelpEnroll() {}
 	
 	@GetMapping("/memberFindId.do")
 	public void memberFindId() {}
@@ -72,6 +89,53 @@ public class MemberController {
 	@GetMapping("/memberEnrollAgreement.do")
 	public void memberEnrollAgreement() {}	
 	
+	@PostMapping("/mypage/memberHelpEnroll.do")
+	public String memberHelpEnroll(@AuthenticationPrincipal Member member, @RequestParam Map<String, Object> map) {
+		log.debug("map = {}", map);
+		map.put("id", member.getId());
+		int result = memberService.insertMemberHelp(map);
+		return "redirect:/member/mypage/memberHelpEnroll.do";
+	}
+	
+	@RequestMapping(value="/mypage/uploadSummernoteImageFile.do", produces = "application/json; charset=utf8")
+	@ResponseBody
+	public String uploadSummernoteImageFile(@RequestParam("file") MultipartFile file, HttpServletRequest request )  {
+		JsonObject jsonObject = new JsonObject();
+		
+		String fileRoot = application.getRealPath("/resources/upload/member/img/");
+		log.debug("fileRoot = {}", fileRoot);
+		String originalFileName = file.getOriginalFilename();
+		String renamedFileName = NadaumUtils.rename(originalFileName);
+		
+		File targetFile = new File(fileRoot, renamedFileName);	
+		try {
+			file.transferTo(targetFile);
+		} catch (IllegalStateException | IOException e) {
+			log.error(e.getMessage(), e);
+		}
+		jsonObject.addProperty("url", "/nadaum/resources/upload/member/img/" + renamedFileName);
+		jsonObject.addProperty("responseCode", "success");
+		log.debug("root = {}", jsonObject.toString());
+		return jsonObject.toString();
+	}
+	
+	@PostMapping(value="/mypage/deleteSummernoteImageFile.do")
+	public ResponseEntity<?> deleteSummernoteImageFile(@RequestParam Map<String, Object> map)  {
+//		log.debug("map = {}", map);
+		String fileRoot = application.getRealPath("/resources/upload/member/img/");
+		String url = (String) map.get("val");
+		String[] strs = url.split("/");
+		String filename = strs[strs.length - 1];
+//		log.debug("filename = {}", filename);
+		String lastDest = url.substring(url.length() - 26, url.length());
+//		log.debug("lastDest = {}", lastDest);
+		String allDest = fileRoot + lastDest;
+//		log.debug("allDest = {}", allDest);
+		File img = new File(allDest);
+		img.delete();
+		return ResponseEntity.ok(1);
+	}
+		
 	@PostMapping("/memberFindId.do")
 	public String memberFindId(@RequestParam Map<String, Object> map) throws Exception {
 		try {
