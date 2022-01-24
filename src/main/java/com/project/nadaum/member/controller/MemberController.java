@@ -420,6 +420,7 @@ public class MemberController {
 		
 		log.debug("checkLikes = {}", checkLikes);
 		log.debug("helpDetail = {}", helpDetail);
+		model.addAttribute("checkLikes", checkLikes);
 		model.addAttribute("helpDetail", helpDetail);
 	}
 	
