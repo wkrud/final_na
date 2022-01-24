@@ -129,7 +129,7 @@ public class MemberController {
 		log.debug("map = {}", map);
 		map.put("id", member.getId());
 		int result = memberService.insertMemberHelp(map);
-		return "redirect:/member/mypage/memberHelpEnroll.do";
+		return "redirect:/member/mypage/memberHelp.do";
 	}
 	
 	@RequestMapping(value="/mypage/uploadSummernoteImageFile.do", produces = "application/json; charset=utf8")
