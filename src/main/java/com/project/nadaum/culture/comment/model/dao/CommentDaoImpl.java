@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.project.nadaum.culture.comment.model.vo.Comment;
-import com.project.nadaum.culture.show.model.dao.CultureDaoImpl;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Repository

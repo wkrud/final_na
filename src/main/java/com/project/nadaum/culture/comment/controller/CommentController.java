@@ -27,4 +27,5 @@ public class CommentController {
 		model.addAttribute("commentList", commentList);
 	}
 	
+	
 }
