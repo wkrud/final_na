@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.project.nadaum.culture.comment.model.dao.CommentDao;
 import com.project.nadaum.culture.comment.model.vo.Comment;
-import com.project.nadaum.culture.show.model.service.CultureServiceImpl;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Service
