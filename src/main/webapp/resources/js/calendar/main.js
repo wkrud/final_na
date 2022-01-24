@@ -1,5 +1,6 @@
 var draggedEventIsAllDay;
 var activeInactiveWeekends = true;
+var editTitle = $('#edit-title');
 var id = $('#id').val();
 
 var calendar = $('#calendar').fullCalendar({
@@ -113,7 +114,7 @@ function (event, element, view) {
 			url: "/nadaum/calendar/calendarList.do",
 			type: "get",
 			dataType: "json",
-			contentType: "application/json; charset=utf-8",
+			contentType: "application/json; charset=utf-8;",
 			data: {
 				id        : id
 				//startDate : moment(start).format('YYYY-MM-DD'),
@@ -200,17 +201,33 @@ function (event, element, view) {
 
     // 드랍시 수정된 날짜반영
     var newDates = calDateWhenDragnDrop(event);
-
+	var changeDate = {
+		no : newDates.id,
+		endDate : newDates.endDate,
+		startDate : newDates.startDate
+	}
+	
+	// 403에러방지 csrf토큰 headers
+	const csrfToken = $("meta[name='_csrf']").attr("content");
+	const csrfHeader = $("meta[name='_csrf_header']").attr("content");
+	const headers = {};
+	headers[csrfHeader] = csrfToken;
     //드롭한 일정 업데이트
     $.ajax({
-      type: "get",
-      url: "/nadaum/calendar/updateEvent.do",
-      data: {
-        //...
-      },
+      type: "post",
+	  headers: headers,
+      url: "/nadaum/calendar/changeDate.do",
+	  //dataType: "json",
+	  async:false,
+	  contentType: "application/json;charset=UTF-8",
+      data: JSON.stringify(changeDate),
       success: function (response) {
+		console.log("캘린더 수정 성공");
         alert('수정: ' + newDates.startDate + ' ~ ' + newDates.endDate);
-      }
+      },
+	  error: function(response){
+		console.log("캘린더 수정 실패");
+		}
     });
 
   },
@@ -320,7 +337,8 @@ function calDateWhenResize(event) {
   var newDates = {
     startDate: '',
     endDate: ''
-  };
+  }
+console.log(event);
 
   if (event.allDay) {
     newDates.startDate = moment(event.start._d).format('YYYY-MM-DD');
@@ -335,9 +353,12 @@ function calDateWhenResize(event) {
 
 function calDateWhenDragnDrop(event) {
   // 드랍시 수정된 날짜반영
+  
   var newDates = {
-    startDate: '',
-    endDate: ''
+    startDate : '',
+    endDate : '',
+	id : event.id
+
   }
 
   // 날짜 & 시간이 모두 같은 경우

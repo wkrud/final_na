@@ -38,7 +38,7 @@ var newEvent = function (start, end, eventType) {
     $('#save-event').on('click', function () {
 
 		var eventData = {
-			"id" : id,
+			id : id,
 			title : editTitle.val(),
 			start : editStart.val(),
 			end : editEnd.val(),
@@ -91,7 +91,7 @@ var newEvent = function (start, end, eventType) {
 			headers: headers,
             url: "/nadaum/calendar/addCalendar.do",
 			dataType: "json",
-			contentType: "application/json",
+			contentType: "application/json; charset=utf-8;",
             data: JSON.stringify(
 				eventData
 			),
@@ -103,7 +103,6 @@ var newEvent = function (start, end, eventType) {
                 $('#calendar').fullCalendar('refetchEvents');
             },
 			error: function(response){
-				console.log(response);
 				console.log("캘린더 등록 실패");
 			}
         });
