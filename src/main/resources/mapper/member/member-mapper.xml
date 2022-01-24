@@ -48,6 +48,15 @@
 		update member set nickname = #{nickname} where id = #{id}
 	</update>
 	
+	<!-- 질문 시작 -->
+	
+	<insert id="insertMemberHelp">
+		insert into help(code, id, category, title, content)
+		values(concat('he-',seq_help_no.nextval), #{id}, #{category}, #{title}, #{content})
+	</insert>
+	
+	<!-- 질문 끝 -->
+	
 	<!-- 회원정보 찾기 시작 -->
 	
 	<select id="selectOneMemberByEmail" resultType="member">
