@@ -17,22 +17,24 @@ public class CalendarServiceImpl implements CalendarService {
 	@Autowired
 	private CalendarDao calendarDao;
 
-
 	@Override
 	public List<Calendar> calendarList(String id) {
 		return calendarDao.calendarList(id);
 	}
-
 
 	@Override
 	public int addCalendar(Map<String, Object> map) {
 		return calendarDao.addCalendar(map);
 	}
 
-
 	@Override
 	public int changeDate(Map<String, Object> map) {
 		return calendarDao.changeDate(map);
+	}
+
+	@Override
+	public int updateCalendar(Map<String, Object> map) {
+		return calendarDao.updateCalendar(map);
 	}
 
 }
