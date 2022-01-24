@@ -13,5 +13,7 @@ public interface CalendarDao {
 
 	int addCalendar(Map<String, Object> map);
 
+	int changeDate(Map<String, Object> map);
+
 
 }

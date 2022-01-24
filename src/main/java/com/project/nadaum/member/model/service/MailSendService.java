@@ -67,8 +67,15 @@ public class MailSendService {
 	public void sendIdByEmail(Member member) throws MessagingException {
 		
 		String AllId = member.getId();
-		String id = AllId.substring(AllId.length() - 4, AllId.length());
-		id += "****";
+		String id = "";
+		if(AllId.length() >= 8) {
+			id = AllId.substring(0, AllId.length() - 4);
+			id += "****";			
+		}
+		else {
+			id = AllId.substring(0, AllId.length() - 3);
+			id += "***";
+		}
 		
 		MimeMessage mimeMessage = mailSender.createMimeMessage();
 		String mailContent = "<h1>나:다움 아이디 찾기(이메일로 찾기)</h1><br/><span>아이디 : " + id + "</span><br />"
