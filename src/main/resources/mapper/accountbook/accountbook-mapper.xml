@@ -82,6 +82,17 @@
 		)
 	</select>
 	
+	<select id="income_expense_filter" resultMap="accountbookMap">
+	select
+   	 *
+	from
+    	account_book
+	where
+    	id = #{id}
+		and 
+		income_expense= #{income_expense}
+	</select>
+	
 	
 	
 	<resultMap type="Map" id="accountbookMap">

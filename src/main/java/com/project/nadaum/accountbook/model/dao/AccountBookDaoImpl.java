@@ -39,6 +39,11 @@ public class AccountBookDaoImpl implements AccountBookDao {
 	public String monthlyAccount(String id) {
 		return session.selectOne("accountbook.monthlyAccount", id);
 	}
+
+	@Override
+	public Map<String, String> income_expense_filter(String id, String income_expense) {
+		return session.selectMap("accountbook.income_expense_filter", id, income_expense);
+	}
 	
 	
 

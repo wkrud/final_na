@@ -108,32 +108,30 @@
 			</form>
 		</div>
 		<!-- 화면만 잡고 리스트 싹 불러오기 -->
-		<div id="list"></div>
-		<%-- <div class="account_list">
+		<div class="account_list">
+		<button id="income_filter_btn")>수입</button>
+		<button id="expense_filter_btn">지출</button>
+		<a href="#">상세보기</a>
 		<c:forEach items="${accountList}" var="account">
 			<form 
 				action="${pageContext.request.contextPath}/accountbook/accountDelete.do"
 				method="POST"
 				name="deleteFrm">
 				<hr>
-				<table id="account_list_table">
-					<tr>
+				<table class="account_list_table">
+					<%-- <tr>
 						<td rowspan="2">${account.incomeExpense}</td>
 						<td colspan="2"><fmt:formatDate pattern="yyyy-MM-dd" value="${account.regDate}"/></td>
 						<td>${account.price}</td>
-					</tr>		
-					<tr id="testTd">
-					<tr>
-						<td>${account.detail}</td>
-						<td><button id="deleteBtn">삭제하기</button></td>				
+					</tr>		 --%>			
 				</table>
 						<input type="hidden" name="id" value="${loginMember.id}" />
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 						<input type="hidden" name="code" value="${account.code}" />
 			</form>
-		</c:forEach> 
+		</c:forEach>
 
-		</div>--%>
+		</div>
 	</section>
 	<section class="box3">
 		<div class="account">

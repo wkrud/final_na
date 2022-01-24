@@ -39,6 +39,12 @@ public class AccountBookServiceImpl implements AccountBookService {
 	public String monthlyAccount(String id) {
 		return accountBookDao.monthlyAccount(id);
 	}
+
+	@Override
+	public Map<String, String> income_expense_filter(String id, String income_expense) {
+		return accountBookDao.income_expense_filter(id, income_expense);
+	}
+	
 	
 	
 	

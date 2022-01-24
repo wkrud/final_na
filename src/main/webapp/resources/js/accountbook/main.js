@@ -47,16 +47,10 @@ $("#btn1").on('click', function(){
 	$(".modal-background").fadeIn();
 });
 
-
-/* id값 가져오는 ajax*/
-	/*const csrfHeader = "${_csrf.headerName}";
-    const csrfToken = "${_csrf.token}";
-    const headers = {};
-    headers[csrfHeader] = csrfToken;*/
   
     var $id = $("#id").val();
-    console.log($id);
-    
+   	var $income = $("#income").val();
+	var $expense = $("#expense").val();
     
    //가계부 리스트 조회
  	$.ajax({
@@ -67,29 +61,24 @@ $("#btn1").on('click', function(){
 		},
 		dataType : "json",
 		contentType : "application/json; charset=UTF-8",
-		success(list){
-			console.log(list);
-			/*var html = jQuery('<div>').html(list);
-				var contents = html.find("div#account_list").html();
-				$('#list').html(contents);*/
+		success : function(accountList){
+			console.log(accountList);
 			
-			//if조건으로 가계부 리스트 있/없 나눠주기
-			
-			/*$.each(list, function(i, account) {
+			$.each(accountList, function(i, account) {
 			var result = `
 				<tr>
 					<td rowspan="2">${account.incomeExpense}</td>
 					<td colspan="2">${account.regDate}</td>
-					<td>${account.price}</td>
+					<td>`+numberWithCommas(`${account.price}`)+`</td>
 				</tr>		
 				<tr>
 					<td>${account.detail}</td>
-					<td>${account.code}</td>
-
+					<td><button id="deleteBtn" onclick="deleteDetail();">삭제하기</button></td>	
+				</tr>
 				`
-			$('#account_list_table').append(result);
-			})*/
-		
+			$('.account_list').append(result);
+			})
+			
 		},
 		error : function(data){
 			console.log(data);
@@ -97,6 +86,11 @@ $("#btn1").on('click', function(){
 		}	
 	});
 	
+	
+	//원화표시 정규식
+	function numberWithCommas(n) {
+    	return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
 	
 	//수입 지출 조회
     $.ajax({
@@ -107,20 +101,18 @@ $("#btn1").on('click', function(){
 		},
 		dataType : "json",
 		contentType : "application/json; charset=UTF-8",
-		success(incomeList){
-			
-				console.log(incomeList[0].total);
+		success(incomeList){		
+			var result = `
+				<td>\\<span style="color:green">`+numberWithCommas(incomeList[1].total)+`</span></td>
+				<td>\\<span style="color:red">`+numberWithCommas(incomeList[0].total)+`</span></td>`	
 				
-				var result = `
-					<td><span style="color:green">`+incomeList[1].total+`</span>원</td>
-					<td><span style="color:red">`+incomeList[0].total+`</span>원</td>`	
-				console.log(result);		
 			$('.user_income_expense').append(result);
 
 		}
 	});
+	
     
-    //이달의 총 소비
+    //이달의 총 자산
     $.ajax({
 		url: "/nadaum/accountbook/monthlyAccount.do",
 		type: "GET",
@@ -131,8 +123,53 @@ $("#btn1").on('click', function(){
 		contentType : "application/json; charset=UTF-8",
 		success(monthlyAccount){
 			var result = 
-					`<td colspan="2" style="font-size:40px">`+monthlyAccount+`원 </td>`
+					`<td colspan="2" style="font-size:40px">`+numberWithCommas(monthlyAccount)+`원 </td>`
 			$('#total_income').append(result);
 
 		}
+	});
+
+	
+	//수입 필터링
+	$('#income_filter_btn').click(function() {
+		$.ajax({
+			url : '/nadaum/accountbook/income_expense_filter.do',
+			type : "GET",
+			data : {
+				id : $id,
+				income_expense : $income
+			},
+			dataType : "json",
+			contentType : "application/json; charset=UTF-8",
+			success(incomeList) {
+				console.log($id);
+				console.log($income);
+				console.log(incomeList);
+			},
+			error(xhr, testStatus, err) {
+				console.log("error", xhr, testStatus, err);
+				alert("조회에 실패했습니다.");
+			}
+		});
+	});
+	
+	//지출
+	$('#expense_filter_btn').click(function() {
+		$.ajax({
+			url : '/nadaum/accountbook/income_expense_filter.do',
+			type : "GET",
+			data : {
+				id : $id,
+				income_expense : $expense
+			},
+			dataType : "json",
+			contentType : "application/json; charset=UTF-8",
+			success(incomeList) {
+				console.log(incomeList);
+			},
+			error(xhr, testStatus, err) {
+				console.log("error", xhr, testStatus, err);
+				alert("조회에 실패했습니다.");
+			}
+		});
 	});

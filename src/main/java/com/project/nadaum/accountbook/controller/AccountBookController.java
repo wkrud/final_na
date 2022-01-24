@@ -1,6 +1,7 @@
 package com.project.nadaum.accountbook.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -33,25 +34,27 @@ public class AccountBookController {
 	@RequestMapping(value="/accountList.do")
 	public void accountList() { }
 	
+	
+	 @ResponseBody
+	 @RequestMapping(value="/selectAllAccountList.do") 
+	 public List<AccountBook> selectAllAccountList (String id, Model model) { 
+		 log.info("id={}", id);
+		 List<AccountBook> accountList = accountBookService.selectAllAccountList(id);
+		 log.info("accountList={}",accountList);
+		 model.addAttribute("accountList",accountList);
+	 
+	 return accountList; 
+	 }
+	 
+	
 	/*
-	 * @ResponseBody
-	 * 
-	 * @RequestMapping(value="/selectAllAccountList.do") public List<AccountBook>
-	 * selectAllAccountList (String id, Model model) { log.info("id={}", id);
+	 * @RequestMapping(value="/selectAllAccountList.do") public String
+	 * selectAllAccountList (HttpServletRequest request, String id, Model model) {
 	 * List<AccountBook> accountList = accountBookService.selectAllAccountList(id);
-	 * log.info("accountList={}",accountList);
 	 * model.addAttribute("accountList",accountList);
 	 * 
-	 * return accountList; }
+	 * return "accountbook/accountList.do"; }
 	 */
-	
-	@RequestMapping(value="/selectAllAccountList.do")
-	public String selectAllAccountList (HttpServletRequest request, String id, Model model) { 		
-		List<AccountBook> accountList = accountBookService.selectAllAccountList(id); 
-		model.addAttribute("accountList",accountList); 
-		
-		return "accountbook/accountList.do"; 
-	}
 	
 	@RequestMapping(value="/accountInsert.do", method=RequestMethod.POST)
 	public String insertAccount(AccountBook account) {
@@ -83,6 +86,16 @@ public class AccountBookController {
 		model.addAttribute(monthlyAccount);
 		
 		return monthlyAccount;
+	}
+	
+	@ResponseBody
+	@GetMapping(value="/income_expense_filter.do")
+	public Map<String, String> income_expense_filter(String id, String income_expense, Model model) {
+		Map<String, String> incomeList = accountBookService.income_expense_filter(id, income_expense);
+		log.info("incomeList={}", incomeList);
+		model.addAttribute(incomeList);
+		
+		return incomeList;
 	}
 	
 }
