@@ -48,6 +48,30 @@
 		update member set nickname = #{nickname} where id = #{id}
 	</update>
 	
+	<!-- 회원정보 찾기 시작 -->
+	
+	<select id="selectOneMemberByEmail" resultType="member">
+		select * from member where email = #{email}
+	</select>
+	
+	<select id="selectOneMemberByIdEmail" resultType="member">
+		select * from member where id = #{id} and email = #{email}
+	</select>
+	
+	<update id="updateMemberPassword">
+		update member set password = #{password} where email = #{email}
+	</update>
+	
+	<select id="selectOneMemberByPhone" resultType="member">
+		select * from member where phone = #{phone}
+	</select>
+	
+	<select id="selectOneMemberByIdPhone" resultType="member">
+		select * from member where id = #{id} and phone = #{phone}
+	</select>
+	
+	<!-- 회원정보 찾기 끝 -->
+	
 	<!-- 친구 crud 시작 -->	
 	
 	<select id="selectSearchMemberNickname" resultType="string">
@@ -145,32 +169,16 @@
 	</update>
 	
 	<select id="selectAllAlarm" resultMap="alarm">
-		select
-			*
-		from
-			alarm a
-				left join schedule s
-					on a.code = s.code
-		where
-			a.id = #{id}
-		order by
-			a.reg_date desc
+		select * from alarm where id = #{id}
 	</select>
 	
 	<resultMap type="map" id="alarm">
 		<id column="no" property="no"/>
 		<result column="code" property="code"/>
+		<result column="id" property="id"/>
 		<result column="status" property="status"/>
 		<result column="content" property="content"/>
-		<result column="id" property="id"/>
 		<result column="reg_date" property="regDate"/>
-		<result column="no" property="no"/>
-		<result column="friend_id" property="friendId"/>
-		<result column="accept" property="accpet"/>
-		<result column="code" property="code"/>
-		<result column="c_code" property="cCode"/>
-		<result column="all_day" property="allDay"/>
-		<result column="id" property="id"/>
 	</resultMap>
 			
 	<resultMap type="map" id="helpMap">
