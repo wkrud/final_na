@@ -40,7 +40,11 @@ public class GetMovieApi {
 	public void getMovieApi(Model model) {
 		int page = 1;
 
+<<<<<<< HEAD
 		List<Map<String, Object>> list = new ArrayList<>();
+=======
+		List<Object> list = new ArrayList<>();
+>>>>>>> branch 'master' of https://github.com/wkrud/na_daum.git
 			try {
 				
 			while(true){
@@ -101,10 +105,16 @@ public class GetMovieApi {
 																
 						list.add(map);
 						
+<<<<<<< HEAD
 						
+=======
+						log.debug("list = {}", list);
+						System.out.println(list);
+>>>>>>> branch 'master' of https://github.com/wkrud/na_daum.git
 					}	// if end
 					
 				}	// for end
+<<<<<<< HEAD
 				
 				page += 1;
 				System.out.println("page number : "+page);
@@ -119,6 +129,17 @@ public class GetMovieApi {
 			for(Map<String, Object> map : list) {
 				System.out.println(map);
 			}
+=======
+				model.addAttribute("list",list);
+				page += 1;
+				System.out.println("page number : "+page);
+	
+				if(page > 1){	
+					break;
+				}
+			}	// while end
+		
+>>>>>>> branch 'master' of https://github.com/wkrud/na_daum.git
 			
 			} catch (Exception e){	
 			e.printStackTrace();

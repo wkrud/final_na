@@ -84,6 +84,20 @@ public interface MemberDao {
 
 	Member selectOneMemberByIdPhone(Map<String, Object> map);
 
+	int insertMemberHelp(Map<String, Object> map);
+
+	List<Map<String, Object>> selectHelpOneCategory(Map<String, Object> param);
+
+	int countHelpOneCategoryCount(String category);
+
+	List<Map<String, Object>> selectLikesCheck(Map<String, Object> param);
+
+	int insertHelpLike(Map<String, Object> map);
+
+	int deleteHelpLike(Map<String, Object> map);
+
+	List<Map<String, Object>> selectMostHelp();
+
 
 
 

@@ -6,6 +6,10 @@
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<<<<<<< HEAD
+=======
+<%@page import="com.project.nadaum.culture.movie.controller.GetMovieApi"%>
+>>>>>>> branch 'master' of https://github.com/wkrud/na_daum.git
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
 <%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/movie/movieList.css" />
  --%>
@@ -110,6 +114,7 @@ body {
 			<div class="container">
 				<div class="row hidden-md-up">
 
+<<<<<<< HEAD
 				<c:forEach var="movie" items="${list}">
 							
 							<div class="col-md-4">
@@ -136,7 +141,36 @@ body {
 										 	value="${movie.movieCd}">+More</button>
 									</div>
 									</div>
+=======
+					<c:forEach var="movie" items="${list}">
+						<form action="${pageContext.request.contextPath}/movieDetail?movieCd={movieCode}" method="get" id="movieFrm"> 
+							<div class="col-md-4">
+								
+									<div class="card-block">
+										<h4 class="card-title">${movie.movieCd}</h4>
+										<p class="card-text p-y-1">${movie.movieNm}</p>
+										<h6 class="card-subtitle text-muted">${movie.prdtYear}</h6>
+										<p class="card-text p-y-1">${movie.typeNm}</p>
+										<p class="card-text p-y-1">${movie.nationAlt}</p>
+										<p class="card-trfext p-y-1">${movie.genreAlt}</p>
+										<p class="card-trfext p-y-1">${movie.peopleNm}</p>
+										<h6 class="card-subtitle text-muted" />
+										<a href="#" class="card-link"><input type="hidden"
+											name="movieCd" value="${movie.movieCd}" />Second link</a> <a
+											href="#" class="card-link"> <img class="thumnail"
+											src="${movie.imgUrl}" alt="영화사진" />
+										</a>
+										<button type="submit" class="btn btn-sm btn-outline-secondary"
+											id="goDetail" name="">+More</button>
+										<input type="hidden" id="moviecd" value="${movie.movieCd}"/>
+									</div>
+								
+>>>>>>> branch 'master' of https://github.com/wkrud/na_daum.git
 							</div>
+<<<<<<< HEAD
+=======
+						</form>
+>>>>>>> branch 'master' of https://github.com/wkrud/na_daum.git
 					</c:forEach>
 
 				</div>
@@ -157,6 +191,7 @@ body {
 <script>
 /* the movie api 에서 top_rated  불러오기*/
 
+<<<<<<< HEAD
 
 /* 페이지 로딩 될때 영화 */
 
@@ -172,7 +207,10 @@ body {
 		location.href = `${pageContext.request.contextPath}/movie/movieDetail.do?movieCd=\${MovieCd}`;
 	});
 }); */
+=======
+>>>>>>> branch 'master' of https://github.com/wkrud/na_daum.git
 
+<<<<<<< HEAD
 	
 $(".goDetail").click((e) => {
 	const movieCd = $(e.target).val();
@@ -187,6 +225,21 @@ $(".goDetail").click((e) => {
 	})
 	
  });
+=======
+/* 페이지 로딩 될때 영화 */
+
+ 
+ /*  버튼 누를 시 영화 상세보기로 이동 */
+ /* $("#goDetail").click((e) => {
+	 const movieCode = $("#moviecd").val();
+	console.log(movieCode);
+	
+ }); */
+ 
+ 	
+ 
+ 	
+>>>>>>> branch 'master' of https://github.com/wkrud/na_daum.git
 </script>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script

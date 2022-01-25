@@ -1,12 +1,16 @@
 package com.project.nadaum.member.controller;
 
 import java.beans.PropertyEditor;
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +29,14 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.gson.JsonObject;
 import com.project.nadaum.common.NadaumUtils;
 import com.project.nadaum.common.vo.Attachment;
+import com.project.nadaum.common.vo.CategoryEnum;
 import com.project.nadaum.member.model.service.KakaoService;
 import com.project.nadaum.member.model.service.MailSendService;
 import com.project.nadaum.member.model.service.MemberService;
@@ -49,6 +57,9 @@ public class MemberController {
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
 	
 	@Autowired
+	private ServletContext application;
+	
+	@Autowired
 	private MailSendService mailSendService;
 	
 	@Autowired
@@ -59,6 +70,9 @@ public class MemberController {
 			
 	@GetMapping("/memberLogin.do")
 	public void memberLogin() {}
+	
+	@GetMapping("/mypage/memberHelpEnroll.do")
+	public void memberHelpEnroll() {}
 	
 	@GetMapping("/memberFindId.do")
 	public void memberFindId() {}
@@ -72,6 +86,93 @@ public class MemberController {
 	@GetMapping("/memberEnrollAgreement.do")
 	public void memberEnrollAgreement() {}	
 	
+	@GetMapping("/mypage/memberInfo.do")
+	public void memberInfo(Model model) {
+		List<Map<String, Object>> list = memberService.selectMostHelp();
+		List<Map<String, Object>> helps = memberService.selectAllMembersQuestions();
+		log.debug("list = {}", list);
+		List<Map<String, Object>> mostHelps = new ArrayList<>();
+		for(int i = 0; i < helps.size(); i++) {
+			for(int j = 0; j < list.size(); j++) {
+				if(helps.get(i).get("code").equals(list.get(j).get("CODE"))) {
+					mostHelps.add(helps.get(i));
+				}
+			}
+		}
+		log.debug("mostHelps = {}", mostHelps);
+		model.addAttribute("mostHelps", mostHelps);
+	}
+	
+	@GetMapping("/mypage/memberHelpOneCategory.do")
+	public void memberHelpOneCategory(@RequestParam String category, @RequestParam(defaultValue="1") int cPage, Model model, HttpServletRequest request) {
+					
+		int limit = 10;
+		int offset = (cPage - 1) * limit;
+		Map<String, Object> param = new HashMap<>();
+		param.put("limit", limit);
+		param.put("offset", offset);
+		param.put("category", category);
+		List<Map<String, Object>> help = memberService.selectHelpOneCategory(param);
+		
+		int totalContent = memberService.countHelpOneCategoryCount(category);
+		log.debug("totalContent = {}", totalContent);
+		String url = request.getRequestURI();
+		String pagebar = NadaumUtils.getPagebar(cPage, limit, totalContent, url);
+		String check = CategoryEnum._valueOf(category).toString();
+		
+		model.addAttribute("check", check);
+		model.addAttribute("pagebar", pagebar);
+		model.addAttribute("help", help);
+		
+	}
+	
+	@PostMapping("/mypage/memberHelpEnroll.do")
+	public String memberHelpEnroll(@AuthenticationPrincipal Member member, @RequestParam Map<String, Object> map) {
+		log.debug("map = {}", map);
+		map.put("id", member.getId());
+		int result = memberService.insertMemberHelp(map);
+		return "redirect:/member/mypage/memberHelp.do";
+	}
+	
+	@RequestMapping(value="/mypage/uploadSummernoteImageFile.do", produces = "application/json; charset=utf8")
+	@ResponseBody
+	public String uploadSummernoteImageFile(@RequestParam("file") MultipartFile file, HttpServletRequest request )  {
+		JsonObject jsonObject = new JsonObject();
+		
+		String fileRoot = application.getRealPath("/resources/upload/member/img/");
+		log.debug("fileRoot = {}", fileRoot);
+		String originalFileName = file.getOriginalFilename();
+		String renamedFileName = NadaumUtils.rename(originalFileName);
+		
+		File targetFile = new File(fileRoot, renamedFileName);	
+		try {
+			file.transferTo(targetFile);
+		} catch (IllegalStateException | IOException e) {
+			log.error(e.getMessage(), e);
+		}
+		jsonObject.addProperty("url", "/nadaum/resources/upload/member/img/" + renamedFileName);
+		jsonObject.addProperty("responseCode", "success");
+		log.debug("root = {}", jsonObject.toString());
+		return jsonObject.toString();
+	}
+	
+	@PostMapping(value="/mypage/deleteSummernoteImageFile.do")
+	public ResponseEntity<?> deleteSummernoteImageFile(@RequestParam Map<String, Object> map)  {
+//		log.debug("map = {}", map);
+		String fileRoot = application.getRealPath("/resources/upload/member/img/");
+		String url = (String) map.get("val");
+		String[] strs = url.split("/");
+		String filename = strs[strs.length - 1];
+//		log.debug("filename = {}", filename);
+		String lastDest = url.substring(url.length() - 26, url.length());
+//		log.debug("lastDest = {}", lastDest);
+		String allDest = fileRoot + lastDest;
+//		log.debug("allDest = {}", allDest);
+		File img = new File(allDest);
+		img.delete();
+		return ResponseEntity.ok(1);
+	}
+		
 	@PostMapping("/memberFindId.do")
 	public String memberFindId(@RequestParam Map<String, Object> map) throws Exception {
 		try {
@@ -309,10 +410,19 @@ public class MemberController {
 	}
 	
 	@GetMapping("/mypage/memberHelpDetail.do")
-	public void memberHelpDetail(@RequestParam String code, Model model) {
+	public void memberHelpDetail(@RequestParam String code, Model model, @AuthenticationPrincipal Member member) {
+		Map<String, Object> param = new HashMap<>();
 		log.debug("code = {}", code);
 		Map<String, Object> helpDetail = memberService.selectOneSelectedHelp(code);
+		if("T".equals(helpDetail.get("status")))
+			param.put("aCode", helpDetail.get("aCode"));
+		param.put("code", code);
+		param.put("id", member.getId());
+		List<Map<String, Object>> checkLikes = memberService.selectLikesCheck(param);
+		
+		log.debug("checkLikes = {}", checkLikes);
 		log.debug("helpDetail = {}", helpDetail);
+		model.addAttribute("checkLikes", checkLikes);
 		model.addAttribute("helpDetail", helpDetail);
 	}
 	
@@ -525,6 +635,20 @@ public class MemberController {
 		}		
 		return ResponseEntity.ok(result);
 		
+	}
+	
+	@PostMapping("/memberChangeLike.do")
+	public ResponseEntity<?> memberChangeLike(@RequestParam Map<String, Object> map, @AuthenticationPrincipal Member member){
+		map.put("id", member.getId());
+		log.debug("map = {}", map);
+		int result = 0;
+		if("t".equals(map.get("flag"))) {
+			result = memberService.insertHelpLike(map);
+		}else {
+			result = memberService.deleteHelpLike(map);
+		}
+		map.put("result", result);
+		return ResponseEntity.ok(map);
 	}
 	
 	@InitBinder
