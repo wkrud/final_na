@@ -194,6 +194,20 @@
 	</select>
 	
 	<!-- help 끝 -->
+	
+	<!-- 도움말 시작 -->
+	
+	<select id="selectMostHelp" resultType="map">
+		select
+			*
+		from(
+			select h.code code, count(*) count from help h join likes l on h.code = l.code WHERE h.code like '%he%' GROUP BY h.code ORDER BY count desc
+		)
+		where
+			rownum <![CDATA[<=]]> 5
+	</select>
+	
+	<!-- 도움말 끝 -->
 		
 	<insert id="insertMember">
 		insert into member(id, password, name, email, address, nickname, auth_key)

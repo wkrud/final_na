@@ -96,6 +96,8 @@ public interface MemberService {
 
 	int deleteHelpLike(Map<String, Object> map);
 
+	List<Map<String, Object>> selectMostHelp();
+
 
 
 }
