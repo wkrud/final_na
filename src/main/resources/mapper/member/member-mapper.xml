@@ -48,6 +48,59 @@
 		update member set nickname = #{nickname} where id = #{id}
 	</update>
 	
+	<!-- 공지 시작 -->
+	
+	<select id="selectLikesCheck" resultMap="likesMap">
+		select 
+			* 
+		from 
+			likes 
+		<where>
+			id = #{id}
+			and
+			code = #{code}
+			<if test="aCode != null">or a_code = #{aCode}</if>
+		</where>
+	</select>
+	
+	<!-- 공지 끝 -->
+	
+	<!-- 좋아요 시작 -->
+	
+	<insert id="insertHelpLike">
+		insert into likes values(seq_likes_no.nextval, #{id}, #{code})
+	</insert>
+	
+	<delete id="deleteHelpLike">
+		delete from likes where id = #{id} and code = #{code}
+	</delete>
+	
+	<!-- 좋아요 끝 -->
+	
+	<!-- 회원정보 찾기 시작 -->
+	
+	<select id="selectOneMemberByEmail" resultType="member">
+		select * from member where email = #{email}
+	</select>
+	
+	<select id="selectOneMemberByIdEmail" resultType="member">
+		select * from member where id = #{id} and email = #{email}
+	</select>
+	
+	<update id="updateMemberPassword">
+		update member set password = #{password} where email = #{email}
+	</update>
+	
+	<select id="selectOneMemberByPhone" resultType="member">
+		select * from member where phone = #{phone}
+	</select>
+	
+	<select id="selectOneMemberByIdPhone" resultType="member">
+		select * from member where id = #{id} and phone = #{phone}
+	</select>
+	
+	<!-- 회원정보 찾기 끝 -->
+	
 	<!-- 친구 crud 시작 -->	
 	
 	<select id="selectSearchMemberNickname" resultType="string">
@@ -116,8 +169,28 @@
 		select code code, id id, category category, title title, reg_date regDate, status status from help where title like '%'||#{value}||'%'
 	</select>
 	
-	<select id="selectOneSelectedHelp" resultMap="helpMap">
-		select * from help where code = #{code}
+	<select id="selectOneSelectedHelp" resultMap="helpNicknameMap">
+		select
+			h.*,
+			m.nickname nickname
+		from
+			help h join member m
+				on h.id = m.id
+		where
+			h.code = #{code}
+	</select>
+	
+	<insert id="insertMemberHelp">
+		insert into help(code, id, category, title, content)
+		values(concat('he-',seq_help_no.nextval), #{id}, #{category}, #{title}, #{content})
+	</insert>
+	
+	<select id="selectHelpOneCategory" resultMap="helpMap">
+		select * from help where category like '%'||#{category}||'%' order by reg_date desc
+	</select>
+	
+	<select id="countHelpOneCategoryCount" resultType="int">
+		select count(*) from help where category = #{category}
 	</select>
 	
 	<!-- help 끝 -->
@@ -145,32 +218,16 @@
 	</update>
 	
 	<select id="selectAllAlarm" resultMap="alarm">
-		select
-			*
-		from
-			alarm a
-				left join schedule s
-					on a.code = s.code
-		where
-			a.id = #{id}
-		order by
-			a.reg_date desc
+		select * from alarm where id = #{id}
 	</select>
 	
 	<resultMap type="map" id="alarm">
 		<id column="no" property="no"/>
 		<result column="code" property="code"/>
+		<result column="id" property="id"/>
 		<result column="status" property="status"/>
 		<result column="content" property="content"/>
-		<result column="id" property="id"/>
 		<result column="reg_date" property="regDate"/>
-		<result column="no" property="no"/>
-		<result column="friend_id" property="friendId"/>
-		<result column="accept" property="accpet"/>
-		<result column="code" property="code"/>
-		<result column="c_code" property="cCode"/>
-		<result column="all_day" property="allDay"/>
-		<result column="id" property="id"/>
 	</resultMap>
 			
 	<resultMap type="map" id="helpMap">
@@ -185,6 +242,21 @@
 		<result column="a_title" property="aTitle"/>
 		<result column="a_content" property="aContent"/>
 		<result column="a_reg_date" property="aRegDate"/>
+	</resultMap>
+	
+	<resultMap type="map" id="helpNicknameMap">
+		<id column="CODE" property="code"/>
+		<result column="ID" property="id"/>
+		<result column="CATEGORY" property="category"/>
+		<result column="TITLE" property="title"/>
+		<result column="CONTENT" property="content"/>
+		<result column="REG_DATE" property="regDate"/>
+		<result column="STATUS" property="status"/>
+		<result column="A_CODE" property="aCode"/>
+		<result column="A_TITLE" property="aTitle"/>
+		<result column="A_CONTENT" property="aContent"/>
+		<result column="A_REG_DATE" property="aRegDate"/>
+		<result column="NICKNAME" property="nickname"/>
 	</resultMap>
 	
 	<resultMap type="map" id="announcementMap">
@@ -207,6 +279,12 @@
 		<result column="my_id" property="id"/>
 		<result column="follower_id" property="followerId"/>
 		<result column="is_friend" property="isFriend"/>
+	</resultMap>
+	
+	<resultMap type="map" id="likesMap">
+		<id column="no" property="no"/>
+		<result column="id" property="id"/>
+		<result column="code" property="code"/>
 	</resultMap>
 	
 	

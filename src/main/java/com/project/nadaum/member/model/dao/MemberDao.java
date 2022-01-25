@@ -74,6 +74,28 @@ public interface MemberDao {
 
 	int updateMemberNickname(Member member);
 
+	Member selectOneMemberByEmail(Map<String, Object> email);
+
+	Member selectOneMemberByIdEmail(Map<String, Object> map);
+
+	int updateMemberPassword(Map<String, Object> map);
+
+	Member selectOneMemberByPhone(Map<String, Object> map);
+
+	Member selectOneMemberByIdPhone(Map<String, Object> map);
+
+	int insertMemberHelp(Map<String, Object> map);
+
+	List<Map<String, Object>> selectHelpOneCategory(Map<String, Object> param);
+
+	int countHelpOneCategoryCount(String category);
+
+	List<Map<String, Object>> selectLikesCheck(Map<String, Object> param);
+
+	int insertHelpLike(Map<String, Object> map);
+
+	int deleteHelpLike(Map<String, Object> map);
+
 
 
 

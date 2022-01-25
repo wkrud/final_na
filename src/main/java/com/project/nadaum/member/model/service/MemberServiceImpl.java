@@ -181,6 +181,61 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.updateMemberNickname(member);
 	}
 
+	@Override
+	public Member selectOneMemberByEmail(Map<String, Object> email) {
+		return memberDao.selectOneMemberByEmail(email);
+	}
+
+	@Override
+	public Member selectOneMemberByIdEmail(Map<String, Object> map) {
+		return memberDao.selectOneMemberByIdEmail(map);
+	}
+
+	@Override
+	public int updateMemberPassword(Map<String, Object> map) {
+		return memberDao.updateMemberPassword(map);
+	}
+
+	@Override
+	public Member selectOneMemberByPhone(Map<String, Object> map) {
+		return memberDao.selectOneMemberByPhone(map);
+	}
+
+	@Override
+	public Member selectOneMemberByIdPhone(Map<String, Object> map) {
+		return memberDao.selectOneMemberByIdPhone(map);
+	}
+
+	@Override
+	public int insertMemberHelp(Map<String, Object> map) {
+		return memberDao.insertMemberHelp(map);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectHelpOneCategory(Map<String, Object> param) {
+		return memberDao.selectHelpOneCategory(param);
+	}
+
+	@Override
+	public int countHelpOneCategoryCount(String category) {
+		return memberDao.countHelpOneCategoryCount(category);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectLikesCheck(Map<String, Object> param) {
+		return memberDao.selectLikesCheck(param);
+	}
+
+	@Override
+	public int insertHelpLike(Map<String, Object> map) {
+		return memberDao.insertHelpLike(map);
+	}
+
+	@Override
+	public int deleteHelpLike(Map<String, Object> map) {
+		return memberDao.deleteHelpLike(map);
+	}
+
 	
 	
 	
