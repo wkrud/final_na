@@ -65,6 +65,9 @@
 	
 	
 	<script>
+	$("#closeInfo").click((e) => {
+		$("#infowrap", parent.document).hide();
+	});
 	
 	$("#info-search-help-start").click((e) => {
 		if($("#infosearchHelp").val() == ''){
