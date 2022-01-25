@@ -245,6 +245,11 @@ public class MemberDaoImpl implements MemberDao {
 		return session.selectList("member.selectMostHelp");
 	}
 
+	@Override
+	public int updateMemberPhone(Map<String, Object> map) {
+		return session.update("member.updateMemberPhone", map);
+	}
+
 	
 	
 	

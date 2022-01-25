@@ -241,6 +241,11 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.selectMostHelp();
 	}
 
+	@Override
+	public int updateMemberPhone(Map<String, Object> map) {
+		return memberDao.updateMemberPhone(map);
+	}
+
 	
 	
 	

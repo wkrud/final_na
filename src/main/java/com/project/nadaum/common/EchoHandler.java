@@ -73,7 +73,7 @@ public class EchoHandler extends TextWebSocketHandler {
 				
 				if(cmd != null && (cmd.equals("following")) || (cmd.equals("follower")) || (cmd.equals("free")) || (cmd.equals("friend"))) {
 					Map<String, Object> id = new HashMap<>();
-					id.put("caller", caller);
+					id.put("id", caller);
 					Member member = memberService.selectOneMemberNickname(receiver);
 					Member senderInfo = memberService.selectOneMember(id);
 					senderNickname = senderInfo.getNickname();

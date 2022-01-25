@@ -13,6 +13,7 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.http.ResponseEntity;
@@ -88,6 +89,29 @@ public class MemberController {
 	
 	@GetMapping("/mypage/changePassword.do")
 	public void changePassword() {}
+	
+	@GetMapping("/mypage/enrollPhone.do")
+	public void enrollPhone(@RequestParam String ePhone, Model model) {
+		Map<String, Object> map = new HashMap<>();
+		String num =  RandomStringUtils.randomNumeric(6);
+		map.put("phone", ePhone);
+		map.put("num", num);
+		log.debug("map", map);
+		messageService.sendAuthenticationNum(map);
+		model.addAttribute("map", map);
+	}
+	
+	@PostMapping("/mypage/enrollPhone.do")
+	public String enrollPhone(@RequestParam Map<String, Object> map, @AuthenticationPrincipal Member member, RedirectAttributes redirectAttr) {
+		map.put("id", member.getId());
+		int result = memberService.updateMemberPhone(map);
+		
+		member.setPhone((String)map.get("phone"));
+		Authentication newAuthentication = new UsernamePasswordAuthenticationToken(member, member.getPassword(), member.getAuthorities());		
+		SecurityContextHolder.getContext().setAuthentication(newAuthentication);
+		redirectAttr.addFlashAttribute("msg", "핸드폰 등록 성공");
+		return "redirect:/member/mypage/memberDetail.do?tPage=myPage";
+	}
 	
 	@PostMapping("/mypage/changePassword.do")
 	public String changePassword(@RequestParam Map<String, Object> map, @AuthenticationPrincipal Member member, RedirectAttributes redirectAttr) {

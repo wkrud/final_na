@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>나:다움 비밀번호 변경</title>
+<title>나:다움 핸드폰 등록</title>
 <script src="https://code.jquery.com/jquery-3.6.0.js"
 	integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
 	crossorigin="anonymous"></script>
@@ -28,90 +28,91 @@
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
 $(() => {
-	$(changePwModal)
+	$(enrollPhoneModal)
 		.modal()
 		.on("hide.bs.modal", (e) => {
-			location.href='${empty header.referer || header.referer.contains('/member/mypage/changePassword.do') ? pageContext.request.contextPath : header.referer}';
+			location.href='${pageContext.request.contextPath}/member/mypage/memberDetail.do?tPage=myPage';
 		});	
 });
 </script>
 </head>
 <body>
 <!-- Modal -->
-<div class="modal fade" id="changePwModal" tabindex="-1" role="dialog"
+<div class="modal fade" id="enrollPhoneModal" tabindex="-1" role="dialog"
 	aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">비밀번호 변경</h5>
+				<h5 class="modal-title" id="exampleModalLabel">핸드폰 등록</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<form method="POST">
-				<div class="modal-body">										
+				<div class="modal-body">	
+					<div class="enroll-timer-wrap">
+						<span id="enrollTimeCheck">03:00</span>
+					</div>			
 					<div class="input-group mb-3">
 						<div class="input-group-prepend">
-							<span class="input-group-text" id="cp1">현재 비밀번호</span>
+							<span class="input-group-text" id="ep1">입력한 전화번호</span>
 						</div>
-						<input type="password" id="currentPassword" name="currentPassword" class="form-control" aria-label="Username" aria-describedby="cp1">
+						<input type="text" id="phone" name="phone" value="${map.phone}" class="form-control" aria-label="Username" aria-describedby="ep1" readonly>
 					</div>
 					<div class="input-group mb-3">
 						<div class="input-group-prepend">
-							<span class="input-group-text" id="cp2">변경할 비밀번호</span>
+							<span class="input-group-text" id="ep2">인증번호</span>
 						</div>
-						<input type="password" id="password" name="password" class="form-control" aria-label="Username" aria-describedby="cp2">
-					</div>
-					<div class="input-group mb-3">
-						<div class="input-group-prepend">
-							<span class="input-group-text" id="cp3">비밀번호 확인</span>
-						</div>
-						<input type="password" id="passwordCheck" class="form-control" aria-label="Username" aria-describedby="cp3">
+						<input type="text" id="sendNum" name="sendNum" class="form-control" aria-label="Username" aria-describedby="ep2">
 					</div>
 	 			</div>
 				<div class="modal-footer">
 					<button type="submit" id="agreement-btn" class="btn btn-primary">확인</button>
 	       			<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
 				</div>
+				<input type="hidden" id="checkNum" name="checkNum" value="${map.num}" />
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 			</form>
 		</div>
 	</div>
 </div>
-<form
-	id="logoutFrm"
-	method="POST"
-	action="${pageContext.request.contextPath}/member/memberLogout.do">
-	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-</form>	
 <script>
+function startTimer(duration, display) {
+    var timer = duration, minutes, seconds;
+    setInterval(function () {
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        display.text(minutes + ":" + seconds);
+
+        if (--timer < 0) {
+        	location.href="${pageContext.request.contextPath}/member/mypage/memberDetail.do?tPage=myPage";
+        }
+    }, 1000);
+}
+
+$(() => {
+    var limitTime = 60 * 3,
+        display = $('#enrollTimeCheck');
+    startTimer(limitTime, display);	
+});
+
 
 $("#agreement-btn").click((e) => {
-	const $currentPassword = $("#currentPassword");
-	const $password = $("#password");
-	const $passwordCheck = $("#passwordCheck");
+	const $sendNum = $("#sendNum");
+	const $checkNum = $("#checkNum");
 	
-	if($currentPassword.val() == ''){
-		alert("현재 비밀번호를 입력하세요");
-		$currentPassword.focus();
+	if($sendNum.val() == ''){
+		alert("인증번호를 입력하세요");
+		$sendNum.focus();
 		return false;
 	}
-	// 비밀번호	
-	if($password.val() == ''){
-		alert("변경할 비밀번호를 입력하세요");
-		$password.focus();
-		return false;
-	}
-	if(! /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,15}$/.test($password.val())){
-        alert("비밀번호는 숫자와 영문이 포함된 8~15자리입니다");
-		$password.focus();
-		return false;
-    }
-	
-	// 비밀번호 일치 확인
-	if($password.val() != $passwordCheck.val()){
-    	alert("비밀번호가 일치하지 않습니다.");
-		$passwordCheck.focus();
+	if($sendNum.val() != $checkNum.val()){
+		alert("잘못된 인증번호 입니다.");
+		$checkNum.focus();
 		return false;
 	}
 	return true;

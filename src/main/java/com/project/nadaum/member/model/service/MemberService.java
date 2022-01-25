@@ -98,6 +98,8 @@ public interface MemberService {
 
 	List<Map<String, Object>> selectMostHelp();
 
+	int updateMemberPhone(Map<String, Object> map);
+
 
 
 }
