@@ -1,11 +1,15 @@
 package com.project.nadaum.accountbook.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,19 +47,8 @@ public class AccountBookController {
 	 
 	 return accountList; 
 	 }
-	 
-	
-	/*
-	 * @RequestMapping(value="/selectAllAccountList.do") public String
-	 * selectAllAccountList (HttpServletRequest request, String id, Model model) {
-	 * List<AccountBook> accountList = accountBookService.selectAllAccountList(id);
-	 * model.addAttribute("accountList",accountList);
-	 * 
-	 * return "accountbook/accountList.do"; }
-	 */
 	
 	 // 가계부 추가
-	@ResponseBody
 	@RequestMapping(value="/accountInsert.do", method=RequestMethod.POST)
 	public String insertAccount(AccountBook account) {
 		 int result = accountBookService.insertAccount(account); 
@@ -93,17 +86,20 @@ public class AccountBookController {
 	}
 	
 	// 수입, 지출별 정렬
-	/*
-	 * @ResponseBody
-	 * 
-	 * @PostMapping(value="/income_expense_filter.do") public List<AccountBook>
-	 * income_expense_filter(@RequestBody AccountBook accountBook, Model model) {
-	 * log.info("param={}",accountBook); List<AccountBook> incomeList =
-	 * accountBookService.income_expense_filter(param); log.info("incomeList={}",
-	 * incomeList); model.addAttribute(incomeList);
-	 * 
-	 * return incomeList; }
-	 */
+	 @ResponseBody 
+	 @PostMapping(value="/incomeExpenseFilter.do") 
+	 public List<AccountBook> incomeExpenseFilter(@RequestBody Map<String, Object> param, Model model) {
+		 Map<String, Object> map = new HashMap<>();
+		 map.put("id", param.get("id"));
+		 map.put("income_expense", param.get("income_expense"));
+		 log.info("map={}", map);
+		 
+		 List<AccountBook> incomeList = accountBookService.incomeExpenseFilter(map); 
+		 log.info("incomeList={}",incomeList); 
+		 model.addAttribute(incomeList);
+	  
+	  return incomeList; }
+	 
 	
 
 }

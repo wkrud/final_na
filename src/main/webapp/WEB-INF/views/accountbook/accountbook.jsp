@@ -17,52 +17,68 @@
 
 	<div class="modal-background">
 	<div class="insertAccountModal">
-		<h2>가계부 테스트</h2>
+		<h2>가계부 입력</h2>
 		<form 
 			name="insertFrm" 
 			method="POST"
 			action="${pageContext.request.contextPath}/accountbook/accountInsert.do">
 		<table>
+		<input type="hidden" name="income_expense" id="income" value="I" />
+		<input type="hidden" name="income_expense" id="expense" value="E" />
 			<tr>
 				<td colspan="2">
 					<input type="date" name="reg_date" id="reg_date" />
 				</td>
-			</tr>	
-			<tr>
-				<div class="btn-group btn-group-toggle" id="radio_btn" data-toggle="buttons">
-					<label class="btn btn-success" id="income_box">
-						<input type="radio" name="payment" id="jb-radio-1" value="cash"> 현금
-					</label>
-					<label class="btn btn-danger" id="expense_box">
-						<input type="radio" name="payment" id="jb-radio-2" value="card"> 카드
-					</label>
-				</div>
 			</tr>
 			<tr>
-				<td colspan="">
-					
+				<td>
+					<label for="payment">
+						<input type="radio" name="payment" id="" value ="cash"/> 현금
+					</label>
+				</td>
+				<td>
+					<label for="payment">
+						<input type="radio" name="payment" id="" value ="card"/> 카드
+					</label>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<select name="income_expense" id="main">
+						<option value="I">수입</option>
+						<option value="E">지출</option>
+					</select>
+					<select name="category" id="sub">
+						<option value="급여">급여</option>
+						<option value="용돈">용돈</option>
+						<option value="기타">기타</option>
+					</select>
 				</td>
 			</tr>
 			<tr>
 				<td colspan="2">
-					<label for="detail">내역</label>
-					<input type="text" name="detail" id="" placeholder="내역을 입력하세요." value="용돈" />
+					<label for="detail">
+						<input type="text" name="detail" id="" placeholder="내역을 입력하세요" />
+					</label>
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2"> 
-					<label for="price">금액</label>
-					<input type="text" name="price" id="" placeholder="금액을 입력하세요" value="300000" />
+				<td colspan="2">
+					<label for="price">
+						<input type="text" name="price" id="insertPrice" placeholder="금액을 입력하세요" onkeyup="numberWithCommas(this.value)" />
+					</label>
 				</td>
 			</tr>
 			<tr>
-				<input type="hidden" name="id" id="id" value="${loginMember.id}" />
-				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+				<td>
+					<input type="hidden" name="id" id="id" value="${loginMember.id}" />
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+				</td>
 			</tr>
 		</table>
-			<input type="submit" value="제출하기" />
+			<input type="submit" value="등록" />
 		</form>
-			<button id="closeBtn">닫기</button>
+			<button id="modalCloseBtn">X</button>
 	</div>
 	</div>
 
@@ -94,9 +110,10 @@
 				<input type="submit" value="검색">
 			</form>
 		</div>
-
+		<button id="AllListBtn" onclick="AllList();">전체보기</button>
+		<button class="FilterBtn" id="incomeFilterBtn">수입</button>
+		<button class="FilterBtn" id="expenseFilterBtn">지출</button>
 		<div id="account_list">
-		
 		</div>
 	</section>
 	<section class="box3">
@@ -127,4 +144,4 @@
 <script>
 
 </script>
-<jsp:include page="/WEB-INF/views/common/footer.jsp" />
+<%-- <jsp:include page="/WEB-INF/views/common/footer.jsp" /> --%>

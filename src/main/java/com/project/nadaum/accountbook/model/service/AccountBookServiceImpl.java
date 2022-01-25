@@ -41,8 +41,8 @@ public class AccountBookServiceImpl implements AccountBookService {
 	}
 
 	@Override
-	public List<AccountBook> income_expense_filter(Map<String, Object> param) {
-		return accountBookDao.income_expense_filter(param);
+	public List<AccountBook> incomeExpenseFilter(Map<String, Object> map) {
+		return accountBookDao.incomeExpenseFilter(map);
 	}
 	
 }
