@@ -95,7 +95,7 @@
 	<section class="box2">
 		<div class="search_box">
 			<form 
-				action=""
+				action="${pageContext.request.contextPath}/accountbook/searchList.do"
 				id="serchFrm">
 				<h3>검색</h3>
 				<select name="income_expense" id="mainCategory">
