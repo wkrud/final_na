@@ -8,6 +8,8 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="가계부" name="title"/>
 </jsp:include>
+<meta id="_csrf" name="_csrf" content="${_csrf.token}" />
+<meta id="_csrf_header" name="_csrf_header" content="${_csrf.headerName}" />
 <sec:authentication property="principal" var="loginMember"/>
 
 <link href='${pageContext.request.contextPath}/resources/css/accountbook/main.css' rel='stylesheet' />
@@ -25,38 +27,20 @@
 				<td colspan="2">
 					<input type="date" name="reg_date" id="reg_date" />
 				</td>
-			</tr>
+			</tr>	
 			<tr>
-				<td>
-					<label for="income_expense">수입</label>
-					<input type="radio" name="income_expense" id="income" value="I" checked/>
-				</td>
-				<td>
-					<label for="income_expense">지출</label>
-					<input type="radio" name="income_expense" id="expense" value="E"/>
-				</td>
+				<div class="btn-group btn-group-toggle" id="radio_btn" data-toggle="buttons">
+					<label class="btn btn-success" id="income_box">
+						<input type="radio" name="payment" id="jb-radio-1" value="cash"> 현금
+					</label>
+					<label class="btn btn-danger" id="expense_box">
+						<input type="radio" name="payment" id="jb-radio-2" value="card"> 카드
+					</label>
+				</div>
 			</tr>
 			<tr>
 				<td colspan="">
-					<select name="payment" id="">
-						<option value="cash" name="payment">현금</option>
-						<option value="card" name="payment">카드</option>
-					</select>
-					<select name="category" id="income_category">
-						<option value="급여">급여</option>
-						<option value="용돈">용돈</option>
-						<option value="기타(i)">기타</option>
-					</select>
-					<!-- <select name="category" id="expense_cateogory">
-						<option value="식비">식비</option>
-						<option value="쇼핑">쇼핑</option>
-						<option value="저축">저축</option>
-						<option value="유흥">유흥</option>
-						<option value="생활비">생활비</option>
-						<option value="자기계발">자기계발</option>
-						<option value="기타(e)">기타</option>
-					</select> -->
-						
+					
 				</td>
 			</tr>
 			<tr>
@@ -90,43 +74,29 @@
 			<br>목표로 설정한 금액의 50%를 소비하셨어요! 성공을 위해서 남은 기간 절대 존버해
 			<br>아무튼... 이런 랜덤 멘트...
 		</div>
-		<div class="chart box">
-		</div>
+
 	</section>
 	<section class="box2">
 		<div class="search_box">
-			<form action="">
+			<form 
+				action=""
+				id="serchFrm">
 				<h3>검색</h3>
-				<select name="mainCategory" id="mainCategory">
+				<select name="income_expense" id="mainCategory">
 					<option value="" selected>대분류</option>
-					<option value=""></option>
+					<option value="I">수입</option>
+					<option value="E">지출</option>
 				</select>
-				<select name="subCategory" id="subCategory">
+				<select name="category" id="subCategory">
 					<option value="">소분류</option>
 				</select>
-				<input type="text" name="search" id="search">
+				<input type="text" name="detail" id="search">
 				<input type="submit" value="검색">
 			</form>
 		</div>
-		<!-- 화면만 잡고 리스트 싹 불러오기 -->
-		<div class="account_list">
-		<button id="income_filter_btn")>수입</button>
-		<button id="expense_filter_btn">지출</button>
-		<a href="#">전체보기</a>
-			<form 
-				action="${pageContext.request.contextPath}/accountbook/accountDelete.do"
-				method="POST"
-				name="deleteFrm">
-				<table class="account_list_table">
-					<%-- <tr>
-						<td rowspan="2">${account.incomeExpense}</td>
-						<td colspan="2"><fmt:formatDate pattern="yyyy-MM-dd" value="${account.regDate}"/></td>
-						<td>${account.price}</td>
-					</tr>		 --%>			
-				</table>
-						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-			</form>
 
+		<div id="account_list">
+		
 		</div>
 	</section>
 	<section class="box3">
@@ -153,8 +123,8 @@
 		</div>
 	</section>
 
-	
-	<script src='${pageContext.request.contextPath}/resources/js/accountbook/main.js'></script>
+<script src='${pageContext.request.contextPath}/resources/js/accountbook/main.js'></script>
+<script>
 
-
+</script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />

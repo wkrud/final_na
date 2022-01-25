@@ -17,6 +17,6 @@ public interface AccountBookDao {
 
 	String monthlyAccount(String id);
 
-	Map<String, String> income_expense_filter(String id, String income_expense);
+	List<AccountBook> income_expense_filter(Map<String, Object> param);	
 
 }

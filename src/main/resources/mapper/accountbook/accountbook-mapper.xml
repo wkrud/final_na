@@ -92,7 +92,7 @@
 		and 
 		income_expense = #{income_expense}
 	</select>
-	
+		
 	
 	
 	<resultMap type="Map" id="accountbookMap">

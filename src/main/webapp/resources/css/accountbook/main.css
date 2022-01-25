@@ -111,40 +111,8 @@
   height: 50px;
 }
 
-/* 가계부 입력 박스 */
 
-/* .insertForm {
-  width : 100%;
-  height: 40%;
-  position: relative;
-  bottom: 50px;
-  background : rgba(225, 225, 225, 0.1);
-  box-shadow: 0 25px 45px rgba(0, 0, 0, 0.1);
-  border : 1px solid rgba(225, 225, 225, 0.5);
-  border-radius: 10px;
-} */
-
-/* .insertForm::after {
-  content: '';
-  position: absolute;
-  background-color: red;
-  width : 100px;
-  height: 100px;
-  border-radius: 50%;
-  top : 40%;
-  left : 50%;
-  transform: translate(-50%, -50%);
-  border : 2px dotted lightgray;
-}
-
-.insertForm p {
-  font-size: 20px;
-  color: gray;
-  position: relative;
-  top : 180px;
-} */
-
-
+/* 거래내역 입력하기 버튼 */
 #btn1{
   width : 300px;
   height: 150px;
@@ -212,4 +180,29 @@
   margin : 100px auto;
   padding : 20px;
   border-radius: 10px;
+  position : relative;
+}
+
+
+#income_box, #expense_box{
+	width : 150px;
+	height : 50px;
+	margin : 0px 10px;
+	border-radius : 5px;
+	position : relative;
+}
+
+#income_box {
+	background-color : #33804e;
+	left : 30px;
+}
+
+#expense_box {
+	background-color : #d83a3f;
+	left : 80px;
+}
+
+
+#jb-radio-1, #jb-radio-2 {
+	font-size : 15px;
 }
