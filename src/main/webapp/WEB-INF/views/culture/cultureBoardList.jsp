@@ -19,6 +19,7 @@ div#culture-container{width:100%; margin:0 auto;text-align:center;}
 }
 .card{
 height: 300px;
+padding: 15px;
 }
 .card-title{
     display: -webkit-box;
@@ -85,7 +86,7 @@ $(() => {
       <div class="row hidden-md-up">
        
      <c:forEach var="culture" items="${list}">
-    	<div class="col-md-4">
+    	<div class="col-md-4" style="padding: 15px;">
           <div class="card" data-code="${culture.seq}">
             <div class="card-block">
             	 <p class="card-text p-y-1" id="culture_code">${culture.code}</p>
@@ -104,6 +105,7 @@ $(() => {
 		</div>
 		
 	</div>
+	
 </body>
 
   <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>

@@ -6,51 +6,78 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="게시판 상세보기" name="title"/>
 </jsp:include>
-
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/culture/cultureDetail.css" />
-
+<!-- <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/culture/cultureDetail.css" />
+ -->
 <style>
 
 </style>
 <section class="content">
-<div id="culture-container" class="mx-auto text-center">
+	<div id="culture-container" class="mx-auto text-center">
+		
+		<!-- 상세내용 -->
+		 <c:forEach var="culture" items="${list}">
+			<div class="culture_detail">
+			<input type="text" class="form-control-" 
+				   placeholder="제목" name="title" id="title" 
+				   value="${culture.title}" readonly>
+			<input type="text" class="form-control-"
+				   value='<fmt:parseDate value="${culture.startDate}" var="startDateParse" pattern="yyyyMMdd"/>
+							<fmt:formatDate value="${startDateParse}" pattern="yyyy년 MM월 dd일"/>' readonly>
+			
+			<input type="text" class="form-control-" 
+				   value='<fmt:parseDate value="${culture.endDate}" var="endDateParse" pattern="yyyyMMdd"/>
+							<fmt:formatDate value="${endDateParse}" pattern="yyyy년 MM월 dd일"/>' readonly>
+		
+			<input type="image" class="form-control-" name="imgUrl" title="썸네일" id="imgUrl"
+					style="width: 30%; display:flex;"
+				   src="${culture.imgUrl}" readonly>
+			<input type="text" class="form-control-" name="area" title="지역" id="area"
+				   value="${culture.area}" readonly>
+			<input type="text" class="form-control-" name="place" title="장소" id="place"
+				   value="${culture.place}" readonly>
+			<input type="text" class="form-control-" name="realmName" title="장르" id="genre"
+				   value="${culture.realmName}" readonly>
+			<input type="text" class="form-control-" name="placeAddr" title="주소" id="placeAddr"
+				   value="${culture.placeAddr}" readonly>
+			<input type="text" class="form-control-" name="price" title="가격" id="price"
+				   value="${culture.price}" readonly>
+			<input type="text" class="form-control-" name="placeUrl" title="링크" id="placeUrl"
+				   value="${culture.placeUrl}" readonly>
+			
+			</div>
+		</c:forEach>
+	<!-- culture-container 끝 -->
 	
-	<!-- 상세내용 -->
-	 <c:forEach var="culture" items="${list}">
-	<div class="culture_detail">
-	<input type="text" class="form-control-" 
-		   placeholder="제목" name="title" id="title" 
-		   value="${culture.title}" readonly>
-	<input type="text" class="form-control-" 
-		   placeholder="시작 날짜" name="startDate" id="startDate" 
-		   value='<fmt:parseDate value="${culture.startDate}" var="startDateParse" pattern="yyyyMMdd"/>
-<fmt:formatDate value="${startDateParse}" pattern="yyyy년 MM월 dd일"/>' readonly>
-	
-	<input type="text" class="form-control-" 
-		   placeholder="시작 날짜" name="startDate" id="startDate" 
-		   value='<fmt:parseDate value="${culture.endDate}" var="endDateParse" pattern="yyyyMMdd"/>
-<fmt:formatDate value="${endDateParse}" pattern="yyyy년 MM월 dd일"/>' readonly>
-
-	<input type="image" class="form-control-" name="imgUrl" title="썸네일" id="imgUrl"
-			style="width: 30%; display:flex;"
-		   src="${culture.imgUrl}" readonly>
-	<input type="text" class="form-control-" name="area" title="지역" id="area"
-		   value="${culture.area}" readonly>
-	<input type="text" class="form-control-" name="place" title="장소" id="place"
-		   value="${culture.place}" readonly>
-	<input type="text" class="form-control-" name="realmName" title="장르" id="genre"
-		   value="${culture.realmName}" readonly>
-	<input type="text" class="form-control-" name="realmName" title="장르" id="genre"
-		   value="${culture.placeAddr}" readonly>
-	<input type="text" class="form-control-" name="realmName" title="장르" id="genre"
-		   value="${culture.price}" readonly>
-	<input type="text" class="form-control-" name="realmName" title="장르" id="genre"
-		   value="${culture.placeUrl}" readonly>
+<h1>댓글</h1>
+	<div class="insert-comment">
+		<form action="/culture/insertComment.do" method="POST" name="insert-comment">
+			<input type="hidden" name="boardNo" value="${apiCode}" />
+            <input type="hidden" name="writer" value="${id}" />
+            <input type="hidden" name="commentLevel" value="1" />
+            <input type="hidden" name="commentRef" value="0" />    
+			<textarea name="content" cols="60" rows="3"></textarea>
+            <button type="submit" class="btn btn-light">등록</button>
+		</form>
 	
 	</div>
-	</c:forEach>
-	<!-- culture-container 끝 -->
+	<table id="comment-table">
+	 <c:forEach var="comment" items="${list}">
+		<tr class="level1">
+			<td>
+				<sub class="comment-writer">${comment.id}</sub>
+				<sub class="comment-date">
+				<fmt:formatDate value="${comment.regDate}" pattern="yyyy/MM/dd"/>
+				</sub>
+				<sub class="star">${comment.star}</sub>
+				<br />
+				${comment.content}
+			
+			</td>		
+		</tr>
+		</c:forEach>
+		</table>
 </div>
+
 
 <!-- kakao 지도 -->
 

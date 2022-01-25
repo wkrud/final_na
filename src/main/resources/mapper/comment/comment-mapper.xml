@@ -11,5 +11,19 @@
 		where
 			api_code = #{api_code}
 	</select>
+	<insert id="insertCultureComment" parameterType="comment">
+		insert into
+				comments(code, comment_level, content, reg_date, comment_ref, id, api_code, star)
+			values(
+				seq_comments_no.nextval,
+				#{comment_level},
+				#{content},
+				#{reg_date},
+				#{comment_ref},
+				#{id},
+				#{api_code},
+				#{star}
+			)
+	</insert>
 </mapper>
 

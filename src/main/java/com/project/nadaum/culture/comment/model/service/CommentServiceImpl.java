@@ -20,4 +20,9 @@ public class CommentServiceImpl implements CommentService {
 	public List<Comment> selectCultureCommentList(String apiCode) {
 		return commentDao.selectCultureCommentList(apiCode);
 	}
+
+	@Override
+	public int insertCultureComment(Comment comment) {
+		return commentDao.insertCultureComment(comment);
+	}
 }

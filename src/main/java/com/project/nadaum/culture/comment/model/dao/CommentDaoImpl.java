@@ -19,7 +19,13 @@ public class CommentDaoImpl implements CommentDao {
 	
 	@Override
 	public List<Comment> selectCultureCommentList(String apiCode) {
-		return session.selectOne("comment.selectCultureCommentList", apiCode);
+		return session.selectList("comment.selectCultureCommentList", apiCode);
+	}
+
+
+	@Override
+	public int insertCultureComment(Comment comment) {
+		return session.insert("comment.insertCultureComment", comment);
 	}
 
 }

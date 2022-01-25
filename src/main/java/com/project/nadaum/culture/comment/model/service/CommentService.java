@@ -8,4 +8,6 @@ public interface CommentService {
 
 	List<Comment> selectCultureCommentList(String apiCode);
 
+	int insertCultureComment(Comment comment);
+
 }
