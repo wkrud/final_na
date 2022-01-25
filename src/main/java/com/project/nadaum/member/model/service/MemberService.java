@@ -8,7 +8,7 @@ import com.project.nadaum.member.model.vo.Member;
 
 public interface MemberService {
 
-	Member selectOneMember(String id);
+	Member selectOneMember(Map<String, Object> idMap);
 
 	int insertMember(Member member);
 

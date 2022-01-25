@@ -88,7 +88,11 @@
 	</select>
 	
 	<update id="updateMemberPassword">
-		update member set password = #{password} where email = #{email}
+		update member set password = #{password} 
+		<where>
+			<if test="email != null">and email = #{email}</if>
+			<if test="id != null">and id = #{id}</if>
+		</where>
 	</update>
 	
 	<select id="selectOneMemberByPhone" resultType="member">

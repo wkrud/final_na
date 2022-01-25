@@ -17,8 +17,8 @@ public class MemberServiceImpl implements MemberService {
 	private MemberDao memberDao;
 
 	@Override
-	public Member selectOneMember(String id) {
-		return memberDao.selectOneMember(id);
+	public Member selectOneMember(Map<String, Object> idMap) {
+		return memberDao.selectOneMember(idMap);
 	}
 
 	@Override
