@@ -62,12 +62,17 @@
 						<input type="submit" class="btn btn-outline-success" value="수정" >
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 					</form>
+					<button type="button" class="btn btn-secondary" onclick="changePw();">비밀번호 수정</button>
 				</div>				
 			</div>
 			
 			
 		
 			<script>
+			const changePw = () => {
+				location.href="${pageContext.request.contextPath}/member/mypage/changePassword.do";
+			};
+			
 			$(memberUpdateFrm).submit((e) => {
 				e.preventDefault();
 				

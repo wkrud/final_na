@@ -18,8 +18,8 @@ public class MemberDaoImpl implements MemberDao {
 	private SqlSessionTemplate session;
 
 	@Override
-	public Member selectOneMember(String id) {
-		return session.selectOne("member.selectOneMember", id);
+	public Member selectOneMember(Map<String, Object> idMap) {
+		return session.selectOne("member.selectOneMember", idMap);
 	}
 
 	@Override
