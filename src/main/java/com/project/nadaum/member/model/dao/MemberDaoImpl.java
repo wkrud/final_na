@@ -240,6 +240,11 @@ public class MemberDaoImpl implements MemberDao {
 		return session.delete("member.deleteHelpLike", map);
 	}
 
+	@Override
+	public List<Map<String, Object>> selectMostHelp() {
+		return session.selectList("member.selectMostHelp");
+	}
+
 	
 	
 	

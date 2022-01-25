@@ -236,6 +236,11 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.deleteHelpLike(map);
 	}
 
+	@Override
+	public List<Map<String, Object>> selectMostHelp() {
+		return memberDao.selectMostHelp();
+	}
+
 	
 	
 	
