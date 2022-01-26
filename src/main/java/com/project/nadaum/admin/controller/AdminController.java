@@ -18,6 +18,7 @@ import com.project.nadaum.admin.model.service.AdminService;
 import com.project.nadaum.admin.model.vo.Help;
 import com.project.nadaum.common.NadaumUtils;
 import com.project.nadaum.member.model.service.MemberService;
+import com.project.nadaum.member.model.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,7 +35,7 @@ public class AdminController {
 	
 	@GetMapping("/adminMain.do")
 	public void adminMain() {
-		
+		List<Member> list = adminService.selectAllMember();
 	}
 	
 	@GetMapping("/adminAllHelp.do")

@@ -10,18 +10,38 @@
 	<jsp:param value="나:다움 관리자페이지" name="title"/>
 </jsp:include>
 
-<div class="admin-main-body">
-	<div class="admin-main-sidebar">
-		<div class="absolute-left">
-			<ul class="list-group">
-				<li class="list-group-item"><a href="${pageContext.request.contextPath}/member/admin/adminAllHelp.do">질문관리</a></li>
-				<li class="list-group-item"><a href="${pageContext.request.contextPath}/member/mypage/memberAnnouncement.do">공지사항관리</a></li>
-				<li class="list-group-item"><a href="${pageContext.request.contextPath}/member/admin/adminManagingUser.do">회원관리</a></li>
-			</ul>
-		</div>
-	</div>
-	<div class="admin-main-section">
-	
+<div class="member-managing-body">
+	<div class="managing-table-wrap">
+		<table>
+			<thead>
+				<tr>
+					<th>아이디</th>
+					<th>이름</th>
+					<th>이메일</th>
+					<th>닉네임</th>
+					<th>생일</th>
+					<th>주소</th>
+					<th>질문횟수</th>
+					<th>글 수</th>
+					<th>가입일</th>
+					<th>가입타입</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 </div>
 
