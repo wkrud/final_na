@@ -244,7 +244,7 @@
 	</update>
 	
 	<select id="selectAllAlarm" resultMap="alarm">
-		select * from alarm where id = #{id}
+		select * from alarm where id = #{id} order by reg_date desc
 	</select>
 	
 	<resultMap type="map" id="alarm">
