@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.project.nadaum.admin.model.vo.Help;
+import com.project.nadaum.member.model.vo.Member;
 
 public interface AdminService {
 
@@ -16,5 +17,7 @@ public interface AdminService {
 	int insertHelpAnswer(Help help);
 
 	int countAllHelp();
+
+	List<Member> selectAllMember();
 
 }
