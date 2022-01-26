@@ -14,6 +14,7 @@
 
 <link href='${pageContext.request.contextPath}/resources/css/accountbook/main.css' rel='stylesheet' />
 <link href='https://use.fontawesome.com/releases/v5.0.6/css/all.css' rel='stylesheet'>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
 	<div class="modal-background">
 	<div class="insertAccountModal">
@@ -27,7 +28,7 @@
 		<table>
 			<tr>
 				<td colspan="2">
-					<input type="date" name="reg_date" id="reg_date" />
+					<input type="date" name="reg_date" id="regDate" />
 				</td>
 			</tr>
 			<tr>
@@ -83,13 +84,8 @@
 	</div>
 
 	<section class="box1">
-		<div class="account_tip">
-			<h3>1월의 소비 목표 : 500,000</h3>
-			<p>목표로 설정한 소비 금액 진행률에 따른 멘트 변화
-			<br>예시 : 건강한 소비 패턴을 지니고 계시군요! 이대로 목표 달성까지!
-			<br>목표로 설정한 금액의 50%를 소비하셨어요! 성공을 위해서 남은 기간 절대 존버해
-			<br>아무튼... 이런 랜덤 멘트...
-		</div>
+		<div id="incomeChart"></div>
+		<div id="expenseChart"></div>
 
 	</section>
 	<section class="box2">
@@ -97,7 +93,8 @@
 			<form 
 				action="${pageContext.request.contextPath}/accountbook/searchList.do"
 				method="POST"
-				id="serchFrm">
+				name = "searchFrm"
+				id="searchFrm">
 				<h3>검색</h3>
 				<select name="income_expense" id="mainCategory">
 					<option value="" selected>대분류</option>
@@ -107,10 +104,10 @@
 				<select name="category" id="subCategory">
 					<option value="">소분류</option>
 				</select>
-				<input type="text" name="detail" id="search">
+				<input type="text" name="detail" id="search"/>
 				<input type="hidden" name="id" value="${loginMember.id}" />
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-				<input type="submit" value="검색">
+				<input type="button" id="searchBtn" value="검색">
 			</form>
 		</div>
 		<button id="AllListBtn" onclick="AllList();">전체보기</button>
@@ -142,7 +139,7 @@
 			<button id="btn1"><i class="fas fa-plus plus"></i><br />거래내역 입력하기</button>
 		</div>
 	</section>
-
+<input type="hidden" id="contextPath" value="${pageContext.request.contextPath}" />
 <script src='${pageContext.request.contextPath}/resources/js/accountbook/main.js'></script>
 <script>
 

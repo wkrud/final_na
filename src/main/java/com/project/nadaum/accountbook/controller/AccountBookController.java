@@ -1,9 +1,15 @@
 package com.project.nadaum.accountbook.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import org.apache.tomcat.util.json.JSONParser;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.project.nadaum.accountbook.model.service.AccountBookService;
 import com.project.nadaum.accountbook.model.vo.AccountBook;
+import com.project.nadaum.accountbook.model.vo.AccountBookChart;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,9 +47,7 @@ public class AccountBookController {
 	@ResponseBody
 	@RequestMapping(value="/selectAllAccountList.do") 
 	 public List<AccountBook> selectAllAccountList (String id, Model model) { 
-		 log.info("id={}", id);
 		 List<AccountBook> accountList = accountBookService.selectAllAccountList(id);
-		 log.info("accountList={}",accountList);
 		 model.addAttribute("accountList",accountList);
 	 
 	 return accountList; 
@@ -59,10 +64,11 @@ public class AccountBookController {
 	// 가계부 삭제
 	@ResponseBody
 	@RequestMapping(value="/accountDelete.do", method=RequestMethod.POST)
-	public String deleteAccount(@RequestParam("code") String code) {
-		int result = accountBookService.deleteAccount(code);
-		
-		return "redirect:/accountbook/accountbook.do";
+	public Map<String, Object> deleteAccount(@RequestBody Map <String, Object> code) {		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("code", code.get("code"));	
+		int result = accountBookService.deleteAccount(map);
+		return map;
 	}
 	
 	//월간 수입, 지출 금액
@@ -70,7 +76,6 @@ public class AccountBookController {
 	@GetMapping(value="/monthlyTotalIncome.do")
 	public List<AccountBook> monthlyTotalIncome(String id, Model model) {
 		List<AccountBook> incomeList = accountBookService.monthlyTotalIncome(id);
-		model.addAttribute(incomeList);
 		
 		return incomeList;
 	}
@@ -80,6 +85,11 @@ public class AccountBookController {
 	@GetMapping(value="/monthlyAccount.do")
 	public String monthlyAccount(String id, Model model) {
 		String monthlyAccount = accountBookService.monthlyAccount(id);
+		log.info("monthlyAccount={}", monthlyAccount);
+		//만약 사용자 입력값이 없어서 monthlyAccount합계가 null값이 넘어온다면 해당 변수에 0 대입
+		if (monthlyAccount == null) {
+			monthlyAccount = "0";
+		}
 		model.addAttribute(monthlyAccount);
 		
 		return monthlyAccount;
@@ -92,10 +102,8 @@ public class AccountBookController {
 		 Map<String, Object> map = new HashMap<>();
 		 map.put("id", param.get("id"));
 		 map.put("income_expense", param.get("income_expense"));
-		 log.info("map={}", map);
 		 
 		 List<AccountBook> incomeList = accountBookService.incomeExpenseFilter(map); 
-		 log.info("incomeList={}",incomeList); 
 		 model.addAttribute(incomeList);
 	  
 		 return incomeList; 
@@ -103,16 +111,35 @@ public class AccountBookController {
 	 
 	 
 	 //검색
+	 @ResponseBody
 	 @RequestMapping(value="/searchList.do", method=RequestMethod.POST )
-	 public String searchList(AccountBook account, Model model) {
-		 log.info("account={}", account);
-		 List<AccountBook> list = accountBookService.searchList(account);
-		 model.addAttribute(list);
-		 return "redirect:/accountbook/accountbook.do";
+	 public List<AccountBook> searchList(@RequestParam Map<String, Object> param, Model model) {
+		 Map<String, Object> map = new HashMap<>();
+		 map.put("income_expense", param.get("\"income_expense"));
+		 map.put("category", param.get("category"));
+		 map.put("detail", param.get("detail"));
+		 map.put("id", param.get("id"));
+			
+		 List<AccountBook> list = accountBookService.searchList(map);
+		 model.addAttribute(list); 
+		 
+		return list;
 	 }
 	 
-	
-
+	 //차트
+	 @ResponseBody
+	 @PostMapping("/incomeChart.do")
+	 public void chartValue (@RequestBody Map<String, Object> param, Model model) {
+		 Map<String, Object> map = new HashMap<>();
+		 map.put("id", param.get("id"));
+		 map.put("income_expense", param.get("income_expense"));
+		 log.info("map={}", map);
+		 HashMap<String, Object> chartValue = accountBookService.chartValue(map);
+		 
+		 log.debug("chart={}", chartValue);
+		
+		 
+	 }
 }
 
 	

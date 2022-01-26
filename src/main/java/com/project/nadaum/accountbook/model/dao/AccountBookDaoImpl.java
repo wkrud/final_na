@@ -1,5 +1,6 @@
 package com.project.nadaum.accountbook.model.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.project.nadaum.accountbook.model.vo.AccountBook;
+import com.project.nadaum.accountbook.model.vo.AccountBookChart;
 
 @Repository
 public class AccountBookDaoImpl implements AccountBookDao {
@@ -26,7 +28,7 @@ public class AccountBookDaoImpl implements AccountBookDao {
 	}
 
 	@Override
-	public int deleteAccount(String code) {
+	public int deleteAccount(Map<String, Object> code) {
 		return session.delete("accountbook.deleteAccount", code);
 	}
 
@@ -46,9 +48,17 @@ public class AccountBookDaoImpl implements AccountBookDao {
 	}
 
 	@Override
-	public List<AccountBook> searchList(AccountBook account) {
-		return session.selectList("accountbook.searchList", account);
+	public List<AccountBook> searchList(Map<String, Object> map) {
+		return session.selectList("accountbook.searchList", map);
 	}
+
+
+	@Override
+	public HashMap<String, Object> chartValue(Map<String, Object> map) {
+		return session.selectOne("accountbook.chartValue", map);
+	}
+
+	
 	
 	
 	

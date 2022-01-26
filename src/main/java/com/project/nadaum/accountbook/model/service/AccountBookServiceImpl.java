@@ -1,5 +1,6 @@
 package com.project.nadaum.accountbook.model.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.project.nadaum.accountbook.model.dao.AccountBookDao;
 import com.project.nadaum.accountbook.model.vo.AccountBook;
+import com.project.nadaum.accountbook.model.vo.AccountBookChart;
 
 @Service
 public class AccountBookServiceImpl implements AccountBookService {
@@ -26,7 +28,7 @@ public class AccountBookServiceImpl implements AccountBookService {
 	}
 
 	@Override
-	public int deleteAccount(String code) {
+	public int deleteAccount(Map<String, Object> code) {
 		return accountBookDao.deleteAccount(code);
 	}
 
@@ -46,9 +48,16 @@ public class AccountBookServiceImpl implements AccountBookService {
 	}
 
 	@Override
-	public List<AccountBook> searchList(AccountBook account) {
-		return accountBookDao.searchList(account);
+	public List<AccountBook> searchList(Map<String, Object> map) {
+		return accountBookDao.searchList(map);
 	}
+
+	@Override
+	public HashMap<String, Object> chartValue(Map<String, Object> map) {
+		return accountBookDao.chartValue(map);
+	}
+
+	
 	
 	
 	
