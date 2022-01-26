@@ -78,12 +78,6 @@ $(() => {
 		</div>
 	</div>
 </div>
-<form
-	id="logoutFrm"
-	method="POST"
-	action="${pageContext.request.contextPath}/member/memberLogout.do">
-	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-</form>	
 <script>
 
 $("#agreement-btn").click((e) => {

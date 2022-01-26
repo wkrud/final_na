@@ -3,7 +3,6 @@ package com.project.nadaum.member.controller;
 import java.beans.PropertyEditor;
 import java.io.File;
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -14,6 +13,7 @@ import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +24,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -113,8 +114,12 @@ public class MemberController {
 	}
 	
 	@PostMapping("/mypage/membershipWithdrawal.do")
-	public void membershipWithdrawal(Member member) {
-		log.debug("gd");
+	public String membershipWithdrawal(Member member, RedirectAttributes redirectAttr, HttpServletRequest request, HttpServletResponse response) {
+		int result = memberService.deleteMember(member);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		new SecurityContextLogoutHandler().logout(request, response, auth);
+		redirectAttr.addFlashAttribute("msg", "회원 탈퇴 성공");
+		return "redirect:/";
 	}
 	
 	@GetMapping("/mypage/enrollPhone.do")
@@ -147,7 +152,7 @@ public class MemberController {
 	}
 	
 	@PostMapping("/mypage/changePassword.do")
-	public String changePassword(@RequestParam Map<String, Object> map, @AuthenticationPrincipal Member member, RedirectAttributes redirectAttr) {
+	public String changePassword(@RequestParam Map<String, Object> map, @AuthenticationPrincipal Member member, RedirectAttributes redirectAttr, HttpServletRequest request, HttpServletResponse response) {
 		Map<String, Object> checkMap = new HashMap<>();
 		Map<String, Object> cpMap = new HashMap<>();
 		String cPassword = (String) map.get("currentPassword");
@@ -159,8 +164,9 @@ public class MemberController {
 			cpMap.put("id", member.getId());
 			cpMap.put("password", changePassword);
 			int result = memberService.updateMemberPassword(cpMap);
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			new SecurityContextLogoutHandler().logout(request, response, auth);
 			redirectAttr.addFlashAttribute("msg", "비밀번호 변경 성공 다시 로그인하세요");	
-			redirectAttr.addFlashAttribute("check", "1");	
 			return "redirect:/";
 		}
 		redirectAttr.addFlashAttribute("msg", "비밀번호가 틀렸습니다.");

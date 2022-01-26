@@ -93,11 +93,6 @@ input[id="switch"]{
 <c:if test="${not empty msg}">
 	<script>
 		alert("${msg}");
-		<c:if test="${not empty check}">
-			$(() => {
-				document.logoutFrm.submit();				
-			});
-		</c:if>
 	</script>
 </c:if>
 </head>
