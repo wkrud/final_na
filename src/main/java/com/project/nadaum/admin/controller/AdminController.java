@@ -32,6 +32,11 @@ public class AdminController {
 	@Autowired
 	private AdminService adminService;
 	
+	@GetMapping("/adminMain.do")
+	public void adminMain() {
+		
+	}
+	
 	@GetMapping("/adminAllHelp.do")
 	public void adminAllHelp(@RequestParam(defaultValue = "1") int cPage, HttpServletRequest request, Model model) {
 		try {
