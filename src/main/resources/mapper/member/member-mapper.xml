@@ -58,18 +58,7 @@
 	
 	<!-- 공지 시작 -->
 	
-	<select id="selectLikesCheck" resultMap="likesMap">
-		select 
-			* 
-		from 
-			likes 
-		<where>
-			id = #{id}
-			and
-			code = #{code}
-			<if test="aCode != null">or a_code = #{aCode}</if>
-		</where>
-	</select>
+	
 	
 	<!-- 공지 끝 -->
 	
@@ -203,6 +192,19 @@
 	
 	<select id="countHelpOneCategoryCount" resultType="int">
 		select count(*) from help where category = #{category}
+	</select>
+	
+	<select id="selectLikesCheck" resultMap="likesMap">
+		select 
+			* 
+		from 
+			likes 
+		<where>
+			id = #{id}
+			and
+			code = #{code}
+			<if test="aCode != null">or code = #{aCode}</if>
+		</where>
 	</select>
 	
 	<!-- help 끝 -->
