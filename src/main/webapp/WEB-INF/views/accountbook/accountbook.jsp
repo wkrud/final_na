@@ -18,13 +18,13 @@
 	<div class="modal-background">
 	<div class="insertAccountModal">
 		<h2>가계부 입력</h2>
+		<input type="hidden" name="income_expense" id="income" value="I" />
+		<input type="hidden" name="income_expense" id="expense" value="E" /> 
 		<form 
 			name="insertFrm" 
 			method="POST"
 			action="${pageContext.request.contextPath}/accountbook/accountInsert.do">
 		<table>
-		<input type="hidden" name="income_expense" id="income" value="I" />
-		<input type="hidden" name="income_expense" id="expense" value="E" />
 			<tr>
 				<td colspan="2">
 					<input type="date" name="reg_date" id="reg_date" />
@@ -96,6 +96,7 @@
 		<div class="search_box">
 			<form 
 				action="${pageContext.request.contextPath}/accountbook/searchList.do"
+				method="POST"
 				id="serchFrm">
 				<h3>검색</h3>
 				<select name="income_expense" id="mainCategory">
@@ -107,6 +108,8 @@
 					<option value="">소분류</option>
 				</select>
 				<input type="text" name="detail" id="search">
+				<input type="hidden" name="id" value="${loginMember.id}" />
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 				<input type="submit" value="검색">
 			</form>
 		</div>

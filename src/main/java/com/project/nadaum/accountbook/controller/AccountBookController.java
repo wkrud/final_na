@@ -98,7 +98,18 @@ public class AccountBookController {
 		 log.info("incomeList={}",incomeList); 
 		 model.addAttribute(incomeList);
 	  
-	  return incomeList; }
+		 return incomeList; 
+	  }
+	 
+	 
+	 //검색
+	 @RequestMapping(value="/searchList.do", method=RequestMethod.POST )
+	 public String searchList(AccountBook account, Model model) {
+		 log.info("account={}", account);
+		 List<AccountBook> list = accountBookService.searchList(account);
+		 model.addAttribute(list);
+		 return "redirect:/accountbook/accountbook.do";
+	 }
 	 
 	
 

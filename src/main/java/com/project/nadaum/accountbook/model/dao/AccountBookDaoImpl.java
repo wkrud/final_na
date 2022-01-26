@@ -44,6 +44,13 @@ public class AccountBookDaoImpl implements AccountBookDao {
 	public List<AccountBook> incomeExpenseFilter(Map<String, Object> map) {
 		return session.selectList("accountbook.incomeExpenseFilter", map);
 	}
+
+	@Override
+	public List<AccountBook> searchList(AccountBook account) {
+		return session.selectList("accountbook.searchList", account);
+	}
+	
+	
 	
 	
 

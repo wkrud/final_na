@@ -19,5 +19,7 @@ public interface AccountBookService {
 
 	List<AccountBook> incomeExpenseFilter(Map<String, Object> map);
 
+	List<AccountBook> searchList(AccountBook account);
+
 
 }

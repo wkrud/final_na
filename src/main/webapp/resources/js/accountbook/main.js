@@ -112,6 +112,28 @@
 		contentType : "application/json; charset=UTF-8",
 		success : function(accountList){
 			console.log(accountList);
+			$("#account_list").empty();
+			
+			/*const func = (accountList) => {
+  const bd = document.getElementById("account_list");
+  for (const [key, value] of Object.entries(accountList)) {
+    let tr = document.createElement("tr");
+    let result = `
+        <td rowspan="2">${value.incomeExpense}</td>
+        <td colspan="2">${value.regDate}</td>
+        <td>${parseInt(value.price)}</td>
+        <td>${value.detail}</td>
+        <td><button class="deleteBtn" onclick="deleteDetail(
+            '${value.code}')">[X]</button></td>
+        <input type="hidden" name="code" value="${value.code}" />
+    `;
+    tr.innerHTML = result;
+    bd.append(tr);
+  }
+};*/
+
+			
+			
 			$.each(accountList, function(i, account) {
 			var result = `
 				<tr>
@@ -255,5 +277,8 @@
 	});
 	
 	//검색
+	$('#serchFrm').submit(function(){
+		$("#account_list").empty();
+	});
 	
 	

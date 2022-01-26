@@ -94,6 +94,30 @@
 		order by
 			reg_date desc
 	</select>
+	
+	<select id="searchList" resultMap="accountbookMap">
+		select
+	   	 *
+		from
+		    account_book
+		<where>
+		    id = #{id}
+		   	<if test="category != null and category != ''">
+		    and
+		    category=#{category}
+		   	</if>
+		 	<if test="income_expense != null and income_expense != ''">
+		 	and
+		 	income_expense=#{income_expense}
+		 	</if>
+		 	<if test="detail != null and detail !=''">
+		 	and
+	  		detail like '%' || #{detail} || '%'
+		 	</if>
+		</where>
+	  	order by
+	  		reg_date desc
+	</select>
 		
 	
 	
