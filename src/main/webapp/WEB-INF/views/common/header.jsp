@@ -224,8 +224,14 @@ input[id="switch"]{
 			</nav>
 
 		</header>
-		<div id="infowrap">
+		<div id="infowrap" style="display:none;">
 			<div id="infowrapheader">
+				<div class="info-title">			
+					<h1>도움말</h1>
+					<button type="button" id="closeInfo" class="close" data-dismiss="modal" aria-label="Close">
+			        	<span aria-hidden="true">&times;</span>
+			        </button>
+				</div>
 				<iframe id="nadaumInfo" title="Nadaum Info" src="${pageContext.request.contextPath}/member/mypage/memberInfo.do" >
 				</iframe>
 			</div>
@@ -233,7 +239,6 @@ input[id="switch"]{
 		<script>
 			$(() => {				
 				countBedge();	
-				$("#infowrap").hide();
 			});
 			
 			$("#profile").click(function(){
@@ -352,8 +357,11 @@ input[id="switch"]{
 		    
 		    /* iframe보이기 */
 		    $("#help").click((e) => {
-		    	$("#infowrap").show();
+		    	$("#infowrap").css("display","block");
 		    });
+		    $("#closeInfo").click((e) => {
+		    	$("#infowrap").css("display","none");
+			});
 		    
 		    /* iframe 드래그 */
 		    dragElement(document.getElementById("infowrap"));

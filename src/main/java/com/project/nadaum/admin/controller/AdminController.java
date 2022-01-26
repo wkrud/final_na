@@ -34,8 +34,12 @@ public class AdminController {
 	private AdminService adminService;
 	
 	@GetMapping("/adminMain.do")
-	public void adminMain() {
+	public void adminMain() {}
+	
+	@GetMapping("/adminManagingUser.do")
+	public void adminManagingUser(Model model) {
 		List<Member> list = adminService.selectAllMember();
+		model.addAttribute("list", list);
 	}
 	
 	@GetMapping("/adminAllHelp.do")

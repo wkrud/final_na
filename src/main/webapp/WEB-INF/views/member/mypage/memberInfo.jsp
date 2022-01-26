@@ -31,13 +31,7 @@
 	crossorigin="anonymous">
 </head>
 <body>
-	<header class="info-header">
-		<div class="info-title">
-			<h1>도움말</h1>
-			<button type="button" id="closeInfo" class="close" data-dismiss="modal" aria-label="Close">
-	        	<span aria-hidden="true">&times;</span>
-	        </button>
-		</div>
+	<header class="info-header">		
 		<div class="info-search">
 			<div class="info-input-group mb-3">
 				<div class="info-input-group-prepend">
@@ -65,10 +59,6 @@
 	
 	
 	<script>
-	$("#closeInfo").click((e) => {
-		$("#infowrap", parent.document).hide();
-	});
-	
 	$("#info-search-help-start").click((e) => {
 		if($("#infosearchHelp").val() == ''){
 			alert("질문을 입력해 주세요.");
