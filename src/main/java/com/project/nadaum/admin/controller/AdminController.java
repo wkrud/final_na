@@ -34,8 +34,32 @@ public class AdminController {
 	private AdminService adminService;
 	
 	@GetMapping("/adminMain.do")
-	public void adminMain() {
+	public void adminMain() {}
+	
+	@GetMapping("/adminManagingAnnouncement.do")
+	public void adminManagingAnnouncement(@RequestParam(defaultValue = "1") int cPage, Model model, HttpServletRequest request) {
+		int limit = 10;
+		int offset = (cPage - 1) * limit;
+		Map<String, Object> param = new HashMap<>();
+		param.put("limit", limit);
+		param.put("offset", offset);
+		List<Map<String, Object>> announceList = memberService.selectAllAnnouncement(param);
+		log.debug("announceList = {}", announceList);
+
+		int totalContent = memberService.countAllAnnouncementList();
+		log.debug("totalContent = {}", totalContent);
+		
+		String url = request.getRequestURI();
+		String pagebar = NadaumUtils.getPagebar(cPage, limit, totalContent, url);
+			
+		model.addAttribute("pagebar", pagebar);
+		model.addAttribute("announceList", announceList);
+	}
+	
+	@GetMapping("/adminManagingUser.do")
+	public void adminManagingUser(Model model) {
 		List<Member> list = adminService.selectAllMember();
+		model.addAttribute("list", list);
 	}
 	
 	@GetMapping("/adminAllHelp.do")
