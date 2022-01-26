@@ -37,7 +37,12 @@
 
 <!-- 사용자작성 css -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/style.css" /> 
+<!-- member -->
+<link href='${pageContext.request.contextPath}/resources/css/member/admin/admin.css' rel='stylesheet' />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/profile.css" />
+<link href='${pageContext.request.contextPath}/resources/css/member/mypage/member.css' rel='stylesheet' />
+<link href='${pageContext.request.contextPath}/resources/css/member/mypage/help.css' rel='stylesheet' />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member/mypage/memberDetail.css" />
 
 <!-- 토글용 테스트용 다른 ui속성과 충돌나는중-->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/darkmode.css" />

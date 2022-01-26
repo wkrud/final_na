@@ -5,7 +5,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<link href='${pageContext.request.contextPath}/resources/css/member/mypage/member.css' rel='stylesheet' />
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="나:다움 친구관리" name="title"/>
 </jsp:include>
