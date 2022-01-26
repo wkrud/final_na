@@ -10,7 +10,12 @@
 	<jsp:param value="나:다움 관리자페이지" name="title"/>
 </jsp:include>
 <div class="admin-body">
-
+	<div class="admin-announcement-header">
+	
+	</div>
+	<div class="admin-announcement-body">
+	
+	</div>
 </div>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />

@@ -20,13 +20,13 @@
 				<li class="list-group-item"><a href="${pageContext.request.contextPath}/member/mypage/memberFriends.do">친구관리</a></li>
 				<li class="list-group-item"><a href="${pageContext.request.contextPath}/member/mypage/memberHelp.do">질문모음</a></li>
 				<li class="list-group-item"><a href="${pageContext.request.contextPath}/member/mypage/memberAnnouncement.do">공지사항</a></li>
-				<sec:authorize access="hasRole('ROLE_ADMIN')">
+				<sec:authorize access="hasRole('ROLE_SUPER')">
 					<li class="list-group-item"><a class="text-danger" href="${pageContext.request.contextPath}/member/admin/adminMain.do">관리자페이지</a></li>
 				</sec:authorize>
 			</ul>
 			<!-- 메뉴리스트 하단 작게 -->
 			<div class="out">
-				<a href="">회원탈퇴</a>
+				<a href="${pageContext.request.contextPath}/member/mypage/membershipWithdrawal.do">회원탈퇴</a>
 			</div>
 		</div>
 		

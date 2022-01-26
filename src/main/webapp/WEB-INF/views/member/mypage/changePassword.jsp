@@ -31,7 +31,7 @@ $(() => {
 	$(changePwModal)
 		.modal()
 		.on("hide.bs.modal", (e) => {
-			location.href='${empty header.referer || header.referer.contains('/member/mypage/changePassword.do') ? pageContext.request.contextPath : header.referer}';
+			location.href='${pageContext.request.contextPath}/member/mypage/memberDetail.do?tPage=myPage';
 		});	
 });
 </script>

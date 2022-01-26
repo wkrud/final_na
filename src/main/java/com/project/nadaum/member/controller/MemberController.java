@@ -3,8 +3,10 @@ package com.project.nadaum.member.controller;
 import java.beans.PropertyEditor;
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -89,6 +91,31 @@ public class MemberController {
 	
 	@GetMapping("/mypage/changePassword.do")
 	public void changePassword() {}
+	
+	@GetMapping("/mypage/membershipWithdrawal.do")
+	public void membershipWithdrawal(@AuthenticationPrincipal Member member, Model model) {
+		try {
+			Calendar getToday = Calendar.getInstance();
+			getToday.setTime(new Date()); 
+						
+			Calendar cmpDate = Calendar.getInstance();
+			cmpDate.setTime(member.getRegDate()); 
+			
+			long diffSec = (getToday.getTimeInMillis() - cmpDate.getTimeInMillis()) / 1000;
+			long diffDays = diffSec / (24 * 60 * 60); //일자수 차이
+			String msg = member.getNickname() + " 나는 정말 탈퇴한다";
+			model.addAttribute("write", msg);
+			model.addAttribute("date", diffDays);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw e;
+		}
+	}
+	
+	@PostMapping("/mypage/membershipWithdrawal.do")
+	public void membershipWithdrawal(Member member) {
+		log.debug("gd");
+	}
 	
 	@GetMapping("/mypage/enrollPhone.do")
 	public String enrollPhone(@RequestParam String ePhone, Model model, RedirectAttributes redirectAttr) {
