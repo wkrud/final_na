@@ -11,19 +11,37 @@
 		where
 			api_code = #{api_code}
 	</select>
+	
 	<insert id="insertCultureComment" parameterType="comment">
 		insert into
-				comments(code, comment_level, content, reg_date, comment_ref, id, api_code, star)
+				comments(code, commentLevel, content, regDate, commentRef, id, api_code, star)
 			values(
 				seq_comments_no.nextval,
-				#{comment_level},
+				#{commentLevel},
 				#{content},
-				#{reg_date},
-				#{comment_ref},
+				#{regDate},
+				#{commentRef},
 				#{id},
-				#{api_code},
+				#{apiCode},
 				#{star}
 			)
 	</insert>
+	
+	<delete id="deleteCultureComment">
+		delete 
+		from 
+			comments
+		where 
+		 	code = #{code}
+	</delete>
+	
+	<update id="updateCultureComment">
+		update comments
+		set
+			content = #{content},
+			star = #{star},
+		where
+			code = #{code}
+	</update>
 </mapper>
 

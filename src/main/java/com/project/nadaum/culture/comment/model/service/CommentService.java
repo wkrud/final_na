@@ -10,4 +10,8 @@ public interface CommentService {
 
 	int insertCultureComment(Comment comment);
 
+	int deleteCultureComment(String code);
+
+	int updateCultureComment(Comment comment);
+
 }

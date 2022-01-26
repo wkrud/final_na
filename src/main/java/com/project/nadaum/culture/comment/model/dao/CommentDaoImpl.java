@@ -28,4 +28,16 @@ public class CommentDaoImpl implements CommentDao {
 		return session.insert("comment.insertCultureComment", comment);
 	}
 
+
+	@Override
+	public int deleteCultureComment(String code) {
+		return session.delete("comment.deleteCultureComment", code);
+	}
+
+
+	@Override
+	public int updateCultureComment(Comment comment) {
+		return session.update("comment.updateCultureComment", comment);
+	}
+
 }

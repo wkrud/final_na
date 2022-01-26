@@ -25,4 +25,15 @@ public class CommentServiceImpl implements CommentService {
 	public int insertCultureComment(Comment comment) {
 		return commentDao.insertCultureComment(comment);
 	}
+
+	@Override
+	public int deleteCultureComment(String code) {
+		return commentDao.deleteCultureComment(code);
+	}
+
+	@Override
+	public int updateCultureComment(Comment comment) {
+		return commentDao.updateCultureComment(comment);
+	}
+
 }

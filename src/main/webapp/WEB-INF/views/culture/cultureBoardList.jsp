@@ -36,7 +36,7 @@ $(() => {
 		 //console.log(e.target); // td
 		const $card = $(e.target).parent().parent();
 		const code = $card.data("code");
-		location.href = `${pageContext.request.contextPath}/culture/cultureView.do?code=\${code}`;
+		location.href = `${pageContext.request.contextPath}/culture/board/view/\${code}`;
 	});
 });
 
@@ -78,32 +78,31 @@ $(() => {
 				  <button type="submit" class="btn orange btn-default">Search</button>
 			</form>
 		</div>
-<div id="culture-container">
-    <br />
-    
-     <div class="py-5">
-    <div class="container">
-      <div class="row hidden-md-up">
-       
-     <c:forEach var="culture" items="${list}">
-    	<div class="col-md-4" style="padding: 15px;">
-          <div class="card" data-code="${culture.seq}">
-            <div class="card-block">
-            	 <p class="card-text p-y-1" id="culture_code">${culture.code}</p>
-              <h4 class="card-title">${culture.title}</h4>
-              <p class="card-text p-y-1">${culture.area}</p>
-              <p class="card-text p-y-1">${culture.place}</p>
-              <p class="card-text p-y-1">${culture.realmName}</p>
-              <img class="thumnail" src="${culture.thumbnail}" alt="" />
-               </div>
-          </div>
-        </div>
-	   </c:forEach>
+	<div id="culture-container">
+	    <br />
+	    
+	     <div class="py-5">
+	    <div class="container">
+	      <div class="row hidden-md-up">
+	       
+	     <c:forEach var="culture" items="${list}">
+	    	<div class="col-md-4" style="padding: 15px;">
+	          <div class="card" data-code="${culture.seq}">
+	            <div class="card-block">
+	            	 <p class="card-text p-y-1" id="culture_code">${culture.code}</p>
+	              <h4 class="card-title">${culture.title}</h4>
+	              <p class="card-text p-y-1">${culture.area}</p>
+	              <p class="card-text p-y-1">${culture.place}</p>
+	              <p class="card-text p-y-1">${culture.realmName}</p>
+	              <img class="thumnail" src="${culture.thumbnail}" alt="" />
+	               </div>
+	          </div>
+	        </div>
+		   </c:forEach>
 	    			</div>
 	    		</div>
 	    	</div>
 		</div>
-		
 	</div>
 	
 </body>

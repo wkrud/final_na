@@ -9,7 +9,9 @@
 <!-- <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/culture/cultureDetail.css" />
  -->
 <style>
-
+div#container {
+    padding: 0px;
+}
 </style>
 <section class="content">
 	<div id="culture-container" class="mx-auto text-center">
@@ -17,37 +19,26 @@
 		<!-- 상세내용 -->
 		 <c:forEach var="culture" items="${list}">
 			<div class="culture_detail">
-			<input type="text" class="form-control-" 
-				   placeholder="제목" name="title" id="title" 
-				   value="${culture.title}" readonly>
-			<input type="text" class="form-control-"
-				   value='<fmt:parseDate value="${culture.startDate}" var="startDateParse" pattern="yyyyMMdd"/>
-							<fmt:formatDate value="${startDateParse}" pattern="yyyy년 MM월 dd일"/>' readonly>
+			<h1>${culture.title}</h1>
 			
-			<input type="text" class="form-control-" 
-				   value='<fmt:parseDate value="${culture.endDate}" var="endDateParse" pattern="yyyyMMdd"/>
-							<fmt:formatDate value="${endDateParse}" pattern="yyyy년 MM월 dd일"/>' readonly>
-		
-			<input type="image" class="form-control-" name="imgUrl" title="썸네일" id="imgUrl"
-					style="width: 30%; display:flex;"
-				   src="${culture.imgUrl}" readonly>
-			<input type="text" class="form-control-" name="area" title="지역" id="area"
-				   value="${culture.area}" readonly>
-			<input type="text" class="form-control-" name="place" title="장소" id="place"
-				   value="${culture.place}" readonly>
-			<input type="text" class="form-control-" name="realmName" title="장르" id="genre"
-				   value="${culture.realmName}" readonly>
-			<input type="text" class="form-control-" name="placeAddr" title="주소" id="placeAddr"
-				   value="${culture.placeAddr}" readonly>
-			<input type="text" class="form-control-" name="price" title="가격" id="price"
-				   value="${culture.price}" readonly>
-			<input type="text" class="form-control-" name="placeUrl" title="링크" id="placeUrl"
-				   value="${culture.placeUrl}" readonly>
+			<span><fmt:parseDate value="${culture.startDate}" var="startDateParse" pattern="yyyyMMdd"/>
+			<fmt:formatDate value="${startDateParse}" pattern="yyyy년 MM월 dd일"/>
+			<span>~</span>
+			</span><fmt:parseDate value="${culture.endDate}" var="endDateParse" pattern="yyyyMMdd"/>
+			<fmt:formatDate value="${endDateParse}" pattern="yyyy년 MM월 dd일"/>
 			
+			<p><img src="${culture.imgUrl}" alt="" style="width: 20%;"/></p>
+			<span>${culture.area}</span>
+			<span>${culture.realmName}</span>
+			<span>${culture.placeAddr}</span>
+			<br />
+			<span>${culture.price}</span>
+			
+			<span>${culture.placeUrl}</span>
 			</div>
 		</c:forEach>
 	<!-- culture-container 끝 -->
-	
+	<hr />
 <h1>댓글</h1>
 	<div class="insert-comment">
 		<form action="/culture/insertComment.do" method="POST" name="insert-comment">
@@ -79,7 +70,7 @@
 </div>
 
 
-<!-- kakao 지도 -->
+<!-- kakao 지도 
 
 	<hr style="border: solid 2px grey;">
 	<div class="kakao-map">
@@ -131,5 +122,5 @@ geocoder.addressSearch('서울특별시 서초구 강남대로39길 15-3 2층 30
         map.setCenter(coords);
     } 
 });    
-</script>
+</script>-->
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
