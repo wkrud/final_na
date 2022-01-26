@@ -36,6 +36,11 @@ public class AdminController {
 	@GetMapping("/adminMain.do")
 	public void adminMain() {}
 	
+	@GetMapping("/adminManagingAnnouncement.do")
+	public void adminManagingAnnouncement(Model model) {
+		
+	}
+	
 	@GetMapping("/adminManagingUser.do")
 	public void adminManagingUser(Model model) {
 		List<Member> list = adminService.selectAllMember();
