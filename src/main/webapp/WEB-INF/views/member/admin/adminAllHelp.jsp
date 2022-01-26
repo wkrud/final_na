@@ -45,6 +45,7 @@
 				</c:forEach>
 			</tbody>
 		</table>
+		${pagebar}
 	</div>
 </div>
 <script>

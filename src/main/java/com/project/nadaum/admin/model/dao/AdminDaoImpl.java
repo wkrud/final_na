@@ -3,6 +3,7 @@ package com.project.nadaum.admin.model.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -16,8 +17,11 @@ public class AdminDaoImpl implements AdminDao {
 	private SqlSessionTemplate session;
 
 	@Override
-	public List<Help> selectAllHelp() {
-		return session.selectList("admin.selectAllHelp");
+	public List<Help> selectAllHelp(Map<String, Object> param) {
+		int offset = (int) param.get("offset");
+		int limit = (int) param.get("limit");
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("admin.selectAllHelp", null, rowBounds);
 	}
 
 	@Override
@@ -38,6 +42,11 @@ public class AdminDaoImpl implements AdminDao {
 	@Override
 	public int insertHelpAnswer(Help help) {
 		return session.update("admin.insertHelpAnswer", help);
+	}
+
+	@Override
+	public int countAllHelp() {
+		return session.selectOne("admin.countAllHelp");
 	}
 	
 	

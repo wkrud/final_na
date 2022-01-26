@@ -24,6 +24,10 @@
 		update help set status = 'T' a_code = concat('ah-',seq_help_no.nextval), a_title = #{aTitle}, a_content = #{aContent}, a_reg_date = sysdate where code = #{code}
 	</insert>
 	
+	<select id="countAllHelp" resultType="int">
+		select count(*) from help
+	</select>
+	
 	<resultMap type="map" id="helpMap">
 		<id column="code" property="code"/>
 		<result column="id" property="id"/>

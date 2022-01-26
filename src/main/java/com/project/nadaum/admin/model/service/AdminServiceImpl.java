@@ -22,8 +22,8 @@ public class AdminServiceImpl implements AdminService {
 	private AdminDao adminDao;
 
 	@Override
-	public List<Help> selectAllHelp() {
-		List<Help> listMap = adminDao.selectAllHelp();
+	public List<Help> selectAllHelp(Map<String, Object> param) {
+		List<Help> listMap = adminDao.selectAllHelp(param);
 		log.debug("listMapSize = {}", listMap.size());
 		Map<String, Object> codeMap = new HashMap<>();		
 		for(int i = 0; i < listMap.size(); i++) {
@@ -64,6 +64,11 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public int insertHelpAnswer(Help help) {
 		return adminDao.insertHelpAnswer(help);
+	}
+
+	@Override
+	public int countAllHelp() {
+		return adminDao.countAllHelp();
 	}
 	
 	

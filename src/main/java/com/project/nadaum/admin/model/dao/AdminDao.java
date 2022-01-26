@@ -7,7 +7,7 @@ import com.project.nadaum.admin.model.vo.Help;
 
 public interface AdminDao {
 
-	List<Help> selectAllHelp();
+	List<Help> selectAllHelp(Map<String, Object> param);
 
 	String selectHelpLikes(Map<String, Object> codeMap);
 
@@ -16,5 +16,7 @@ public interface AdminDao {
 	int updateHelpAnswer(Help help);
 
 	int insertHelpAnswer(Help help);
+
+	int countAllHelp();
 
 }
