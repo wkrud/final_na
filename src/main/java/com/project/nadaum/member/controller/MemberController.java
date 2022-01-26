@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -90,15 +93,50 @@ public class MemberController {
 	@GetMapping("/mypage/changePassword.do")
 	public void changePassword() {}
 	
+	@GetMapping("/mypage/membershipWithdrawal.do")
+	public void membershipWithdrawal(@AuthenticationPrincipal Member member, Model model) {
+		try {
+			Calendar getToday = Calendar.getInstance();
+			getToday.setTime(new Date()); 
+						
+			Calendar cmpDate = Calendar.getInstance();
+			cmpDate.setTime(member.getRegDate()); 
+			
+			long diffSec = (getToday.getTimeInMillis() - cmpDate.getTimeInMillis()) / 1000;
+			long diffDays = diffSec / (24 * 60 * 60); //일자수 차이
+			String msg = member.getNickname() + " 나는 정말 탈퇴한다";
+			model.addAttribute("write", msg);
+			model.addAttribute("date", diffDays);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw e;
+		}
+	}
+	
+	@PostMapping("/mypage/membershipWithdrawal.do")
+	public String membershipWithdrawal(Member member, RedirectAttributes redirectAttr, HttpServletRequest request, HttpServletResponse response) {
+		int result = memberService.deleteMember(member);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		new SecurityContextLogoutHandler().logout(request, response, auth);
+		redirectAttr.addFlashAttribute("msg", "회원 탈퇴 성공");
+		return "redirect:/";
+	}
+	
 	@GetMapping("/mypage/enrollPhone.do")
-	public void enrollPhone(@RequestParam String ePhone, Model model) {
+	public String enrollPhone(@RequestParam String ePhone, Model model, RedirectAttributes redirectAttr) {
 		Map<String, Object> map = new HashMap<>();
 		String num =  RandomStringUtils.randomNumeric(6);
 		map.put("phone", ePhone);
 		map.put("num", num);
 		log.debug("map", map);
+		Member member = memberService.selectOneMemberByPhone(map);
+		if(member != null) {
+			redirectAttr.addFlashAttribute("msg", "이미 등록된 번호입니다.");
+			return "redirect:/member/mypage/memberDetail.do?tPage=myPage";
+		}
 		messageService.sendAuthenticationNum(map);
-		model.addAttribute("map", map);
+		model.addAttribute("map", map);	
+		return "member/mypage/enrollPhone";			
 	}
 	
 	@PostMapping("/mypage/enrollPhone.do")
@@ -114,7 +152,7 @@ public class MemberController {
 	}
 	
 	@PostMapping("/mypage/changePassword.do")
-	public String changePassword(@RequestParam Map<String, Object> map, @AuthenticationPrincipal Member member, RedirectAttributes redirectAttr) {
+	public String changePassword(@RequestParam Map<String, Object> map, @AuthenticationPrincipal Member member, RedirectAttributes redirectAttr, HttpServletRequest request, HttpServletResponse response) {
 		Map<String, Object> checkMap = new HashMap<>();
 		Map<String, Object> cpMap = new HashMap<>();
 		String cPassword = (String) map.get("currentPassword");
@@ -126,8 +164,9 @@ public class MemberController {
 			cpMap.put("id", member.getId());
 			cpMap.put("password", changePassword);
 			int result = memberService.updateMemberPassword(cpMap);
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			new SecurityContextLogoutHandler().logout(request, response, auth);
 			redirectAttr.addFlashAttribute("msg", "비밀번호 변경 성공 다시 로그인하세요");	
-			redirectAttr.addFlashAttribute("check", "1");	
 			return "redirect:/";
 		}
 		redirectAttr.addFlashAttribute("msg", "비밀번호가 틀렸습니다.");

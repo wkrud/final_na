@@ -69,7 +69,10 @@ public class MemberDaoImpl implements MemberDao {
 
 	@Override
 	public List<Map<String, Object>> selectAllAnnouncement(Map<String, Object> param) {
-		return session.selectList("member.selectAllAnnouncement", param);
+		int offset = (int) param.get("offset");
+		int limit = (int) param.get("limit");
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("member.selectAllAnnouncement", null, rowBounds);
 	}
 
 	@Override
@@ -248,6 +251,11 @@ public class MemberDaoImpl implements MemberDao {
 	@Override
 	public int updateMemberPhone(Map<String, Object> map) {
 		return session.update("member.updateMemberPhone", map);
+	}
+
+	@Override
+	public int deleteMember(Member member) {
+		return session.delete("member.deleteMember", member);
 	}
 
 	

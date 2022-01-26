@@ -7,25 +7,29 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <fmt:requestEncoding value="utf-8" />
 <jsp:include page="/WEB-INF/views/common/header.jsp">
-	<jsp:param value="나:다움 질문 등록" name="title"/>
+	<jsp:param value="나:다움 관리자페이지" name="title"/>
 </jsp:include>
-<div class="member-body">
-
-	<form method="POST">
-		<label for="title">제목</label>						
-		<input type="text" class="form-control" name="title" id="title"	placeholder="제목을 입력해주세요" required>
-		<input type="hidden" name="category" />
-		<select id="category-select" class="form-select" aria-label="Default select example">
-			<option selected>카테고리</option>
-			<option value="dy">다이어리</option>
-			<option value="ab">가계부</option>
-			<option value="mo">영화</option>
-		</select>
-		<textarea name="content" id="help-content-summernote" required></textarea>
-		<div><span id="limite_normal"></span><span id="limite_vermelho" style="color:red"></span>/500</div>
-		<button type="submit" id="help-submit-btn" class="btn btn-success">등록</button>
-		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-	</form>
+<div class="admin-body">
+	<div class="answer-wrap">
+		<div class="question-wrap">
+			<div class="question-title">
+				${help.title}
+			</div>
+			<div class="question-content">
+				${help.content}
+			</div>
+		</div>
+		<div class="answer-body">
+			<form method="POST">
+				<label for="title">제목</label>						
+				<input type="text" class="form-control" name="aTitle" id="title" required>
+				<textarea name="aContent" id="help-answer-summernote" required></textarea>
+				<div><span id="limite_normal"></span><span id="limite_vermelho" style="color:red"></span>/500</div>
+				<button type="submit" id="help-submit-btn" class="btn btn-success">답변등록</button>
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+			</form>	
+		</div>
+	</div>
 </div>
 <script>
 $("#category-select").change((e) => {	
@@ -35,10 +39,6 @@ $("#category-select").change((e) => {
 $("#help-submit-btn").click((e) => {
 	if($("#title").val() == ''){
 		alert('제목을 작성해 주세요');
-		return false;
-	}
-	if($("input[name='category']").val() == ''){
-		alert('카테고리를 선택해주세요');
 		return false;
 	}
 	if($("#limite_normal").text() == ''){
@@ -76,7 +76,6 @@ $(document).ready(function() {
 	  ];
 
 	var setting = {
-			placeholder: '질문을 작성하세요',
             height : 300,
             minHeight : null,
             maxHeight : null,
@@ -109,8 +108,8 @@ $(document).ready(function() {
 	         	}
     	}
 	};
-	
-	$('#help-content-summernote').summernote(setting);
+	$('#help-answer-summernote').val("${help.AContent}");
+	$('#help-answer-summernote').summernote(setting);
 	
 	function uploadSummernoteImageFile(file, el){
 		
