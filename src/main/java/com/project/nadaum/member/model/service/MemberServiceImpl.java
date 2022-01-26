@@ -17,8 +17,8 @@ public class MemberServiceImpl implements MemberService {
 	private MemberDao memberDao;
 
 	@Override
-	public Member selectOneMember(String id) {
-		return memberDao.selectOneMember(id);
+	public Member selectOneMember(Map<String, Object> idMap) {
+		return memberDao.selectOneMember(idMap);
 	}
 
 	@Override
@@ -209,6 +209,41 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public int insertMemberHelp(Map<String, Object> map) {
 		return memberDao.insertMemberHelp(map);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectHelpOneCategory(Map<String, Object> param) {
+		return memberDao.selectHelpOneCategory(param);
+	}
+
+	@Override
+	public int countHelpOneCategoryCount(String category) {
+		return memberDao.countHelpOneCategoryCount(category);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectLikesCheck(Map<String, Object> param) {
+		return memberDao.selectLikesCheck(param);
+	}
+
+	@Override
+	public int insertHelpLike(Map<String, Object> map) {
+		return memberDao.insertHelpLike(map);
+	}
+
+	@Override
+	public int deleteHelpLike(Map<String, Object> map) {
+		return memberDao.deleteHelpLike(map);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectMostHelp() {
+		return memberDao.selectMostHelp();
+	}
+
+	@Override
+	public int updateMemberPhone(Map<String, Object> map) {
+		return memberDao.updateMemberPhone(map);
 	}
 
 	

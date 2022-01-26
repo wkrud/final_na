@@ -3,6 +3,7 @@ package com.project.nadaum.member.model.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -17,8 +18,8 @@ public class MemberDaoImpl implements MemberDao {
 	private SqlSessionTemplate session;
 
 	@Override
-	public Member selectOneMember(String id) {
-		return session.selectOne("member.selectOneMember", id);
+	public Member selectOneMember(Map<String, Object> idMap) {
+		return session.selectOne("member.selectOneMember", idMap);
 	}
 
 	@Override
@@ -209,6 +210,44 @@ public class MemberDaoImpl implements MemberDao {
 	@Override
 	public int insertMemberHelp(Map<String, Object> map) {
 		return session.insert("member.insertMemberHelp", map);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectHelpOneCategory(Map<String, Object> param) {
+		int offset = (int) param.get("offset");
+		int limit = (int) param.get("limit");
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("member.selectHelpOneCategory", param, rowBounds);
+	}
+
+	@Override
+	public int countHelpOneCategoryCount(String category) {
+		return session.selectOne("member.countHelpOneCategoryCount", category);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectLikesCheck(Map<String, Object> param) {
+		return session.selectList("member.selectLikesCheck", param);
+	}
+
+	@Override
+	public int insertHelpLike(Map<String, Object> map) {
+		return session.insert("member.insertHelpLike",map);
+	}
+
+	@Override
+	public int deleteHelpLike(Map<String, Object> map) {
+		return session.delete("member.deleteHelpLike", map);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectMostHelp() {
+		return session.selectList("member.selectMostHelp");
+	}
+
+	@Override
+	public int updateMemberPhone(Map<String, Object> map) {
+		return session.update("member.updateMemberPhone", map);
 	}
 
 	

@@ -14,6 +14,15 @@
 	<http pattern="/resources/**" security="none"/>
 
 	<http auto-config="true">
+		<!-- iframe 사용하기 위한 설정 기본값 DENY -->
+		<headers>
+			<frame-options policy="SAMEORIGIN"/>
+		</headers>
+		
+		<session-management invalid-session-url="/member/memberLogin.do">
+			<concurrency-control expired-url="/member/memberLogin.do"/>
+		</session-management>
+		
 		<intercept-url pattern="/" access="permitAll"/>
 		
 		<intercept-url pattern="/member/memberEnroll" access="isAnonymous()"/>
