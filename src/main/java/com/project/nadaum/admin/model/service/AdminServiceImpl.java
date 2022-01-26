@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.project.nadaum.admin.model.dao.AdminDao;
 import com.project.nadaum.admin.model.vo.Help;
+import com.project.nadaum.member.model.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -69,6 +70,11 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public int countAllHelp() {
 		return adminDao.countAllHelp();
+	}
+
+	@Override
+	public List<Member> selectAllMember() {
+		return adminDao.selectAllMember();
 	}
 	
 	
