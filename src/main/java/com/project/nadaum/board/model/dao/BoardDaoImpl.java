@@ -1,13 +1,13 @@
 package com.project.nadaum.board.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.project.nadaum.board.model.vo.Board;
-import com.project.nadaum.common.vo.Attachment;
 
 @Repository
 public class BoardDaoImpl implements BoardDao {
@@ -21,26 +21,31 @@ public class BoardDaoImpl implements BoardDao {
 		return session.selectList("board.selectBoardList");
 	}
 
-	@Override
-	public int insertBoard(Board board) {
-		return session.insert("board.insertBoard", board);
-	}
-
-	@Override
-	public int insertAttachment(Attachment attach) {
-		return session.insert("board.insertAttachment", attach);
-	}
+//	@Override
+//	public int insertBoard(Board board) {
+//		return session.insert("board.insertBoard", board);
+//	}
+	
+//	@Override
+//	public int insertAttachment(Attachment attach) {
+//		return session.insert("board.insertAttachment", attach);
+//	}
 	
 	//게시물한건조회
-	@Override
-	public Board selectOneBoard(String code) {
-		return session.selectOne("board.selectOneBoard", code);
-	}
+//	@Override
+//	public Board selectOneBoard(String code) {
+//		return session.selectOne("board.selectOneBoard", code);
+//	}
+//
+//	//여러건조회
+//	@Override
+//	public List<Attachment> selectAttachmentListByBoardCode(String code) {
+//		return session.selectList("board.selectAttachmentListByBoardCode", code);
+//	}
 
-	//여러건조회
 	@Override
-	public List<Attachment> selectAttachmentListByBoardCode(String code) {
-		return session.selectList("board.selectAttachmentListByBoardCode", code);
+	public int insertBoard(Map<String, Object> map) {
+		return session.insert("board.insertBoard", map);
 	}
 	
 }

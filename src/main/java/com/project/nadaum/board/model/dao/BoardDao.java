@@ -1,20 +1,20 @@
 package com.project.nadaum.board.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.project.nadaum.board.model.vo.Board;
-import com.project.nadaum.common.vo.Attachment;
 
 public interface BoardDao {
 
 	List<Board> selectBoardList();
 
-	int insertBoard(Board board);
+//	int insertBoard(Board board);
+//	int insertAttachment(Attachment attach);
 
-	int insertAttachment(Attachment attach);
+//	Board selectOneBoard(String code);
+//	List<Attachment> selectAttachmentListByBoardCode(String code);
 
-	Board selectOneBoard(String code);
-
-	List<Attachment> selectAttachmentListByBoardCode(String code);
+	int insertBoard(Map<String, Object> map);
 
 }

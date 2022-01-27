@@ -12,25 +12,20 @@
 			code desc
 	</select>
 	
-	<insert id="insertBoard" parameterType="board">
-		insert into
-			board(code, title, id, content, category)
-			values(
-			concat('bo-',seq_board_no.nextval), 
-			#{title}, 
-			#{id}, 
-			#{content}, 
-			#{category}
-		)
-		<selectKey order="AFTER" resultType="string" keyProperty="code">
-			select
-				 concat('bo-',seq_board_no.currval)
-			from
-				dual
-		</selectKey>
+	<insert id="insertBoard">
+		insert into 
+			board (code, title, id, content, category, reg_date)
+		values(
+		concat('bo-',seq_board_no.nextval),
+		#{title},
+		#{id},
+		#{content},
+		#{category},
+		TO_DATE(#{regDate}, 'YYYY-MM-DD')
+		)		
 	</insert>
 	
-	<insert id="insertAttachment">
+<!-- 	<insert id="insertAttachment">
 		insert into
 			attachment(no, code, original_filename, renamed_filename, reg_date)
 		values(
@@ -39,7 +34,7 @@
 			#{orginalFilename},
 			#{renamedFilename}			
 		)
-	</insert>
+	</insert> -->
 	
 	<select id="selectOneBoard" resultType="board">
 		select
@@ -50,13 +45,13 @@
 			code = #{code}
 	</select>
 	
-	<select id="selectAttachmentListByBoardCode" resultType="attachment">
+	<!-- <select id="selectAttachmentListByBoardCode" resultType="attachment">
 		select
 			*
 		from
 			attachment
 		where
 			code = #{code}
-	</select>
+	</select> -->
 </mapper>
 

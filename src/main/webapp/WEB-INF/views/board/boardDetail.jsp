@@ -75,6 +75,38 @@ $(() => {
 	<input type="datetime-local" class="form-control" name="regDate" 
 		   value='<fmt:formatDate value="${board.regDate}" pattern="yyyy-MM-dd'T'HH:mm"/>'>
 </div>
+
+<!-- 댓글 -->
+<div id="comment-container">
+    <form action="${pageContext.request.contextPath}/board/insertComment.do" class="form-inline" method="post">
+    	<input type="text" class="form-control col-sm-8" name="memberId" value="${loginMember.id}" readonly required>
+        <input type="text" class="form-control col-sm-8" name="content" placeholder="댓글" required/>&nbsp;
+        <button class="btn btn-outline-success" type="submit" >저장</button>
+    </form>
+
+    <br />
+    <!-- 메모목록 -->
+	<table class="table">
+	    <tr>
+	      <th>번호</th>
+	      <th>내용</th>
+	      <th>날짜</th>
+	      <th>삭제</th>
+	    </tr>
+	    <c:forEach items="${list}" var="comment">
+	    	<tr>
+	    		<td>${comments.no}</td>
+	    		<td>${comment.content}</td>
+	    		<td><fmt:formatDate value="${comment.regDate}" pattern="yyyy/MM/dd HH:mm"/></td>
+	    		<td>
+	    			 <button class="btn btn-outline-danger btn-memo-delete" data-no="${comment.no}" type="button">삭제</button>
+	    		</td>
+	    	</tr>
+	    </c:forEach>
+	</table>
+</div>
+
+
 </body>
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
   <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>

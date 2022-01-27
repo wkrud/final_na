@@ -15,74 +15,52 @@ input#btn-add {
 	float: right;
 	margin: 0 0 15px;
 }
+tr[data-value] {cursor: pointer;}
 </style>
 <script>
 function goBoardForm(){
-	location.href = "${pageContext.request.contextPath}/board/boardForm.do";
+	location.href = "${pageContext.request.contextPath}/board/boardEnroll.do";
 }
 
 
 $(() => {
-	$(".card").click((e) => {
-		 //console.log(e.target);
-		const $card = $(e.target).parent().parent();
-		const code = $card.data("code");
+	$("tr[data-value]").click((e) => {
+		// console.log(e.target); // td
+		const $tr = $(e.target).parent();
+		const code = $tr.data("code").val();
+		console.log("$tr");
+		console.log("code");
 		location.href = `${pageContext.request.contextPath}/board/boardDetail.do?code=\${code}`;
 	});
 });
 </script>
 <body>
-
-<%-- <div class="container">
-      <div class="row" style = "display : flex; flex-wrap : wrap;">
-      <c:forEach var="board" items="${list}">
-        <div class = "col-md-4 col-sm-6 card">
-          <div class = "thumbnail">
-            <img src = "https://images.unsplash.com/photo-1434725039720-aaad6dd32dfe?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=1561ecb2592830316c279b62f1cb75e5&w=1000&q=80">
-            <div class = "caption">
-              <h3>${board.title}</h3>
-              <span>${board.code}</span>
-              <span>${board.category}</span>
-              <span>${board.readCount}</span>
-              <p>
-              	<fmt:formatDate value="${board.regDate}" pattern="yyyy/MM/dd"/>
-              </p>
-          </div>
-        </div>
-        </div>
- 		</c:forEach>
-       
-  </div>
-</div> --%>
-
 <section id="board-container" class="container">
 	<input 
-		type="button" value="글쓰기" id="btn-add" class="btn btn-outline-success" 
-		onclick="goBoardForm();"/>
+		type="button" value="글쓰기" id="btn-add" class="btn btn-outline-success" onclick="goBoardForm();"/>
 	<input type="hidden" name="id" id="id" value="${loginMember.id}" />
 	<sec:authentication property="principal" var="loginMember"/>
 	<table id="tbl-board" class="table table-striped table-hover">
-		<tr>
+		<tr >
 			<th>번호</th>
 			<th>제목</th>
 			<th>작성자</th>
+			<th>내용</th>
 			<th>작성일</th>
-			<th>첨부파일</th> <!-- 첨부파일 있을 경우, /resources/images/file.png 표시 width: 16px-->
 			<th>조회수</th>
 		</tr>
 		<c:forEach items="${list}" var="board">
-			<tr class="card">
+
+			<tr data-value="${board.code}" >
+				<input type="hidden" value="${board.code}" class="board-code" name="code"/>
 				<td>${board.code}</td>
-				<td>${board.title}</td>
-				<td>${board.memberId}</td>
+				<td class="board-title">${board.title}</td>
+				<td>${board.id}</td>
+				<td>${board.content}</td>
 				<td><fmt:formatDate value="${board.regDate}" pattern="yy/MM/dd HH:mm"/> </td>
-				<td>
-					<c:if test="${board.attachCount gt 0}">
-						<img src="${pageContext.request.contextPath}/resources/images/file.png" alt="" width="16" />
-					</c:if>
-				</td>
 				<td>${board.readCount}</td>
 			</tr>
+
 		</c:forEach>
 	</table>
 	

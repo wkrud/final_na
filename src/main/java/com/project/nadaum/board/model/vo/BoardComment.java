@@ -6,23 +6,24 @@ import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class BoardEntity implements Serializable {
+public class BoardComment implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private String code;
-	private String title;
+	private String CommentCode;
 	private String id;
+	private String code; //보드 고유코드
 	private String content;
-	private String category;
-	private int readCount;
+	private int commentLevel;
+	private String commentRef;
 	private Date regDate;
-	
+
 }
