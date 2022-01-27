@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.project.nadaum.admin.model.vo.Help;
+import com.project.nadaum.member.model.vo.Member;
 
 @Repository
 public class AdminDaoImpl implements AdminDao {
@@ -47,6 +48,11 @@ public class AdminDaoImpl implements AdminDao {
 	@Override
 	public int countAllHelp() {
 		return session.selectOne("admin.countAllHelp");
+	}
+
+	@Override
+	public List<Member> selectAllMember() {
+		return session.selectList("admin.selectAllMember");
 	}
 	
 	
