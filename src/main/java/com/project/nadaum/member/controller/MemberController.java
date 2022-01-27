@@ -224,39 +224,47 @@ public class MemberController {
 	@RequestMapping(value="/mypage/uploadSummernoteImageFile.do", produces = "application/json; charset=utf8")
 	@ResponseBody
 	public String uploadSummernoteImageFile(@RequestParam("file") MultipartFile file, HttpServletRequest request )  {
-		JsonObject jsonObject = new JsonObject();
-		
-		String fileRoot = application.getRealPath("/resources/upload/member/img/");
-		log.debug("fileRoot = {}", fileRoot);
-		String originalFileName = file.getOriginalFilename();
-		String renamedFileName = NadaumUtils.rename(originalFileName);
-		
-		File targetFile = new File(fileRoot, renamedFileName);	
+		JsonObject jsonObject;
 		try {
-			file.transferTo(targetFile);
-		} catch (IllegalStateException | IOException e) {
+			jsonObject = new JsonObject();
+			
+			String fileRoot = application.getRealPath("/resources/upload/member/img/");
+			log.debug("fileRoot = {}", fileRoot);
+			String originalFileName = file.getOriginalFilename();
+			String renamedFileName = NadaumUtils.rename(originalFileName);
+			
+			File targetFile = new File(fileRoot, renamedFileName);	
+			try {
+				file.transferTo(targetFile);
+			} catch (IllegalStateException | IOException e) {
+				log.error(e.getMessage(), e);
+			}
+			jsonObject.addProperty("url", "/nadaum/resources/upload/member/img/" + renamedFileName);
+			jsonObject.addProperty("responseCode", "success");
+			log.debug("root = {}", jsonObject.toString());
+		} catch (Exception e) {
 			log.error(e.getMessage(), e);
+			throw e;
 		}
-		jsonObject.addProperty("url", "/nadaum/resources/upload/member/img/" + renamedFileName);
-		jsonObject.addProperty("responseCode", "success");
-		log.debug("root = {}", jsonObject.toString());
 		return jsonObject.toString();
 	}
 	
 	@PostMapping(value="/mypage/deleteSummernoteImageFile.do")
 	public ResponseEntity<?> deleteSummernoteImageFile(@RequestParam Map<String, Object> map)  {
-//		log.debug("map = {}", map);
-		String fileRoot = application.getRealPath("/resources/upload/member/img/");
-		String url = (String) map.get("val");
-		String[] strs = url.split("/");
-		String filename = strs[strs.length - 1];
-//		log.debug("filename = {}", filename);
-		String lastDest = url.substring(url.length() - 26, url.length());
-//		log.debug("lastDest = {}", lastDest);
-		String allDest = fileRoot + lastDest;
-//		log.debug("allDest = {}", allDest);
-		File img = new File(allDest);
-		img.delete();
+
+		try {
+			String fileRoot = application.getRealPath("/resources/upload/member/img/");
+			String url = (String) map.get("val");
+			String[] strs = url.split("/");
+			String filename = strs[strs.length - 1];
+			String lastDest = url.substring(url.length() - 26, url.length());
+			String allDest = fileRoot + lastDest;
+			File img = new File(allDest);
+			img.delete();
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw e;
+		}
 		return ResponseEntity.ok(1);
 	}
 		
