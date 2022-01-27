@@ -68,7 +68,7 @@ padding-top: 100px;
 					<br />
 					${comment.content}
 					<br />
-					<button type="submit" class="btn-delete" value="${comment.code}">삭제</button>
+			    		<input type="submit" class="btn btn-block btn-outline-danger btn-send" value="삭제" >
 				</td>		
 			</tr>
 			</c:forEach>
@@ -113,12 +113,8 @@ padding-top: 100px;
 				
 			});
 			
-			//댓글 삭제
-			$(".btn-delete").click((e) => {
-				
-				
-			});
-			/* $(deleteCommentFrm).submit((e) => {
+			//댓글삭제
+			 $(deleteCommentFrm).submit((e) => {
 				e.preventDefault();
 				const code = $(e.target).find("[name=code]").val();
 				console.log(code);
@@ -137,7 +133,42 @@ padding-top: 100px;
 						}				
 					}
 				});
-			}); */
+			}); 
+			
+			//댓글수정
+			$(menuUpdateFrm).submit((e) => {
+				
+				e.preventDefault();
+
+				const obj = {
+					id : $("[name=id]", e.target).val(),	
+					restaurant : $("[name=restaurant]", e.target).val(),	
+					name : $("[name=name]", e.target).val(),	
+					price : $("[name=price]", e.target).val(),	
+					type : $("[name=type]:checked", e.target).val(),	
+					taste : $("[name=taste]:checked", e.target).val(),	
+				};
+
+				console.log(obj); // javascript객체
+				const jsonStr = JSON.stringify(obj);
+				console.log(jsonStr); // json문자열
+				
+				$.ajax({
+					url:`${pageContext.request.contextPath}/menu`,
+					method:"PUT",
+					data: jsonStr,
+					contentType: "application/json; charset=utf-8",
+					success(resp){
+						console.log(resp)
+					},
+					error: console.log,
+					complete(){
+						$(e.target)[0].reset();
+						$(menuSearchFrm)[0].reset();
+					}
+				});
+				
+			});
 			</script>
 
 
