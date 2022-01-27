@@ -25,7 +25,7 @@ $(() => {
 
 <div class="container">
       <div class="row" style = "display : flex; flex-wrap : wrap;">
-        <c:forEach var="review" items="${list}">
+         <c:forEach var="review" items="${list}">
         <div class = "col-md-4 col-sm-6 card">
           <div class = "thumbnail">
             <img src = "https://images.unsplash.com/photo-1434725039720-aaad6dd32dfe?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=1561ecb2592830316c279b62f1cb75e5&w=1000&q=80">
@@ -41,7 +41,6 @@ $(() => {
         </div>
         </div>
  		</c:forEach>
-       
   </div>
 </div>
 </body>
