@@ -149,7 +149,8 @@ const deleteImg = (url) => {
 		type: "POST",
 		data: {val: url},
 		success(resp){
-			console.log(resp);
+			if(resp > 0)
+				console.log('success');
 		}
 	});
 };

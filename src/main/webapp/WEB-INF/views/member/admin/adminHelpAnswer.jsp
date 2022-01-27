@@ -121,7 +121,7 @@ $(document).ready(function() {
 		data = new FormData();
 		data.append("file", file);
 		$.ajax({
-			url: "${pageContext.request.contextPath}/member/mypage/uploadSummernoteImageFile.do",
+			url: "${pageContext.request.contextPath}/member/admin/uploadSummernoteImageFile.do",
 			data: data,
 			type: "POST",
 			headers: headers,
@@ -143,12 +143,13 @@ const deleteImg = (url) => {
 	headers[csrfHeader] = csrfToken;
 	
 	$.ajax({
-		url: '${pageContext.request.contextPath}/member/mypage/deleteSummernoteImageFile.do',
+		url: '${pageContext.request.contextPath}/member/admin/deleteSummernoteImageFile.do',
 		headers: headers,
 		type: "POST",
 		data: {val: url},
 		success(resp){
-			console.log(resp);
+			if(resp > 0)
+				console.log('success');
 		}
 	});
 };
