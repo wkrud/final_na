@@ -36,7 +36,17 @@ import lombok.extern.slf4j.Slf4j;
 public class RestApi{
 	@Autowired
 	private CommentService commentService;
-	
+
+	 // tag값의 정보를 가져오는 메소드
+		private static String getTagValue(String tag, Element eElement) {
+			//
+		    NodeList nlList = eElement.getElementsByTagName(tag).item(0).getChildNodes();
+		    Node nValue = (Node) nlList.item(0);
+		    if(nValue == null) 
+		        return null;
+		    return nValue.getNodeValue();
+		}
+		
 	@GetMapping("/board/{page}")
 	public  ModelAndView getCultureApi(@PathVariable int page, Model model){
 		
@@ -171,23 +181,15 @@ public class RestApi{
 					     }//if end
 					     System.out.println(list);
 					     model.addAttribute("list", list);
-					  
+					     
+					     
+					     
 				} catch (Exception e) {
 					  e.printStackTrace();
 			}		  
 			return new ModelAndView("/culture/cultureView","list",list);
 		}
 		
-		 // tag값의 정보를 가져오는 메소드
-			private static String getTagValue(String tag, Element eElement) {
-				//
-			    NodeList nlList = eElement.getElementsByTagName(tag).item(0).getChildNodes();
-			    Node nValue = (Node) nlList.item(0);
-			    if(nValue == null) 
-			        return null;
-			    return nValue.getNodeValue();
-			}
-			
 	//============================= 댓  글 =================================================
 			
 	//댓글리스트
@@ -207,12 +209,12 @@ public class RestApi{
 	public ModelAndView insertCultureComment(@PathVariable String apiCode, @RequestBody Comment comment) {
 		log.debug("comment = {}", comment);
 		int result = commentService.insertCultureComment(comment);
-		log.debug("result={}", result);
 		Map<String, Object> map = new HashMap<>();
 		
 		map.put("msg", "댓글 등록성공!");
 		map.put("result", result);
-		return new ModelAndView("redirect://localhost:9090/culture/board/view"+apiCode,"map",map);
+		log.debug("result={}", result);
+		return new ModelAndView("redirect:/culture/comment/"+apiCode,"map",map);
 	}
 	
 	//삭제

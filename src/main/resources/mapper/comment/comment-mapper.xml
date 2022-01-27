@@ -10,16 +10,18 @@
 			comments
 		where
 			api_code = #{api_code}
+		order by 
+		    reg_date desc
 	</select>
 	
 	<insert id="insertCultureComment" parameterType="comment">
 		insert into
-				comments(code, commentLevel, content, regDate, commentRef, id, api_code, star)
+				comments(code, comment_level, content, reg_date, comment_ref, id, api_code, star)
 			values(
-				seq_comments_no.nextval,
+				concat('co-',seq_comments_no.nextval),
 				#{commentLevel},
 				#{content},
-				#{regDate},
+				default,
 				#{commentRef},
 				#{id},
 				#{apiCode},
