@@ -47,10 +47,12 @@
 									<img src="${pageContext.request.contextPath}/resources/upload/member/profile/${profileImage.originalFilename}" alt="" />
 								</c:if>
 							</c:if>
-							<div class="nickname-wrap">
-								<span>${loginMember.nickname}</span>
+						</div>
+						<div class="nickname-wrap">
+							<p>
+								별명 : <span>${loginMember.nickname}</span>
 								<button type="button" id="modify-nickname-modal" class="btn btn-outline-warning">별명 수정</button>
-							</div>
+							</p>
 						</div>
 					</div>
 					<div class="info-form">

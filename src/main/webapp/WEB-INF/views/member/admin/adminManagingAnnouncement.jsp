@@ -14,7 +14,35 @@
 	
 	</div>
 	<div class="admin-announcement-body">
-	
+		<div class="announcement-enroll">
+			<button type="button" class="btn btn-primary">공지등록</button>
+		</div>
+		<div class="announcement-managing">
+			<table>
+				<thead>
+					<tr>
+						<th>번호</th>
+						<th>제목</th>
+						<th>조회수</th>
+						<th>등록일</th>
+						<th colspan="2">관리</th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach items="${announceList}" var="an" varStatus="vs">
+						<tr>
+							<td>${vs.count}</td>
+							<td>${an.title}</td>
+							<td>${an.readCount}</td>
+							<td>${an.regDate}</td>
+							<td><button type="button" class="btn btn-warning">수정</button></td>
+							<td><button type="button" class="btn btn-danger">삭제</button></td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+			${pagebar}
+		</div>
 	</div>
 </div>
 
