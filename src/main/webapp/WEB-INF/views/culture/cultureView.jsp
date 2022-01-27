@@ -136,36 +136,26 @@ padding-top: 100px;
 			}); 
 			
 			//댓글수정
-			$(menuUpdateFrm).submit((e) => {
+			$(updateCommentFrm).submit((e) => {
 				
 				e.preventDefault();
 
-				const obj = {
-					id : $("[name=id]", e.target).val(),	
-					restaurant : $("[name=restaurant]", e.target).val(),	
-					name : $("[name=name]", e.target).val(),	
-					price : $("[name=price]", e.target).val(),	
-					type : $("[name=type]:checked", e.target).val(),	
-					taste : $("[name=taste]:checked", e.target).val(),	
-				};
-
-				console.log(obj); // javascript객체
-				const jsonStr = JSON.stringify(obj);
-				console.log(jsonStr); // json문자열
-				
+				const csrfHeader = "${_csrf.headerName}";
+		        const csrfToken = "${_csrf.token}";
+		        const headers = {};
+		        headers[csrfHeader] = csrfToken;
+		        
 				$.ajax({
-					url:`${pageContext.request.contextPath}/menu`,
-					method:"PUT",
-					data: jsonStr,
-					contentType: "application/json; charset=utf-8",
+					headers : headers,
+					url: `${pageContext.request.contextPath}/culture/board/view/${apiCode}`,
+					method: "PUT",
+					data: $(updateCommentFrm).serialize(),
 					success(resp){
 						console.log(resp)
+						location.reload();
+						alert(resp.msg);
 					},
-					error: console.log,
-					complete(){
-						$(e.target)[0].reset();
-						$(menuSearchFrm)[0].reset();
-					}
+					error: console.log
 				});
 				
 			});
