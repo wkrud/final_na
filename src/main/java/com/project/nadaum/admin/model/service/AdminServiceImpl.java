@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,18 +64,56 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public int insertHelpAnswer(Help help) {
-		return adminDao.insertHelpAnswer(help);
-	}
-
-	@Override
 	public int countAllHelp() {
 		return adminDao.countAllHelp();
 	}
 
 	@Override
-	public List<Member> selectAllMember() {
-		return adminDao.selectAllMember();
+	public List<Member> selectAllMember(Member member) {
+		return adminDao.selectAllMember(member);
+	}
+
+	@Override
+	public int insertAnnouncement(Map<String, Object> map) {
+		return adminDao.insertAnnouncement(map);
+	}
+
+	@Override
+	public int updateAnnouncement(Map<String, Object> map) {
+		return adminDao.updateAnnouncement(map);
+	}
+
+	@Override
+	public int deleteHelp(Map<String, Object> map) {
+		int result = 0;
+		result = adminDao.deleteHelp(map);
+		result = adminDao.deleteLikes(map);
+		return result;
+	}
+
+	@Override
+	public int deleteAnnouncement(Map<String, Object> map) {
+		return adminDao.deleteAnnouncement(map);
+	}
+
+	@Override
+	public int updateEnabled(Map<String, Object> map) {
+		return adminDao.updateEnabled(map);
+	}
+
+	@Override
+	public List<SimpleGrantedAuthority> selectAllRole(Member member) {
+		return adminDao.selectAllRole(member);
+	}
+
+	@Override
+	public int insertRole(Map<String, Object> map) {
+		return adminDao.insertRole(map);
+	}
+
+	@Override
+	public int deleteRole(Map<String, Object> map) {
+		return adminDao.deleteRole(map);
 	}
 	
 	
