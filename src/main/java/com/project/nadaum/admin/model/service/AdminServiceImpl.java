@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.project.nadaum.admin.model.dao.AdminDao;
 import com.project.nadaum.admin.model.vo.Help;
 import com.project.nadaum.member.model.vo.Member;
+import com.project.nadaum.member.model.vo.MemberRole;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -70,7 +71,12 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public List<Member> selectAllMember(Member member) {
-		return adminDao.selectAllMember(member);
+		List<Member> list = adminDao.selectAllMember(member);
+		for(Member m : list) {
+			List<MemberRole> role = adminDao.selectAllMemberRole(m);
+			m.setMemberRole(role);
+		}
+		return list;
 	}
 
 	@Override
@@ -99,11 +105,6 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public int updateEnabled(Map<String, Object> map) {
 		return adminDao.updateEnabled(map);
-	}
-
-	@Override
-	public List<SimpleGrantedAuthority> selectAllRole(Member member) {
-		return adminDao.selectAllRole(member);
 	}
 
 	@Override

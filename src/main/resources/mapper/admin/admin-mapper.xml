@@ -34,21 +34,16 @@
 		select count(*) from help
 	</select>
 	
-	<!-- <select id="selectAllMember" resultType="member">
+	<select id="selectAllMember" resultType="member">
 		select * from member where
 			not id = 'admin'
 			and
 			not id = #{id}
 	</select>
 	
-	<select id="selectAllRole" resultType="SimpleGrantedAuthority">
-		select * from authority	where
-			not member_id = 'admin'
-			and
-			not id = #{id}
-			and
-			not authority = 'ROLE_SUPER'
-	</select> -->
+	<select id="selectAllMemberRole" resultType="memberRole">
+		select * from authority where member_id = #{id} and not authority = 'ROLE_SUPER'
+	</select>
 	
 	<insert id="insertAnnouncement">
 		insert into announcement(code, title, content, id)

@@ -33,6 +33,7 @@ import com.project.nadaum.common.NadaumUtils;
 import com.project.nadaum.common.vo.CategoryEnum;
 import com.project.nadaum.member.model.service.MemberService;
 import com.project.nadaum.member.model.vo.Member;
+import com.project.nadaum.member.model.vo.MemberRole;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -110,12 +111,9 @@ public class AdminController {
 	@GetMapping("/adminManagingUser.do")
 	public void adminManagingUser(Model model, @AuthenticationPrincipal Member member) {
 		List<Member> list = adminService.selectAllMember(member);
-		List<SimpleGrantedAuthority> map = adminService.selectAllRole(member);
 		log.debug("member = {}", list);
-		log.debug("authority = {}", map);
-		
-//		model.addAttribute("authority", map);
-//		model.addAttribute("list", list);
+
+		model.addAttribute("list", list);
 	}
 	
 	@GetMapping("/adminAllHelp.do")

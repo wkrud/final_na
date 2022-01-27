@@ -79,21 +79,13 @@
 							<td>
 								<form method="POST" action="${pageContext.request.contextPath}/member/admin/changeMemberRole.do">
 									<input type="hidden" name="id" value="${m.id}"/>
-									<c:if test="${not empty authority}">
-										<c:forEach items="${authority}" var="au">
-											<c:if test="${au.id eq m.id}">
-												<input type="hidden" name="role" value="manager"/>
-												<button type="submit" class="btn btn-outline-secondary">매니저</button>
-											</c:if>
-											<c:if test="${au.id ne m.id}">
-												<input type="hidden" name="role" value="user"/>
-												<button type="submit" class="btn btn-outline-success">유저</button>
-											</c:if>
-										</c:forEach>
-									</c:if>
-									<c:if test="${empty authority}">
+									<c:if test="${fn:length(m.memberRole) == 1}">
 										<input type="hidden" name="role" value="user"/>
 										<button type="submit" class="btn btn-outline-success">유저</button>
+									</c:if>
+									<c:if test="${fn:length(m.memberRole) > 1}">
+										<input type="hidden" name="role" value="manager"/>
+										<button type="submit" class="btn btn-outline-secondary">매니저</button>
 									</c:if>
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 								</form>

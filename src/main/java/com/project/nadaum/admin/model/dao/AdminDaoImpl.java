@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.project.nadaum.admin.model.vo.Help;
 import com.project.nadaum.member.model.vo.Member;
+import com.project.nadaum.member.model.vo.MemberRole;
 
 @Repository
 public class AdminDaoImpl implements AdminDao {
@@ -82,11 +83,6 @@ public class AdminDaoImpl implements AdminDao {
 	}
 
 	@Override
-	public List<SimpleGrantedAuthority> selectAllRole(Member member) {
-		return session.selectList("admin.selectAllRole", member);
-	}
-
-	@Override
 	public int insertRole(Map<String, Object> map) {
 		return session.insert("admin.insertRole", map);
 	}
@@ -94,6 +90,11 @@ public class AdminDaoImpl implements AdminDao {
 	@Override
 	public int deleteRole(Map<String, Object> map) {
 		return session.delete("admin.deleteRole", map);
+	}
+
+	@Override
+	public List<MemberRole> selectAllMemberRole(Member member) {
+		return session.selectList("admin.selectAllMemberRole", member);
 	}
 	
 	
