@@ -14,7 +14,6 @@
 .container{
 padding-top: 100px;
 }
-}
 </style>
 <body>
 <div class="container">
