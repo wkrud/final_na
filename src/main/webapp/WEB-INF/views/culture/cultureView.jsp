@@ -68,7 +68,7 @@ padding-top: 100px;
 					<br />
 					${comment.content}
 					<br />
-			    		<input type="submit" class="btn btn-block btn-outline-danger btn-send" value="삭제" >
+			    		<input type="submit" value="삭제" >
 				</td>		
 			</tr>
 			</c:forEach>
