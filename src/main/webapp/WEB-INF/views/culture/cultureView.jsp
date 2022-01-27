@@ -77,21 +77,6 @@ padding-top: 100px;
 			//댓글 등록
 			$(insertCommentFrm).submit((e) => {
 				e.preventDefault();
-				//csfr토큰 headers (post 전송시 필요)
-			   /* 
-			    
-				const obj = {
-					id : $("[name=id]", e.target).val(),	
-					apiCode: $("[name=apiCode]", e.target).val(),
-					commentLevel : $("[name=commentLevel]", e.target).val(),	
-					commentRef : $("[name=commentRef]", e.target).val(),	
-					content : $("[name=content]", e.target).val(),	
-					star : $("[name=star]", e.target).val(),	
-				};
-				
-				console.log(obj); // javascript객체
-				const jsonStr = JSON.stringify(obj);
-				console.log(jsonStr); // json문자열 */
 				
 				const csrfHeader = "${_csrf.headerName}";
 		        const csrfToken = "${_csrf.token}";
