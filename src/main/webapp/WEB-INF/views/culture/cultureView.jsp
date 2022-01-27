@@ -54,14 +54,13 @@ padding-top: 100px;
             <button type="submit" class="btn btn-light">등록</button>
 		</form>
 	</div>
-	<form id="deleteCommentFrm">
 	
 	<table id="comment-table">
-		 <c:forEach var="comment" items="${commentList}">
+	<c:forEach var="comment" items="${commentList}">
 			<tr class="level1">
-				<td>
+				<td id="comment">
 					<input type="hidden" name="code" value="${comment.code}"></input>
-					<sub class="comment-writer">${comment.id}</sub>
+					<sub class="comment-writer"></sub>
 					<sub class="comment-date">
 					<fmt:formatDate value="${comment.regDate}" pattern="yyyy/MM/dd"/>
 					</sub>
@@ -74,13 +73,12 @@ padding-top: 100px;
 			</tr>
 			</c:forEach>
 			</table>
-		</form>
 	<script>
 			//댓글 등록
 			$(insertCommentFrm).submit((e) => {
 				e.preventDefault();
 				//csfr토큰 headers (post 전송시 필요)
-			    
+			   /* 
 			    
 				const obj = {
 					id : $("[name=id]", e.target).val(),	
@@ -93,23 +91,22 @@ padding-top: 100px;
 				
 				console.log(obj); // javascript객체
 				const jsonStr = JSON.stringify(obj);
-				console.log(jsonStr); // json문자열
+				console.log(jsonStr); // json문자열 */
 				
 				const csrfHeader = "${_csrf.headerName}";
 		        const csrfToken = "${_csrf.token}";
 		        const headers = {};
 		        headers[csrfHeader] = csrfToken;
-			    
 				$.ajax({
 					headers : headers,
 					url: `${pageContext.request.contextPath}/culture/board/view/${apiCode}`,
 					method: "POST",
-					data: jsonStr,
-					contentType: "application/json; charset=utf-8",
+					data: $(insertCommentFrm).serialize(),
 					success(resp){
 						console.log(resp)
-						//location.reload();
-						//alert(resp.msg);
+						location.reload();
+						alert(resp.msg);
+						
 					},
 					error: console.log
 				});
@@ -121,7 +118,7 @@ padding-top: 100px;
 				
 				
 			});
-			$(deleteCommentFrm).submit((e) => {
+			/* $(deleteCommentFrm).submit((e) => {
 				e.preventDefault();
 				const code = $(e.target).find("[name=code]").val();
 				console.log(code);
@@ -140,7 +137,7 @@ padding-top: 100px;
 						}				
 					}
 				});
-			});
+			}); */
 			</script>
 
 

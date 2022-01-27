@@ -1,6 +1,7 @@
 package com.project.nadaum.culture.comment.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,23 +22,21 @@ public class CommentDaoImpl implements CommentDao {
 	public List<Comment> selectCultureCommentList(String apiCode) {
 		return session.selectList("comment.selectCultureCommentList", apiCode);
 	}
-
-
+	
 	@Override
-	public int insertCultureComment(Comment comment) {
-		return session.insert("comment.insertCultureComment", comment);
+	public int insertCultureComment(Map<String, Object> map) {
+		return session.insert("comment.insertCultureComment", map);
 	}
-
-
+	
+	@Override
+	public int updateCultureComment(Map<String, Object> map) {
+		return session.update("comment.updateCultureComment", map);
+	}
+	
 	@Override
 	public int deleteCultureComment(String code) {
 		return session.delete("comment.deleteCultureComment", code);
 	}
 
-
-	@Override
-	public int updateCultureComment(Comment comment) {
-		return session.update("comment.updateCultureComment", comment);
-	}
 
 }

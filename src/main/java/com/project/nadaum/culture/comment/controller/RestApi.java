@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.w3c.dom.Document;
@@ -193,33 +194,41 @@ public class RestApi{
 			
 	//댓글리스트
 //	@GetMapping("/comment/{apiCode}")
-	public ModelAndView CultureCommentList(@PathVariable String apiCode, Model model) {
-		log.debug("apiCode = {}", apiCode);
-		List<Comment> commentList = commentService.selectCultureCommentList(apiCode);
-		
-		log.debug("commentList = {}", commentList);
-		model.addAttribute("commentList", commentList);
-		
-		return new ModelAndView("/culture/commentList","commentList",commentList);
-	}
+//	public ModelAndView CultureCommentList(@PathVariable String apiCode, Model model) {
+//		log.debug("apiCode = {}", apiCode);
+//		List<Comment> commentList = commentService.selectCultureCommentList(apiCode);
+//		
+//		log.debug("commentList = {}", commentList);
+//		model.addAttribute("commentList", commentList);
+//		
+//		return new ModelAndView("/culture/commentList","commentList",commentList);
+//	}
 	
 	///등록
 	@PostMapping("/board/view/{apiCode}")
-	public ModelAndView insertCultureComment(@PathVariable String apiCode, @RequestBody Comment comment) {
-		log.debug("comment = {}", comment);
-		int result = commentService.insertCultureComment(comment);
-		Map<String, Object> map = new HashMap<>();
-		
-		map.put("msg", "댓글 등록성공!");
-		map.put("result", result);
-		log.debug("result={}", result);
-		return new ModelAndView("redirect:/culture/board/view/"+apiCode,"map",map);
+	public ResponseEntity<?> insertCultureComment(@RequestParam Map<String,Object> map) {
+		log.debug("map = {}", map);
+		try {
+			int result = commentService.insertCultureComment(map);
+			map.put("msg", "댓글 등록성공!");
+			map.put("result", result);
+			if(result == 1) {
+                return ResponseEntity.ok(map);
+            } 
+            else {
+            	return ResponseEntity.status(404).build();
+            }
+		}
+		catch (Exception e) {
+			log.error(e.getMessage(), e);
+			return ResponseEntity.badRequest().build();
+		}
 	}
 	
 	//삭제
-		@DeleteMapping("/comment/{code}")
+		@DeleteMapping("/board/view/{apiCode}")
 		public ResponseEntity<?> deleteMenu(@PathVariable String code){
-			log.debug("comment = {}", code);
+			log.debug(" = {}", code);
 			try {
 				int result = commentService.deleteCultureComment(code);
 				
@@ -240,16 +249,16 @@ public class RestApi{
 		}
 		
 	//수정
-	@PutMapping("/comment/{apiCode}")
-	public ResponseEntity<?> updateMenu(@PathVariable String apiCode, @RequestBody Comment comment){
-		log.debug("comment = {}", comment);
+	@PutMapping("/board/view/{apiCode}")
+	public ResponseEntity<?> updateMenu(@RequestParam Map<String,Object> map){
+		log.debug("map = {}", map);
 		try {
-			int result = commentService.updateCultureComment(comment);
+			int result = commentService.updateCultureComment(map);
 			log.debug("result = {}", result);
 			
-			Map<String, Object> map = new HashMap<>();
-			map.put("msg", "댓글 수정 성공!");
-			map.put("result", result);
+			Map<String, Object> resultMap = new HashMap<>();
+			resultMap.put("msg", "댓글 수정 성공!");
+			resultMap.put("result", result);
 			return ResponseEntity.ok(map);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);

@@ -14,15 +14,15 @@
 		    reg_date desc
 	</select>
 	
-	<insert id="insertCultureComment" parameterType="comment">
+	<insert id="insertCultureComment" >
 		insert into
 				comments(code, comment_level, content, reg_date, comment_ref, id, api_code, star)
 			values(
 				concat('co-',seq_comments_no.nextval),
-				#{commentLevel},
+				#{comment_level},
 				#{content},
 				default,
-				#{commentRef},
+				#{comment_ref},
 				#{id},
 				#{apiCode},
 				#{star}
