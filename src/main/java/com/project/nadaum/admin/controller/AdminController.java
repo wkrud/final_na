@@ -13,6 +13,7 @@ import org.apache.commons.collections.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,6 +52,40 @@ public class AdminController {
 	@GetMapping("/adminMain.do")
 	public void adminMain() {}
 	
+	@PostMapping("/changeMemberRole.do")
+	public String changeMemberRole(@RequestParam Map<String, Object> map) {
+		String role = (String) map.get("role");
+		if(role.equals("user")) {
+			int result = adminService.insertRole(map);
+		}else {
+			int result = adminService.deleteRole(map);
+		}
+		return "redirect:/member/admin/adminManagingUser.do";
+	}
+	
+	@PostMapping("/changeMemberEnabled.do")
+	public String changeMemberEnabled(@RequestParam Map<String, Object> map) {
+		log.debug("map = {}", map);
+		int result = adminService.updateEnabled(map);
+		return "redirect:/member/admin/adminManagingUser.do";
+	}
+	
+	@PostMapping("/delete.do")
+	public String delete(@RequestParam Map<String, Object> map, RedirectAttributes redirectAttr) {
+		log.debug("map = {}", map);
+		String category = (CategoryEnum._valueOf((String) map.get("category"))).toString();
+		log.debug("category = {}", category);
+		if("질문".equals(category)) {
+			int result = adminService.deleteHelp(map);	
+			return "redirect:/member/admin/adminAllHelp.do";
+		}else if("공지사항".equals(category)) {
+			int result = adminService.deleteAnnouncement(map);
+			return "redirect:/member/admin/adminManagingAnnouncement.do";
+		}
+		redirectAttr.addFlashAttribute("msg", "삭제실패");
+		return "redirect:/member/admin/adminMain.do";
+	}
+	
 	@GetMapping("/adminManagingAnnouncement.do")
 	public void adminManagingAnnouncement(@RequestParam(defaultValue = "1") int cPage, Model model, HttpServletRequest request) {
 		int limit = 10;
@@ -72,9 +107,14 @@ public class AdminController {
 	}
 	
 	@GetMapping("/adminManagingUser.do")
-	public void adminManagingUser(Model model) {
-		List<Member> list = adminService.selectAllMember();
-		model.addAttribute("list", list);
+	public void adminManagingUser(Model model, @AuthenticationPrincipal Member member) {
+		List<Member> list = adminService.selectAllMember(member);
+		List<SimpleGrantedAuthority> map = adminService.selectAllRole(member);
+		log.debug("member = {}", list);
+		log.debug("authority = {}", map);
+		
+//		model.addAttribute("authority", map);
+//		model.addAttribute("list", list);
 	}
 	
 	@GetMapping("/adminAllHelp.do")
@@ -127,20 +167,26 @@ public class AdminController {
 		try {
 			log.debug("map = {}", map);
 			String check = (String) map.get("check");
-			
+			int result = 0;
 			if("help".equals(check)) {				
 				Help help = new Help();
 				help.setCode((String)map.get("code"));
 				help.setATitle((String)map.get("aTitle"));
 				help.setAContent((String)map.get("aContent"));
 				log.debug("help = {}", help);
-				int result = adminService.updateHelpAnswer(help);	
+				result = adminService.updateHelpAnswer(help);	
 				redirectAttr.addFlashAttribute("msg", "성공");
 				return "redirect:/member/admin/adminAllHelp.do";
+			}else if("announcement".equals(check)) {
+				String code = (String)map.get("code");
+				map.put("id", member.getId());
+				if(!"".equals(code)) {
+					result = adminService.updateAnnouncement(map);
+				}else {
+					result = adminService.insertAnnouncement(map);					
+				}
 			}
 			
-			map.put("id", member.getId());
-			int result = adminService.insertAnnouncement(map);
 			redirectAttr.addFlashAttribute("msg", "성공");
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);

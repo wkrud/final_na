@@ -10,6 +10,9 @@
 	<jsp:param value="나:다움 관리자페이지" name="title"/>
 </jsp:include>
 <div class="admin-body">
+	<div class="enroll-back-btn">
+		<button type="button" class="btn btn-success" onclick="location.href='${header.referer}'">뒤로가기</button>
+	</div>
 	<div class="answer-wrap">
 		<c:if test="${check eq 'help'}">
 			<div class="question-wrap">
@@ -45,6 +48,7 @@
 					<textarea name="content" id="admin-summernote" required></textarea>
 					<div><span id="limite_normal"></span><span id="limite_vermelho" style="color:red"></span>/500</div>
 					<button type="submit" id="admin-submit-btn" class="btn btn-success">공지등록</button>
+					<input type="hidden" name="code" value="${announce.code}" />
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 				</form>	
 			</div>

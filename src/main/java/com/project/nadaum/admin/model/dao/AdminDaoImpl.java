@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Repository;
 
 import com.project.nadaum.admin.model.vo.Help;
@@ -46,13 +47,53 @@ public class AdminDaoImpl implements AdminDao {
 	}
 
 	@Override
-	public List<Member> selectAllMember() {
-		return session.selectList("admin.selectAllMember");
+	public List<Member> selectAllMember(Member member) {
+		return session.selectList("admin.selectAllMember", member);
 	}
 
 	@Override
 	public int insertAnnouncement(Map<String, Object> map) {
 		return session.insert("admin.insertAnnouncement", map);
+	}
+
+	@Override
+	public int updateAnnouncement(Map<String, Object> map) {
+		return session.update("admin.updateAnnouncement", map);
+	}
+
+	@Override
+	public int deleteHelp(Map<String, Object> map) {
+		return session.delete("admin.deleteHelp", map);
+	}
+
+	@Override
+	public int deleteLikes(Map<String, Object> map) {
+		return session.delete("admin.deleteLikes", map);
+	}
+
+	@Override
+	public int deleteAnnouncement(Map<String, Object> map) {
+		return session.delete("admin.deleteAnnouncement", map);
+	}
+
+	@Override
+	public int updateEnabled(Map<String, Object> map) {
+		return session.update("admin.updateEnabled", map);
+	}
+
+	@Override
+	public List<SimpleGrantedAuthority> selectAllRole(Member member) {
+		return session.selectList("admin.selectAllRole", member);
+	}
+
+	@Override
+	public int insertRole(Map<String, Object> map) {
+		return session.insert("admin.insertRole", map);
+	}
+
+	@Override
+	public int deleteRole(Map<String, Object> map) {
+		return session.delete("admin.deleteRole", map);
 	}
 	
 	

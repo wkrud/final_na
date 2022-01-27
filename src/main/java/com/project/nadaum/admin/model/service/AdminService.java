@@ -3,6 +3,8 @@ package com.project.nadaum.admin.model.service;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 import com.project.nadaum.admin.model.vo.Help;
 import com.project.nadaum.member.model.vo.Member;
 
@@ -16,8 +18,22 @@ public interface AdminService {
 
 	int countAllHelp();
 
-	List<Member> selectAllMember();
+	List<Member> selectAllMember(Member member);
 
 	int insertAnnouncement(Map<String, Object> map);
+
+	int updateAnnouncement(Map<String, Object> map);
+
+	int deleteHelp(Map<String, Object> map);
+
+	int deleteAnnouncement(Map<String, Object> map);
+
+	int updateEnabled(Map<String, Object> map);
+
+	List<SimpleGrantedAuthority> selectAllRole(Member member);
+
+	int insertRole(Map<String, Object> map);
+
+	int deleteRole(Map<String, Object> map);
 
 }

@@ -11,6 +11,9 @@
 </jsp:include>
 
 <div class="admin-body">
+	<div class="go-admin-main-btn">
+		<button type="button" class="btn btn-success" onclick="location.href='${pageContext.request.contextPath}/member/admin/adminMain.do'">관리자페이지</button>
+	</div>
 	<div class="admin-section">
 		<table>
 			<thead>
@@ -22,6 +25,7 @@
 					<th>등록일</th>
 					<th>답변</th>
 					<th>답변공감수</th>
+					<th>삭제</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -41,6 +45,15 @@
 							</c:if>
 						</td>
 						<td>${list.ACount}</td>
+						<td>
+							<form method="POST" action="${pageContext.request.contextPath}/member/admin/delete.do">
+								<input type="hidden" name="code" value="${list.code}"/>
+								<input type="hidden" name="aCode" value="${list.ACode}"/>
+								<button type="submit" id="delete-help" class="btn btn-danger">삭제</button>
+								<input type="hidden" name="category" value="he"/>
+								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+							</form>
+						</td>
 					</tr>
 				</c:forEach>
 			</tbody>
@@ -49,8 +62,11 @@
 	</div>
 </div>
 <script>
-$("#enrollAnswer").click((e) => {
-	
+$("#delete-help").click((e) => {
+	if(confirm('정말 삭제 하시겠습니까?')){
+		return true;
+	}
+	return false;
 });
 </script>
 
