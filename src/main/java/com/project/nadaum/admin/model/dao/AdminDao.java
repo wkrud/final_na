@@ -21,7 +21,7 @@ public interface AdminDao {
 
 	int countAllHelp();
 
-	List<Member> selectAllMember(Member member);
+	List<Member> selectAllMember(Map<String, Object> param);
 
 	int insertAnnouncement(Map<String, Object> map);
 
@@ -40,5 +40,7 @@ public interface AdminDao {
 	int deleteRole(Map<String, Object> map);
 
 	List<MemberRole> selectAllMemberRole(Member m);
+
+	int countAllMember(Map<String, Object> param);
 
 }

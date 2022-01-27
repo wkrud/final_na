@@ -19,7 +19,7 @@ public interface AdminService {
 
 	int countAllHelp();
 
-	List<Member> selectAllMember(Member member);
+	List<Member> selectAllMember(Map<String, Object> param);
 
 	int insertAnnouncement(Map<String, Object> map);
 
@@ -34,5 +34,7 @@ public interface AdminService {
 	int insertRole(Map<String, Object> map);
 
 	int deleteRole(Map<String, Object> map);
+
+	int countAllMember(Map<String, Object> param);
 
 }

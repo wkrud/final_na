@@ -48,8 +48,12 @@ public class AdminDaoImpl implements AdminDao {
 	}
 
 	@Override
-	public List<Member> selectAllMember(Member member) {
-		return session.selectList("admin.selectAllMember", member);
+	public List<Member> selectAllMember(Map<String, Object> param) {
+		int offset = (int) param.get("offset");
+		int limit = (int) param.get("limit");
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		Member member = (Member) param.get("member");
+		return session.selectList("admin.selectAllMember", member, rowBounds);
 	}
 
 	@Override
@@ -95,6 +99,11 @@ public class AdminDaoImpl implements AdminDao {
 	@Override
 	public List<MemberRole> selectAllMemberRole(Member member) {
 		return session.selectList("admin.selectAllMemberRole", member);
+	}
+
+	@Override
+	public int countAllMember(Map<String, Object> param) {
+		return session.selectOne("admin.countAllMember", param);
 	}
 	
 	

@@ -70,8 +70,8 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public List<Member> selectAllMember(Member member) {
-		List<Member> list = adminDao.selectAllMember(member);
+	public List<Member> selectAllMember(Map<String, Object> param) {
+		List<Member> list = adminDao.selectAllMember(param);
 		for(Member m : list) {
 			List<MemberRole> role = adminDao.selectAllMemberRole(m);
 			m.setMemberRole(role);
@@ -115,6 +115,11 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public int deleteRole(Map<String, Object> map) {
 		return adminDao.deleteRole(map);
+	}
+
+	@Override
+	public int countAllMember(Map<String, Object> param) {
+		return adminDao.countAllMember(param);
 	}
 	
 	

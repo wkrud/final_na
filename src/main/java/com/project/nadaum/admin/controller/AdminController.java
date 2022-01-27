@@ -54,6 +54,13 @@ public class AdminController {
 	@GetMapping("/adminMain.do")
 	public void adminMain() {}
 	
+	@PostMapping("/adminDeleteMember.do")
+	public String adminDeleteMember(Member member) {
+		log.debug("member = {}", member);
+		int result = memberService.deleteMember(member);
+		return "redirect:/member/admin/adminManagingUser.do";
+	}
+	
 	@PostMapping("/changeMemberRole.do")
 	public String changeMemberRole(@RequestParam Map<String, Object> map) {
 		String role = (String) map.get("role");
@@ -109,10 +116,21 @@ public class AdminController {
 	}
 	
 	@GetMapping("/adminManagingUser.do")
-	public void adminManagingUser(Model model, @AuthenticationPrincipal Member member) {
-		List<Member> list = adminService.selectAllMember(member);
+	public void adminManagingUser(@RequestParam(defaultValue = "1") int cPage, HttpServletRequest request, Model model, @AuthenticationPrincipal Member member) {
+		int limit = 5;
+		int offset = (cPage - 1) * limit;
+		Map<String, Object> param = new HashMap<>();
+		param.put("limit", limit);
+		param.put("offset", offset);
+		param.put("member", member);
+		List<Member> list = adminService.selectAllMember(param);
 		log.debug("member = {}", list);
+		param.put("id", member.getId());
+		int totalContent = adminService.countAllMember(param);
 
+		String url = request.getRequestURI();
+		String pagebar = NadaumUtils.getPagebar(cPage, limit, totalContent, url);
+		model.addAttribute("pagebar", pagebar);
 		model.addAttribute("list", list);
 	}
 	

@@ -41,6 +41,14 @@
 			not id = #{id}
 	</select>
 	
+	<select id="countAllMember" resultType="int">
+		select count(*) from member
+		where
+			not id = 'admin'
+			and
+			not id = #{id}
+	</select>
+	
 	<select id="selectAllMemberRole" resultType="memberRole">
 		select * from authority where member_id = #{id} and not authority = 'ROLE_SUPER'
 	</select>
@@ -73,10 +81,10 @@
 	
 	<update id="updateEnabled">
 		update member set
-		<if test="enabledVal == 1">
+		<if test="enabledVal == 'true'">
 			enabled = 0
 		</if>
-		<if test="enabledVal == 0">
+		<if test="enabledVal == 'false'">
 			enabled = 1
 		</if>
 		where
@@ -90,7 +98,7 @@
 	<delete id="deleteRole">
 		delete from authority where member_id = #{id} and authority = 'ROLE_ADMIN'
 	</delete>
-	
+		
 	<resultMap type="map" id="helpMap">
 		<id column="code" property="code"/>
 		<result column="id" property="id"/>
@@ -110,26 +118,6 @@
 		<result column="authority" property="authority"/>
 	</resultMap>
 	
-	<resultMap type="map" id="memberMap">
-		<id column="id" property="id"/>
-		<result column="password" property="password"/>
-		<result column="name" property="name"/>
-		<result column="email" property="email"/>
-		<result column="address" property="address"/>
-		<result column="reg_date" property="regDate"/>
-		<result column="phone" property="phone"/>
-		<result column="nickname" property="nickname"/>
-		<result column="hobby" property="hobby"/>
-		<result column="search" property="search"/>
-		<result column="introduce" property="introduce"/>
-		<result column="birthday" property="birthday"/>
-		<result column="auth_key" property="authKey"/>
-		<result column="enabled" property="enabled"/>
-		<result column="profile" property="profile"/>
-		<result column="login_type" property="loginType"/>
-		<result column="profile_status" property="profileStatus"/>
-		<collection resultMap="authorityMap" property="authorities"/>
-	</resultMap>
 	
 </mapper>
 
