@@ -41,11 +41,6 @@ public class AdminDaoImpl implements AdminDao {
 	}
 
 	@Override
-	public int insertHelpAnswer(Help help) {
-		return session.update("admin.insertHelpAnswer", help);
-	}
-
-	@Override
 	public int countAllHelp() {
 		return session.selectOne("admin.countAllHelp");
 	}
@@ -53,6 +48,11 @@ public class AdminDaoImpl implements AdminDao {
 	@Override
 	public List<Member> selectAllMember() {
 		return session.selectList("admin.selectAllMember");
+	}
+
+	@Override
+	public int insertAnnouncement(Map<String, Object> map) {
+		return session.insert("admin.insertAnnouncement", map);
 	}
 	
 	

@@ -17,12 +17,18 @@
 	</select>
 	
 	<update id="updateHelpAnswer">
-		update help set a_title = #{aTitle}, a_content = #{aContent} a_reg_date = sysdate where code = #{code}
+		update
+			help
+		set
+		<if test="aCode != null">
+			a_title = #{aTitle}, a_content = #{aContent} a_reg_date = sysdate
+		</if>
+		<if test="aCode == null">
+			status = 'T', a_code = concat('ah-',seq_help_no.nextval), a_title = #{aTitle}, a_content = #{aContent}, a_reg_date = sysdate
+		</if>			
+		where
+			code = #{code}
 	</update>
-	
-	<insert id="insertHelpAnswer">
-		update help set status = 'T' a_code = concat('ah-',seq_help_no.nextval), a_title = #{aTitle}, a_content = #{aContent}, a_reg_date = sysdate where code = #{code}
-	</insert>
 	
 	<select id="countAllHelp" resultType="int">
 		select count(*) from help
@@ -31,6 +37,11 @@
 	<select id="selectAllMember" resultType="member">
 		select * from member order by reg_date desc
 	</select>
+	
+	<insert id="insertAnnouncement">
+		insert into announcement(code, title, content, id)
+		values(concat('an-',seq_announcement_no.nextval), #{title}, #{content}, #{id})
+	</insert>
 	
 	<resultMap type="map" id="helpMap">
 		<id column="code" property="code"/>

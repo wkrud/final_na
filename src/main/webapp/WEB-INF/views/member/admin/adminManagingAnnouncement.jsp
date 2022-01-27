@@ -15,7 +15,7 @@
 	</div>
 	<div class="admin-announcement-body">
 		<div class="announcement-enroll">
-			<button type="button" class="btn btn-primary">공지등록</button>
+			<button type="button" class="btn btn-primary" onclick="location.href='${pageContext.request.contextPath}/member/admin/adminEnrollFrm.do?check=announcement'">공지등록</button>
 		</div>
 		<div class="announcement-managing">
 			<table>
@@ -35,8 +35,8 @@
 							<td>${an.title}</td>
 							<td>${an.readCount}</td>
 							<td>${an.regDate}</td>
-							<td><button type="button" class="btn btn-warning">수정</button></td>
-							<td><button type="button" class="btn btn-danger">삭제</button></td>
+							<td><button type="button" class="btn btn-warning" onclick="location.href='${pageContext.request.contextPath}/member/admin/adminEnrollFrm.do?check=announcement&code=${an.code}'">수정</button></td>
+							<td><button type="button" class="btn btn-danger" onclick="location.href='${pageContext.request.contextPath}/member/admin/adminEnrollFrm.do?check=announcement&code=${an.code}'">삭제</button></td>
 						</tr>
 					</c:forEach>
 				</tbody>

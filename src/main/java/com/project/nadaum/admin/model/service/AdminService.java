@@ -14,10 +14,10 @@ public interface AdminService {
 
 	int updateHelpAnswer(Help help);
 
-	int insertHelpAnswer(Help help);
-
 	int countAllHelp();
 
 	List<Member> selectAllMember();
+
+	int insertAnnouncement(Map<String, Object> map);
 
 }

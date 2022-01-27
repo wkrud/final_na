@@ -9,8 +9,10 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,11 +21,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.JsonObject;
 import com.project.nadaum.admin.model.service.AdminService;
+import com.project.nadaum.admin.model.vo.Announcement;
 import com.project.nadaum.admin.model.vo.Help;
 import com.project.nadaum.common.NadaumUtils;
+import com.project.nadaum.common.vo.CategoryEnum;
 import com.project.nadaum.member.model.service.MemberService;
 import com.project.nadaum.member.model.vo.Member;
 
@@ -94,33 +99,54 @@ public class AdminController {
 		}
 	}
 	
-	@GetMapping("/adminHelpAnswer.do")
+	@GetMapping("/adminEnrollFrm.do")
 	public void adminHelpAnswer(@RequestParam Map<String, Object> map, Model model) {
 		try {
+			Announcement announce = new Announcement();
 			log.debug("map = {}", map);
-			Help help = adminService.selectOneHelp(map);
-			model.addAttribute("help", help);
+			String check = (String) map.get("check");
+			if("help".equals(check)) {
+				Help help = adminService.selectOneHelp(map);
+				model.addAttribute("help", help);				
+			}else if("announcement".equals(check)) {
+				String code = (String)map.get("code");
+				if(!"".equals(code)) {
+					announce = memberService.selectOneAnnouncement(map);
+				}
+			}
+			model.addAttribute("announce", announce);
+			model.addAttribute("check", check);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			throw e;
 		}
 	}
 	
-	@PostMapping("/adminHelpAnswer.do")
-	public String adminHelpAnswer(Help help) {
+	@PostMapping("/adminEnrollFrm.do")
+	public String adminHelpAnswer(@RequestParam Map<String, Object> map, @AuthenticationPrincipal Member member, RedirectAttributes redirectAttr) {
 		try {
-			log.debug("help = {}", help);
-			int result = 0;
-			if(help.getACode() != null) {
-				result = adminService.updateHelpAnswer(help);
-			}else {
-				result = adminService.insertHelpAnswer(help);
+			log.debug("map = {}", map);
+			String check = (String) map.get("check");
+			
+			if("help".equals(check)) {				
+				Help help = new Help();
+				help.setCode((String)map.get("code"));
+				help.setATitle((String)map.get("aTitle"));
+				help.setAContent((String)map.get("aContent"));
+				log.debug("help = {}", help);
+				int result = adminService.updateHelpAnswer(help);	
+				redirectAttr.addFlashAttribute("msg", "성공");
+				return "redirect:/member/admin/adminAllHelp.do";
 			}
+			
+			map.put("id", member.getId());
+			int result = adminService.insertAnnouncement(map);
+			redirectAttr.addFlashAttribute("msg", "성공");
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			throw e;
 		}
-		return "redirect:/member/admin/adminAllHelp.do";
+		return "redirect:/member/admin/adminManagingAnnouncement.do";
 	}
 	
 	@RequestMapping(value="/uploadSummernoteImageFile.do", produces = "application/json; charset=utf8")

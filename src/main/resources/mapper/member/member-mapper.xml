@@ -12,6 +12,10 @@
 		select * from member where nickname = #{nickname}
 	</select>
 	
+	<select id="selectOneAnnouncement" resultType="announcement">
+		select * from announcement where code = #{code}
+	</select>
+	
 	<select id="selectAllAnnouncement" resultMap="announcementMap">
 		select * from announcement order by reg_date desc
 	</select>

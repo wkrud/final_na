@@ -11,32 +11,48 @@
 </jsp:include>
 <div class="admin-body">
 	<div class="answer-wrap">
-		<div class="question-wrap">
-			<div class="question-title">
-				${help.title}
+		<c:if test="${check eq 'help'}">
+			<div class="question-wrap">
+				<div class="question-title">
+					${help.title}
+				</div>
+				<div class="question-content">
+					${help.content}
+				</div>
 			</div>
-			<div class="question-content">
-				${help.content}
+			<div class="answer-body">
+				<form 
+					method="POST"
+					action="${pageContext.request.contextPath}/member/admin/adminEnrollFrm.do?check=help">
+					<label for="title">제목</label>						
+					<input type="text" class="form-control" name="aTitle" id="title" value="${help.ATitle}" required>
+					<textarea name="aContent" id="admin-summernote" required></textarea>
+					<div><span id="limite_normal"></span><span id="limite_vermelho" style="color:red"></span>/500</div>
+					<button type="submit" id="admin-submit-btn" class="btn btn-success">답변등록</button>
+					<input type="hidden" name="code" value="${help.code}" />
+					<input type="hidden" name="aCode" value="${help.ACode}" />
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+				</form>	
 			</div>
-		</div>
-		<div class="answer-body">
-			<form method="POST">
-				<label for="title">제목</label>						
-				<input type="text" class="form-control" name="aTitle" id="title" required>
-				<textarea name="aContent" id="help-answer-summernote" required></textarea>
-				<div><span id="limite_normal"></span><span id="limite_vermelho" style="color:red"></span>/500</div>
-				<button type="submit" id="help-submit-btn" class="btn btn-success">답변등록</button>
-				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-			</form>	
-		</div>
+		</c:if>
+		<c:if test="${check eq 'announcement'}">
+			<div class="enroll-announcement-body">
+				<form 
+					method="POST"
+					action="${pageContext.request.contextPath}/member/admin/adminEnrollFrm.do?check=announcement">
+					<label for="title">제목</label>						
+					<input type="text" class="form-control" name="title" id="title" value="${announce.title}" required>
+					<textarea name="content" id="admin-summernote" required></textarea>
+					<div><span id="limite_normal"></span><span id="limite_vermelho" style="color:red"></span>/500</div>
+					<button type="submit" id="admin-submit-btn" class="btn btn-success">공지등록</button>
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+				</form>	
+			</div>
+		</c:if>
 	</div>
 </div>
 <script>
-$("#category-select").change((e) => {	
-	$("input[name='category']").val($("#category-select").val());	
-});
-
-$("#help-submit-btn").click((e) => {
+$("#admin-submit-btn").click((e) => {
 	if($("#title").val() == ''){
 		alert('제목을 작성해 주세요');
 		return false;
@@ -108,8 +124,14 @@ $(document).ready(function() {
 	         	}
     	}
 	};
-	$('#help-answer-summernote').val("${help.AContent}");
-	$('#help-answer-summernote').summernote(setting);
+	
+	<c:if test="${check eq 'help'}">
+		$('#admin-summernote').val("${help.AContent}");
+	</c:if>
+	<c:if test="${check eq 'announcement'}">
+		$('#admin-summernote').val("${announce.content}");
+	</c:if>
+	$('#admin-summernote').summernote(setting);
 	
 	function uploadSummernoteImageFile(file, el){
 		

@@ -63,11 +63,6 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public int insertHelpAnswer(Help help) {
-		return adminDao.insertHelpAnswer(help);
-	}
-
-	@Override
 	public int countAllHelp() {
 		return adminDao.countAllHelp();
 	}
@@ -75,6 +70,11 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public List<Member> selectAllMember() {
 		return adminDao.selectAllMember();
+	}
+
+	@Override
+	public int insertAnnouncement(Map<String, Object> map) {
+		return adminDao.insertAnnouncement(map);
 	}
 	
 	
