@@ -179,11 +179,10 @@ public class RestApi{
 							list.add(map);
 							
 					     }//if end
+					     List<Comment> commentList = commentService.selectCultureCommentList(apiCode);
 					     System.out.println(list);
 					     model.addAttribute("list", list);
-					     
-					     
-					     
+					     model.addAttribute("commentList", commentList);
 				} catch (Exception e) {
 					  e.printStackTrace();
 			}		  
@@ -193,19 +192,19 @@ public class RestApi{
 	//============================= 댓  글 =================================================
 			
 	//댓글리스트
-	@GetMapping("/comment/{apiCode}")
+//	@GetMapping("/comment/{apiCode}")
 	public ModelAndView CultureCommentList(@PathVariable String apiCode, Model model) {
 		log.debug("apiCode = {}", apiCode);
-		List<Comment> list = commentService.selectCultureCommentList(apiCode);
+		List<Comment> commentList = commentService.selectCultureCommentList(apiCode);
 		
-		log.debug("list = {}", list);
-		model.addAttribute("list", list);
+		log.debug("commentList = {}", commentList);
+		model.addAttribute("commentList", commentList);
 		
-		return new ModelAndView("/culture/commentList","list",list);
+		return new ModelAndView("/culture/commentList","commentList",commentList);
 	}
 	
 	///등록
-	@PostMapping("/comment/{apiCode}")
+	@PostMapping("/board/view/{apiCode}")
 	public ModelAndView insertCultureComment(@PathVariable String apiCode, @RequestBody Comment comment) {
 		log.debug("comment = {}", comment);
 		int result = commentService.insertCultureComment(comment);
@@ -214,7 +213,7 @@ public class RestApi{
 		map.put("msg", "댓글 등록성공!");
 		map.put("result", result);
 		log.debug("result={}", result);
-		return new ModelAndView("redirect:/culture/comment/"+apiCode,"map",map);
+		return new ModelAndView("redirect:/culture/board/view/"+apiCode,"map",map);
 	}
 	
 	//삭제

@@ -57,7 +57,7 @@ padding-top: 100px;
 	<form id="deleteCommentFrm">
 	
 	<table id="comment-table">
-		 <c:forEach var="comment" items="${list}">
+		 <c:forEach var="comment" items="${commentList}">
 			<tr class="level1">
 				<td>
 					<input type="hidden" name="code" value="${comment.code}"></input>
@@ -102,14 +102,14 @@ padding-top: 100px;
 			    
 				$.ajax({
 					headers : headers,
-					url: `${pageContext.request.contextPath}/culture/comment/${apiCode}`,
+					url: `${pageContext.request.contextPath}/culture/board/view/${apiCode}`,
 					method: "POST",
 					data: jsonStr,
 					contentType: "application/json; charset=utf-8",
 					success(resp){
 						console.log(resp)
-						location.reload();
-						alert(resp.msg);
+						//location.reload();
+						//alert(resp.msg);
 					},
 					error: console.log
 				});
@@ -127,7 +127,7 @@ padding-top: 100px;
 				console.log(code);
 				
 				$.ajax({
-					url:`${pageContext.request.contextPath}/culture/comment/\${code}`,
+					url:`${pageContext.request.contextPath}/culture/board/view/${apiCode}`,
 					method: "DELETE",
 					success(resp){
 						console.log(resp);
