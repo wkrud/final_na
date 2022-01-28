@@ -19,7 +19,7 @@
 		<section class="question-wrap">
 			<div class="q-date-wrap"><h5>등록일: <fmt:formatDate value="${helpDetail.regDate}" pattern="yyyy-MM-dd"/></h5></div>
 			<div class="q-content-wrap">
-				<div class="q-start"><h3>내용 : </h3></div>
+				<div class="q-start"><span>내용 : </span></div>
 				<div class="q-content"><p>${helpDetail.content}</p></div>
 			</div>
 			<div class="q-info-wrap">
@@ -40,8 +40,8 @@
 			<section class="answer-wrap">
 				<div class="a-date-wrap"><h5>답변일: <fmt:formatDate value="${helpDetail.aRegDate}" pattern="yyyy-MM-dd"/></h5></div>
 				<div class="a-content-wrap">
-					<div class="a-start"><h3>답변 : </h3></div>
 					<div class="a-title"><p>${helpDetail.aTitle}</p></div>
+					<div class="a-start"><span>답변 : </span></div>
 					<div class="a-content"><p>${helpDetail.aContent}</p></div>
 				</div>
 				<div class="a-info-wrap">
