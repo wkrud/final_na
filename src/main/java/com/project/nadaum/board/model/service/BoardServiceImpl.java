@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.project.nadaum.board.model.dao.BoardDao;
 import com.project.nadaum.board.model.vo.Board;
+import com.project.nadaum.board.model.vo.BoardComment;
+import com.project.nadaum.board.model.vo.BoardEntity;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,7 +23,7 @@ public class BoardServiceImpl implements BoardService {
 	private BoardDao boardDao;
 
 	@Override
-	public List<Board> selectBoardList() {
+	public List<BoardEntity> selectBoardList() {
 		return boardDao.selectBoardList();
 	}
 
@@ -70,6 +72,16 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int insertBoard(Map<String, Object> map) {
 		return boardDao.insertBoard(map);
+	}
+
+	@Override
+	public Board selectOneBoardCollection(String code) {
+		return boardDao.selectOneBoardCollection(code);
+	}
+
+	@Override
+	public List<BoardComment> selectBoardCommentList(String code) {
+		return boardDao.selectBoardCommentList(code);
 	}
 	
 	

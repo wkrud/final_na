@@ -15,7 +15,7 @@ input#btn-add {
 	float: right;
 	margin: 0 0 15px;
 }
-tr[data-value] {cursor: pointer;}
+.board-title {cursor: pointer;}
 </style>
 <script>
 function goBoardForm(){
@@ -24,13 +24,10 @@ function goBoardForm(){
 
 
 $(() => {
-	$("tr[data-value]").click((e) => {
-		// console.log(e.target); // td
-		const $tr = $(e.target).parent();
-		const code = $tr.data("code").val();
-		console.log("$tr");
-		console.log("code");
+	$(".board-title").click((e) => {
+		console.log(e.target); // td
 		location.href = `${pageContext.request.contextPath}/board/boardDetail.do?code=\${code}`;
+	
 	});
 });
 </script>
@@ -50,17 +47,14 @@ $(() => {
 			<th>조회수</th>
 		</tr>
 		<c:forEach items="${list}" var="board">
-
 			<tr data-value="${board.code}" >
-				<input type="hidden" value="${board.code}" class="board-code" name="code"/>
-				<td>${board.code}</td>
+				<td class="boardCode">${board.code}</td>
 				<td class="board-title">${board.title}</td>
 				<td>${board.id}</td>
 				<td>${board.content}</td>
-				<td><fmt:formatDate value="${board.regDate}" pattern="yy/MM/dd HH:mm"/> </td>
+				<td><fmt:formatDate value="${board.regDate}" pattern="yy/MM/dd HH:mm"/></td>
 				<td>${board.readCount}</td>
 			</tr>
-
 		</c:forEach>
 	</table>
 	

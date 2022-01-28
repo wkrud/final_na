@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.project.nadaum.board.model.vo.Board;
+import com.project.nadaum.board.model.vo.BoardComment;
+import com.project.nadaum.board.model.vo.BoardEntity;
 
 @Repository
 public class BoardDaoImpl implements BoardDao {
@@ -16,7 +18,7 @@ public class BoardDaoImpl implements BoardDao {
 	private SqlSessionTemplate session;
 
 	@Override
-	public List<Board> selectBoardList() {
+	public List<BoardEntity> selectBoardList() {
 		
 		return session.selectList("board.selectBoardList");
 	}
@@ -46,6 +48,16 @@ public class BoardDaoImpl implements BoardDao {
 	@Override
 	public int insertBoard(Map<String, Object> map) {
 		return session.insert("board.insertBoard", map);
+	}
+
+	@Override
+	public Board selectOneBoardCollection(String code) {
+		return session.selectOne("board.selectOneBoardCollection", code);
+	}
+
+	@Override
+	public List<BoardComment> selectBoardCommentList(String code) {
+		return session.selectList("board.selectBoardCommentList", code);
 	}
 	
 }

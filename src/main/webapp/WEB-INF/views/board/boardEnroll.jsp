@@ -36,7 +36,7 @@ function boardValidate(){
 </script>
 <div class="member-body">
 
-	<form method="POST">
+	<form method="POST" onsubmit="return boardValidate();">
 		<label for="title">제목</label>						
 		<input type="text" class="form-control" name="title" id="title"	placeholder="제목을 입력해주세요" required>
 		<input type="hidden" name="category" />
@@ -46,6 +46,7 @@ function boardValidate(){
 			<option value="ab">문화</option>
 			<option value="mo">영화</option>
 		</select>
+		
 		<textarea name="content" id="board-content-summernote" required></textarea>
 		<div><span id="limite_normal"></span><span id="limite_vermelho" style="color:red"></span>/500</div>
 		<button type="submit" id="help-submit-btn" class="btn btn-success">등록</button>

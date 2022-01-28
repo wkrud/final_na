@@ -3,6 +3,8 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="board">
+
+	<!-- 게시글 -->
 	<select id="selectBoardList" resultType="board">
 		select
 			*
@@ -24,6 +26,40 @@
 		TO_DATE(#{regDate}, 'YYYY-MM-DD')
 		)		
 	</insert>
+	
+	<select id="selectOneBoardCollection" resultMap="boardCollectionMap">
+		select
+			b.*,
+			m.*
+		from
+			board b
+				join member m
+					on b.id = m.id				
+		where
+			b.code = #{code}
+	</select>
+	<resultMap type="board" id="boardCollectionMap">
+		<id column="code" property="code"/>
+		<result column="title" property="title"/>
+		<result column="id" property="id"/>
+		<result column="content" property="content"/>
+		<result column="category" property="category"/>
+		<result column="read_count" property="readCount"/>
+		<result column="reg_date" property="regDate"/>
+		<association property="member" javaType="member">
+		<id column="id" property="id"/>
+		<result column="name" property="name"/>
+		</association>
+		<collection property="attachments" ofType="attachment">
+			<id column="attach_no" property="no"/>
+			<result column="board_no" property="boardNo"/>
+			<result column="original_filename" property="originalFilename"/>
+			<result column="renamed_filename" property="renamedFilename"/>
+			<result column="upload_date" property="uploadDate"/>
+			<result column="download_count" property="downloadCount"/>
+			<result column="status" property="status"/>
+		</collection>
+	</resultMap>
 	
 <!-- 	<insert id="insertAttachment">
 		insert into
@@ -53,5 +89,21 @@
 		where
 			code = #{code}
 	</select> -->
+	
+	<!-- 게시글 댓글조회 -->
+	<select id="selectBoardCommentList">
+		select
+			 * 
+		from
+			board_comment 
+		where 
+			code = ? 
+			start with 
+				comment_level = 1 
+			connect by prior 
+				code = comment_ref 
+			order siblings by code
+			
+	</select>
 </mapper>
 

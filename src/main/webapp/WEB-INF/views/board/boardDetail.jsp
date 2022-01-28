@@ -6,106 +6,93 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <jsp:include page="/WEB-INF/views/common/header.jsp">
-	<jsp:param value="게시판" name="title"/>
+	<jsp:param value="게시판상세보기" name="title"/>
 </jsp:include>
 <style>
-div, section, header, aside, footer {
-     padding: 0px;
-}
-input#btn-add {
-	float: right;
-	margin: 0 0 15px;
-}
 div#board-container{width:400px;}
 input, button, textarea {margin-bottom:15px;}
 button { overflow: hidden; }
 /* 부트스트랩 : 파일라벨명 정렬*/
 div#board-container label.custom-file-label{text-align:left;}
 </style>
-<script>
-function goBoardForm(){
-	location.href = "${pageContext.request.contextPath}/board/boardForm.do";
-}
 
-
-$(() => {
-	$(".card").click((e) => {
-		 //console.log(e.target);
-		const $card = $(e.target).parent().parent();
-		const code = $card.data("code");
-		location.href = `${pageContext.request.contextPath}/board/boardDetail.do?code=\${code}`;
-	});
-});
-</script>
-<body>
-
+<!-- 게시글 상세보기 -->
 <div id="board-container" class="mx-auto text-center">
-	<input type="text" class="form-control" 
-		   placeholder="제목" name="boardTitle" id="title" 
-		   value="${board.title}" required>
-	<input type="text" class="form-control" 
-		   name="memberId" 
-		   value="${board.member.name} (${board.member.id})" readonly required>
+	<input type="text" class="form-control" placeholder="제목" name="boardTitle" id="title" value="${board.title}" required>
+	<input type="text" class="form-control" name="id" value="${board.id}" readonly required>
 	
-	<c:forEach items="${board.attachments}" var="attach" varStatus="vs">
-	<%-- 		
-		<a href="${pageContext.request.contextPath}/resources/upload/board/${attach.renamedFilename}"
-			role="button" 
-			class="btn btn-outline-success btn-block"
-			download="${attach.originalFilename}">
-			첨부파일${vs.count} - ${attach.originalFilename}
-		</a> 
-	--%>
-		<a href="${pageContext.request.contextPath}/board/fileDownload.do?no=${attach.no}"
-			role="button" 
-			class="btn btn-outline-success btn-block">
-			첨부파일${vs.count} - ${attach.originalFilename}
-		</a>
-	</c:forEach>
-	<a href="${pageContext.request.contextPath}/board/urlResource.do"
-		role="button" 
-		class="btn btn-outline-success btn-block">
-		UrlResource 확인 
-	</a>
+    <textarea class="form-control mt-3" name="content" placeholder="내용" required><c:out value="${board.content}" /></textarea>
+    <input type="number" class="form-control" name="readCount" title="조회수" value="${board.readCount}" readonly>
+	<input type="datetime-local" class="form-control" name="regDate" value='<fmt:formatDate value="${board.regDate}" pattern="yyyy-MM-dd'T'HH:mm"/>'>
+</div>
 	
-    <textarea class="form-control mt-3" name="content" 
-    		  placeholder="내용" required>${board.content}</textarea>
-    <input type="number" class="form-control" name="readCount" title="조회수"
-		   value="${board.readCount}" readonly>
-	<input type="datetime-local" class="form-control" name="regDate" 
-		   value='<fmt:formatDate value="${board.regDate}" pattern="yyyy-MM-dd'T'HH:mm"/>'>
-</div>
-
-<!-- 댓글 -->
-<div id="comment-container">
-    <form action="${pageContext.request.contextPath}/board/insertComment.do" class="form-inline" method="post">
-    	<input type="text" class="form-control col-sm-8" name="memberId" value="${loginMember.id}" readonly required>
-        <input type="text" class="form-control col-sm-8" name="content" placeholder="댓글" required/>&nbsp;
-        <button class="btn btn-outline-success" type="submit" >저장</button>
-    </form>
-
-    <br />
-    <!-- 메모목록 -->
-	<table class="table">
-	    <tr>
-	      <th>번호</th>
-	      <th>내용</th>
-	      <th>날짜</th>
-	      <th>삭제</th>
-	    </tr>
-	    <c:forEach items="${list}" var="comment">
-	    	<tr>
-	    		<td>${comments.no}</td>
-	    		<td>${comment.content}</td>
-	    		<td><fmt:formatDate value="${comment.regDate}" pattern="yyyy/MM/dd HH:mm"/></td>
-	    		<td>
-	    			 <button class="btn btn-outline-danger btn-memo-delete" data-no="${comment.no}" type="button">삭제</button>
-	    		</td>
-	    	</tr>
-	    </c:forEach>
-	</table>
-</div>
-
+		<tr>
+			<%-- 작성자와 관리자만 마지막행 수정/삭제버튼이 보일수 있게 할 것 --%>
+			<th colspan="2">
+				<input type="button" value="수정하기" onclick="updateBoard()">
+				<input type="button" value="삭제하기" onclick="deleteBoard()">
+			</th>
+		</tr>
+		
+	<hr style="margin-top:30px;" />	
+	
+	<!-- 댓글 -->
+    <div class="comment-container">
+        <div class="comment-editor">
+            <form 
+            	action="${request.getContextPath()}/board/boardCommentEnroll" 
+            	method="post" 
+            	name="boardCommentFrm">
+                <input type="hidden" name="code" value="${board.code}" /> <!-- 현재게시글 코드 -->
+                <input type="hidden" name="id" id="id" value="${loginMember.id}" />
+                <input type="hidden" name="writer" value="${comment.id}" />
+                <input type="hidden" name="commentLevel" value="1" /> <!-- 댓글인 경우 1 -->
+                <input type="hidden" name="commentRef" value="0" /> <!-- 대댓글인 경우 써여져야함 -->   
+				<textarea name="content" cols="60" rows="3"></textarea>
+                <button type="submit" id="btn-comment-enroll1">등록</button>
+            </form>
+        </div>
+      
+      <!-- 댓글이 하나가 되었다면 if구문으로 들어올꺼임 for문 돌면서 level1, ldecel2 태그를 고르고 출력-->
+      <c:if test="${commentList != null && !empty commentList} }">  
+        <!-- table#tbl-comment -->
+        <table id="tbl-comment">
+      <c:forEach items="${commentList }" var="comment">  
+      	<c:choose>
+      	<c:when test="${comment.commentLivel eq 1 }">
+        	<tr class="level1">
+        		<td>
+        			<sub class="comment-writer">${comment.id}</sub>
+        			<sub class="comment-date">%{comment.regDate}</sub>
+        			<br />
+        			<!-- 댓글내용 -->
+        			${comment.content}
+        		</td>
+        		<td>
+        			<button class="btn-reply" value="${comment.code }">답글</button>
+        		</td>
+        	</tr>
+        	</c:when>
+        	<c:otherwise>	
+        	<tr class="level2">
+        		<td>
+        			<tr class="level1">
+        		<td>
+        			<sub class="comment-writer">${comment.id}</sub>
+        			<sub class="comment-date">%{comment.regDate}</sub>
+        			<br />
+        			<!-- 댓글내용 -->
+        			${comment.content}
+        			<!-- e댓글내용 -->
+        		</td>
+        		<td></td>
+        	</tr>
+        	</c:otherwise>
+        	</c:choose>
+       </c:forEach>
+        </table>
+        </c:if>
+	</div>
 
 </body>
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">

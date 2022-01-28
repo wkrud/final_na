@@ -3,26 +3,28 @@ package com.project.nadaum.board.model.vo;
 import java.io.Serializable;
 import java.util.Date;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
-@AllArgsConstructor
+@ToString(callSuper=true)
 @NoArgsConstructor
-public class Board implements Serializable {
-
-	/**
+public class Board extends BoardEntity implements Serializable {/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
+	private int commentCount;
+
+	public Board(String code, String title, String id, String content, String category, int readCount, Date regDate,
+			int commentCount) {
+		super(code, title, id, content, category, readCount, regDate);
+		this.commentCount = commentCount;
+	}
 	
-	private String code;
-	private String title;
-	private String id;
-	private String content;
-	private String category;
-	private int readCount;
-	private Date regDate;
+	
+	
+	
 	
 }
