@@ -100,7 +100,7 @@ public class MemberController {
 	public void memberChangeProfile() {
 		
 	}
-	
+
 	@GetMapping("/mypage/announcementDetail.do")
 	public String announcementDetail(@RequestParam String board, Model model, @CookieValue(value="announceCount", required=false, defaultValue="0") String value, HttpServletRequest request, HttpServletResponse response) {
 		try {
