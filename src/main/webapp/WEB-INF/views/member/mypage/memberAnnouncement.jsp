@@ -30,7 +30,7 @@
 						<c:forEach items="${announceList}" var="announce">
 							<tr>
 								<td colspan="5">
-									<a href="${pageContext.request.contextPath}/member/announcementMain.do" class="list-group-item list-group-item-action">
+									<a href="${pageContext.request.contextPath}/member/mypage/announcementDetail.do?board=${announce.code}" class="list-group-item list-group-item-action">
 						  				${announce.title}
 						  			</a>
 								</td>
