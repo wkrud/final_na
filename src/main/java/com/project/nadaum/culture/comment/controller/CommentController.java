@@ -21,7 +21,10 @@ public class CommentController {
 	
 	@Autowired
 	private CommentService commentService;
-	
+	@GetMapping("commentList.do")
+	public void comment(){
+		
+	}
 	
 	@GetMapping("/commentList")
 	public void CultureCommentList(@RequestParam String apiCode, Model model) {

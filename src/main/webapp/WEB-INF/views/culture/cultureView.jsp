@@ -11,9 +11,13 @@
 </jsp:include>
 <!-- <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/culture/cultureDetail.css" />
  -->
+ <script src="https://kit.fontawesome.com/4123702f4b.js" crossorigin="anonymous"></script>
 <style>
 #culture-container{
 padding-top: 100px;
+}
+.fa-heart{
+font-size: 30px;
 }
 </style>
 <section class="content">
@@ -40,6 +44,8 @@ padding-top: 100px;
 			<span>${culture.placeUrl}</span>
 			</div>
 		</c:forEach>
+		<br />
+		<i class="far fa-heart"></i>
 	<!-- culture-container 끝 -->
 	<hr />
 <h1>댓글</h1>
@@ -49,7 +55,15 @@ padding-top: 100px;
             <input type="hidden" name="id" value="${loginMember.id}" />
             <input type="hidden" name="commentLevel" value="1" />
             <input type="hidden" name="commentRef" value="" />    
-            <input type="text" name="star" value="4" />
+            <input type="text" name="star" value="4" >
+            <span>
+	            <i class="far fa-star"></i>
+            	<i class="far fa-star"></i>
+            	<i class="far fa-star"></i>
+            	<i class="far fa-star"></i>
+            	<i class="far fa-star"></i>
+            	
+            </span>
 			<textarea name="content" cols="60" rows="3"></textarea>
             <button type="submit" class="btn btn-light">등록</button>
 		</form>
@@ -59,7 +73,7 @@ padding-top: 100px;
 	<c:forEach var="comment" items="${commentList}">
 			<tr class="level1">
 				<td id="comment">
-					<input type="hidden" name="code" value="${comment.code}"></input>
+					
 					<sub class="comment-writer"></sub>
 					<sub class="comment-date">
 					<fmt:formatDate value="${comment.regDate}" pattern="yyyy/MM/dd"/>
@@ -68,7 +82,16 @@ padding-top: 100px;
 					<br />
 					${comment.content}
 					<br />
-			    		<input type="submit" value="삭제" >
+					
+			    	<form id="updateCommentFrm">
+			    		<input type="hidden" name="code" value="${comment.code}"/>
+			    		<input type="submit" id="updateComment-btn" value="수정" >
+			    	</form>
+			    	
+					<form id="deleteCommentFrm">
+						<input type="hidden" name="code" value="${comment.code}"></input>
+			    		<input type="submit" id="deleteComment-btn" value="삭제" >
+			    	</form>
 				</td>		
 			</tr>
 			</c:forEach>
@@ -104,17 +127,27 @@ padding-top: 100px;
 				const code = $(e.target).find("[name=code]").val();
 				console.log(code);
 				
+				const csrfHeader = "${_csrf.headerName}";
+		        const csrfToken = "${_csrf.token}";
+		        const headers = {};
+		        headers[csrfHeader] = csrfToken;
+					var data = {"code" : code};
+		        
 				$.ajax({
-					url:`${pageContext.request.contextPath}/culture/board/view/${apiCode}`,
+					url:`${pageContext.request.contextPath}/culture/board/view/${apiCode}/\${code}`,
 					method: "DELETE",
+					headers : headers, 
+					type : "POST",
+					data : JSON.stringify(data),
 					success(resp){
 						console.log(resp);
-						alert(resp.msp);
+						location.reload();
+						alert(resp.msg);
 					},
 					error(xhr,statusText){
 						switch(xhr.status){
 						case 404: alert("해당 댓글이 존재하지않습니다."); break;
-						default: console.log(xhr, statusText,err);
+						default: console.log(xhr, statusText);
 						}				
 					}
 				});

@@ -38,12 +38,7 @@ $(() => {
 		const code = $card.data("code");
 		location.href = `${pageContext.request.contextPath}/culture/board/view/\${code}`;
 	});
-	//$(function(){
-	//const paramString = window.location.href;
-    //var param = paramString.split("/"); 
-    //param = param[param.length - 1];
-    //console.log(param);
-	//});
+	
 
 });
 
@@ -84,6 +79,7 @@ $(() => {
 				  <button type="submit" class="btn orange btn-default">Search</button>
 			</form>
 		</div>
+		
 	<div id="culture-container">
 	    <br />
 	    
@@ -108,12 +104,11 @@ $(() => {
 	    		</div>
 	    	</div>
 	    	<div class="paging">
-	    		<input type="button" onclick='nextPage'  />
+	    		<input type="button" onclick='javascript:moreList();'  />
 	    	</div>
 		<!-- culture-container 끝 -->
 		</div>
 	</div>
-	
 </body>
 
   <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>

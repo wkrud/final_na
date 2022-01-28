@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -190,19 +190,21 @@ public class RestApi{
 			return new ModelAndView("/culture/cultureView","list",list);
 		}
 		
+
+	//============================= 좋 아 요 ==========================================
+	@PostMapping("/board/view/{apiCode}/likes")
+	public ResponseEntity<?> likes(@PathVariable String apiCode){
+		
+//		int result = commentService.updateLikeCount(apiCode);
+//		String msg = (result > 0) ? "추천 성공" : "추천 실패";	
+		
+		Map<String, Object> map = new HashMap<>();
+		
+		return null;
+		
+	}
+		
 	//============================= 댓  글 =================================================
-			
-	//댓글리스트
-//	@GetMapping("/comment/{apiCode}")
-//	public ModelAndView CultureCommentList(@PathVariable String apiCode, Model model) {
-//		log.debug("apiCode = {}", apiCode);
-//		List<Comment> commentList = commentService.selectCultureCommentList(apiCode);
-//		
-//		log.debug("commentList = {}", commentList);
-//		model.addAttribute("commentList", commentList);
-//		
-//		return new ModelAndView("/culture/commentList","commentList",commentList);
-//	}
 	
 	///등록
 	@PostMapping("/board/view/{apiCode}")
@@ -210,6 +212,9 @@ public class RestApi{
 		log.debug("map = {}", map);
 		try {
 			int result = commentService.insertCultureComment(map);
+			
+			
+			
 			map.put("msg", "댓글 등록성공!");
 			map.put("result", result);
 			if(result == 1) {
@@ -226,15 +231,18 @@ public class RestApi{
 	}
 	
 	//삭제
-		@DeleteMapping("/board/view/{apiCode}")
+		@DeleteMapping("/board/view/{apiCode}/{code}")
 		public ResponseEntity<?> deleteMenu(@PathVariable String code){
-			log.debug(" = {}", code);
+			log.info("code = {}", code);
+			 
 			try {
 				int result = commentService.deleteCultureComment(code);
 				
 				Map<String, Object> map = new HashMap<>();
+				
 				map.put("msg", "댓글 삭제 성공!");
 				map.put("result", result);
+				System.out.println(map);
 				
 				if(result == 1) {
 	                return ResponseEntity.ok(map);
@@ -247,6 +255,8 @@ public class RestApi{
 				return ResponseEntity.badRequest().build();
 			}
 		}
+		
+		
 		
 	//수정
 	@PutMapping("/board/view/{apiCode}")
