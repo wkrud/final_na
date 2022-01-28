@@ -4,15 +4,23 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,8 +29,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -33,8 +45,9 @@ import com.google.gson.JsonPrimitive;
 import com.project.nadaum.riot.model.service.RiotService;
 import com.project.nadaum.riot.model.vo.LeagueEntries;
 import com.project.nadaum.riot.model.vo.LeagueEntry;
-import com.project.nadaum.riot.model.vo.Match;
+import com.project.nadaum.riot.model.vo.MatchList;
 import com.project.nadaum.riot.model.vo.Summoner;
+import com.project.nadaum.riot.model.vo.riotDto.MatchDto;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -43,10 +56,23 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ApitestController {
 
-	final static String API_KEY = "RGAPI-0523f4d9-f29a-4f58-8f97-72b8a158a55f";
+	final static String API_KEY = "RGAPI-2f982ab6-6376-48dc-8626-99afe0f9b188";
+
+	
 
 	@Autowired
 	private RiotService riotService;
+	
+	public static <T> HttpEntity<T> setHeaders() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Origin", "https://developer.riotgames.com");
+        headers.set("Accept-Charset", "application/x-www-form-urlencoded; charset=UTF-8");
+        headers.set("X-Riot-Token", API_KEY);
+        headers.set("Accept-Language", "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7");
+        headers.set("User-Agent", "내 브라우저 정보");
+
+        return new HttpEntity<T>(headers);
+    }
 
 	@RequestMapping("/riotheader.do")
 	public void riotheader() {
@@ -55,10 +81,22 @@ public class ApitestController {
 
 	@RequestMapping(value = "/riot1.do", method = RequestMethod.GET)
 	public String searchSummoner(Model model, HttpServletRequest httpServletRequest, 
-			Summoner summoner,LeagueEntry leagueentry,LeagueEntries leagueentries, Match match) {
+			Summoner summoner,LeagueEntry leagueentry,LeagueEntries leagueentries,MatchDto matchDto) {
 		BufferedReader br = null;
 		String SummonerName = httpServletRequest.getParameter("nickname").replaceAll(" ", "%20");
+		RestTemplate restTemplate = new RestTemplate();
+		 MatchList[] matchlist =null;
+		List<MatchList> list = null;
+		List<MatchDto> matchDtolist = new ArrayList();
+		
+		Map<Integer, Object> map = new HashMap<>();
+		List<Map<Integer,Object>> test= new ArrayList<Map<Integer,Object>>();
+		
+		
 	
+		
+	
+		
 		log.info("SummonerName = {}", SummonerName);
 
 		Gson gson = new GsonBuilder().create();
@@ -70,14 +108,14 @@ public class ApitestController {
 			HttpURLConnection urlconnection = (HttpURLConnection) url.openConnection();
 			urlconnection.setRequestMethod("GET");
 			br = new BufferedReader(new InputStreamReader(urlconnection.getInputStream(), "UTF-8"));
-			String result = "";
+			String resulturl = "";
 			String line;
 			while ((line = br.readLine()) != null) {
-				result = result + line;
+				resulturl = resulturl + line;
 			}
 
-			log.info("summoner = {}", result);
-			JsonElement element = JsonParser.parseString(result);
+			log.info("summoner = {}", resulturl);
+			JsonElement element = JsonParser.parseString(resulturl);
 			JsonObject object = element.getAsJsonObject();
 			
 			int profileIconId = object.get("profileIconId").getAsInt();
@@ -160,29 +198,11 @@ public class ApitestController {
 		try {
 			String urlstr = "https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/" + summoner.getPuuid()
 					+ "/ids?start=0&count=20&api_key=" + API_KEY;
-			URL url = new URL(urlstr);
-			HttpURLConnection urlconnection = (HttpURLConnection) url.openConnection();
-			urlconnection.setRequestMethod("GET");
-			br = new BufferedReader(new InputStreamReader(urlconnection.getInputStream(), "UTF-8")); 
-			String resulttier = "";
-			String line;
-			while ((line = br.readLine()) != null) { 
-				resulttier =resulttier + line;
-			}
-			log.info("resulttier = {}", resulttier);
-			JsonElement element = JsonParser.parseString(resulttier);
-			JsonArray array = element.getAsJsonArray();
-			log.info("array = {}", array);
-			
-			List<Match> list = new ArrayList<Match>();
-			
-			
-			for(int i=0; i<20; i++)
-			{
-				list.add(new Match(array.get(i).getAsString()));
-			}
-			
-			log.info("list = {}", list);
+			     matchlist = restTemplate.getForObject(urlstr,MatchList[].class);
+			     log.info("match = {}", matchlist);
+			      list = Arrays.asList(matchlist);
+			     log.info("list = {}", list);
+			    
 			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -192,36 +212,22 @@ public class ApitestController {
 		
 		
 		try {
-			String urlstr = "https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/" + match.getMatchId()
-					+ "/ids?start=0&count=20&api_key=" + API_KEY;
-			URL url = new URL(urlstr);
-			HttpURLConnection urlconnection = (HttpURLConnection) url.openConnection();
-			urlconnection.setRequestMethod("GET");
-			br = new BufferedReader(new InputStreamReader(urlconnection.getInputStream(), "UTF-8")); 
-			String resulttier = "";
-			String line;
-			while ((line = br.readLine()) != null) { 
-				resulttier =resulttier + line;
-			}
-			log.info("resulttier = {}", resulttier);
-			JsonElement element = JsonParser.parseString(resulttier);
-			JsonArray array = element.getAsJsonArray();
-			log.info("array = {}", array);
-			
-			List<Match> list = new ArrayList<Match>();
-			
-			
-			for(int i=0; i<20; i++)
+			for(int i=0; i< 5; i++)
 			{
-				list.add(new Match(array.get(i).getAsString()));
+			String urlstr = "https://asia.api.riotgames.com/lol/match/v5/matches/";		
+			HttpEntity<MatchDto> request = setHeaders();
+			ResponseEntity<MatchDto> response = restTemplate.exchange(urlstr + list.get(i).getMatchId(), HttpMethod.GET, request, MatchDto.class);
+			  matchDto = response.getBody();
+			  matchDtolist = Arrays.asList(matchDto);
+			  map.put(i, matchDtolist);
+			  test.add(map);
+//			  log.info("test = {}", test);
 			}
-			
-			log.info("list = {}", list);
-			
+			   
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-
+		  log.info("test = {}", test);
 		model.addAttribute("summoner", summoner);
 		model.addAttribute("img", "http://ddragon.leagueoflegends.com/cdn/12.1.1/img/profileicon/"
 				+ summoner.getProfileIconId() + ".png");
@@ -229,6 +235,8 @@ public class ApitestController {
 		model.addAttribute("leagueentries", leagueentries);
 		model.addAttribute("tierImg", "/resources/image/riot/"+leagueentry.getTier()+".png");
 		model.addAttribute("tierImg", "/resources/image/riot/"+leagueentries.getTier()+".png");
+		model.addAttribute("test", test);
+		
 		
 		
 
