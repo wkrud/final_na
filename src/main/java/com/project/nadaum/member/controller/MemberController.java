@@ -96,6 +96,11 @@ public class MemberController {
 	@GetMapping("/mypage/changePassword.do")
 	public void changePassword() {}
 	
+	@GetMapping("/mypage/memberChangeProfile.do")
+	public void memberChangeProfile() {
+		
+	}
+	
 	@GetMapping("/mypage/announcementDetail.do")
 	public String announcementDetail(@RequestParam String board, Model model, @CookieValue(value="announceCount", required=false, defaultValue="0") String value, HttpServletRequest request, HttpServletResponse response) {
 		try {
