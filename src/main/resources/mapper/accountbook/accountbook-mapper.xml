@@ -133,6 +133,8 @@
 		        to_char(reg_date, 'mm') = to_char((sysdate), 'mm')
 		        and
 		        id = #{id}
+		        and
+		        income_expense = #{income_expense}
 		    )
 	group by category
 	</select>

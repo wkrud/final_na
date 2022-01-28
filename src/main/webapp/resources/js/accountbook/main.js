@@ -318,11 +318,49 @@
 	google.charts.load('visualization', '1', {'packages':['corechart']});
 	//구글 시각화 api가 로딩되면 인자로 전달된 콜백함수를 내부적으로 호출해서 차트를 그림
 	google.charts.setOnLoadCallback(drawExpenseChart);
-/*	google.charts.setOnLoadCallback(drawIncomeChart);
-*/	
+	google.charts.setOnLoadCallback(drawIncomeChart);
+	
 	//차트 그리는 함수
 	function drawExpenseChart() {
 		var firstData = {"id" : $id, "income_expense" : $expense};
+		//차트에 구성되는 데이터는 [['Header','Header']['', ''], ['','']] 타입으로 배열의 배열 형식. 
+		//Header는 각 배열을 설명할 수 있는 필수값. ['String', 'String']
+		//json 데이터 ajax로 받아오기
+		$.ajax({
+			url : $contextPath+'/accountbook/incomeChart.do',
+			type : "POST",
+			data : JSON.stringify(firstData),
+			contentType : "application/json; charset=UTF-8",
+			headers : headers,
+			dataType : "json",
+			async : false, //ajax는 비동기 통신이기 때문에 해당 옵션을 동기식으로 변경해서 차트가 그려지기 전에 다른 작업을 못하도록 막음
+			success(data) {
+				console.log(data);
+				let outer =[['Category', 'Total']];
+				for(const obj in data) {
+					let inner = [];
+					inner.push(data[obj].category);
+					inner.push(data[obj].total);
+					outer.push(inner);
+				}
+			var chartData = google.visualization.arrayToDataTable(outer);
+			var options = { 
+			//차트 상단의 제목
+			title: '이달의 지출',
+			 //차트 크기 설정
+			 width : 500,
+			 height : 300
+			};
+			var chart = new google.visualization.PieChart(document.getElementById('expenseChart'));
+			chart.draw(chartData, options);
+			}
+		});
+	};
+	
+	
+	//차트 그리는 함수
+	function drawIncomeChart() {
+		var firstData = {"id" : $id, "income_expense" : $income};
 		//차트에 구성되는 데이터 [['', ''], ['','']] 타입으로 배열의 배열 형식. 
 		//json 데이터 ajax로 받아오기
 		$.ajax({
@@ -335,84 +373,29 @@
 			async : false, //ajax는 비동기 통신이기 때문에 해당 옵션을 동기식으로 변경해서 차트가 그려지기 전에 다른 작업을 못하도록 막음
 			success(data) {
 				console.log(data);
-			}
-		}).responseText; //서버의 응답 텍스트
-		
-				
-		var chartData = google.visualization.arrayToDataTable([
-			['Category', 'Total'],
-			data
-		]);
-		console.log(chartData);
-		
-		
-		var options = { 
-			//차트 상단의 제목
-			title: '이달의 지출',
-			 //차트 크기 설정
-			 width : 500,
-			 height : 300
-			};
-	
-		var chart = new google.visualization.PieChart(document.getElementById('expenseChart'));
-	
-		chart.draw(chartData, options);
-	};
-	
-	
-	/*function drawIncomeChart() {
-		var firstData = {"id" : $id, "income_expense" : $income};
-		//json 데이터 ajax로 받아오기
-		var jsonData = $.ajax({
-			url : $contextPath+'/accountbook/incomeChart.do',
-			type : "POST",
-			data : JSON.stringify(firstData),
-			contentType : "application/json; charset=UTF-8",
-			headers : headers,
-			dataType : "json",
-			async : false, //ajax는 비동기 통신이기 때문에 해당 옵션을 동기식으로 변경해서 차트가 그려지기 전에 다른 작업을 못하도록 막음
-		}).responseText; //서버의 응답 텍스트
-		
-		console.log(jsonData);
-		
-		var chartData = google.visualization.arrayToDataTable([		
-			jsonData
-		]);
-		console.log(chartData);
-		var options = { 
+				let outer =[['Category', 'Total']];
+				for(const obj in data) {
+					let inner = [];
+					inner.push(data[obj].category);
+					inner.push(data[obj].total);
+					outer.push(inner);
+				}
+			var chartData = google.visualization.arrayToDataTable(outer);
+			var options = { 
 			//차트 상단의 제목
 			title: '이달의 수입',
 			 //차트 크기 설정
 			 width : 500,
 			 height : 300
 			};
+			var chart = new google.visualization.PieChart(document.getElementById('incomeChart'));
+			chart.draw(chartData, options);
+			}
+		});
+	};
 	
-		var chart = new google.visualization.PieChart(document.getElementById('incomeChart'));
 	
-		chart.draw(chartData, options);
-	};*/
-	
-	
-	
-	var ctx = document.getElementById('myChart').getContext('2d');
-	var chart = new Chart(ctx, {
-    //차트설정
-    type: 'pie',
 
-    //차트데이터
-    data: {
-        labels: ['급여', '용돈', '기타'],
-        datasets: [{
-            label: '이달의 수입',
-            backgroundColor: [ 'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)' ],
-/*            borderColor: 'rgb(255, 99, 132)',
-*/            data: [10000, 30000, 200000]
-        }]
-    },
-    options: {}
-});
 	
 	
 	
