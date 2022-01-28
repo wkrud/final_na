@@ -11,7 +11,6 @@
 <meta id="_csrf" name="_csrf" content="${_csrf.token}" />
 <meta id="_csrf_header" name="_csrf_header" content="${_csrf.headerName}" />
 <sec:authentication property="principal" var="loginMember"/>
-
 <link href='${pageContext.request.contextPath}/resources/css/accountbook/main.css' rel='stylesheet' />
 <link href='https://use.fontawesome.com/releases/v5.0.6/css/all.css' rel='stylesheet'>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
@@ -139,9 +138,8 @@
 			<button id="btn1"><i class="fas fa-plus plus"></i><br />거래내역 입력하기</button>
 		</div>
 	</section>
+<input type="hidden" id="chartData" value="${chartData}" />
 <input type="hidden" id="contextPath" value="${pageContext.request.contextPath}" />
 <script src='${pageContext.request.contextPath}/resources/js/accountbook/main.js'></script>
-<script>
 
-</script>
 <%-- <jsp:include page="/WEB-INF/views/common/footer.jsp" /> --%>

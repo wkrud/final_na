@@ -54,14 +54,9 @@ public class AccountBookDaoImpl implements AccountBookDao {
 
 
 	@Override
-	public HashMap<String, Object> chartValue(Map<String, Object> map) {
-		return session.selectOne("accountbook.chartValue", map);
+	public List<Map<String, Object>> chartValue(Map<String, Object> map) {
+		return session.selectList("accountbook.chartValue", map);
 	}
 
-	
-	
-	
-	
-	
 
 }

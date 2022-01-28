@@ -1,15 +1,10 @@
 package com.project.nadaum.accountbook.controller;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
-import org.apache.tomcat.util.json.JSONParser;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.project.nadaum.accountbook.model.service.AccountBookService;
 import com.project.nadaum.accountbook.model.vo.AccountBook;
-import com.project.nadaum.accountbook.model.vo.AccountBookChart;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,7 +31,7 @@ public class AccountBookController {
 	private AccountBookService accountBookService;
 
 	@RequestMapping(value="/accountbook.do")
-	public void accountbook() { }
+	public void accountbook() {}
 	
 	@RequestMapping(value="/accountList.do")
 	public void accountList() { }
@@ -126,19 +120,65 @@ public class AccountBookController {
 		return list;
 	 }
 	 
-	 //차트
+		/*
+		 * //차트
+		 * 
+		 * @ResponseBody
+		 * 
+		 * @PostMapping(value="/incomeChart.do",
+		 * produces="application/text; charset=UTF-8") public String chartValue
+		 * (@RequestBody Map<String, Object> param, Model model) { Map<String, Object>
+		 * map = new HashMap<>(); map.put("id", param.get("id"));
+		 * map.put("income_expense", param.get("income_expense")); List<Map<String,
+		 * Object>> chartValue = accountBookService.chartValue(map);
+		 * 
+		 * String result = "";
+		 * 
+		 * for(int i = 0; i < chartValue.size(); i++) { if(result != "" ) { result +=
+		 * ","; } result +=
+		 * "['"+chartValue.get(i).get("category").toString()+"', "+chartValue.get(i).get
+		 * ("total")+"]"; }
+		 * 
+		 * log.debug("result={}", result);
+		 * 
+		 * Gson chartData1 = new Gson(); String chartData2 = chartData1.toJson(result);
+		 * 
+		 * System.out.println(chartData2);
+		 * 
+		 * return result; }
+		 */
+	 
 	 @ResponseBody
-	 @PostMapping("/incomeChart.do")
-	 public void chartValue (@RequestBody Map<String, Object> param, Model model) {
+	 @PostMapping(value="/incomeChart.do", produces="application/text; charset=UTF-8")
+	 public Map<Integer, List<Object>> chartValue (@RequestBody Map<String, Object> param, Model model) {
 		 Map<String, Object> map = new HashMap<>();
 		 map.put("id", param.get("id"));
 		 map.put("income_expense", param.get("income_expense"));
-		 log.info("map={}", map);
-		 HashMap<String, Object> chartValue = accountBookService.chartValue(map);
-		 
-		 log.debug("chart={}", chartValue);
+		 List<Map<String, Object>> chartValue = accountBookService.chartValue(map);
 		
+		 log.debug("chartValue={}", chartValue);
 		 
+		 String result = "";
+		 
+		 for(int i = 0; i < chartValue.size(); i++) {
+			 if(result != "" ) {
+				 result += ",";
+			 }
+			 result += "['"+chartValue.get(i).get("category").toString()+"', "+chartValue.get(i).get("total")+"]";
+		 }		
+		 
+		 log.debug("result={}", result);
+		 
+		 Map<Integer, List<Object>> map1 = new HashMap<>();
+		 
+			
+			map1.put(0, Arrays.asList(new Object[] {"저축", 10000}));
+			map1.put(1, Arrays.asList(new Object[] {"유흥", 10000}));
+			 
+			
+		log.debug("map1={}", map1);
+		
+		return map1;
 	 }
 }
 

@@ -6,6 +6,12 @@
 	var $expense = $("#expense").val();
 	var $contextPath = $("#contextPath").val(); //contextPath jsp에서 가져온 값(js파일에서 el을 못 씀)
 	
+	//페이징 관련
+	let totalCount; //총 가계부 개수
+	let dataPerPage; //한 페이지에 나타낼 글 수
+	let pageCount = 5; //페이징에 나타낼 페이지 수
+	let currentPage = 1; //현재 페이지
+	
 	//option 배열
 	var income = ["급여","용돈","기타"];
 	var expense = ["식비","쇼핑", "생활비", "자기계발", "저축", "유흥", "기타"];
@@ -316,32 +322,38 @@
 	
 	//차트 그리는 함수
 	function drawExpenseChart() {
+		var firstData = {"id" : $id, "income_expense" : $expense};
 		//차트에 구성되는 데이터 [['', ''], ['','']] 타입으로 배열의 배열 형식. 
-		var data = google.visualization.arrayToDataTable(
-		[
-			['Task', 'Hours per Day'],
-			['Work',     11],
-			['Eat',      2],
-			['Commute',  2],
-			['Watch TV', 2],
-			['Sleep',    7]
-		]
-		);
+		//json 데이터 ajax로 받아오기
+		var jsonData = $.ajax({
+			url : $contextPath+'/accountbook/incomeChart.do',
+			type : "POST",
+			data : JSON.stringify(firstData),
+			contentType : "application/json; charset=UTF-8",
+			headers : headers,
+			dataType : "json",
+			async : false, //ajax는 비동기 통신이기 때문에 해당 옵션을 동기식으로 변경해서 차트가 그려지기 전에 다른 작업을 못하도록 막음
+		}).responseText; //서버의 응답 텍스트
 		
-		//차트 옵션
+		console.log(jsonData);
+		
+		var chartData = google.visualization.arrayToDataTable([
+			['Category', 'Total'],
+			/*['저축', 100000],['유흥', 119000],['쇼핑', 30000],['자기계발',58000],['식비', 15400]*/	
+			jsonData
+		]);
+		console.log(chartData);
 		var options = { 
 			//차트 상단의 제목
-			title: '이달의 지출',
+			title: '이달의 소비',
 			 //차트 크기 설정
 			 width : 500,
 			 height : 300
 			};
-		
-		//원형 차트를 그려서 해당 id값을 가진 div 안에 넣어주기
+	
 		var chart = new google.visualization.PieChart(document.getElementById('expenseChart'));
-		
-		//넣은 데이터값과 옵션값으로 차트 생성
-		chart.draw(data, options);
+	
+		chart.draw(chartData, options);
 	};
 	
 	
@@ -360,8 +372,12 @@
 		
 		console.log(jsonData);
 		
-		/*var data = google.visualization.arrayToDataTable(jsonData);
-	
+		var chartData = google.visualization.arrayToDataTable([
+			['Category', 'Total'],
+			['기타', 163000],['용돈', 300000],['급여', 330000]			
+			/*jsonData*/
+		]);
+		console.log(chartData);
 		var options = { 
 			//차트 상단의 제목
 			title: '이달의 소비',
@@ -372,7 +388,7 @@
 	
 		var chart = new google.visualization.PieChart(document.getElementById('incomeChart'));
 	
-		chart.draw(data, options);*/
+		chart.draw(chartData, options);
 	};
 	
 	

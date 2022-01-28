@@ -53,9 +53,10 @@ public class AccountBookServiceImpl implements AccountBookService {
 	}
 
 	@Override
-	public HashMap<String, Object> chartValue(Map<String, Object> map) {
+	public List<Map<String, Object>> chartValue(Map<String, Object> map) {
 		return accountBookDao.chartValue(map);
 	}
+
 
 	
 	
