@@ -257,6 +257,11 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.selectOneAnnouncement(map);
 	}
 
+	@Override
+	public int updateAnnounceReadCount(String board) {
+		return memberDao.updateAnnounceReadCount(board);
+	}
+
 	
 	
 	

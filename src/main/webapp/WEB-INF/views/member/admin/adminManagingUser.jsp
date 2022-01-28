@@ -5,9 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%
-	
-%>
+<sec:authentication property="principal" var="loginMember"/>
 <fmt:requestEncoding value="utf-8" />
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="나:다움 관리자페이지" name="title"/>
@@ -65,35 +63,36 @@
 									<input type="hidden" name="id" value="${m.id}" />
 									<input type="hidden" name="enabledVal" value="${m.enabled}"/>
 									<c:if test="${m.enabled eq '1'}">
-										<button type="submit" class="btn btn-outline-secondary">비활성화하기</button>
+										<button type="submit" class="btn btn-outline-secondary">비활성</button>
 									</c:if>
 									<c:if test="${m.enabled ne '1'}">
-										<button type="submit" class="btn btn-outline-success">활성화하기</button>
+										<button type="submit" class="btn btn-outline-success">활성</button>
 									</c:if>
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 								</form>
 							</td>
 							<td>
-								<button type="button" class="btn btn-outline-danger">탈퇴</button>
+								<form method="POST" action="${pageContext.request.contextPath}/member/admin/adminDeleteMember.do">
+									<c:if test="${fn:length(m.memberRole) == 1}">
+										<input type="hidden" name="id" value="${m.id}"/>
+										<button type="submit" class="btn btn-outline-danger">탈퇴</button>
+									</c:if>
+									<c:if test="${fn:length(m.memberRole) > 1}">
+										<button type="button" class="btn btn-secondary isManager">탈퇴</button>
+									</c:if>
+									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>									
+								</form>
 							</td>
 							<td>
 								<form method="POST" action="${pageContext.request.contextPath}/member/admin/changeMemberRole.do">
 									<input type="hidden" name="id" value="${m.id}"/>
-									<c:if test="${not empty authority}">
-										<c:forEach items="${authority}" var="au">
-											<c:if test="${au.id eq m.id}">
-												<input type="hidden" name="role" value="manager"/>
-												<button type="submit" class="btn btn-outline-secondary">매니저</button>
-											</c:if>
-											<c:if test="${au.id ne m.id}">
-												<input type="hidden" name="role" value="user"/>
-												<button type="submit" class="btn btn-outline-success">유저</button>
-											</c:if>
-										</c:forEach>
-									</c:if>
-									<c:if test="${empty authority}">
+									<c:if test="${fn:length(m.memberRole) == 1}">
 										<input type="hidden" name="role" value="user"/>
 										<button type="submit" class="btn btn-outline-success">유저</button>
+									</c:if>
+									<c:if test="${fn:length(m.memberRole) > 1}">
+										<input type="hidden" name="role" value="manager"/>
+										<button type="submit" id="manager-to-user" class="btn btn-outline-secondary">매니저</button>
 									</c:if>
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 								</form>
@@ -102,8 +101,23 @@
 					</c:forEach>
 				</tbody>
 			</table>
+			${pagebar}
 		</div>
 	</div>
 </div>
+<script>
+$(".isManager").click((e) => {
+	alert('관리자 아이디입니다. 먼저 권한을 해제하세요');
+});
+
+$("#manager-to-user").click((e) => {
+	<c:if test="${fn:contains(loginMember.authorities, 'SUPER')}">
+		return true;
+	</c:if>
+	alert('슈퍼 관리자 권한이 필요합니다.');
+	return false;
+});
+	
+</script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
