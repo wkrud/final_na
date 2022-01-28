@@ -3,12 +3,13 @@ package com.project.nadaum.member.model.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.project.nadaum.admin.model.vo.Announcement;
 import com.project.nadaum.common.vo.Attachment;
 import com.project.nadaum.member.model.vo.Member;
 
 public interface MemberDao {
 
-	Member selectOneMember(String id);
+	Member selectOneMember(Map<String, Object> idMap);
 
 	int insertMember(Member member);
 
@@ -95,6 +96,18 @@ public interface MemberDao {
 	int insertHelpLike(Map<String, Object> map);
 
 	int deleteHelpLike(Map<String, Object> map);
+
+	List<Map<String, Object>> selectMostHelp();
+
+	int updateMemberPhone(Map<String, Object> map);
+
+	int deleteMember(Member member);
+
+	Announcement selectOneAnnouncement(Map<String, Object> map);
+
+	int updateAnnounceReadCount(String board);
+
+	int updateProfile(Map<String, Object> map);
 
 
 

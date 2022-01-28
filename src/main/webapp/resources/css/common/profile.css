@@ -26,3 +26,67 @@
 .alarmContent{
 	padding: 5px;
 }
+
+/* 도움말 */
+#infowrap{
+	position: absolute;
+	z-index: 9;
+	text-align: center;
+	top: 65px;	
+}
+#infowrapheader{
+	cursor: move;
+	border: 1px solid gainsboro;
+	border-radius: 10px;
+	overflow: hidden;
+}
+.info-title{
+	padding-top: 10px;
+	background-color: #FFF;
+}
+.info-title h1{
+	display: inline-block;
+	font-size: 1.8rem;
+}
+.info-title button{
+	width: 50px;
+	height: 50px;
+	position: absolute;
+	right: 5px;
+	top: 5px;
+}
+.info-header .info-search .info-head-wrap{
+	border-radius: 20px;
+	overflow: hidden;
+}
+.info-header .info-search .info-head-wrap button{
+	border: 0;
+	background-color: ghostwhite;
+}
+.info-header .info-search .info-head-wrap input{
+	border: 0;
+	background-color: ghostwhite;
+}
+.info-body-title{
+	text-align: center;
+	font-size: 1.2em;
+	font-weight: bold;
+}
+#infowrapheader iframe{
+	display:block;
+	width: 300px;
+	height: 450px;
+	border: 0;
+}
+.info-footer{
+	width: 100%;
+	text-align: center;
+	position: fixed;
+	transform: translate(-50%);
+	left: 50%;
+	bottom: 0;
+	z-index: 99;
+}
+.info-footer button{
+	width: 100%;
+}

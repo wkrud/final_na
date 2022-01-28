@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.project.nadaum.admin.model.vo.Announcement;
 import com.project.nadaum.common.vo.Attachment;
 import com.project.nadaum.member.model.vo.Member;
 
@@ -18,8 +19,8 @@ public class MemberDaoImpl implements MemberDao {
 	private SqlSessionTemplate session;
 
 	@Override
-	public Member selectOneMember(String id) {
-		return session.selectOne("member.selectOneMember", id);
+	public Member selectOneMember(Map<String, Object> idMap) {
+		return session.selectOne("member.selectOneMember", idMap);
 	}
 
 	@Override
@@ -69,7 +70,10 @@ public class MemberDaoImpl implements MemberDao {
 
 	@Override
 	public List<Map<String, Object>> selectAllAnnouncement(Map<String, Object> param) {
-		return session.selectList("member.selectAllAnnouncement", param);
+		int offset = (int) param.get("offset");
+		int limit = (int) param.get("limit");
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("member.selectAllAnnouncement", null, rowBounds);
 	}
 
 	@Override
@@ -238,6 +242,36 @@ public class MemberDaoImpl implements MemberDao {
 	@Override
 	public int deleteHelpLike(Map<String, Object> map) {
 		return session.delete("member.deleteHelpLike", map);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectMostHelp() {
+		return session.selectList("member.selectMostHelp");
+	}
+
+	@Override
+	public int updateMemberPhone(Map<String, Object> map) {
+		return session.update("member.updateMemberPhone", map);
+	}
+
+	@Override
+	public int deleteMember(Member member) {
+		return session.delete("member.deleteMember", member);
+	}
+
+	@Override
+	public Announcement selectOneAnnouncement(Map<String, Object> map) {
+		return session.selectOne("member.selectOneAnnouncement", map);
+	}
+
+	@Override
+	public int updateAnnounceReadCount(String board) {
+		return session.update("member.updateAnnounceReadCount", board);
+	}
+
+	@Override
+	public int updateProfile(Map<String, Object> map) {
+		return session.update("member.updateProfile", map);
 	}
 
 	
