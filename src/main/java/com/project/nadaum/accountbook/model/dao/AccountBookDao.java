@@ -23,7 +23,7 @@ public interface AccountBookDao {
 
 	List<AccountBook> searchList(Map<String, Object> map);
 
-	List<Map<String, Object>> chartValue(Map<String, Object> map);
+	List<Map<String,Object>> chartValue(Map<String,Object> param);
 
 
 }

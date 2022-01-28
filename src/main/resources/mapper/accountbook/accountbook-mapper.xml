@@ -119,7 +119,7 @@
 	  		reg_date desc
 	</select>
 	
-	<select id="chartValue" resultMap = "chartListMap">
+	<select id="chartValue" resultMap="chartListMap">
 	
 		select
 		    sum(price) as total,
@@ -133,8 +133,6 @@
 		        to_char(reg_date, 'mm') = to_char((sysdate), 'mm')
 		        and
 		        id = #{id}
-		        and
-		        income_expense = #{income_expense}
 		    )
 	group by category
 	</select>

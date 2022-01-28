@@ -13,6 +13,7 @@
 <sec:authentication property="principal" var="loginMember"/>
 <link href='${pageContext.request.contextPath}/resources/css/accountbook/main.css' rel='stylesheet' />
 <link href='https://use.fontawesome.com/releases/v5.0.6/css/all.css' rel='stylesheet'>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
 	<div class="modal-background">
@@ -85,6 +86,7 @@
 	<section class="box1">
 		<div id="incomeChart"></div>
 		<div id="expenseChart"></div>
+		<canvas id="myChart"></canvas>
 
 	</section>
 	<section class="box2">
