@@ -59,16 +59,33 @@ public class EchoHandler extends TextWebSocketHandler {
 		String msg = message.getPayload();
 		if(StringUtils.isNotEmpty(msg)) {
 			String[] strs = msg.split(",");
-			if(strs != null && "fr".equals(strs[0])) {				
-			
+			if(strs != null) {				
 				// 친구관련
-				if(strs != null && strs.length == 4) {
-					sendFriendMessage(session, message, strs);
+				if("fr".equals(strs[0])) {
+					if(strs != null && strs.length == 4) {
+						sendFriendMessage(session, message, strs);
+					}
+					
+				}else if("ah".equals(strs[0])) {
+					sendHelpAnswerMessage(session, message, strs);
 				}
 			
 			}
 				
 		}
+	}
+	
+	/**
+	 * 질문 답변
+	 */
+	private void sendHelpAnswerMessage(WebSocketSession session, TextMessage message, String[] strs) throws IOException{
+		String receiver = strs[1];
+		String title = strs[2];
+		Map<String, Object> id = new HashMap<>();
+		WebSocketSession helpAnswerSession = userMap.get(receiver);
+		
+		TextMessage tMsg = new TextMessage("[" + title + "]에 답변이 등록되었습니다.");
+		helpAnswerSession.sendMessage(tMsg);
 	}
 	
 	/**
@@ -97,7 +114,7 @@ public class EchoHandler extends TextWebSocketHandler {
 		}					
 		
 		log.debug("receiverId = {}", receiverId);
-		WebSocketSession friendSession = friendSession = userMap.get(receiverId);
+		WebSocketSession friendSession = userMap.get(receiverId);
 		if(("free".equals(cmd) || "follower".equals(cmd)) && friendSession != null) {
 			TextMessage tMsg = new TextMessage(senderNickname + "님이 " + receiver + "님을 친구추가 했습니다.");
 			friendSession.sendMessage(tMsg);				

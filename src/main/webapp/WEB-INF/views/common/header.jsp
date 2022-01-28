@@ -287,7 +287,13 @@ input[id="switch"]{
 				let alarm_num = 5; 여기에서 알람 보낼 갯수 받아온걸 매핑하시면 됩니다!
 				$("#bg-alarm").text(alarm_num);
 			*/
-	
+			
+			/* 알림에 넣는 값 */
+			const alarmSave = (type, flag, senderId, findVal) => {
+				let socketMsg = type + "," + flag + "," + senderId + "," + findVal;
+				socket.send(socketMsg);		
+			};
+						
 			var socket = null;
 
 		    $(document).ready(function (){

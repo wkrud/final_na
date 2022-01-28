@@ -124,10 +124,6 @@ const updateFriend = (check, friendNickname) => {
 	});
 };
 
-const alarmSave = (type, flag, senderId, findVal) => {
-	let socketMsg = type + "," + flag + "," + senderId + "," + findVal;
-	socket.send(socketMsg);		
-};
 </script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
