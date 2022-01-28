@@ -105,6 +105,8 @@ public interface MemberService {
 
 	Announcement selectOneAnnouncement(Map<String, Object> map);
 
+	int updateAnnounceReadCount(String board);
+
 
 
 }

@@ -264,6 +264,11 @@ public class MemberDaoImpl implements MemberDao {
 		return session.selectOne("member.selectOneAnnouncement", map);
 	}
 
+	@Override
+	public int updateAnnounceReadCount(String board) {
+		return session.update("member.updateAnnounceReadCount", board);
+	}
+
 	
 	
 	
