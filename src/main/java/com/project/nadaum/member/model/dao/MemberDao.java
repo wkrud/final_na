@@ -105,6 +105,8 @@ public interface MemberDao {
 
 	Announcement selectOneAnnouncement(Map<String, Object> map);
 
+	int updateAnnounceReadCount(String board);
+
 
 
 

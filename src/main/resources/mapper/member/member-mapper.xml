@@ -56,6 +56,10 @@
 		delete from member where id = #{id}
 	</delete>
 	
+	<update id="updateAnnounceReadCount">
+		update announcement set read_count = read_count + 1 where code = #{code}
+	</update>
+	
 	<!-- 전화번호 등록 -->
 	
 	<update id="updateMemberPhone">
