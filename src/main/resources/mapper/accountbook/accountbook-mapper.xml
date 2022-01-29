@@ -12,8 +12,8 @@
 			#{id},
 			#{detail},
 			#{price},
-			#{reg_date},
-			#{income_expense},
+			#{regDate},
+			#{incomeExpense},
 			#{payment},
 			#{category}
 		)	
@@ -26,7 +26,7 @@
 			code = #{code}
 	</delete>
 	
-	<select id="selectAllAccountList" resultMap="accountbookMap">
+	<select id="selectAllAccountList" resultType="com.project.nadaum.accountbook.model.vo.AccountBook">
 		select
     		*
     	from 
@@ -90,7 +90,7 @@
 		where
 	    	id = #{id}
 			and 
-			income_expense = #{income_expense}
+			income_expense = #{incomeExpense}
 		order by
 			reg_date desc
 	</select>
@@ -108,7 +108,7 @@
 		   	</if>
 		 	<if test="income_expense != null and income_expense != ''">
 		 	and
-		 	income_expense=#{income_expense}
+		 	income_expense=#{incomeExpense}
 		 	</if>
 		 	<if test="detail != null and detail !=''">
 		 	and
@@ -134,7 +134,7 @@
 		        and
 		        id = #{id}
 		        and
-		        income_expense = #{income_expense}
+		        income_expense = #{incomeExpense}
 		    )
 	group by category
 	</select>

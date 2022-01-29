@@ -1,11 +1,16 @@
 package com.project.nadaum.accountbook.controller;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -20,7 +25,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.project.nadaum.accountbook.model.service.AccountBookService;
 import com.project.nadaum.accountbook.model.vo.AccountBook;
-import com.project.nadaum.accountbook.model.vo.AccountBookChart;
 import com.project.nadaum.member.model.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
@@ -37,16 +41,17 @@ public class AccountBookController {
 	@RequestMapping(value="/accountbook.do")
 	public void accountbook() {}
 	
-	@RequestMapping(value="/accountList.do")
-	public void accountList() { }
+	@RequestMapping(value="/detailChart.do")
+	public void detailChart() {}
 	
 	
 	//전체 리스트 출력
 	@ResponseBody
 	@RequestMapping(value="/selectAllAccountList.do") 
-	 public List<AccountBook> selectAllAccountList (String id, Model model) { 
-		 List<AccountBook> accountList = accountBookService.selectAllAccountList(id);
-		 model.addAttribute("accountList",accountList);
+	 public List<AccountBook> selectAllAccountList (@AuthenticationPrincipal Member member, Model model) { 
+		String id = member.getId();
+		List<AccountBook> accountList = accountBookService.selectAllAccountList(id);
+		model.addAttribute("accountList",accountList);
 	 
 	 return accountList; 
 	 }
@@ -99,7 +104,8 @@ public class AccountBookController {
 	 public List<AccountBook> incomeExpenseFilter(@RequestBody Map<String, Object> param, Model model) {
 		 Map<String, Object> map = new HashMap<>();
 		 map.put("id", param.get("id"));
-		 map.put("income_expense", param.get("income_expense"));
+		 map.put("incomeExpense", param.get("incomeExpense"));
+		 log.debug("map= {}",map);
 		 
 		 List<AccountBook> incomeList = accountBookService.incomeExpenseFilter(map); 
 		 model.addAttribute(incomeList);
@@ -113,7 +119,7 @@ public class AccountBookController {
 	 @RequestMapping(value="/searchList.do", method=RequestMethod.POST )
 	 public List<AccountBook> searchList(@RequestParam Map<String, Object> param, Model model) {
 		 Map<String, Object> map = new HashMap<>();
-		 map.put("income_expense", param.get("\"income_expense"));
+		 map.put("incomeExpense", param.get("\"incomeExpense"));
 		 map.put("category", param.get("category"));
 		 map.put("detail", param.get("detail"));
 		 map.put("id", param.get("id"));
@@ -158,14 +164,50 @@ public class AccountBookController {
 		public List<Map<String, Object>> chartValue (@RequestBody Map<String, Object> param, Model model) {
 		Map<String, Object> map = new HashMap<>(); 
 		map.put("id", param.get("id"));
-		map.put("income_expense", param.get("income_expense")); 
+		map.put("incomeExpense", param.get("incomeExpense")); 
 		List<Map<String, Object>> chartValue = accountBookService.chartValue(map);
 		log.debug("chartValue={}", chartValue);
 			  
 		return chartValue ;
 	}
 			  
-			 
+		@GetMapping("/excel")
+		public void downloadExcep(HttpServletResponse resp, @AuthenticationPrincipal Member member) throws IOException{
+			String id = member.getId();
+			List<AccountBook> list = accountBookService.selectAllAccountList(id);
+			log.debug("list={}",list);
+			
+			
+			Workbook workbook = new HSSFWorkbook();
+			Sheet sheet = workbook.createSheet("나다움-" + member.getName()+"님의 가계부 내역");
+			int rowNo = 0;
+			
+			Row headerRow = sheet.createRow(rowNo++);
+			headerRow.createCell(0).setCellValue("날짜");
+			headerRow.createCell(1).setCellValue("결제수단");			
+			headerRow.createCell(2).setCellValue("대분류");
+			headerRow.createCell(3).setCellValue("소분류");
+			headerRow.createCell(4).setCellValue("내역");
+			headerRow.createCell(5).setCellValue("금액");
+			
+			
+			for(AccountBook accountbook : list) {
+				Row row = sheet.createRow(rowNo++);
+				row.createCell(0).setCellValue(accountbook.getRegDate());
+				row.createCell(1).setCellValue(accountbook.getPayment() == "card" ? "카드" : "현금");
+				row.createCell(2).setCellValue(accountbook.getIncomeExpense() == "I" ? "수입" : "지출");
+				row.createCell(3).setCellValue(accountbook.getCategory());
+				row.createCell(4).setCellValue(accountbook.getDetail());
+				row.createCell(5).setCellValue(accountbook.getPrice());
+			}
+			
+			resp.setContentType("ms-vnd/excel");
+			resp.setHeader("Content-Disposition", "attachment; filename=나다움-" + member.getName()+"님의 가계부 내역.xls");
+			
+			workbook.write(resp.getOutputStream());
+			workbook.close();
+			
+		}
 		 
 		 
 		 

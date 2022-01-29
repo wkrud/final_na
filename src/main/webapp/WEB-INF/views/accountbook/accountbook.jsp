@@ -13,14 +13,14 @@
 <sec:authentication property="principal" var="loginMember"/>
 <link href='${pageContext.request.contextPath}/resources/css/accountbook/main.css' rel='stylesheet' />
 <link href='https://use.fontawesome.com/releases/v5.0.6/css/all.css' rel='stylesheet'>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
+<!-- 가계부 입력 모달창 -->
 	<div class="modal-background">
 	<div class="insertAccountModal">
 		<h2>가계부 입력</h2>
-		<input type="hidden" name="income_expense" id="income" value="I" />
-		<input type="hidden" name="income_expense" id="expense" value="E" /> 
+		<input type="hidden" name="incomeExpense" id="income" value="I" />
+		<input type="hidden" name="incomeExpense" id="expense" value="E" /> 
 		<form 
 			name="insertFrm" 
 			method="POST"
@@ -28,7 +28,7 @@
 		<table>
 			<tr>
 				<td colspan="2">
-					<input type="date" name="reg_date" id="regDate" />
+					<input type="date" name="regDate" id="regDate" />
 				</td>
 			</tr>
 			<tr>
@@ -45,7 +45,7 @@
 			</tr>
 			<tr>
 				<td>
-					<select name="income_expense" id="main">
+					<select name="incomeExpense" id="main">
 						<option value="I">수입</option>
 						<option value="E">지출</option>
 					</select>
@@ -84,10 +84,9 @@
 	</div>
 
 	<section class="box1">
+		<a href="${pageContext.request.contextPath}/accountbook/detailChart.do">더 보기</a>
 		<div id="incomeChart"></div>
 		<div id="expenseChart"></div>
-		<canvas id="myChart"></canvas>
-
 	</section>
 	<section class="box2">
 		<div class="search_box">
@@ -97,7 +96,7 @@
 				name = "searchFrm"
 				id="searchFrm">
 				<h3>검색</h3>
-				<select name="income_expense" id="mainCategory">
+				<select name="incomeExpense" id="mainCategory">
 					<option value="" selected>대분류</option>
 					<option value="I">수입</option>
 					<option value="E">지출</option>
@@ -114,6 +113,7 @@
 		<button id="AllListBtn" onclick="AllList();">전체보기</button>
 		<button class="FilterBtn" id="incomeFilterBtn">수입</button>
 		<button class="FilterBtn" id="expenseFilterBtn">지출</button>
+		<a href="${pageContext.request.contextPath}/accountbook/excel">엑셀 다운로드</a>
 		<div id="account_list">
 		</div>
 	</section>

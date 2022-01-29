@@ -209,7 +209,7 @@
 	
 	//수입 필터링 -> 지출 필터링이랑 if문으로 var data의 값만 변경해주고 싶은데 어케 수정해야 하나,,,,
 	$('#incomeFilterBtn').click(function() {
-		var data = {"id" : $id, "income_expense" : $income};
+		var data = {"id" : $id, "incomeExpense" : $income};
 		$.ajax({
 			url : $contextPath+'/accountbook/incomeExpenseFilter.do',
 			type : "POST",
@@ -246,7 +246,7 @@
 	
 	//지출
 	$('#expenseFilterBtn').click(function() {
-		var data = {"id" : $id, "income_expense" : $expense};
+		var data = {"id" : $id, "incomeExpense" : $expense};
 		$.ajax({
 			url : '/nadaum/accountbook/incomeExpenseFilter.do',
 			type : "POST",
@@ -322,7 +322,7 @@
 	
 	//차트 그리는 함수
 	function drawExpenseChart() {
-		var firstData = {"id" : $id, "income_expense" : $expense};
+		var firstData = {"id" : $id, "incomeExpense" : $expense};
 		//차트에 구성되는 데이터는 [['Header','Header']['', ''], ['','']] 타입으로 배열의 배열 형식. 
 		//Header는 각 배열을 설명할 수 있는 필수값. ['String', 'String']
 		//json 데이터 ajax로 받아오기
@@ -360,7 +360,7 @@
 	
 	//차트 그리는 함수
 	function drawIncomeChart() {
-		var firstData = {"id" : $id, "income_expense" : $income};
+		var firstData = {"id" : $id, "incomeExpense" : $income};
 		//차트에 구성되는 데이터 [['', ''], ['','']] 타입으로 배열의 배열 형식. 
 		//json 데이터 ajax로 받아오기
 		$.ajax({

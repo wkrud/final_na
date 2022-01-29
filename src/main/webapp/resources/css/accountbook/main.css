@@ -12,6 +12,11 @@
 	border : 1px solid black;
 }
 
+.wrapper {
+	margin-top : 100px;
+	position : relative;
+}
+
 /* 몸통 전체적으로 감싸고 있는 섹션 */
 .content {
 	background-color : #F5F5F5;
