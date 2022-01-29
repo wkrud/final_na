@@ -62,9 +62,7 @@ public class EchoHandler extends TextWebSocketHandler {
 			if(strs != null) {				
 				// 친구관련
 				if("fr".equals(strs[0])) {
-					if(strs != null && strs.length == 4) {
-						sendFriendMessage(session, message, strs);
-					}
+					sendFriendMessage(session, message, strs);
 					
 				}else if("ah".equals(strs[0])) {
 					sendHelpAnswerMessage(session, message, strs);
