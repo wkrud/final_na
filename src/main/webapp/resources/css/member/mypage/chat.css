@@ -1,0 +1,21 @@
+
+
+#msgArea{
+	width: 300px;
+	height: 100px;
+	border: 1px solid black;
+	overflow: scroll;
+/* 	display: flex;
+	justify-content: space-between */
+}
+
+.host-msg{
+	display: flex;
+	justify-content: flex-end;
+}
+
+guest-msg{
+	display: inline-block;
+}
+
+
