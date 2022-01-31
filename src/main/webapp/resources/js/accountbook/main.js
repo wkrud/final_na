@@ -37,7 +37,7 @@
 		$(".modal-background").fadeOut();
 	});
 		
-	$("#btn1").on('click', function(){
+	$("#insertBtn").on('click', function(){
 		$(".modal-background").fadeIn();
 	});
 		
@@ -64,6 +64,7 @@
 	function numberWithCommas(n) {
     	return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}
+
 	
 	//대분류 선택에 따른 소분류 출력 - 검색
 	$("#mainCategory").change(function() {
@@ -113,27 +114,13 @@
 		data: {
 			id : $id
 		},
-		dataType : "json",
-		contentType : "application/json; charset=UTF-8",
-		success : function(accountList){
-			$("#account_list").empty();
+/*		dataType : "json",
+*/		contentType : "application/json; charset=UTF-8",
+		success : function(result){
+			var html = jQuery('<table>').html(result);
+			var contents = html.find("table#accountTable");
+			$("#account_list").html(contents);
 
-			$.each(accountList, function(i, account) {
-			var result = `
-				<tr>
-					<td rowspan="2">`+IE(`${account.incomeExpense}`)+`</td>
-					<td colspan="2">`+timeConvert(`${account.regDate}`)+`</td>
-					<td>`+numberWithCommas(`${account.price}`)+`</td>
-				</tr>		
-				<tr>
-					<td>${account.detail}</td>
-					<td><button class="deleteBtn" onclick="deleteDetail('${account.code}')">[X]</button></td>
-					<input type="hidden" name="code" value="${account.code}" />
-				</tr>
-				`
-			$('#account_list').append(result);
-			})
-			
 		},
 		error(xhr, testStatus, err) {
 				console.log("error", xhr, testStatus, err);
@@ -214,27 +201,13 @@
 			url : $contextPath+'/accountbook/incomeExpenseFilter.do',
 			type : "POST",
 			data : JSON.stringify(data),
-			dataType : "json",
 			contentType : "application/json; charset=UTF-8",
 			headers : headers,
-			success(incomeList) {
+			success(result) {
 				$("#account_list").empty();
-				$.each(incomeList, function(i, account) {
-			var result = `
-				<tr>
-					<td rowspan="2">`+IE(`${account.incomeExpense}`)+`</td>
-					<td colspan="2">`+timeConvert(`${account.regDate}`)+`</td>
-					<td>`+numberWithCommas(`${account.price}`)+`</td>
-				</tr>		
-				<tr>
-					<td>${account.detail}</td>
-					<td><button class="deleteBtn" onclick="deleteDetail('${account.code}')">[X]</button></td>
-					<input type="hidden" name="code" value="${account.code}" />
-				</tr>
-				`
-				$('#account_list').append(result);
-				})
-				
+			var html = jQuery('<table>').html(result);
+			var contents = html.find("table#accountTable");
+			$("#account_list").html(contents);
 			},
 			error(xhr, testStatus, err) {
 				console.log("error", xhr, testStatus, err);
@@ -251,26 +224,12 @@
 			url : '/nadaum/accountbook/incomeExpenseFilter.do',
 			type : "POST",
 			data : JSON.stringify(data),
-			dataType : "json",
 			contentType : "application/json; charset=UTF-8",
 			headers : headers,
-			success(incomeList) {
-				$("#account_list").empty();
-				$.each(incomeList, function(i, account) {
-			var result = `
-				<tr>
-					<td rowspan="2">`+IE(`${account.incomeExpense}`)+`</td>
-					<td colspan="2">`+timeConvert(`${account.regDate}`)+`</td>
-					<td>`+numberWithCommas(`${account.price}`)+`</td>
-				</tr>		
-				<tr>
-					<td>${account.detail}</td>
-					<td><button class="deleteBtn" onclick="deleteDetail('${account.code}')">[X]</button></td>
-					<input type="hidden" name="code" value="${account.code}" />
-				</tr>
-				`
-				$('#account_list').append(result);
-				})
+			success(result) {
+				var html = jQuery('<table>').html(result);
+				var contents = html.find("table#accountTable");
+				$("#account_list").html(contents);
 			},
 			error(xhr, testStatus, err) {
 				console.log("error", xhr, testStatus, err);
@@ -286,25 +245,11 @@
 			url : $contextPath+'/accountbook/searchList.do',
 			type : "POST",
 			data : JSON.stringify(data),
-			dataType : "json",
 			headers : headers,
-			success(list) {
-				$("#account_list").empty();
-				$.each(list, function(i, account) {
-			var result = `
-				<tr>
-					<td rowspan="2">`+IE(`${account.incomeExpense}`)+`</td>
-					<td colspan="2">`+timeConvert(`${account.regDate}`)+`</td>
-					<td>`+numberWithCommas(`${account.price}`)+`</td>
-				</tr>		
-				<tr>
-					<td>${account.detail}</td>
-					<td><button class="deleteBtn" onclick="deleteDetail('${account.code}')">[X]</button></td>
-					<input type="hidden" name="code" value="${account.code}" />
-				</tr>
-				`
-				$('#account_list').append(result);
-				})
+			success(result) {
+				var html = jQuery('<table>').html(result);
+				var contents = html.find("table#accountTable");
+				$("#account_list").html(contents);
 			},
 			error(xhr, testStatus, err) {
 				console.log("error", xhr, testStatus, err);

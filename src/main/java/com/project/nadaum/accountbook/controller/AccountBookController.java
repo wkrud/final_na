@@ -45,15 +45,15 @@ public class AccountBookController {
 	public void detailChart() {}
 	
 	
-	//전체 리스트 출력
-	@ResponseBody
-	@RequestMapping(value="/selectAllAccountList.do") 
-	 public List<AccountBook> selectAllAccountList (@AuthenticationPrincipal Member member, Model model) { 
-		String id = member.getId();
-		List<AccountBook> accountList = accountBookService.selectAllAccountList(id);
-		model.addAttribute("accountList",accountList);
+	 //전체 리스트 출력
+	 @RequestMapping(value="/selectAllAccountList.do") 
+	 public String selectAllAccountList (@AuthenticationPrincipal Member member, Model model) {
+	 String id = member.getId(); 
+	 List<AccountBook> accountList = accountBookService.selectAllAccountList(id);
+	 model.addAttribute("accountList",accountList);
 	 
-	 return accountList; 
+	 return "/accountbook/accountList";
+
 	 }
 	
 	 // 가계부 추가
@@ -99,66 +99,39 @@ public class AccountBookController {
 	}
 	
 	// 수입, 지출별 정렬
-	 @ResponseBody 
 	 @PostMapping(value="/incomeExpenseFilter.do") 
-	 public List<AccountBook> incomeExpenseFilter(@RequestBody Map<String, Object> param, Model model) {
+	 public String incomeExpenseFilter(@RequestBody Map<String, Object> param, Model model) {
 		 Map<String, Object> map = new HashMap<>();
 		 map.put("id", param.get("id"));
 		 map.put("incomeExpense", param.get("incomeExpense"));
 		 log.debug("map= {}",map);
 		 
-		 List<AccountBook> incomeList = accountBookService.incomeExpenseFilter(map); 
-		 model.addAttribute(incomeList);
-	  
-		 return incomeList; 
+		 List<AccountBook> accountList = accountBookService.incomeExpenseFilter(map); 
+		 model.addAttribute("accountList", accountList);	  
+		 
+		 return "/accountbook/accountList";
 	  }
 	 
 	 
 	 //검색
-	 @ResponseBody
-	 @RequestMapping(value="/searchList.do", method=RequestMethod.POST )
-	 public List<AccountBook> searchList(@RequestParam Map<String, Object> param, Model model) {
+	 @RequestMapping(value="/searchList.do", method=RequestMethod.POST)
+	 public String searchList(@RequestParam Map<String, Object> param, Model model) {
 		 Map<String, Object> map = new HashMap<>();
 		 map.put("incomeExpense", param.get("\"incomeExpense"));
 		 map.put("category", param.get("category"));
 		 map.put("detail", param.get("detail"));
 		 map.put("id", param.get("id"));
+		 log.info("map={}", map);
 			
-		 List<AccountBook> list = accountBookService.searchList(map);
-		 model.addAttribute(list); 
+		 List<AccountBook> accountList = accountBookService.searchList(map);
+		 log.info("list={}", accountList);
 		 
-		return list;
+		 model.addAttribute("accountList", accountList); 
+		 
+		 return "/accountbook/accountList";
 	 }
-	 
-		/*
-		 * //차트
-		 * 
-		 * @ResponseBody
-		 * 
-		 * @PostMapping(value="/incomeChart.do",
-		 * produces="application/text; charset=UTF-8") public String chartValue
-		 * (@RequestBody Map<String, Object> param, Model model) { Map<String, Object>
-		 * map = new HashMap<>(); map.put("id", param.get("id"));
-		 * map.put("income_expense", param.get("income_expense")); List<Map<String,
-		 * Object>> chartValue = accountBookService.chartValue(map);
-		 * 
-		 * String result = "";
-		 * 
-		 * for(int i = 0; i < chartValue.size(); i++) { if(result != "" ) { result +=
-		 * ","; } result +=
-		 * "['"+chartValue.get(i).get("category").toString()+"', "+chartValue.get(i).get
-		 * ("total")+"]"; }
-		 * 
-		 * log.debug("result={}", result);
-		 * 
-		 * Gson chartData1 = new Gson(); String chartData2 = chartData1.toJson(result);
-		 * 
-		 * System.out.println(chartData2);
-		 * 
-		 * return result; }
-		 */
-
-			
+	 	
+	 	//차트
 		@ResponseBody
 		@PostMapping(value="/incomeChart.do", produces="application/json; charset=UTF-8") 
 		public List<Map<String, Object>> chartValue (@RequestBody Map<String, Object> param, Model model) {
@@ -171,6 +144,7 @@ public class AccountBookController {
 		return chartValue ;
 	}
 			  
+		//엑셀
 		@GetMapping("/excel")
 		public void downloadExcep(HttpServletResponse resp, @AuthenticationPrincipal Member member) throws IOException{
 			String id = member.getId();

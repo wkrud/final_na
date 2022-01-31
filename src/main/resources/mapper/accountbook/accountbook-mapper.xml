@@ -106,7 +106,7 @@
 		    and
 		    category=#{category}
 		   	</if>
-		 	<if test="income_expense != null and income_expense != ''">
+		 	<if test="incomeExpense != null and incomeExpense != ''">
 		 	and
 		 	income_expense=#{incomeExpense}
 		 	</if>
