@@ -14,13 +14,22 @@
 
 <c:forEach items="${accountList}" var = "account">
 	<div class="accountListDiv">
-	<table id="accountTable">
-		<tr>
-			<td><fmt:formatDate value="${account.regDate}" pattern="yyyy/MM/dd"/></td>
-			<td rowspan="2"><fmt:formatNumber value="${account.price}" type="number"/></td>
+	<table class="accountTable">
+		<tr class="account_side_column">
+			<td><span class="accountRegDate"><fmt:formatDate value="${account.regDate}" pattern="yyyy/MM/dd"/></span></td>
+			<td rowspan="2" class="accountPrice">
+				<c:choose>
+					<c:when test="${account.incomeExpense eq 'I' }">
+						<span class="income"><fmt:formatNumber value="${account.price}" type="number"/></span>
+					</c:when>
+					<c:when test="${account.incomeExpense eq 'E' }">
+						<span class="expense"><fmt:formatNumber value="-${account.price}" type="number"/></span>
+					</c:when>
+				</c:choose>
+			</td>
 		</tr>
 		<tr>
-			<td>${account.detail}</td>
+			<td class="accountDetail">${account.detail}</td>
 		</tr>
 		</table>
 		<button class="deleteBtn" onclick="deleteDetail('${account.code}')">삭제</button>
@@ -32,7 +41,6 @@
   width : 450px;
   height: 80px;
   background : rgba(225, 225, 225, 0.1);
-/*   box-shadow: 0 25px 45px rgba(0, 0, 0, 0.1); */
   border : 1px solid rgba(225, 225, 225, 0.5);
   border-radius: 10px;
   margin : 15px auto;
@@ -63,6 +71,40 @@
 	width : 80px;
 	height : 30px;
 	border-radius : 10px;
+	display : none;
+}
+
+.accountTable {
+	margin : 5px;
+}
+
+.accountTable td {
+	padding : 4px;
+}
+
+.accountRegDate, .accountDetail {
+	width : 380px;
+}
+
+.accountDetail {
+	font-size : 18px;
+}
+
+.accountRegDate {
+	color : #b2b0b0;
+}
+
+.accountPrice {
+/* 	width : 100px; */
+	font-size : 20px;
+}
+
+.income {
+	color : green;
+}
+
+.expense {
+	color : red;
 }
 
 </style>
