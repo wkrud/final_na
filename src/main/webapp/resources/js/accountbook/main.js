@@ -117,9 +117,7 @@
 /*		dataType : "json",
 */		contentType : "application/json; charset=UTF-8",
 		success : function(result){
-			var html = jQuery('<table>').html(result);
-			var contents = html.find("table#accountTable");
-			$("#account_list").html(contents);
+			$("#account_list").html(result);
 
 		},
 		error(xhr, testStatus, err) {
@@ -204,10 +202,7 @@
 			contentType : "application/json; charset=UTF-8",
 			headers : headers,
 			success(result) {
-				$("#account_list").empty();
-			var html = jQuery('<table>').html(result);
-			var contents = html.find("table#accountTable");
-			$("#account_list").html(contents);
+				$("#account_list").html(result);
 			},
 			error(xhr, testStatus, err) {
 				console.log("error", xhr, testStatus, err);
@@ -227,9 +222,7 @@
 			contentType : "application/json; charset=UTF-8",
 			headers : headers,
 			success(result) {
-				var html = jQuery('<table>').html(result);
-				var contents = html.find("table#accountTable");
-				$("#account_list").html(contents);
+				$("#account_list").html(result);
 			},
 			error(xhr, testStatus, err) {
 				console.log("error", xhr, testStatus, err);
@@ -247,9 +240,7 @@
 			data : JSON.stringify(data),
 			headers : headers,
 			success(result) {
-				var html = jQuery('<table>').html(result);
-				var contents = html.find("table#accountTable");
-				$("#account_list").html(contents);
+				$("#account_list").html(result);
 			},
 			error(xhr, testStatus, err) {
 				console.log("error", xhr, testStatus, err);
