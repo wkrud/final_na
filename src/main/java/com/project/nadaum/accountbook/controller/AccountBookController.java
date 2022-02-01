@@ -1,16 +1,23 @@
 package com.project.nadaum.accountbook.controller;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -25,6 +32,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.project.nadaum.accountbook.model.service.AccountBookService;
 import com.project.nadaum.accountbook.model.vo.AccountBook;
+import com.project.nadaum.common.NadaumUtils;
 import com.project.nadaum.member.model.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
@@ -47,12 +55,27 @@ public class AccountBookController {
 	
 	 //전체 리스트 출력
 	 @RequestMapping(value="/selectAllAccountList.do") 
-	 public String selectAllAccountList (@AuthenticationPrincipal Member member, Model model) {
-	 String id = member.getId(); 
-	 List<AccountBook> accountList = accountBookService.selectAllAccountList(id);
-	 model.addAttribute("accountList",accountList);
+	 public String selectAllAccountList (@RequestParam(defaultValue = "1") int cPage, HttpServletRequest request, @AuthenticationPrincipal Member member, Model model) {
+		int limit = 4;
+		int offset = (cPage - 1) * limit;
+		Map<String, Object> param = new HashMap<>();
+		param.put("limit", limit);
+		param.put("offset", offset);
+		param.put("member", member);
+			
+		String id = member.getId(); 
+		List<AccountBook> accountList = accountBookService.selectAllAccountList(id);
+		
+		int totalAccountList = accountBookService.countAccountList(param);
+		log.debug("totalAccountList={}", totalAccountList);
+		
+		String url = request.getRequestURI(); 
+		String pagebar = NadaumUtils.getPagebar(cPage, limit, totalAccountList, url);
+		 
+		model.addAttribute("pagebar", pagebar);
+		model.addAttribute("accountList",accountList);
 	 
-	 return "/accountbook/accountList";
+		return "/accountbook/accountList";
 
 	 }
 	
@@ -100,7 +123,7 @@ public class AccountBookController {
 	
 	// 수입, 지출별 정렬
 	 @PostMapping(value="/incomeExpenseFilter.do") 
-	 public String incomeExpenseFilter(@RequestBody Map<String, Object> param, Model model) {
+	 public String incomeExpenseFilter(@RequestBody Map<String, Object> param,  Model model) {
 		 Map<String, Object> map = new HashMap<>();
 		 map.put("id", param.get("id"));
 		 map.put("incomeExpense", param.get("incomeExpense"));
@@ -143,51 +166,96 @@ public class AccountBookController {
 			  
 		return chartValue ;
 	}
+		
+		//detailChart
+		@ResponseBody
+		@PostMapping(value="/detailMonthlyChart.do", produces="application/json; charset=UTF-8")
+		public List<Map<String, Object>> detailMonthlyChart(@AuthenticationPrincipal Member member, Model model) {
+			Map<String, Object> map = new HashMap<>(); 
+			map.put("id", member.getId());		
+			List<Map<String, Object>> list = accountBookService.detailMonthlyChart(map);
+			log.debug("list={}", list);
+			return list;
+			
+		}
 			  
 		//엑셀
 		@GetMapping("/excel")
-		public void downloadExcep(HttpServletResponse resp, @AuthenticationPrincipal Member member) throws IOException{
+		public void downloadExcel(HttpServletResponse resp, @AuthenticationPrincipal Member member) throws IOException{
+			//엑셀에 담을 리스트 조회
 			String id = member.getId();
 			List<AccountBook> list = accountBookService.selectAllAccountList(id);
 			log.debug("list={}",list);
 			
-			
-			Workbook workbook = new HSSFWorkbook();
-			Sheet sheet = workbook.createSheet("나다움-" + member.getName()+"님의 가계부 내역");
-			int rowNo = 0;
-			
-			Row headerRow = sheet.createRow(rowNo++);
-			headerRow.createCell(0).setCellValue("날짜");
-			headerRow.createCell(1).setCellValue("결제수단");			
-			headerRow.createCell(2).setCellValue("대분류");
-			headerRow.createCell(3).setCellValue("소분류");
-			headerRow.createCell(4).setCellValue("내역");
-			headerRow.createCell(5).setCellValue("금액");
-			
-			
-			for(AccountBook accountbook : list) {
-				Row row = sheet.createRow(rowNo++);
-				row.createCell(0).setCellValue(accountbook.getRegDate());
-				row.createCell(1).setCellValue(accountbook.getPayment() == "card" ? "카드" : "현금");
-				row.createCell(2).setCellValue(accountbook.getIncomeExpense() == "I" ? "수입" : "지출");
-				row.createCell(3).setCellValue(accountbook.getCategory());
-				row.createCell(4).setCellValue(accountbook.getDetail());
-				row.createCell(5).setCellValue(accountbook.getPrice());
+				//엑셀 파일 생성
+				Workbook workbook = new XSSFWorkbook();
+				//엑셀 제목
+				String fileName = "나다움-" + member.getName()+"님의 가계부 내역";
+				//엑셀 내부의 시트 생성
+				Sheet sheet = workbook.createSheet("나다움-" + member.getName()+"님의 가계부 내역");
+				//rowNum 카운팅 변수
+				int rowNo = 0;
+				
+				//엑셀 헤더 컬러/폰트
+				CellStyle headStyle = workbook.createCellStyle();
+				headStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.LIGHT_BLUE.getIndex());
+				headStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+				Font font = workbook.createFont();
+				font.setColor(HSSFColor.HSSFColorPredefined.WHITE.getIndex());
+				font.setFontHeightInPoints((short) 13);
+				headStyle.setFont(font);
+				
+				//헤더 내용
+				Row headerRow = sheet.createRow(rowNo++);
+				headerRow.createCell(0).setCellValue("날짜");
+				headerRow.createCell(1).setCellValue("결제수단");			
+				headerRow.createCell(2).setCellValue("대분류");
+				headerRow.createCell(3).setCellValue("소분류");
+				headerRow.createCell(4).setCellValue("내역");
+				headerRow.createCell(5).setCellValue("금액");
+					
+				//헤더에 스타일 입히기
+				for(int i = 0; i <= 5; i++) {
+					headerRow.getCell(i).setCellStyle(headStyle);
+				}
+				
+				//엑셀에 담을 리스트 for문으로 한 줄씩 담아주기
+				for(AccountBook accountbook : list) {
+					Row row = sheet.createRow(rowNo++);
+					SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+					DecimalFormat df = new DecimalFormat("#,###");
+					row.createCell(0).setCellValue(format.format(accountbook.getRegDate()));
+					row.createCell(1).setCellValue(accountbook.getPayment().equals("card") ? "카드" : "현금");
+					row.createCell(2).setCellValue(accountbook.getIncomeExpense().equals("I") ? "수입" : "지출");
+					row.createCell(3).setCellValue(accountbook.getCategory());
+					row.createCell(4).setCellValue(accountbook.getDetail());
+					row.createCell(5).setCellValue(df.format(accountbook.getPrice()));
 			}
 			
-			resp.setContentType("ms-vnd/excel");
-			resp.setHeader("Content-Disposition", "attachment; filename=나다움-" + member.getName()+"님의 가계부 내역.xls");
+			//셀 크기 설정
+			sheet.setColumnWidth(0, 3000);
+			sheet.setColumnWidth(1, 3000);
+			sheet.setColumnWidth(2, 2000);
+			sheet.setColumnWidth(3, 3000);
+			sheet.setColumnWidth(4, 8000);
+			sheet.setColumnWidth(5, 3000);
 			
-			workbook.write(resp.getOutputStream());
-			workbook.close();
+			//타입 지정
+			resp.setContentType("application/vnd.ms-excel");
+			//파일 저장명 -> 이게 지금 안 먹음 ㅠㅠ
+			resp.setHeader("content-Disposition", "attachment; filename="+fileName);
 			
+			try {
+				workbook.write(resp.getOutputStream());
+			} catch(Exception e) {
+				e.printStackTrace();
+			
+			}
+		
 		}
-		 
-		 
-		 
-		 
-		 
+
 }
+	 
 
 	
 

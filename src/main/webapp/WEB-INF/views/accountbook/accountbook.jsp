@@ -17,8 +17,8 @@
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
 <div class="wrapper">
-	<div class="modal-background">
 <!-- 가계부 입력 모달창 -->
+	<div class="modal-background">
 	<div class="insertAccountModal">
 		<input type="hidden" name="incomeExpense" id="income" value="I" />
 		<input type="hidden" name="incomeExpense" id="expense" value="E" /> 
@@ -95,12 +95,14 @@
 
 <input type="hidden" name="incomeExpense" id="income" value="I" />
 <input type="hidden" name="incomeExpense" id="expense" value="E" /> 
+<!-- 차트 부분 -->
 <section class="chartSection">
 	<a href="${pageContext.request.contextPath}/accountbook/detailChart.do" id="detailChartLink">더 보기</a>
 	<div id="incomeChart"></div>
 	<div id="expenseChart"></div>
 </section>
 <section class="search_list_section">
+		<!-- 검색창 -->
 		<div class="search_box">
 			<form 
 				action=""
@@ -122,15 +124,18 @@
  				<button type="button" id="searchBtn" class="defaultBtn"><i class="fas fa-search"></i></button>
 			</form>
 		</div>
+		<!-- 필터링 -->
 		<div class="fillterSection">
 			<button id="AllListBtn" class="defaultBtn" onclick="AllList();">전체보기</button>
 			<button class="FilterBtn defaultBtn" id="incomeFilterBtn">수입</button>
 			<button class="FilterBtn defaultBtn" id="expenseFilterBtn">지출</button>
 			<a href="${pageContext.request.contextPath}/accountbook/excel">엑셀 다운로드</a>
 		</div>
+		<!-- 가계부 리스트 -->
 		<div id="account_list">
 		</div>
 	</section>
+	<!-- 사용자별 가계부 월별 금액 -->
 	<section class="infoSection">
 		<div class="account">
 			<table class="account-info">

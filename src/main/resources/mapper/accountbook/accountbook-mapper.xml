@@ -138,7 +138,42 @@
 		    )
 	group by category
 	</select>
+	
+	<select id="countAccountList" resultType="int">
+		select 
+			count(*) 
+		from 
+			account_book 
+		where id=#{id}
+	</select>
+	
+	<select id="detailMonthlyChart" resultMap="monthlyChart">
+		select
+		    monthly,
+		    nvl(sum(case when income_expense='I' then price end), 0) as income,
+		    nvl(sum(case when income_expense='E' then price end), 0) as expense
+		from (
+			select
+			    to_char(reg_date,'yy-mm') as monthly,
+			    price,
+			    income_expense
+			from
+			    account_book
+			where
+			    id=#{id}
+			)
+		group by 
+		    monthly
+		order by 
+		    monthly
 		
+	</select>
+		
+	<resultMap type="Map" id="monthlyChart">
+		<result column="monthly" property="monthly"/>
+		<result column="income" property="income"/>
+		<result column="expense" property="expense"/>
+	</resultMap>	
 	
 	<resultMap type="Map" id="chartListMap">
 		<result column="total" property="total"/>

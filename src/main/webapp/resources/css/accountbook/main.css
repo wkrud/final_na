@@ -193,6 +193,10 @@ input[type="date"]:hover::-webkit-calendar-picker-indicator:hover { opacity:0.15
 	font-size : 18px;
 }
 
+.account_list{
+	width : 100%;
+}
+
 
 /* infoSection */
 .infoSection {

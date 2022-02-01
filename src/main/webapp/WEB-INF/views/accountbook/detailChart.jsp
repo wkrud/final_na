@@ -11,13 +11,23 @@
 <meta id="_csrf" name="_csrf" content="${_csrf.token}" />
 <meta id="_csrf_header" name="_csrf_header" content="${_csrf.headerName}" />
 <sec:authentication property="principal" var="loginMember"/>
-<link href='${pageContext.request.contextPath}/resources/css/accountbook/main.css' rel='stylesheet' />
+<link href='${pageContext.request.contextPath}/resources/css/accountbook/chart.css' rel='stylesheet' />
 <link href='https://use.fontawesome.com/releases/v5.0.6/css/all.css' rel='stylesheet'>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
 <div class=wrapper>
-<h2>asdfasdf</h2>
+	<div class="box yearly_total">
+		<div>${loginMember.name}님의 연간 총 거래내역 : <span></span>건</div>
+		<div>누적 거래 금액</div>
+	</div>
+	<div class="yearly_income">
+		${loginMember.name}님의 연간 총 수입
+	</div>
+	<div class="yearly_expense">
+		${loginMember.name}님의 연간 총 지출
+	</div>
+	<div id="yearly_chart">
+	</div>
 </div>
-
-</body>
-</html>
+<input type="hidden" id="contextPath" value="${pageContext.request.contextPath}" />
+<script src='${pageContext.request.contextPath}/resources/js/accountbook/chart.js'></script>

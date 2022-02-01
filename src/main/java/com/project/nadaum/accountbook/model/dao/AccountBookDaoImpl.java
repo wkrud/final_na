@@ -58,5 +58,17 @@ public class AccountBookDaoImpl implements AccountBookDao {
 		return session.selectList("accountbook.chartValue", param);
 	}
 
+	@Override
+	public int countAccountList(Map<String, Object> param) {
+		return session.selectOne("accountbook.countAccountList", param);
+	}
+
+	@Override
+	public List<Map<String,Object>> detailMonthlyChart(Map<String, Object> map) {
+		return session.selectList("accountbook.detailMonthlyChart", map);
+	}
+	
+	
+
 
 }

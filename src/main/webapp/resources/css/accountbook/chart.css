@@ -1,0 +1,49 @@
+@charset "UTF-8";
+
+* {
+	margin : 0;
+	padding : 0;
+	box-sizing: border-box;
+	position: relative;
+}
+
+/* 영역 확인용 박스 */
+.box {
+	border : 1px solid black;
+}
+
+/* 페이지 전체 감싸고 있는 div */
+.wrapper {
+	margin-top : 100px;
+	position : relative;
+}
+
+.yearly_total{
+	text-align : right;	
+}
+
+.yearly_total div{
+	display : inline-flex;
+	margin : 5px 30px;
+	font-size : 20px;
+}
+
+.yearly_income, .yearly_expense {
+	width : 20%;
+	height : 400px;
+	float : left;
+	left : 5%;
+	margin-left : 1%;
+	margin-top : 5%;
+	background : rgba(225, 225, 225, 0.1);
+  	border : 1px solid rgba(225, 225, 225, 0.5);
+  	border-radius: 10px;
+}
+
+#yearly_chart{
+	width : 700px;
+	height : 300px;
+	float : right;
+	margin-top : 14%;
+	margin-right : 5%;
+}

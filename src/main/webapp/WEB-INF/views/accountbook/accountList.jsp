@@ -32,13 +32,15 @@
 			<td class="accountDetail">${account.detail}</td>
 		</tr>
 		</table>
+	</div>
+	<div class="accountUpdate">
 		<button class="deleteBtn" onclick="deleteDetail('${account.code}')">삭제</button>
 	</div>
 </c:forEach>
 
 <style>
 .accountListDiv {
-  width : 450px;
+  width : 400px;
   height: 80px;
   background : rgba(225, 225, 225, 0.1);
   border : 1px solid rgba(225, 225, 225, 0.5);
@@ -46,32 +48,15 @@
   margin : 15px auto;
   position : relative;
   }
-  
- .accountListDiv:hover {
-  animation-name: slide;
-  animation-duration: 0.5s;
-  left : -20%;
- }
- 
- @keyframes slide {
-  from {
-    left : 0%;
-  }
-  to {
-    left : -20%;
-  }
-}
 
 .deleteBtn{
 	position : absolute;
-	bottom : 30px;
-	right : 0;
+	right : 15px;
 	border : none;
 	background-color : lightgray;
-	width : 80px;
+	width : 100px;
 	height : 30px;
 	border-radius : 10px;
-	display : none;
 }
 
 .accountTable {
@@ -105,6 +90,12 @@
 
 .expense {
 	color : red;
+}
+
+.accountUpdate{
+  width : 400px;
+  height: 50px;
+  margin-top : 10px;
 }
 
 </style>
