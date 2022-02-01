@@ -9,18 +9,17 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Message implements Serializable {
+public class Alarm implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private String room;
-	private String writer;
-	private String message;
 	private String type;
-	private String profile;
-	private String time;
+	private String flag;
+	private String senderId;
+	private String friendNickname;
+	private String message;
 
 }

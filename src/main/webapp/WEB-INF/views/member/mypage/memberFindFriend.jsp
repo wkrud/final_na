@@ -14,7 +14,6 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js"
 	integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
 	crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
 	integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
@@ -24,8 +23,10 @@
 	integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
 	crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/member/stomp.js"></script>
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"ajax csrf 토큰
 	integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
@@ -54,6 +55,7 @@
 	
 	
 <script>
+var dest = '${loginMember.nickname}';
 $("#search-friend-start").click((e) => {
 	if($("#searchFriend").val() == ''){
 		alert("닉네임을 입력해주세요");
@@ -105,7 +107,7 @@ $("#search-friend-start").click((e) => {
 						<button type="button" class="btn btn-warning btn-sm following">친구신청중</button>`;
 				}
 				$resultDiv.append(searched);
-				alarmSave('fr', resp.check, '${loginMember.id}', resp.nickname);
+				send('friend', resp.check, '${loginMember.id}', resp.nickname);
 				updateFriend(resp.check, resp.nickname);
 			});
 		},
@@ -140,7 +142,8 @@ const updateFriend = (check, friendNickname) => {
 
 
 
-$(() => {
+$(() => {	
+	connect();
 	$("#searchFriend").autocomplete({
 		source: function(request, response){
 			$.ajax({
@@ -182,33 +185,16 @@ $(() => {
 	});
 });
 
-const alarmSave = (type, flag, senderId, findVal) => {
-	let socketMsg = type + "," + flag + "," + senderId + "," + findVal;
-	socket.send(socketMsg);		
-};
 
-var socket = null;
-
-    $(document).ready(function (){
-    	connectWs();
-    });
-    function connectWs(){
-  		sock = new SockJS("<c:url value='/echo'/>");
-  		socket = sock;
-
-  		sock.onopen = function() {
-            console.log('info: connection opened.');
-		};
-		sock.onmessage = function(evt) {
-			var data = evt.data;
-			console.log("ReceivMessage : " + data + "\n");
-		};
-		sock.onclose = function() {
-	      	console.log('connect close');
-	      	
-	    };
-	
-	    sock.onerror = function (err) {console.log('Errors : ' , err);};
+function send(type, flag, id, friendNickname){
+	var dest = friendNickname;
+	var sendData = {
+		'type':type,
+		'flag':flag,
+		'senderId':'${loginMember.id}',
+		'friendNickname':friendNickname
+	};
+	stompClient.send("/nadaum/chat/alarm/" + friendNickname,{},JSON.stringify(sendData));
 };
 </script>
 </body>
