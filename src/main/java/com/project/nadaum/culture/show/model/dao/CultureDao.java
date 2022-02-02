@@ -8,4 +8,6 @@ public interface CultureDao {
 
 	int insertCultureLike(String apiCode);
 
+	int deleteCultureLike(String apiCode);
+
 }

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -194,16 +195,53 @@ public class CultureController {
 		
 
 	//============================= 좋 아 요 ==========================================
+		
 	@PostMapping("/board/view/{apiCode}/likes")
-	public ResponseEntity<?> likes(@PathVariable String apiCode){
+	public ResponseEntity<?> insertLikes(@PathVariable String apiCode){
 		
-		int result = cultureService.insertCultureLike(apiCode);
-		String msg = (result > 0) ? "추천 성공" : "추천 실패";	
+		try{
+			int result = cultureService.insertCultureLike(apiCode);
+			String msg = (result > 0) ? "좋아요 성공" : "좋아요 실패";	
+			
+			Map<String, Object> map = new HashMap<>();
+			map.put("result", result);
+			map.put("msg", msg);
+			
+				if(result == 1) {
+		            return ResponseEntity.ok(map);
+		        } 
+		        else {
+		        	return ResponseEntity.status(404).build();
+		        }
 		
-		Map<String, Object> map = new HashMap<>();
+			}catch (Exception e) {
+				log.error(e.getMessage(), e);
+				return ResponseEntity.badRequest().build();
+			}
+	}
+	
+	@DeleteMapping("/board/view/{apiCode}/likes")
+	public ResponseEntity<?> deleteLikes(@PathVariable String apiCode){
 		
-		return null;
+		try{
+			int result = cultureService.deleteCultureLike(apiCode);
+			String msg = (result > 0) ? "좋아요삭제 완료" : "좋아요삭제 실패";	
+			
+			Map<String, Object> map = new HashMap<>();
+			map.put("result", result);
+			map.put("msg", msg);
+			
+				if(result == 1) {
+		            return ResponseEntity.ok(map);
+		        } 
+		        else {
+		        	return ResponseEntity.status(404).build();
+		        }
 		
+			}catch (Exception e) {
+				log.error(e.getMessage(), e);
+				return ResponseEntity.badRequest().build();
+			}
 	}
 }
 	

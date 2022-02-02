@@ -22,4 +22,9 @@ public class CultureDaoImpl implements CultureDao {
 		return session.insert("culture.insertCultureLike", apiCode);
 	}
 
+	@Override
+	public int deleteCultureLike(String apiCode) {
+		return session.delete("culture.deleteCultureLike", apiCode);
+	}
+
 }

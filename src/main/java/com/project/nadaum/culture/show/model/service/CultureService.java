@@ -8,4 +8,6 @@ public interface CultureService {
 
 	int insertCultureLike(String apiCode);
 
+	int deleteCultureLike(String apiCode);
+
 }

@@ -21,5 +21,10 @@ public class CultureServiceImpl implements CultureService {
 		return cultureDao.insertCultureLike(apiCode);
 	}
 
+	@Override
+	public int deleteCultureLike(String apiCode) {
+		return cultureDao.deleteCultureLike(apiCode);
+	}
+
 
 }
