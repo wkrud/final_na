@@ -41,10 +41,10 @@
 							</c:if>
 							<c:if test="${loginMember.loginType eq 'D'}">
 								<c:if test="${loginMember.profileStatus eq 'N'}">							
-									<img src="${pageContext.request.contextPath}/resources/upload/member/profile/default_profile_cat.png" alt="" />
+									<img class="change-profile" src="${pageContext.request.contextPath}/resources/upload/member/profile/default_profile_cat.png" alt="" />
 								</c:if>
-								<c:if test="${loginMember.loginType eq 'Y'}">
-									<img src="${pageContext.request.contextPath}/resources/upload/member/profile/${profileImage.originalFilename}" alt="" />
+								<c:if test="${loginMember.profileStatus eq 'Y'}">
+									<img class="change-profile" src="${pageContext.request.contextPath}/resources/upload/member/profile/${loginMember.profile}" alt="" />
 								</c:if>
 							</c:if>
 						</div>
@@ -144,6 +144,10 @@
 	</div>
 </div>
 <script>
-
+$(".change-profile").click((e) => {
+	if(confirm('프사를 바꾸시게요?')){
+		location.href="${pageContext.request.contextPath}/member/mypage/memberChangeProfile.do";
+	}
+});
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

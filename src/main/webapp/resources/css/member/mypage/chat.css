@@ -1,0 +1,81 @@
+.chat-wrap{
+	width: 320px;
+	height: 500px;
+	border: 1px solid black;
+}
+#msgArea{
+	width: 320px;
+	height: 460px;
+	overflow: scroll;
+	overflow-x:hidden;
+	padding: 0;
+}
+
+
+.greeting-msg-wrap{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	
+}
+.greeting-body{
+	border-radius: 20px;
+	background-color: gray;
+	width: 250px;
+}
+.greeting-msg span{
+	
+}
+.greeting-time{
+	font-size: .8rem;
+}
+
+.host-msg{
+	display: flex;
+	justify-content: flex-end;
+	margin: 5px;
+}
+
+.guest-msg{
+	margin: 5px;
+}
+
+.profile-wrapper{
+	display: flex;
+}
+.chat-profile-wrap{
+	width: 35px;
+	height: 35px;
+	border-radius: 40%;
+	overflow: hidden;
+	border: 0;
+}
+.chat-profile{
+	width: 35px;
+	height: 35px;
+	border: 0;
+}
+
+.profile-nickname{
+	margin: 5px;
+}
+
+.chat-msg-wrap{
+	max-width: 180px;
+	word-break: break-all;
+}
+.chat-time-wrap{
+	display:flex;
+	align-items: flex-end;
+}
+.chat-time{
+	font-size: .5rem;
+	color: gainsboro;
+}
+
+.guest-chat-wrap{
+	display: flex;
+}
+
+
+

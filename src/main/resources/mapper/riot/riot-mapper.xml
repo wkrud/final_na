@@ -22,6 +22,15 @@
 			#{summonerLevel}
 		)
 	</insert>
+	
+	<select id="selectOneSummoner" resultType="summoner">
+		select 
+			*
+		from
+			riot_record
+		where
+			puuid = #{puuid}
+	</select>
 
 </mapper>
 

@@ -81,8 +81,25 @@
 			</div>
 		</div>
 	</div>
+	<div class="chat-room"></div>
 </div>
 <script>
+$(".friend-wrap").click((e) => {
+	let guest = $(e.currentTarget).find('span.friend-name').html();
+	if(confirm(guest + '님과 DM을 하시겠습니까?')){
+		var room = Math.floor(Math.random() * 100000);
+		console.log('room = ' + room);
+		chatInvite('chat', '${loginMember.nickname}', guest, room);
+		
+		let chatRoom = `
+        <iframe id="nadaumChat" title="Nadaum Chat" src="${pageContext.request.contextPath}/member/mypage/chat.do?room=\${room}" >
+		</iframe>`;
+		$(".chat-section").append(chatRoom);
+		$("#chatwrap").css("display", "block");
+	}
+});
+
+
 $(searchFriendBtn).click((e) => {
 	const spec = "left=500px, top=500px, width=400px, height=150px";
 	const popup = open('${pageContext.request.contextPath}/member/mypage/memberFindFriend.do', '친구찾기', spec);
@@ -124,10 +141,6 @@ const updateFriend = (check, friendNickname) => {
 	});
 };
 
-const alarmSave = (type, flag, senderId, findVal) => {
-	let socketMsg = type + "," + flag + "," + senderId + "," + findVal;
-	socket.send(socketMsg);		
-};
 </script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

@@ -18,5 +18,12 @@ public class RiotDaoImpl implements RiotDao {
 		
 		return session.insert("riot.insertSummoner",summoner);
 	}
+	
+	
+	@Override
+	public Summoner selectOneSummoner(String puuid) {
+		
+		return session.selectOne("riot.selectOneSummoner",puuid);
+	}
 
 }

@@ -23,17 +23,17 @@ public class WsController {
 	@Autowired
 	private WebsocketService websocketService;
 
-	@GetMapping("/member/mypage/chat.do")
-	public void chat(Model model) {
-		log.debug("principal = {}",SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-		Member user = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		
-		log.debug("=================================");
-		log.debug("user = {}", user);
-		log.debug("@WsController, GetChat / Username : {}", user.getName());
-		
-		model.addAttribute("userid", user.getId());
-	}
+//	@GetMapping("/member/mypage/chat.do")
+//	public void chat(Model model) {
+//		log.debug("principal = {}",SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+//		Member user = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//		
+//		log.debug("=================================");
+//		log.debug("user = {}", user);
+//		log.debug("@WsController, GetChat / Username : {}", user.getName());
+//		
+//		model.addAttribute("userid", user.getId());
+//	}
 	
 	@GetMapping("/websocket/wsCountAlarm.do")
 	public ResponseEntity<?> wsCountAlarm(@AuthenticationPrincipal Member member){
