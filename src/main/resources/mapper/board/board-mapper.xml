@@ -155,7 +155,13 @@
 			board_comment 
 		values(
 			concat('bc-',seq_board_comment_no.nextval),
-			 #{id}, #{code}, #{content}, #{commentLevel}, #{commentRef}, default)
+			 #{id}, #{code}, #{content}, #{commentLevel}, 
+			 <choose>
+			 	<when test="commentRef == 0">null,</when>
+			 	<when test="commentRef != 0">#{commentRef},</when>
+			 </choose>
+			 
+			 default)
 	</insert>
 	
 	<delete id="boardCommentDelete">
