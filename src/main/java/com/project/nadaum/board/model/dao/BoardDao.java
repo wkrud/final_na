@@ -9,18 +9,35 @@ import com.project.nadaum.board.model.vo.BoardEntity;
 
 public interface BoardDao {
 
-	List<BoardEntity> selectBoardList();
+	List<Board> selectBoardList(Map<String, Object> param);
+	
+	int selectTotalContent();
 
 //	int insertBoard(Board board);
 //	int insertAttachment(Attachment attach);
-
-//	Board selectOneBoard(String code);
+	int insertBoard(Map<String, Object> map);
+	
 //	List<Attachment> selectAttachmentListByBoardCode(String code);
 
-	int insertBoard(Map<String, Object> map);
+	int updateBoard(Board board);
+
+	int deleteBoard(String code);
+	
+	Board selectOneBoard(String code);
 
 	Board selectOneBoardCollection(String code);
 
+	//조회수
+	int updateBoardReadCount(String code);
+	
+	//게시물 댓글
 	List<BoardComment> selectBoardCommentList(String code);
+
+	int insertBoardComment(BoardComment bc);
+
+	int boardCommentDelete(String commentCode);
+
+	
+
 
 }

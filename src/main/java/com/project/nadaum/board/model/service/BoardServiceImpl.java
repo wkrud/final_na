@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.project.nadaum.board.model.dao.BoardDao;
 import com.project.nadaum.board.model.vo.Board;
 import com.project.nadaum.board.model.vo.BoardComment;
-import com.project.nadaum.board.model.vo.BoardEntity;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,10 +22,15 @@ public class BoardServiceImpl implements BoardService {
 	private BoardDao boardDao;
 
 	@Override
-	public List<BoardEntity> selectBoardList() {
-		return boardDao.selectBoardList();
+	public List<Board> selectBoardList(Map<String, Object> param) {
+		return boardDao.selectBoardList(param);
 	}
 
+	@Override
+	public int selectTotalContent() {
+		return boardDao.selectTotalContent();
+	}
+	
 	//게시물 등록
 //	@Transactional(
 //		propagation=Propagation.REQUIRED,
@@ -57,32 +61,63 @@ public class BoardServiceImpl implements BoardService {
 //		return boardDao.insertAttachment(attach);
 //	}
 
-	//게시물 상세보기
-//	@Override
-//	public Board selectOneBoard(String code) {
-//		Board board = boardDao.selectOneBoard(code);
-//		
-//		List<Attachment> attachments = boardDao.selectAttachmentListByBoardCode(code);
-//		
-//		board.setAttachments(attachments);
-//		
-//		return board;
-//	}
-
 	@Override
 	public int insertBoard(Map<String, Object> map) {
 		return boardDao.insertBoard(map);
+	}
+
+	//게시물 상세보기
+	@Override
+	public Board selectOneBoard(String code) {
+		Board board = boardDao.selectOneBoard(code);
+//		List<Attachment> attachments = boardDao.selectAttachmentListByBoardCode(code);
+//		List<BoardComment> comments = boardDao.selectBoardCommentListByBoardCode(code);
+		
+//		board.setAttachments(attachments);
+		
+		return board;
+	}
+
+	@Override
+	public int updateBoard(Board board) {
+		return boardDao.updateBoard(board);
+	}
+
+	@Override
+	public int deleteBoard(String code) {
+		return boardDao.deleteBoard(code);
 	}
 
 	@Override
 	public Board selectOneBoardCollection(String code) {
 		return boardDao.selectOneBoardCollection(code);
 	}
-
+	
+	//조회수
+	@Override
+	public int updateBoardReadCount(String code) {
+		return boardDao.updateBoardReadCount(code);
+	}
+	
+	//게시판 댓글
 	@Override
 	public List<BoardComment> selectBoardCommentList(String code) {
 		return boardDao.selectBoardCommentList(code);
 	}
+
+	@Override
+	public int insertBoareComment(BoardComment bc) {
+		return boardDao.insertBoardComment(bc);
+	}
+
+	@Override
+	public int boardCommentDelete(String commentCode) {
+		return boardDao.boardCommentDelete(commentCode);
+	}
+
+	
+
+	
 	
 	
 }

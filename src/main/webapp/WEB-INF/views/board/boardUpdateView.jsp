@@ -19,84 +19,51 @@ top: 238px;
 }
 </style>
 <script>
-/**
-* boardEnrollFrm 유효성 검사
-*/
-function boardValidate(){
-	const $title = $("[name=title]");
-	const $content = $("[name=content]");
-	
-	//제목을 작성하지 않은 경우 폼제출할 수 없음.
-	if(!/^.+$/.test($title.val())){
-		alert("제목을 입력하세요.");
-		return false;
-	}
-					   
-	//내용을 작성하지 않은 경우 폼제출할 수 없음.
-	// \n는 .에 포함되지 않는다.
-	if(!/^(.|\n)+$/.test($title.val())){
-		alert("내용을 입력하세요.");
-		return false;
-	}
-	return true;
-}
+
 
 </script>
 
 <div class="board-container">
 	<form method="POST" 
-	action="${pageContext.request.contextPath}/board/boardEnroll.do"
+	action="${pageContext.request.contextPath}/board/boardUpdate.do"
 	onsubmit="return boardValidate();">
 		<label for="title">제목</label>						
-		<input type="text" class="form-control" name="title" id="title"	placeholder="제목을 입력해주세요" required>
+		<input type="text" class="form-control" name="title" id="title"	placeholder="제목을 입력해주세요" 
+		value="${board.title}" required>
 		
+		<input type="hidden" name="id" id="id" value="${loginMember.id}" />
 		<input type="text" class="form-control"	name="id" value="${loginMember.id}" readonly required>
-		<!-- 나중에 지우기 -->
 		<input type="text" class="form-control"	name="id" value="${board.id}" readonly required>
 		
 		<input type="hidden" name="category" />
-		<select id="category-select" class="form-select" aria-label="Default select example">
-			<option selected>카테고리</option>
-			<option value="dy">자유게시판</option>
-			<option value="ab">문화</option>
-			<option value="mo">영화</option>
+		<select id="category-select" class="form-select" aria-label="Default select example" selected="${board.category}">
+			<option value="자유게시판">자유게시판</option>
+			<option value="문화">문화</option>
+			<option value="영화">영화</option>
 		</select>
 		
-		<textarea name="content" id="board-content-summernote" required></textarea>
+		<textarea name="content" id="board-content-summernote" required>${board.content}</textarea>
 		<div><span id="limite_normal"></span><span id="limite_vermelho" style="color:red"></span>/500</div>
 		
 		<br />
-		<button type="submit" id="submit-btn" class="btn btn-success">등록</button>
+		<button type="submit" id="submit-btn" class="btn btn-success">수정</button>
+		<button type="button" id="cancle-btn" class="btn btn-success" onclick="location.href ='${pageContext.request.contextPath}/board/boardList.do'">취소</button>
 		<!-- <input type="submit" class="btn btn-outline-success" id="submit-btn" value="저장"> -->
 		
+		<input type="hidden" name="code" value="${board.code}" />
 		<input type="hidden" name="id" id="id" value="${loginMember.id}" />
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 	</form>
 </div>
 
 <script>
+function goBoardForm(){
+	location.href = "${pageContext.request.contextPath}/board/boardUpdate.do";
+}
+
+
 $("#category-select").change((e) => {	
 	$("input[name='category']").val($("#category-select").val());	
-});
-
-$("#submit-btn").click((e) => {
-	if($("#title").val() == ''){
-		alert('제목을 작성해 주세요');
-		return false;
-	}
-	if($("input[name='category']").val() == ''){
-		alert('카테고리를 선택해주세요');
-		return false;
-	}
-	if($("#limite_normal").text() == ''){
-		alert('내용을 작성해 주세요');
-		return false;
-	}
-	if($("#limite_normal").text() <= 10){
-		alert('10자 이상 작성해 주세요');
-		return false;
-	}
-	return true;
 });
 
 $(document).ready(function() {

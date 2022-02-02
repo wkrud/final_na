@@ -18,7 +18,7 @@ public class BoardComment implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private String CommentCode;
+	private String commentCode;
 	private String id;
 	private String code; //보드 고유코드
 	private String content;
