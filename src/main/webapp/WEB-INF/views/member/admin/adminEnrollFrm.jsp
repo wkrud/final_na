@@ -34,6 +34,8 @@
 					<button type="submit" id="admin-submit-btn" class="btn btn-success">답변등록</button>
 					<input type="hidden" name="code" value="${help.code}" />
 					<input type="hidden" name="aCode" value="${help.ACode}" />
+					<input type="hidden" name="id" value="${help.id}" />
+					<input type="hidden" name="title" value="${help.title}" />
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 				</form>	
 			</div>
@@ -69,8 +71,16 @@ $("#admin-submit-btn").click((e) => {
 		alert('10자 이상 작성해 주세요');
 		return false;
 	}
+	<c:if test="${check eq 'help'}">
+		alarmSave('ah', $("input[name=id]").val(), $("input[name=title]").val());
+	</c:if>
 	return true;
 });
+
+const answerAlarm = (type, id, title) => {
+	let socketMsg = type + "," + id + "," + title;
+	socket.send(socketMsg);		
+};
 
 $(document).ready(function() {
 	
