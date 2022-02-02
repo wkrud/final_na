@@ -29,5 +29,7 @@ public interface AccountBookDao {
 
 	List<Map<String,Object>> detailMonthlyChart(Map<String, Object> map);
 
+	List<AccountBook> monthlyCountList(Map<String, Object> param);
+
 
 }

@@ -32,9 +32,9 @@
 			<td class="accountDetail">${account.detail}</td>
 		</tr>
 		</table>
+		<button class="deleteBtn" onclick="deleteDetail('${account.code}')">삭제</button>
 	</div>
 	<div class="accountUpdate">
-		<button class="deleteBtn" onclick="deleteDetail('${account.code}')">삭제</button>
 	</div>
 </c:forEach>
 
@@ -57,6 +57,7 @@
 	width : 100px;
 	height : 30px;
 	border-radius : 10px;
+	display : none;
 }
 
 .accountTable {
@@ -92,10 +93,11 @@
 	color : red;
 }
 
-.accountUpdate{
+/* .accountUpdate{
   width : 400px;
   height: 50px;
   margin-top : 10px;
-}
+} */
 
 </style>
+

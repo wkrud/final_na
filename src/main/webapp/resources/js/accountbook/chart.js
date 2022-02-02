@@ -24,8 +24,7 @@
 			dataType : "json",
 			async : false, //ajax는 비동기 통신이기 때문에 해당 옵션을 동기식으로 변경해서 차트가 그려지기 전에 다른 작업을 못하도록 막음
 			success(data) {
-				console.log(data);
-				let outer =[['Year-Month', 'income', 'expense']];
+				let outer =[['Year-Month', '수입', '지출']];
 				for(const obj in data) {
 					let inner = [];
 					inner.push(data[obj].monthly);
@@ -46,3 +45,21 @@
 			}
 		});
 	};
+	
+	
+	//past month
+		let monthly = 0;
+		function count(type) {
+			if(type=="plus") {
+				monthly = ++monthly;
+			} else if(type=="minus") {
+				monthly = --monthly;
+			}
+			$.ajax({
+				url : $contextPath+'/accountbook/detailChart.do',
+				data : monthly,
+				success(data) {
+					console.log(data);
+				}
+			})
+		}

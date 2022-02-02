@@ -50,7 +50,15 @@ public class AccountBookController {
 	public void accountbook() {}
 	
 	@RequestMapping(value="/detailChart.do")
-	public void detailChart() {}
+	public void detailChart(@RequestParam(defaultValue="0") int monthly, @AuthenticationPrincipal Member member, Model model) {
+		Map<String, Object> param = new HashMap<>();
+		param.put("monthly", monthly);
+		param.put("id", member.getId());
+		
+		List<AccountBook> countList = accountBookService.monthlyCountList(param);
+		log.info("countList={}",countList);
+		model.addAttribute("countList", countList);	
+		}
 	
 	
 	 //전체 리스트 출력

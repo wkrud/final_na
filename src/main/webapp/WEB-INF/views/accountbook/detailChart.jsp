@@ -17,8 +17,12 @@
 
 <div class=wrapper>
 	<div class="box yearly_total">
-		<div>${loginMember.name}님의 연간 총 거래내역 : <span></span>건</div>
-		<div>누적 거래 금액</div>
+		<button type="button" onclick='count("minus")'>지난달 테스트</button>
+		<c:forEach items="${countList}" var="list" >
+		<div>${loginMember.name}님의 이번 달 총 거래내역 : <span>${list.count}</span>건</div>
+		<div>누적 거래 금액 : <span>${list.sum}</span>원</div>
+		</c:forEach>
+		<button type="button" onclick='count("plus")'>담달 테스트</button>
 	</div>
 	<div class="yearly_income">
 		${loginMember.name}님의 연간 총 수입
