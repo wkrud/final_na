@@ -9,6 +9,8 @@
 	<jsp:param value="나:다움 친구관리" name="title"/>
 </jsp:include>
 <sec:authentication property="principal" var="loginMember"/>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
 <div class="member-body">
 	<button type="button" class="btn btn-outline-warning" id="searchFriendBtn">친구검색</button>
 	<div class="friend-list-wrap">
@@ -84,6 +86,31 @@
 	<div class="chat-room"></div>
 </div>
 <script>
+$(function(){
+	$(".friends-section").slick({
+		infinite: true,
+		slidesToShow: 10,
+		slidesToScroll: 1,
+		speed: 100,
+		arrows: true,
+		autoplay: false,
+		vertical: false,
+		prevArrow : "<button type='button' class='slick-prev'>Previous</button>",		
+		nextArrow : "<button type='button' class='slick-next'>Next</button>"
+	});
+	$(".followers-section").slick({
+		infinite: true,
+		slidesToShow: 10,
+		slidesToScroll: 1,
+		speed: 100,
+		arrows: true,
+		autoplay: false,
+		vertical: false,
+		prevArrow : "<button type='button' class='slick-prev'>Previous</button>",		
+		nextArrow : "<button type='button' class='slick-next'>Next</button>"
+	});
+});
+
 $(".friend-wrap").click((e) => {
 	let guest = $(e.currentTarget).find('span.friend-name').html();
 	if(confirm(guest + '님과 DM을 하시겠습니까?')){
