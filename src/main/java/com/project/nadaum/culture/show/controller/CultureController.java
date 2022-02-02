@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -197,16 +198,20 @@ public class CultureController {
 	//============================= 좋 아 요 ==========================================
 		
 	@PostMapping("/board/view/{apiCode}/likes")
-	public ResponseEntity<?> insertLikes(@PathVariable String apiCode){
+	public ResponseEntity<?> insertLikes(@RequestParam Map<String,Object> map){
+		
+		log.debug("map = {}", map);
 		
 		try{
-			int result = cultureService.insertCultureLike(apiCode);
+			int result = cultureService.insertCultureLike(map);
+			
+			System.out.println(result);
 			String msg = (result > 0) ? "좋아요 성공" : "좋아요 실패";	
 			
-			Map<String, Object> map = new HashMap<>();
 			map.put("result", result);
 			map.put("msg", msg);
-			
+
+			System.out.println(map);
 				if(result == 1) {
 		            return ResponseEntity.ok(map);
 		        } 

@@ -46,6 +46,13 @@ font-size: 30px;
 			</div>
 		</c:forEach>
 		<br />
+		<form id="likeFrm">
+			<input type="hidden" name="apiCode" value="${apiCode}" />
+			<input type="hidden" name="id" value="${loginMember.id}" />
+		 	<button type="submit" id="like-btn">스크랩하기</button>
+		</form>
+		 <button id="like-cancle">스크랩 취소</button>
+		 <br />
 		<i class="far fa-heart"></i>
 	<!-- culture-container 끝 -->
 	<hr />
@@ -131,7 +138,7 @@ font-size: 30px;
 		        const csrfToken = "${_csrf.token}";
 		        const headers = {};
 		        headers[csrfHeader] = csrfToken;
-					var data = {"code" : code};
+				var data = {"code" : code};
 		        
 				$.ajax({
 					url:`${pageContext.request.contextPath}/culture/board/view/${apiCode}/\${code}`,
@@ -152,7 +159,27 @@ font-size: 30px;
 					}
 				});
 			}); 
-			
+			$(likeFrm).submit((e) => {
+				e.preventDefault();
+
+				const csrfHeader = "${_csrf.headerName}";
+		        const csrfToken = "${_csrf.token}";
+		        const headers = {};
+		        headers[csrfHeader] = csrfToken;
+				
+				$.ajax({
+					url:`${pageContext.request.contextPath}/culture/board/view/${apiCode}/likes`,
+					method: "POST",
+					headers : headers, 
+					data : $(likeFrm).serialize(),
+					success(resp){
+						console.log(resp);
+						location.reload();
+						alert(resp.msg);
+					},
+					error: console.log
+				});
+			});
 			//댓글수정
 			$(updateCommentFrm).submit((e) => {
 				

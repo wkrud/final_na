@@ -1,6 +1,7 @@
 package com.project.nadaum.culture.show.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,14 +17,15 @@ public class CultureServiceImpl implements CultureService {
 	@Autowired
 	private CultureDao cultureDao;
 	
-	@Override
-	public int insertCultureLike(String apiCode) {
-		return cultureDao.insertCultureLike(apiCode);
-	}
 
 	@Override
 	public int deleteCultureLike(String apiCode) {
 		return cultureDao.deleteCultureLike(apiCode);
+	}
+
+	@Override
+	public int insertCultureLike(Map<String, Object> map) {
+		return cultureDao.insertCultureLike(map);
 	}
 
 

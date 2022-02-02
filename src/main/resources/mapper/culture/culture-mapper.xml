@@ -8,7 +8,7 @@
 		into 
 			likes 
 		values
-			(seq_likes_no.nextval, #{id}, #{api_code})
+			(seq_likes_no.nextval, #{id}, #{apiCode})
 	</insert>
 	
 	<delete id="deleteCultureLike">
