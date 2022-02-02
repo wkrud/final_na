@@ -110,21 +110,21 @@ public class MessageController {
 	public void friendAlarm(@Payload Alarm alarm) {
 		log.debug("alarm = {}", alarm);
 		
-		Map<String, Object> param = new HashMap<>();
-		param.put("id", alarm.getSenderId());
-		Member sender = memberService.selectOneMember(param);
-		Member receiver = memberService.selectOneMemberNickname(alarm.getFriendNickname());
-		log.debug("sender = {}", sender);
-		log.debug("receiver = {}", receiver);
-		String msg = "";
-		if(("free".equals(alarm.getFlag()) || "follower".equals(alarm.getFlag()))) {
-			msg = sender.getNickname() + "님이 " + receiver + "님을 친구추가 했습니다.";						
-		}else if("friend".equals(alarm.getFlag())) {
-			msg = sender.getNickname() + "님이 " + receiver + "님을 친구삭제했습니다.";		
-		}else if("following".equals(alarm.getFlag())) {
-			msg = sender.getNickname() + "님이 팔로잉을 그만두었습니다.";			
-		}
-		alarm.setMessage(msg);
+//		Map<String, Object> param = new HashMap<>();
+//		param.put("id", alarm.getSenderId());
+//		Member sender = memberService.selectOneMember(param);
+//		Member receiver = memberService.selectOneMemberNickname(alarm.getFriendNickname());
+//		log.debug("sender = {}", sender);
+//		log.debug("receiver = {}", receiver);
+//		String msg = "";
+//		if(("free".equals(alarm.getFlag()) || "follower".equals(alarm.getFlag()))) {
+//			msg = sender.getNickname() + "님이 " + receiver + "님을 친구추가 했습니다.";						
+//		}else if("friend".equals(alarm.getFlag())) {
+//			msg = sender.getNickname() + "님이 " + receiver + "님을 친구삭제했습니다.";		
+//		}else if("following".equals(alarm.getFlag())) {
+//			msg = sender.getNickname() + "님이 팔로잉을 그만두었습니다.";			
+//		}
+//		alarm.setMessage(msg);
 		Gson gson = new GsonBuilder().create();
 		
 		template.convertAndSend("/topic/" + alarm.getFriendNickname(), gson.toJson(alarm));
