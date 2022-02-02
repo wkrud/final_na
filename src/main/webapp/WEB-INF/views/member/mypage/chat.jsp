@@ -31,10 +31,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member/mypage/chat.css" />
 </head>
 <body>
-	<div class="container">
-		<div class="col-6">
-			<label><b>채팅방</b></label>
-		</div>
+	<div class="chat-body">
 		<div class="chat-wrap">
 			<div id="msgArea" class="col">
 				<div class="guest-msg-wrap">

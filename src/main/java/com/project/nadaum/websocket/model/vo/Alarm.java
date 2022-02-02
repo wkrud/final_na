@@ -21,5 +21,8 @@ public class Alarm implements Serializable {
 	private String senderId;
 	private String friendNickname;
 	private String message;
+	private String host;
+	private String guest;
+	private String room;
 
 }

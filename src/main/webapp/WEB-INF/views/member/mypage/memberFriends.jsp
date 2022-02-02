@@ -81,14 +81,21 @@
 			</div>
 		</div>
 	</div>
+	<div class="chat-room"></div>
 </div>
 <script>
 $(".friend-wrap").click((e) => {
-	let val = $(e.currentTarget).find('span.friend-name').html();
-	if(confirm(val + '님과 DM을 하시겠습니까?')){
+	let guest = $(e.currentTarget).find('span.friend-name').html();
+	if(confirm(guest + '님과 DM을 하시겠습니까?')){
 		var room = Math.floor(Math.random() * 100000);
 		console.log('room = ' + room);
-		location.href=`${pageContext.request.contextPath}/member/mypage/chat.do?room=\${room}`;
+		chatInvite('chat', '${loginMember.nickname}', guest, room);
+		
+		let chatRoom = `
+        <iframe id="nadaumChat" title="Nadaum Chat" src="${pageContext.request.contextPath}/member/mypage/chat.do?room=\${room}" >
+		</iframe>`;
+		$(".chat-section").append(chatRoom);
+		$("#chatwrap").css("display", "block");
 	}
 });
 

@@ -239,13 +239,24 @@ input[id="switch"]{
 				</iframe>
 			</div>
 		</div>
-		<script>
-			var dest = '${loginMember.nickname}';
-			console.log(dest);
+		
+		<div id="chatwrap" style="display:none;">
+			<div id="chatwrapheader">
+				<div class="chat-title">			
+					<h1>채팅방</h1>
+					<button type="button" id="closeChat" class="close" data-dismiss="modal" aria-label="Close">
+			        	<span aria-hidden="true">&times;</span>
+			        </button>
+				</div>
+				<div class="chat-section"></div>
+			</div>
+		</div>
+		<script>			
 			$(() => {	
 				connect();
-				countBedge();	
+				countBedge();
 			});
+			var dest = '${loginMember.nickname}';
 			
 			$("#profile").click(function(){
 				if($("#alarmList").hasClass("show")){
@@ -309,8 +320,13 @@ input[id="switch"]{
 		    $("#closeInfo").click((e) => {
 		    	$("#infowrap").css("display","none");
 			});
+		    $("#closeChat").click((e) => {
+		    	$("#chatwrap").css("display","none");
+		    	$(".chat-section").empty();
+			});
 		    
 		    /* iframe 드래그 */
+		    dragElement(document.getElementById("chatwrap"));
 		    dragElement(document.getElementById("infowrap"));
 		   
 		</script>
