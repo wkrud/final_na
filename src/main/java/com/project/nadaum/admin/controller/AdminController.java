@@ -157,7 +157,7 @@ public class AdminController {
 	}
 	
 	@GetMapping("/adminEnrollFrm.do")
-	public void adminHelpAnswer(@RequestParam Map<String, Object> map, Model model) {
+	public void adminEnrollFrm(@RequestParam Map<String, Object> map, Model model) {
 		try {
 			Announcement announce = new Announcement();
 			log.debug("map = {}", map);
@@ -180,7 +180,7 @@ public class AdminController {
 	}
 	
 	@PostMapping("/adminEnrollFrm.do")
-	public String adminHelpAnswer(@RequestParam Map<String, Object> map, @AuthenticationPrincipal Member member, RedirectAttributes redirectAttr) {
+	public String adminEnrollFrm(@RequestParam Map<String, Object> map, @AuthenticationPrincipal Member member, RedirectAttributes redirectAttr) {
 		try {
 			log.debug("map = {}", map);
 			String check = (String) map.get("check");
@@ -192,6 +192,10 @@ public class AdminController {
 				help.setAContent((String)map.get("aContent"));
 				log.debug("help = {}", help);
 				result = adminService.updateHelpAnswer(help);	
+				
+				String content = "[" + (String)map.get("title") + "]에 답변이 등록되었습니다.";
+				map.put("content", content);
+				result = memberService.insertAlarm(map);
 				redirectAttr.addFlashAttribute("msg", "성공");
 				return "redirect:/member/admin/adminAllHelp.do";
 			}else if("announcement".equals(check)) {
