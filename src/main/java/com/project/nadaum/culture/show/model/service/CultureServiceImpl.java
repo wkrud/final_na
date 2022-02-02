@@ -12,17 +12,14 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class CultureServiceImpl implements CultureService {
-
+	
 	@Autowired
 	private CultureDao cultureDao;
+	
 	@Override
-	public List<Culture> selectCultureList() {
-		return cultureDao.selectCultureList();
+	public int insertCultureLike(String apiCode) {
+		return cultureDao.insertCultureLike(apiCode);
 	}
-	@Override
-	public Culture selectOneCulture(String code) {
-			Culture culture = cultureDao.selectOneCulture(code);
-			return culture;
-	}
+
 
 }

@@ -6,6 +6,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <sec:authentication property="principal" var="loginMember"/>
+
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="게시판 상세보기" name="title"/>
 </jsp:include>
@@ -56,19 +57,17 @@ font-size: 30px;
             <input type="hidden" name="commentLevel" value="1" />
             <input type="hidden" name="commentRef" value="" />    
             <input type="text" name="star" value="4" >
-            <span>
-	            <i class="far fa-star"></i>
-            	<i class="far fa-star"></i>
-            	<i class="far fa-star"></i>
-            	<i class="far fa-star"></i>
-            	<i class="far fa-star"></i>
-            	
-            </span>
+	           <select id="example">
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+				</select>
 			<textarea name="content" cols="60" rows="3"></textarea>
             <button type="submit" class="btn btn-light">등록</button>
 		</form>
 	</div>
-	
 	<table id="comment-table">
 	<c:forEach var="comment" items="${commentList}">
 			<tr class="level1">
@@ -96,6 +95,7 @@ font-size: 30px;
 			</tr>
 			</c:forEach>
 			</table>
+
 	<script>
 			//댓글 등록
 			$(insertCommentFrm).submit((e) => {

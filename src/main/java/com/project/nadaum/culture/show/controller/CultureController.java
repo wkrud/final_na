@@ -1,4 +1,4 @@
-package com.project.nadaum.culture.comment.controller;
+package com.project.nadaum.culture.show.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,16 +10,12 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -28,16 +24,22 @@ import org.w3c.dom.NodeList;
 
 import com.project.nadaum.culture.comment.model.service.CommentService;
 import com.project.nadaum.culture.comment.model.vo.Comment;
+import com.project.nadaum.culture.show.model.service.CultureService;
 
 import lombok.extern.slf4j.Slf4j;
 
+@Controller
 @Slf4j
-@RestController
 @RequestMapping("/culture")
-public class RestApi{
+public class CultureController {
+	
+	@Autowired
+	private CultureService cultureService;
+	
 	@Autowired
 	private CommentService commentService;
 
+		
 	 // tag값의 정보를 가져오는 메소드
 		private static String getTagValue(String tag, Element eElement) {
 			//
@@ -195,87 +197,14 @@ public class RestApi{
 	@PostMapping("/board/view/{apiCode}/likes")
 	public ResponseEntity<?> likes(@PathVariable String apiCode){
 		
-//		int result = commentService.updateLikeCount(apiCode);
-//		String msg = (result > 0) ? "추천 성공" : "추천 실패";	
+		int result = cultureService.insertCultureLike(apiCode);
+		String msg = (result > 0) ? "추천 성공" : "추천 실패";	
 		
 		Map<String, Object> map = new HashMap<>();
 		
 		return null;
 		
 	}
-		
-	//============================= 댓  글 =================================================
-	
-	///등록
-	@PostMapping("/board/view/{apiCode}")
-	public ResponseEntity<?> insertCultureComment(@RequestParam Map<String,Object> map) {
-		log.debug("map = {}", map);
-		try {
-			int result = commentService.insertCultureComment(map);
-			
-			
-			
-			map.put("msg", "댓글 등록성공!");
-			map.put("result", result);
-			if(result == 1) {
-                return ResponseEntity.ok(map);
-            } 
-            else {
-            	return ResponseEntity.status(404).build();
-            }
-		}
-		catch (Exception e) {
-			log.error(e.getMessage(), e);
-			return ResponseEntity.badRequest().build();
-		}
-	}
-	
-	//삭제
-		@DeleteMapping("/board/view/{apiCode}/{code}")
-		public ResponseEntity<?> deleteMenu(@PathVariable String code){
-			log.info("code = {}", code);
-			 
-			try {
-				int result = commentService.deleteCultureComment(code);
-				
-				Map<String, Object> map = new HashMap<>();
-				
-				map.put("msg", "댓글 삭제 성공!");
-				map.put("result", result);
-				System.out.println(map);
-				
-				if(result == 1) {
-	                return ResponseEntity.ok(map);
-	            } 
-	            else {
-	            	return ResponseEntity.status(404).build();
-	            }
-			} catch (Exception e) {
-				log.error(e.getMessage(), e);
-				return ResponseEntity.badRequest().build();
-			}
-		}
-		
-		
-		
-	//수정
-	@PutMapping("/board/view/{apiCode}")
-	public ResponseEntity<?> updateMenu(@RequestParam Map<String,Object> map){
-		log.debug("map = {}", map);
-		try {
-			int result = commentService.updateCultureComment(map);
-			log.debug("result = {}", result);
-			
-			Map<String, Object> resultMap = new HashMap<>();
-			resultMap.put("msg", "댓글 수정 성공!");
-			resultMap.put("result", result);
-			return ResponseEntity.ok(map);
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-			return ResponseEntity.badRequest().build();
-		}
-	}
-	
+}
 	
 
-}

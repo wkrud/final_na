@@ -6,8 +6,6 @@ import com.project.nadaum.culture.show.model.vo.Culture;
 
 public interface CultureService {
 
-	List<Culture> selectCultureList();
-
-	Culture selectOneCulture(String code);
+	int insertCultureLike(String apiCode);
 
 }
