@@ -26,7 +26,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/member/stomp.js"></script>
+<%-- <script src="${pageContext.request.contextPath}/resources/js/member/stomp.js"></script> --%>
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"ajax csrf 토큰
 	integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
@@ -143,7 +143,6 @@ const updateFriend = (check, friendNickname) => {
 
 
 $(() => {	
-	connect();
 	$("#searchFriend").autocomplete({
 		source: function(request, response){
 			$.ajax({
@@ -184,10 +183,10 @@ $(() => {
 		}
 	});
 });
-
+var socket = new SockJS("http://localhost:9090/nadaum/chat");
+	stompClient = Stomp.over(socket);
 
 function send(type, flag, id, friendNickname){
-	var dest = friendNickname;
 	var sendData = {
 		'type':type,
 		'flag':flag,

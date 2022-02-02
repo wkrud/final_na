@@ -5,7 +5,12 @@ function connect(){
 	stompClient.connect({}, function(frame){
 		stompClient.subscribe("/topic/" + dest, function(response){
 			var resp = JSON.parse(response.body);
+			console.log('resp = ', resp);
 			
+			if(resp.type == 'friend'){
+				countBedge();
+				console.log('count');
+			}
 		});
 	});
 };
