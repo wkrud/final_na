@@ -107,7 +107,7 @@ $("#search-friend-start").click((e) => {
 						<button type="button" class="btn btn-warning btn-sm following">친구신청중</button>`;
 				}
 				$resultDiv.append(searched);
-				send('friend', resp.check, '${loginMember.id}', resp.nickname);
+				friendAlarm('friend', resp.check, '${loginMember.nickname}', resp.nickname);
 				updateFriend(resp.check, resp.nickname);
 			});
 		},
@@ -183,18 +183,6 @@ $(() => {
 		}
 	});
 });
-var socket = new SockJS("http://localhost:9090/nadaum/chat");
-	stompClient = Stomp.over(socket);
-
-function send(type, flag, id, friendNickname){
-	var sendData = {
-		'type':type,
-		'flag':flag,
-		'senderId':'${loginMember.id}',
-		'friendNickname':friendNickname
-	};
-	stompClient.send("/nadaum/chat/alarm/" + friendNickname,{},JSON.stringify(sendData));
-};
 </script>
 </body>
 </html>

@@ -156,8 +156,12 @@
 	</insert>
 	
 	<insert id="insertAlarm">
-		insert into alarm (no, id, content)
-		values(seq_alarm_no.nextval, #{id}, #{content})
+		insert into alarm
+		values(seq_alarm_no.nextval,
+		<if test="code != null">
+			#{code},
+		</if>
+		#{id}, default, #{content}, default)
 	</insert>
 	
 	<delete id="deleteRequestFriend">

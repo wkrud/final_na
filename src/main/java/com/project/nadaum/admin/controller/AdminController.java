@@ -164,7 +164,12 @@ public class AdminController {
 			String check = (String) map.get("check");
 			if("help".equals(check)) {
 				Help help = adminService.selectOneHelp(map);
-				model.addAttribute("help", help);				
+				
+				Map<String, Object> param = new HashMap<>();
+				param.put("id", help.getId());
+				Member member = memberService.selectOneMember(param);
+				model.addAttribute("help", help);	
+				model.addAttribute("member", member);
 			}else if("announcement".equals(check)) {
 				String code = (String)map.get("code");
 				if(!"".equals(code)) {

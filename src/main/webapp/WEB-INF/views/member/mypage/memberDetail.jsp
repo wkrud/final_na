@@ -20,11 +20,27 @@
 				<li class="list-group-item"><a href="${pageContext.request.contextPath}/member/mypage/memberFriends.do">친구관리</a></li>
 				<li class="list-group-item"><a href="${pageContext.request.contextPath}/member/mypage/memberHelp.do">질문모음</a></li>
 				<li class="list-group-item"><a href="${pageContext.request.contextPath}/member/mypage/memberAnnouncement.do">공지사항</a></li>
+				<li class="list-group-item"><a href="${pageContext.request.contextPath}/member/mypage/changePassword.do">비밀번호 수정</a></li>
 				<sec:authorize access="hasRole('ROLE_SUPER')">
 					<li class="list-group-item"><a class="text-danger" href="${pageContext.request.contextPath}/member/admin/adminMain.do">관리자페이지</a></li>
 				</sec:authorize>
 			</ul>
 			<!-- 메뉴리스트 하단 작게 -->
+			<div class="phone-update-frm">
+				<form action="${pageContext.request.contextPath}/member/mypage/enrollPhone.do">
+					<div class="enroll-phone-wrap">
+						<div class="enroll-phone-wrap-title">
+							<span>핸드폰 등록</span>
+						</div>
+						<div class="input-group mb-3">
+							<div class="input-group-prepend">
+								<button class="btn btn-outline-secondary" id="enrollPhone" type="submit">등록</button>
+							</div>
+							<input type="tel" name="ePhone" id="ePhone" placeholder="-없이 번호만 입력해주세요" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1">
+						</div>
+					</div>
+				</form>
+			</div>
 			<div class="out">
 				<a href="${pageContext.request.contextPath}/member/mypage/membershipWithdrawal.do">회원탈퇴</a>
 			</div>
@@ -64,23 +80,12 @@
 							<input type="text" class="form-control" placeholder="전화번호" name="phone" id="phone" value="${loginMember.phone}" readonly required/>
 												
 							
-							<input type="submit" class="btn btn-outline-success" value="수정" >
+							<div class="info-update-btn">
+								<input type="submit" class="btn btn-outline-success" value="수정" >
+							</div>
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 						</form>
-						<button type="button" class="btn btn-secondary" onclick="changePw();">비밀번호 수정</button>
-						<form action="${pageContext.request.contextPath}/member/mypage/enrollPhone.do">
-							<div class="enroll-phone-wrap">
-								<div class="enroll-phone-wrap-title">
-									<span>핸드폰 등록</span>
-								</div>
-								<div class="input-group mb-3">
-									<div class="input-group-prepend">
-										<button class="btn btn-outline-secondary" id="enrollPhone" type="submit">등록</button>
-									</div>
-									<input type="tel" name="ePhone" id="ePhone" placeholder="-없이 번호만 입력해주세요" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1">
-								</div>
-							</div>
-						</form>
+						
 					</div>				
 				</div>
 				

@@ -287,7 +287,15 @@ input[id="switch"]{
 						let count = 0;
 						$(resp).each((i, v) => {
 							count++;
-							let alarmDiv = `<div class="card card-body alarmContent">\${v.content}</div>`;
+							
+							let alarmDiv = '';
+							if($("v.code:contains('he')")){
+								alarmDiv = `<div class="card card-body alarmContent">
+								<a href="${pageContext.request.contextPath}/member/mypage/memberHelpDetail.do?code=\${v.code}">\${v.content}</a>								
+								</div>`;
+							}else{
+								alarmDiv = `<div class="card card-body alarmContent">\${v.content}</div>`;
+							}
 							$alarmList.append(alarmDiv);
 						});						
 						

@@ -112,17 +112,21 @@ $(function(){
 });
 
 $(".friend-wrap").click((e) => {
-	let guest = $(e.currentTarget).find('span.friend-name').html();
-	if(confirm(guest + '님과 DM을 하시겠습니까?')){
-		var room = Math.floor(Math.random() * 100000);
-		console.log('room = ' + room);
-		chatInvite('chat', '${loginMember.nickname}', guest, room);
-		
-		let chatRoom = `
-        <iframe id="nadaumChat" title="Nadaum Chat" src="${pageContext.request.contextPath}/member/mypage/chat.do?room=\${room}" >
-		</iframe>`;
-		$(".chat-section").append(chatRoom);
-		$("#chatwrap").css("display", "block");
+	if(!$("#nadaumChat").length){
+		let guest = $(e.currentTarget).find('span.friend-name').html();
+		if(confirm(guest + '님과 DM을 하시겠습니까?')){
+			var room = Math.floor(Math.random() * 100000);
+			console.log('room = ' + room);
+			chatInvite('chat', '${loginMember.nickname}', guest, room);
+			
+			let chatRoom = `
+	        <iframe id="nadaumChat" title="Nadaum Chat" src="${pageContext.request.contextPath}/member/mypage/chat.do?room=\${room}" >
+			</iframe>`;
+			$(".chat-section").append(chatRoom);
+			$("#chatwrap").css("display", "block");
+		}
+	}else{
+		alert('채팅방은 한개만 만들 수 있습니다.');
 	}
 });
 
@@ -134,13 +138,13 @@ $(searchFriendBtn).click((e) => {
 
 $("#friend-with-follower").click((e) => {
 	let nickname = $(".follower-name").text();
-	alarmSave('fr', 'follower', '${loginMember.id}', nickname);
+	friendAlarm('friend', 'follower', '${loginMember.nickname}', nickname);
 	updateFriend('follower', nickname);
 });
 
 $("#end-friend").click((e) => {
 	let nickname = $(".friend-name").text();
-	alarmSave('fr', 'friend', '${loginMember.id}', nickname);
+	friendAlarm('friend', 'friend', '${loginMember.nickname}', nickname);
 	updateFriend('friend', nickname);
 });
 
