@@ -10,6 +10,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,6 +28,8 @@ import org.w3c.dom.NodeList;
 import com.project.nadaum.culture.comment.model.service.CommentService;
 import com.project.nadaum.culture.comment.model.vo.Comment;
 import com.project.nadaum.culture.show.model.service.CultureService;
+import com.project.nadaum.member.model.service.MemberService;
+import com.project.nadaum.member.model.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,7 +43,9 @@ public class CultureController {
 	
 	@Autowired
 	private CommentService commentService;
-
+	
+	@Autowired
+	private MemberService memberService;
 		
 	 // tag값의 정보를 가져오는 메소드
 		private static String getTagValue(String tag, Element eElement) {
@@ -247,6 +252,24 @@ public class CultureController {
 				log.error(e.getMessage(), e);
 				return ResponseEntity.badRequest().build();
 			}
+	}
+	
+	@GetMapping("/cultureView.do")
+	public void memberFriends(@AuthenticationPrincipal Member member, Model model) {
+		try {
+			List<Map<String, Object>> friends = memberService.selectAllFriend(member);
+			List<Map<String, Object>> follower = memberService.selectAllRequestFriend(member);
+			List<Member> memberList = memberService.selectAllNotInMe(member);
+			log.debug("friends = {}", friends);
+			log.debug("follower = {}", follower);
+			
+			model.addAttribute("memberList", memberList);
+			model.addAttribute("friends", friends);
+			model.addAttribute("follower", follower);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw e;
+		}
 	}
 }
 	

@@ -18,7 +18,7 @@
 display: inline-block;
 }
 html{
-background-color: #FFFBF5;
+/* background-color: #FFFBF5; */
 }
 #culture-container{
     padding: 60px;
@@ -35,7 +35,7 @@ font-size: 30px;
 }
 .wrap{
 margin: 0 auto;
-background-color: #FFFBF5;
+/* background-color: #FFFBF5; */
 }
 #insertCommentFrm{
 text-align: center;
@@ -52,6 +52,9 @@ text-align: center;
     border: 0;
     outline: 0;
     background: none;
+}
+.kakao-map:before{
+margin: 0 auto;
 }
 </style>
 		<div class="wrap">
@@ -94,7 +97,12 @@ text-align: center;
 		          </button>
 		        </div>
 		        <div class="modal-body">
+		         <span>약속일</span>
 		         <input type="date" />
+		         <br />
+		         <br />
+		         <span>@친구</span>
+		         <input type="text" />
 		        </div>
 		        <div class="modal-footer">
 		          <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
@@ -112,8 +120,22 @@ text-align: center;
 		 	</c:if><button type="submit" id="like-btn">스크랩하기</button>
 		</form>
 		<i class="far fa-heart"></i>
+		
+		
+	<hr>
+	<div class="kakao-map">
+		<p >
+		    <em class="link">
+		        <a href="javascript:void(0);" onclick="window.open('http://fiy.daum.net/fiy/map/CsGeneral.daum', '_blank', 'width=981, height=650')">
+		        </a>
+		    </em>
+		</p>
+		<div id="map" style="width:80%;height:400px; margin: 0 auto;"></div>
+	</div>
+		
 	</div>
 	<!-- culture-container 끝 -->
+	</div>
 	<div class="container">
 	<hr />
 	<br />
@@ -164,9 +186,7 @@ text-align: center;
 				
 				</c:forEach>
 				</table>
-		
-</div>
-</div>
+				</div>
 	<script>
 			//댓글 등록
 			$(insertCommentFrm).submit((e) => {
@@ -272,21 +292,6 @@ text-align: center;
 			}); */
 			</script>
 
-
-<!-- kakao 지도 
-
-	<hr style="border: solid 2px grey;">
-	<div class="kakao-map">
-		<p style="margin-top:-12px">
-		    <em class="link">
-		        <a href="javascript:void(0);" onclick="window.open('http://fiy.daum.net/fiy/map/CsGeneral.daum', '_blank', 'width=981, height=650')">
-		        </a>
-		    </em>
-		</p>
-		<div id="map" style="width:80%;height:400px;"></div>
-	</div>
-
-</section>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=457ac91e7faa203823d1c0761486f8d7&libraries=services"></script>
 <script>
 var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
@@ -325,5 +330,5 @@ geocoder.addressSearch('서울특별시 서초구 강남대로39길 15-3 2층 30
         map.setCenter(coords);
     } 
 });    
-</script>-->
+</script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
