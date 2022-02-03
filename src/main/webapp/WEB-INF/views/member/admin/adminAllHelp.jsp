@@ -41,7 +41,7 @@
 								<button id="enrollAnswer" type="button" class="btn btn-primary" onclick="location.href='${pageContext.request.contextPath}/member/admin/adminEnrollFrm.do?check=help&code=${list.code}'">답변하기</button>
 							</c:if>
 							<c:if test="${list.status ne 'F'}">
-								<button id="modifyAnswer" type="button" class="btn btn-warning" onclick="location.href='${pageContext.request.contextPath}/member/admin/adminEnrollFrm.do?check=help&code=${list.code}'">답변수정</button>
+								<button id="modifyAnswer" type="button" class="btn btn-warning" onclick="location.href='${pageContext.request.contextPath}/member/admin/adminEnrollFrm.do?check=help&code=${list.code}&flag=modify'">답변수정</button>
 							</c:if>
 						</td>
 						<td>${list.ACount}</td>

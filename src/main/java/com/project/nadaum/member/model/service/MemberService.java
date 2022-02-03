@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.project.nadaum.admin.model.vo.Announcement;
+import com.project.nadaum.admin.model.vo.Help;
 import com.project.nadaum.common.vo.Attachment;
 import com.project.nadaum.member.model.vo.Member;
 
@@ -19,11 +20,9 @@ public interface MemberService {
 
 	int updateMember(Member member);
 
-	List<Map<String, Object>> selectAllAlarm(Member member);
+	List<Map<String, Object>> selectAllAlarm(Map<String, Object> param);
 
-	List<Map<String, Object>> selectAllMyQuestions(Member member);
-
-	List<Map<String, Object>> selectAllMembersQuestions();
+	List<Map<String, Object>> selectAllMyQuestions(Map<String, Object> param);
 
 	int insertKakaoMember(Map<String, Object> map);
 
@@ -71,8 +70,6 @@ public interface MemberService {
 
 	int insertRequestFriend(Map<String, Object> nicknames);
 
-	Attachment selectMemberProfile(Member member);
-
 	int updateMemberNickname(Member member);
 
 	Member selectOneMemberByEmail(Map<String, Object> map);
@@ -108,6 +105,18 @@ public interface MemberService {
 	int updateAnnounceReadCount(String board);
 
 	int updateProfile(Map<String, Object> map);
+
+	int updateAlarm(Map<String, Object> map);
+
+	List<Help> selectAllMembersDyQuestions(Map<String, Object> map);
+
+	List<Help> selectAllMembersAbQuestions(Map<String, Object> map);
+
+	List<Help> selectAllMembersFrQuestions(Map<String, Object> map);
+
+	List<Help> selectAllMembersQuestions(Map<String, Object> map);
+
+	int countAllMyHelp(Member member);
 
 
 
