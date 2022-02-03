@@ -33,9 +33,15 @@ $(() => {
 		.modal()
 		.on("hide.bs.modal", (e) => {
 			location.href='${empty header.referer || header.referer.contains('/member/memberLogin.do') ? pageContext.request.contextPath : header.referer}';
-		});
-	
+		});	
 });
+function onEnterLogin(){
+	var keyCode = window.event.keyCode;
+	
+	if(keyCode === 13){
+		$("#loginFrm").submit();
+	}
+}
 </script>
 <style>
 .modal-backdrop{
@@ -43,7 +49,7 @@ $(() => {
 }
 </style>
 </head>
-<body>
+<body onkeydown="javascript:onEnterLogin();">
 
 <!-- Modal -->
 <div class="modal fade" id="loginModal" tabindex="-1" role="dialog"
