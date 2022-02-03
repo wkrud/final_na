@@ -22,8 +22,8 @@ font-size: 30px;
 }
 </style>
 <section class="content">
+		<div class="wrap">
 	<div id="culture-container" class="mx-auto text-center">
-		
 		<!-- 상세내용 -->
 		 <c:forEach var="culture" items="${list}">
 			<div class="culture_detail">
@@ -46,63 +46,93 @@ font-size: 30px;
 			</div>
 		</c:forEach>
 		<br />
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+ 		캘린더에 추가
+		</button>
+				<!-- Modal -->
+		<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		  <form >
+		    <div class="modal-dialog modal-dialog-centered" role="document">
+		      <div class="modal-content">
+		        <div class="modal-header">
+		          <h5 class="modal-title" id="exampleModalCenterTitle">약 속</h5>
+		          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		            <span aria-hidden="true">&times;</span>
+		          </button>
+		        </div>
+		        <div class="modal-body">
+		         <input type="date" />
+		        </div>
+		        <div class="modal-footer">
+		          <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+		          <button type="button" class="btn btn-primary">추가</button>
+		        </div>
+		      </div>
+		    </div>
+		  </form>
+		</div>
 		<form id="likeFrm">
 			<input type="hidden" name="apiCode" value="${apiCode}" />
 			<input type="hidden" name="id" value="${loginMember.id}" />
-		 	<button type="submit" id="like-btn">스크랩하기</button>
+		 	<c:if test="">
+		 	
+		 	</c:if><button type="submit" id="like-btn">스크랩하기</button>
 		</form>
 		 <button id="like-cancle">스크랩 취소</button>
 		 <br />
 		<i class="far fa-heart"></i>
+	</div>
 	<!-- culture-container 끝 -->
 	<hr />
-<h1>댓글</h1>
-	<div class="insert-comment">
-		<form id="insertCommentFrm">
-			<input type="hidden" name="apiCode" value="${apiCode}"/>
-            <input type="hidden" name="id" value="${loginMember.id}" />
-            <input type="hidden" name="commentLevel" value="1" />
-            <input type="hidden" name="commentRef" value="" />    
-            <input type="text" name="star" value="4" >
-	           <select id="example">
-					<option value="1">1</option>
-					<option value="2">2</option>
-					<option value="3">3</option>
-					<option value="4">4</option>
-					<option value="5">5</option>
-				</select>
-			<textarea name="content" cols="60" rows="3"></textarea>
-            <button type="submit" class="btn btn-light">등록</button>
-		</form>
-	</div>
-	<table id="comment-table">
-	<c:forEach var="comment" items="${commentList}">
-			<tr class="level1">
-				<td id="comment">
-					
-					<sub class="comment-writer"></sub>
-					<sub class="comment-date">
-					<fmt:formatDate value="${comment.regDate}" pattern="yyyy/MM/dd"/>
-					</sub>
-					<sub class="star">${comment.star}</sub>
-					<br />
-					${comment.content}
-					<br />
-					
-			    	<form id="updateCommentFrm">
-			    		<input type="hidden" name="code" value="${comment.code}"/>
-			    		<input type="submit" id="updateComment-btn" value="수정" >
-			    	</form>
-			    	
-					<form id="deleteCommentFrm">
-						<input type="hidden" name="code" value="${comment.code}"></input>
-			    		<input type="submit" id="deleteComment-btn" value="삭제" >
-			    	</form>
-				</td>		
-			</tr>
-			</c:forEach>
-			</table>
-
+	<div class="container">
+	<h1>댓글</h1>
+		<div class="insert-comment">
+			<form id="insertCommentFrm">
+				<input type="hidden" name="apiCode" value="${apiCode}"/>
+	            <input type="hidden" name="id" value="${loginMember.id}" />
+	            <input type="hidden" name="commentLevel" value="1" />
+	            <input type="hidden" name="commentRef" value="" />    
+		           <select name="star">
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+					</select>
+				<textarea name="content" cols="60" rows="3"></textarea>
+	            <button type="submit" class="btn btn-light">등록</button>
+			</form>
+		</div>
+		<table id="comment-table">
+		<c:forEach var="comment" items="${commentList}">
+				<tr class="level1">
+					<td id="comment">
+						
+						<sub class="comment-writer"></sub>
+						<sub class="comment-date">
+						<fmt:formatDate value="${comment.regDate}" pattern="yyyy/MM/dd"/>
+						</sub>
+						<sub class="star">${comment.star}</sub>
+						<br />
+						${comment.content}
+						<br />
+						
+				    	<form id="updateCommentFrm">
+				    		<input type="hidden" name="code" value="${comment.code}"/>
+				    		<input type="submit" id="updateComment-btn" value="수정" >
+				    	</form>
+				    	
+						<form id="deleteCommentFrm">
+							<input type="hidden" name="code" value="${comment.code}"></input>
+				    		<input type="submit" id="deleteComment-btn" value="삭제" >
+				    	</form>
+					</td>		
+				</tr>
+				</c:forEach>
+				</table>
+		
+</div>
+</div>
 	<script>
 			//댓글 등록
 			$(insertCommentFrm).submit((e) => {
@@ -127,6 +157,8 @@ font-size: 30px;
 				});
 				
 			});
+			
+			
 			
 			//댓글삭제
 			 $(deleteCommentFrm).submit((e) => {

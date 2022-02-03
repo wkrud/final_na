@@ -206,7 +206,7 @@ public class CultureController {
 			int result = cultureService.insertCultureLike(map);
 			
 			System.out.println(result);
-			String msg = (result > 0) ? "좋아요 성공" : "좋아요 실패";	
+			String msg = (result > 0) ? "스크랩 성공" : "스크랩 실패";	
 			
 			map.put("result", result);
 			map.put("msg", msg);
@@ -230,7 +230,7 @@ public class CultureController {
 		
 		try{
 			int result = cultureService.deleteCultureLike(apiCode);
-			String msg = (result > 0) ? "좋아요삭제 완료" : "좋아요삭제 실패";	
+			String msg = (result > 0) ? "스크랩 취소 완료" : "스크랩 취소 실패";	
 			
 			Map<String, Object> map = new HashMap<>();
 			map.put("result", result);
