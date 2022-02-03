@@ -22,19 +22,21 @@
 				<div class="q-info-wrap">
 					<div class="q-writer-info">
 						<div class="thumbnail-wrap" style="border-radius:50%; width:45px; height: 45px; overflow:hidden; padding: 0;">
-							<c:if test="${loginMember.loginType eq 'K'}">
-								<img src="${loginMember.profile}" alt="" style="width:45px; height:45px; object-fit:cover;" />								
+							<c:if test="${helpDetail.loginType eq 'K'}">
+								<img src="${helpDetail.profile}" alt="" style="width:45px; height:45px; object-fit:cover;" />								
 							</c:if>
-							<c:if test="${loginMember.loginType eq 'D'}">									
-								<c:if test="${loginMember.profileStatus eq 'N'}">							 		
+							<c:if test="${helpDetail.loginType eq 'D'}">									
+								<c:if test="${helpDetail.profileStatus eq 'N'}">							 		
 									<img src="${pageContext.request.contextPath}/resources/upload/member/profile/default_profile_cat.png" alt="" style="width:45px; height:45px; object-fit:cover;" />
 								</c:if>						
-								<c:if test="${loginMember.profileStatus eq 'Y'}">		
-									<img src="${pageContext.request.contextPath}/resources/upload/member/profile/${attach.renamedFilename}" alt="" style="width:45px; height:45px; object-fit:cover;" />										 		
+								<c:if test="${helpDetail.profileStatus eq 'Y'}">		
+									<img src="${pageContext.request.contextPath}/resources/upload/member/profile/${helpDetail.profile}" alt="" style="width:45px; height:45px; object-fit:cover;" />										 		
 								</c:if>	
 							</c:if>
 						</div>
-						${helpDetail.nickname}
+						<div class="q-nickname-wrap">
+							<span>${helpDetail.nickname}</span>						
+						</div>
 					</div>
 					<div class="q-button">
 						<label for="empathy">공감해요</label>
