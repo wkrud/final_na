@@ -5,12 +5,15 @@
 <mapper namespace="board">
 
 	<!-- 게시글 -->
-	
 	<select id="selectBoardList" resultType="board">
-		select	* from board
-		
-		order by code desc;
+		select
+			*
+		from
+			board
+		order by
+			code desc
 	</select>
+	
 	<select id="selectTotalContent" resultType="_int">
 		select
 			count(*)
