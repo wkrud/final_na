@@ -183,6 +183,17 @@ $(() => {
 		}
 	});
 });
+var socket = new SockJS("http://localhost:9090/nadaum/chat");
+stompClient = Stomp.over(socket);
+function friendAlarm(type, status, myNickname, friendNickname){
+	var sendData = {
+		'type':type,
+		'status':status,
+		'myNickname':myNickname,
+		'friendNickname': friendNickname
+	};
+	stompClient.send("/nadaum/chat/friendStatus/" + friendNickname,{},JSON.stringify(sendData));
+};
 </script>
 </body>
 </html>

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.project.nadaum.admin.model.vo.Announcement;
+import com.project.nadaum.admin.model.vo.Help;
 import com.project.nadaum.common.vo.Attachment;
 import com.project.nadaum.member.model.dao.MemberDao;
 import com.project.nadaum.member.model.vo.Member;
@@ -48,13 +49,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public List<Map<String, Object>> selectAllMyQuestions(Member member) {
-		return memberDao.selectAllMyQuestions(member);
-	}
-
-	@Override
-	public List<Map<String, Object>> selectAllMembersQuestions() {
-		return memberDao.selectAllMembersQuestions();
+	public List<Map<String, Object>> selectAllMyQuestions(Map<String, Object> param) {
+		return memberDao.selectAllMyQuestions(param);
 	}
 
 	@Override
@@ -270,6 +266,31 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public int updateAlarm(Map<String, Object> map) {
 		return memberDao.updateAlarm(map);
+	}
+
+	@Override
+	public List<Help> selectAllMembersDyQuestions(Map<String, Object> map) {
+		return memberDao.selectAllMembersDyQuestions(map);
+	}
+
+	@Override
+	public List<Help> selectAllMembersAbQuestions(Map<String, Object> map) {
+		return memberDao.selectAllMembersAbQuestions(map);
+	}
+
+	@Override
+	public List<Help> selectAllMembersFrQuestions(Map<String, Object> map) {
+		return memberDao.selectAllMembersFrQuestions(map);
+	}
+
+	@Override
+	public List<Help> selectAllMembersQuestions(Map<String, Object> map) {
+		return memberDao.selectAllMembersQuestions(map);
+	}
+
+	@Override
+	public int countAllMyHelp(Member member) {
+		return memberDao.countAllMyHelp(member);
 	}
 
 	

@@ -189,8 +189,31 @@
 		select * from help where id = #{id}
 	</select>
 	
-	<select id="selectAllMembersQuestions" resultMap="helpMap">
-		select * from help order by status desc
+	<select id="countAllMyHelp" resultType="int">
+		select count(*) from help where id = #{id}
+	</select>
+	
+	<select id="selectAllMembersQuestions" resultType="help">
+		select
+			*
+		from(
+			select 
+				* 
+			from 
+				help
+			where
+				<if test="category != 'all'">
+					category = #{category}
+					and
+				</if>
+				status = 'T'
+			order by
+				reg_date desc
+		)
+		<if test="category != 'all'">
+		where
+			rownum <![CDATA[<=]]> 4
+		</if>
 	</select>
 	
 	<select id="selectAllHelpTitle" resultType="string">
@@ -204,7 +227,10 @@
 	<select id="selectOneSelectedHelp" resultMap="helpNicknameMap">
 		select
 			h.*,
-			m.nickname nickname
+			m.nickname nickname,
+			m.profile profile,
+			m.login_type logintype,
+			m.profile_status profilestatus
 		from
 			help h join member m
 				on h.id = m.id
@@ -316,6 +342,9 @@
 		<result column="A_CONTENT" property="aContent"/>
 		<result column="A_REG_DATE" property="aRegDate"/>
 		<result column="NICKNAME" property="nickname"/>
+		<result column="PROFILE" property="profile"/>
+		<result column="LOGINTYPE" property="loginType"/>
+		<result column="PROFILESTATUS" property="profileStatus"/>
 	</resultMap>
 	
 	<resultMap type="map" id="announcementMap">

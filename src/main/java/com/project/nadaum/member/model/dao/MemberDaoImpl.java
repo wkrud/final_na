@@ -1,5 +1,6 @@
 package com.project.nadaum.member.model.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.project.nadaum.admin.model.vo.Announcement;
+import com.project.nadaum.admin.model.vo.Help;
 import com.project.nadaum.common.vo.Attachment;
 import com.project.nadaum.member.model.vo.Member;
 
@@ -49,13 +51,12 @@ public class MemberDaoImpl implements MemberDao {
 	}
 
 	@Override
-	public List<Map<String, Object>> selectAllMyQuestions(Member member) {
-		return session.selectList("member.selectAllMyQuestions", member);
-	}
-
-	@Override
-	public List<Map<String, Object>> selectAllMembersQuestions() {
-		return session.selectList("member.selectAllMembersQuestions");
+	public List<Map<String, Object>> selectAllMyQuestions(Map<String, Object> param) {
+		int offset = (int) param.get("offset");
+		int limit = (int) param.get("limit");
+		Member member = (Member) param.get("member");
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("member.selectAllMyQuestions", member, rowBounds);
 	}
 
 	@Override
@@ -277,6 +278,31 @@ public class MemberDaoImpl implements MemberDao {
 	@Override
 	public int updateAlarm(Map<String, Object> map) {
 		return session.update("member.updateAlarm", map);
+	}
+
+	@Override
+	public List<Help> selectAllMembersDyQuestions(Map<String, Object> map) {
+		return session.selectList("member.selectAllMembersQuestions", map);
+	}
+
+	@Override
+	public List<Help> selectAllMembersAbQuestions(Map<String, Object> map) {
+		return session.selectList("member.selectAllMembersQuestions", map);
+	}
+
+	@Override
+	public List<Help> selectAllMembersFrQuestions(Map<String, Object> map) {
+		return session.selectList("member.selectAllMembersQuestions", map);
+	}
+
+	@Override
+	public List<Help> selectAllMembersQuestions(Map<String, Object> map) {
+		return session.selectList("member.selectAllMembersQuestions", map);
+	}
+
+	@Override
+	public int countAllMyHelp(Member member) {
+		return session.selectOne("member.countAllMyHelp", member);
 	}
 
 	
