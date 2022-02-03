@@ -164,6 +164,10 @@
 		#{id}, default, #{content}, default)
 	</insert>
 	
+	<update id="updateAlarm">
+		update alarm set status = 'F' where code = #{code}
+	</update>
+	
 	<delete id="deleteRequestFriend">
 		delete from request_friend where my_id = #{id} and follower_id = #{friendId}
 	</delete>

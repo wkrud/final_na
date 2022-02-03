@@ -109,6 +109,8 @@ public interface MemberService {
 
 	int updateProfile(Map<String, Object> map);
 
+	int updateAlarm(Map<String, Object> map);
+
 
 
 }

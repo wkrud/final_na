@@ -267,6 +267,11 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.updateProfile(map);
 	}
 
+	@Override
+	public int updateAlarm(Map<String, Object> map) {
+		return memberDao.updateAlarm(map);
+	}
+
 	
 	
 	

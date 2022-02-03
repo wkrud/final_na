@@ -21,8 +21,9 @@ function connect(){
 						$("#chatwrap").css("display", "block");					
 					}
 				}
-			}else if(resp.type == 'friend'){
+			}else if(resp.type == 'help'){
 				countBedge();
+				console.log('카운트배지실행됨');
 			}
 		});
 	});
@@ -48,10 +49,10 @@ function friendAlarm(type, status, myNickname, friendNickname){
 	stompClient.send("/nadaum/chat/friendStatus/" + friendNickname,{},JSON.stringify(sendData));
 };
 
-function answerAlarm(type, guest, title, flag){
+function answerAlarm(type, code, guest, title){
 	var sendData = {
 		'type':type,
-		'flag':flag,
+		'flag':code,
 		'guest':guest,
 		'title': title,
 	};

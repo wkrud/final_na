@@ -274,6 +274,11 @@ public class MemberDaoImpl implements MemberDao {
 		return session.update("member.updateProfile", map);
 	}
 
+	@Override
+	public int updateAlarm(Map<String, Object> map) {
+		return session.update("member.updateAlarm", map);
+	}
+
 	
 	
 	

@@ -109,6 +109,8 @@ public interface MemberDao {
 
 	int updateProfile(Map<String, Object> map);
 
+	int updateAlarm(Map<String, Object> map);
+
 
 
 

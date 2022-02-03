@@ -278,23 +278,28 @@ input[id="switch"]{
 		    	$.ajax({
 					url: `${pageContext.request.contextPath}/websocket/wsCountAlarm.do`,
 					success(resp){
-						
 						const $alarmList = $("#alarmList");
 						const $bedgeWrap = $(".bedge-wrap");
 						$alarmList.empty();
 						$bedgeWrap.empty();
-						
+						console.log('카운트배지실행중');
 						let count = 0;
 						$(resp).each((i, v) => {
+							console.log('each 실행됨');
+							const {no, code, id, status, content, regDate} = v;
 							count++;
+							console.log(code);
+							console.log(id);
+							console.log(status);
+							console.log(content);
 							
-							let alarmDiv = '';
-							if($("v.code:contains('he')")){
+							let alarmDiv = `<div class="card card-body alarmContent">\${content}</div>`;
+							if("code:contains('he-')"){
 								alarmDiv = `<div class="card card-body alarmContent">
-								<a href="${pageContext.request.contextPath}/member/mypage/memberHelpDetail.do?code=\${v.code}">\${v.content}</a>								
+								<a href="${pageContext.request.contextPath}/member/mypage/memberHelpDetail.do?code=\${code}">\${content}</a>								
 								</div>`;
 							}else{
-								alarmDiv = `<div class="card card-body alarmContent">\${v.content}</div>`;
+								alarmDiv = `<div class="card card-body alarmContent">\${content}</div>`;
 							}
 							$alarmList.append(alarmDiv);
 						});						

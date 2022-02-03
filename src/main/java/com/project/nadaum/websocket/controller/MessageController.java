@@ -123,13 +123,13 @@ public class MessageController {
 		template.convertAndSend("/topic/" + alarm.getFriendNickname(), gson.toJson(alarm));
 	}
 	
-	@MessageMapping("/chat/friendStatus/{guest}")
+	@MessageMapping("/chat/answerAlarm/{guest}")
 	@SendTo("/topic/{guest}")
 	public void answerAlarm(@Payload Alarm alarm) {
-		
+		log.debug("answerAlarm = {}", alarm);
 		Gson gson = new GsonBuilder().create();
 		
-		template.convertAndSend("/topic/" + alarm.getFriendNickname(), gson.toJson(alarm));
+		template.convertAndSend("/topic/" + alarm.getGuest(), gson.toJson(alarm));
 	}
 	
 	

@@ -20,6 +20,7 @@ public class Alarm implements Serializable {
 	private String status;
 	private String flag;
 	private String id;
+	private String title;
 	private String myNickname;
 	private String friendNickname;
 	private String message;
