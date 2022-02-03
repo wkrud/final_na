@@ -108,8 +108,9 @@ public class AdminController {
 		int totalContent = memberService.countAllAnnouncementList();
 		log.debug("totalContent = {}", totalContent);
 		
+		String category = "all";
 		String url = request.getRequestURI();
-		String pagebar = NadaumUtils.getPagebar(cPage, limit, totalContent, url);
+		String pagebar = NadaumUtils.getPagebar(cPage, limit, totalContent, url, category);
 			
 		model.addAttribute("pagebar", pagebar);
 		model.addAttribute("announceList", announceList);
@@ -128,8 +129,9 @@ public class AdminController {
 		param.put("id", member.getId());
 		int totalContent = adminService.countAllMember(param);
 
+		String category = "all";
 		String url = request.getRequestURI();
-		String pagebar = NadaumUtils.getPagebar(cPage, limit, totalContent, url);
+		String pagebar = NadaumUtils.getPagebar(cPage, limit, totalContent, url, category);
 		model.addAttribute("pagebar", pagebar);
 		model.addAttribute("list", list);
 	}
@@ -145,8 +147,9 @@ public class AdminController {
 			List<Help> listMap = adminService.selectAllHelp(param);
 			int totalContent = adminService.countAllHelp();
 			
+			String category = "all";
 			String url = request.getRequestURI();
-			String pagebar = NadaumUtils.getPagebar(cPage, limit, totalContent, url);
+			String pagebar = NadaumUtils.getPagebar(cPage, limit, totalContent, url, category);
 			log.debug("listMap = {}", listMap);
 			model.addAttribute("listMap", listMap);
 			model.addAttribute("pagebar", pagebar);

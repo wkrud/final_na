@@ -27,6 +27,8 @@
 		
 		<intercept-url pattern="/member/memberEnroll" access="isAnonymous()"/>
 		<intercept-url pattern="/member/admin/**" access="hasAnyRole('ROLE_ADMIN','ROLE_SUPER')"/>
+		<intercept-url pattern="/member/mypage/**" access="isAuthenticated()"/>
+		
 		<intercept-url pattern="/**" access="permitAll"/>
 		
 		<form-login
