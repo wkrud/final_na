@@ -164,15 +164,7 @@
 			</c:if>
 			<c:if test="${param.tPage eq 'alarm'}">
 				<div class="alarm-wrap">
-					<ul >
-						<%-- <c:forEach items="${alarmList}" var="al">
-							<c:if test="${al.status eq 'F'}">
-								<li class="list-group-item">${al.content}</li>
-							</c:if>
-							<c:if test="${al.status eq 'T'}">
-								<li class="list-group-item list-group-item-secondary">${al.content}</li>
-							</c:if>
-						</c:forEach> --%>
+					<ul class="list-group">
 					</ul>
 				</div>
 	  			<div class="more-alarm-btn-wrap">
@@ -203,19 +195,22 @@ const moreAlarm = () => {
 			$(resp).each((i, v) => {
 				const {no, code, id, status, content, reg_date} = v;
 				console.log(code);
+				console.log(status);
+				console.log(content);
 				
 				let alarmLi = '';					
-				
-				if(code.substring(0,2) == 'he' && status == 'F'){
-					alarmLi = `<li ><a href="${pageContext.request.contextPath}/member/mypage/memberHelpDetail.do?code=\${code}">\${content}</a></li>`;
-				}else if(code.substring(0,2) == 'he' && status == 'T'){
-					alarmLi = `<li ><a href="${pageContext.request.contextPath}/member/mypage/memberHelpDetail.do?code=\${code}">\${content}</a></li>`;
-				}else if(code.substring(0,2) == 'fr' && status == 'F'){
-					alarmLi = `<li >${al.content}</li>`;
-				}else if(code.substring(0,2) == 'fr' && status == 'T'){
-					alarmLi = `<li >${al.content}</li>`;
-				}else{
-					alarmLi = `<li >${al.content}</li>`;
+				if(code.length){
+					if(code.substring(0,2) == 'he' && status == 'F'){
+						alarmLi = `<li class="list-group-item"><a href="${pageContext.request.contextPath}/member/mypage/memberHelpDetail.do?code=\${code}">\${content}</a></li>`;
+					}else if(code.substring(0,2) == 'he' && status == 'T'){
+						alarmLi = `<li class="list-group-item list-group-item-secondary"><a href="${pageContext.request.contextPath}/member/mypage/memberHelpDetail.do?code=\${code}">\${content}</a></li>`;
+					}else if(code.substring(0,2) == 'fr' && status == 'F'){
+						alarmLi = `<li class="list-group-item">${al.content}</li>`;
+					}else if(code.substring(0,2) == 'fr' && status == 'T'){
+						alarmLi = `<li class="list-group-item list-group-item-secondary">${al.content}</li>`;
+					}else{
+						alarmLi = `<li class="list-group-item list-group-item-secondary">${al.content}</li>`;
+					}
 				}
 				console.log(alarmLi);
 				$alarmUl.append(alarmLi);
