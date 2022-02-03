@@ -55,11 +55,5 @@
 			} else if(type=="minus") {
 				monthly = --monthly;
 			}
-			$.ajax({
-				url : $contextPath+'/accountbook/detailChart.do',
-				data : monthly,
-				success(data) {
-					console.log(data);
-				}
-			})
+			console.log(monthly);
 		}

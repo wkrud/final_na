@@ -19,7 +19,7 @@
 }
 
 .yearly_total{
-	text-align : right;	
+	text-align : center;	
 }
 
 .yearly_total div{
@@ -28,22 +28,24 @@
 	font-size : 20px;
 }
 
-.yearly_income, .yearly_expense {
-	width : 20%;
-	height : 400px;
-	float : left;
-	left : 5%;
-	margin-left : 1%;
-	margin-top : 5%;
-	background : rgba(225, 225, 225, 0.1);
-  	border : 1px solid rgba(225, 225, 225, 0.5);
-  	border-radius: 10px;
-}
 
 #yearly_chart{
-	width : 700px;
+	width : 800px;
 	height : 300px;
-	float : right;
-	margin-top : 14%;
-	margin-right : 5%;
+	margin :  50px auto;
+}
+
+.category-chart {
+	width : 500px;
+	height : 300px;
+	display : inline-flex;
+	position : relative;
+}
+
+.category-income {
+	left : 15%;
+}
+
+.category-expense {
+	left : 20%;
 }

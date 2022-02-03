@@ -1,3 +1,5 @@
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.Date"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -15,6 +17,11 @@
 <link href='${pageContext.request.contextPath}/resources/css/accountbook/main.css' rel='stylesheet' />
 <link href='https://use.fontawesome.com/releases/v5.0.6/css/all.css' rel='stylesheet'>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<%
+	Date date = new Date();
+	SimpleDateFormat sdf = new SimpleDateFormat("M월");
+	String today = sdf.format(date);
+%>
 
 <div class="wrapper">
 <!-- 가계부 입력 모달창 -->
@@ -143,7 +150,7 @@
 					<td colspan="2">${loginMember.name}님의</td>
 				</tr>
 				<tr>
-					<td colspan="2">1월 총 자산</td>
+					<td colspan="2"><%= today %> 총 자산</td>
 				</tr>
 				<tr id="total_income">
 				</tr>

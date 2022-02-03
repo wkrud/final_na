@@ -55,16 +55,19 @@ select:disabled {
 .defaultBtn{
 	border : none;
 	background : white;	
+	outline:0;
 }
 
 .defaultBtn:hover{
 	color : #aaa;
 	cursor : pointer;
+	outline:0;
 }
 
 .defaultBtn:active, .defaultBtn:focus{
 	border : none;
 	box-shadow: none;
+	outline:0;
 }
 
 /* input[type=date] */
@@ -193,8 +196,10 @@ input[type="date"]:hover::-webkit-calendar-picker-indicator:hover { opacity:0.15
 	font-size : 18px;
 }
 
-.account_list{
+.listBox{
 	width : 100%;
+	height : 500px;
+	overflow : auto;
 }
 
 

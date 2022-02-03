@@ -63,24 +63,9 @@ public class AccountBookController {
 	
 	 //전체 리스트 출력
 	 @RequestMapping(value="/selectAllAccountList.do") 
-	 public String selectAllAccountList (@RequestParam(defaultValue = "1") int cPage, HttpServletRequest request, @AuthenticationPrincipal Member member, Model model) {
-		int limit = 4;
-		int offset = (cPage - 1) * limit;
-		Map<String, Object> param = new HashMap<>();
-		param.put("limit", limit);
-		param.put("offset", offset);
-		param.put("member", member);
-			
+	 public String selectAllAccountList (@AuthenticationPrincipal Member member, Model model) {
 		String id = member.getId(); 
 		List<AccountBook> accountList = accountBookService.selectAllAccountList(id);
-		
-		int totalAccountList = accountBookService.countAccountList(param);
-		log.debug("totalAccountList={}", totalAccountList);
-		
-		String url = request.getRequestURI(); 
-		String pagebar = NadaumUtils.getPagebar(cPage, limit, totalAccountList, url);
-		 
-		model.addAttribute("pagebar", pagebar);
 		model.addAttribute("accountList",accountList);
 	 
 		return "/accountbook/accountList";
@@ -227,11 +212,13 @@ public class AccountBookController {
 					headerRow.getCell(i).setCellStyle(headStyle);
 				}
 				
+				//엑셀에 담을 내용 포맷 변환용 코드
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+				DecimalFormat df = new DecimalFormat("#,###");
+
 				//엑셀에 담을 리스트 for문으로 한 줄씩 담아주기
 				for(AccountBook accountbook : list) {
 					Row row = sheet.createRow(rowNo++);
-					SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-					DecimalFormat df = new DecimalFormat("#,###");
 					row.createCell(0).setCellValue(format.format(accountbook.getRegDate()));
 					row.createCell(1).setCellValue(accountbook.getPayment().equals("card") ? "카드" : "현금");
 					row.createCell(2).setCellValue(accountbook.getIncomeExpense().equals("I") ? "수입" : "지출");

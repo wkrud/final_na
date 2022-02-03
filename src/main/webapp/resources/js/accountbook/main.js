@@ -6,12 +6,6 @@
 	var $expense = $("#expense").val();
 	var $contextPath = $("#contextPath").val(); //contextPath jsp에서 가져온 값(js파일에서 el을 못 씀)
 	
-	//페이징 관련
-	let totalCount; //총 가계부 개수
-	let dataPerPage; //한 페이지에 나타낼 글 수
-	let pageCount = 5; //페이징에 나타낼 페이지 수
-	let currentPage = 1; //현재 페이지
-	
 	//option 배열
 	var income = ["급여","용돈","기타"];
 	var expense = ["식비","쇼핑", "생활비", "자기계발", "저축", "유흥", "기타"];
@@ -108,6 +102,9 @@
 	
    //가계부 전체 리스트 조회
   function AllList() {	
+	var startNum = ("#account_list tr").length; //마지막 리스트 번호
+	
+	
  	$.ajax({
 		url: $contextPath+"/accountbook/selectAllAccountList.do",
 		type: "GET",
@@ -285,7 +282,8 @@
 			title: '이달의 지출',
 			 //차트 크기 설정
 			 width : 500,
-			 height : 300
+			 height : 300,
+			 pieHole : 0.4,
 			};
 			var chart = new google.visualization.PieChart(document.getElementById('expenseChart'));
 			chart.draw(chartData, options);
@@ -322,7 +320,8 @@
 			title: '이달의 수입',
 			 //차트 크기 설정
 			 width : 500,
-			 height : 300
+			 height : 300,
+			 pieHole : 0.4,
 			};
 			var chart = new google.visualization.PieChart(document.getElementById('incomeChart'));
 			chart.draw(chartData, options);
