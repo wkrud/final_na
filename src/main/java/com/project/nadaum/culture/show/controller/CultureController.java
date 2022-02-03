@@ -195,7 +195,7 @@ public class CultureController {
 		}
 		
 
-	//============================= 좋 아 요 ==========================================
+	//============================= 스크랩 ==========================================
 		
 	@PostMapping("/board/view/{apiCode}/likes")
 	public ResponseEntity<?> insertLikes(@RequestParam Map<String,Object> map){

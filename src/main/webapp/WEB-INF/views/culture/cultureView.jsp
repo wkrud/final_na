@@ -14,14 +14,46 @@
  -->
  <script src="https://kit.fontawesome.com/4123702f4b.js" crossorigin="anonymous"></script>
 <style>
+.form-control{
+display: inline-block;
+}
+html{
+background-color: #FFFBF5;
+}
 #culture-container{
-padding-top: 100px;
+    padding: 60px;
+    margin: 120px;
+    background: white;
+    width: 50%;
+    border-radius: 5%;
+    box-shadow: lightgrey 2px 10px 30px 5px;
+}
+
 }
 .fa-heart{
 font-size: 30px;
 }
+.wrap{
+margin: 0 auto;
+background-color: #FFFBF5;
+}
+#insertCommentFrm{
+text-align: center;
+}
+#comment-table{
+    margin-left: 10%;
+    width: 100%;
+    margin-top: 50px;
+}
+#comment-delete{
+	width: 30%;
+}
+#deleteComment-btn{
+    border: 0;
+    outline: 0;
+    background: none;
+}
 </style>
-<section class="content">
 		<div class="wrap">
 	<div id="culture-container" class="mx-auto text-center">
 		<!-- 상세내용 -->
@@ -38,10 +70,11 @@ font-size: 30px;
 			<p><img src="${culture.imgUrl}" alt="" style="width: 20%;"/></p>
 			<span>${culture.area}</span>
 			<span>${culture.realmName}</span>
+			<br />
 			<span>${culture.placeAddr}</span>
 			<br />
 			<span>${culture.price}</span>
-			
+			<br />
 			<span>${culture.placeUrl}</span>
 			</div>
 		</c:forEach>
@@ -78,14 +111,12 @@ font-size: 30px;
 		 	
 		 	</c:if><button type="submit" id="like-btn">스크랩하기</button>
 		</form>
-		 <button id="like-cancle">스크랩 취소</button>
-		 <br />
 		<i class="far fa-heart"></i>
 	</div>
 	<!-- culture-container 끝 -->
-	<hr />
 	<div class="container">
-	<h1>댓글</h1>
+	<hr />
+	<br />
 		<div class="insert-comment">
 			<form id="insertCommentFrm">
 				<input type="hidden" name="apiCode" value="${apiCode}"/>
@@ -99,7 +130,7 @@ font-size: 30px;
 						<option value="4">4</option>
 						<option value="5">5</option>
 					</select>
-				<textarea name="content" cols="60" rows="3"></textarea>
+				<textarea name="content"class="form-control col-sm-6" rows="3" ></textarea>
 	            <button type="submit" class="btn btn-light">등록</button>
 			</form>
 		</div>
@@ -117,17 +148,20 @@ font-size: 30px;
 						${comment.content}
 						<br />
 						
-				    	<form id="updateCommentFrm">
+				    	<%-- <form id="updateCommentFrm">
 				    		<input type="hidden" name="code" value="${comment.code}"/>
 				    		<input type="submit" id="updateComment-btn" value="수정" >
 				    	</form>
-				    	
+				    	 --%>
+					</td>		
+					<td id="comment-delete">
 						<form id="deleteCommentFrm">
 							<input type="hidden" name="code" value="${comment.code}"></input>
 				    		<input type="submit" id="deleteComment-btn" value="삭제" >
 				    	</form>
-					</td>		
+					</td>
 				</tr>
+				
 				</c:forEach>
 				</table>
 		
@@ -212,7 +246,7 @@ font-size: 30px;
 					error: console.log
 				});
 			});
-			//댓글수정
+			/* //댓글수정
 			$(updateCommentFrm).submit((e) => {
 				
 				e.preventDefault();
@@ -235,7 +269,7 @@ font-size: 30px;
 					error: console.log
 				});
 				
-			});
+			}); */
 			</script>
 
 
