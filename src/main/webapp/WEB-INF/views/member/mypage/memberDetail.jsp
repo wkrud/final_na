@@ -164,16 +164,7 @@
 			</c:if>
 			<c:if test="${param.tPage eq 'alarm'}">
 				<div class="alarm-wrap">
-					<ul >
-						<%-- <c:forEach items="${alarmList}" var="al">
-							<c:if test="${al.status eq 'F'}">
-								<li class="list-group-item">${al.content}</li>
-							</c:if>
-							<c:if test="${al.status eq 'T'}">
-								<li class="list-group-item list-group-item-secondary">${al.content}</li>
-							</c:if>
-						</c:forEach> --%>
-					</ul>
+					<ul class="list-group"></ul>
 				</div>
 	  			<div class="more-alarm-btn-wrap">
 	  				<button type="button" id="more-alarm-btn" class="btn btn-primary">더보기</button>
@@ -184,6 +175,7 @@
 	</div>
 </div>
 <script>
+<c:if test="${param.tPage eq 'alarm'}">
 var cPage = 1;
 $(() => {
 	moreAlarm();
@@ -202,22 +194,19 @@ const moreAlarm = () => {
 			
 			$(resp).each((i, v) => {
 				const {no, code, id, status, content, reg_date} = v;
-				console.log(code);
 				
-				let alarmLi = '';					
-				
-				if(code.substring(0,2) == 'he' && status == 'F'){
-					alarmLi = `<li ><a href="${pageContext.request.contextPath}/member/mypage/memberHelpDetail.do?code=\${code}">\${content}</a></li>`;
+				let alarmLi = '';	
+			 	if(code.substring(0,2) == 'he' && status == 'F'){
+					alarmLi = `<li class="list-group-item"><a href="${pageContext.request.contextPath}/member/mypage/memberHelpDetail.do?code=\${code}">\${content}</a></li>`;
 				}else if(code.substring(0,2) == 'he' && status == 'T'){
-					alarmLi = `<li ><a href="${pageContext.request.contextPath}/member/mypage/memberHelpDetail.do?code=\${code}">\${content}</a></li>`;
+					alarmLi = `<li class="list-group-item list-group-item-secondary"><a href="${pageContext.request.contextPath}/member/mypage/memberHelpDetail.do?code=\${code}">\${content}</a></li>`;
 				}else if(code.substring(0,2) == 'fr' && status == 'F'){
-					alarmLi = `<li >${al.content}</li>`;
+					alarmLi = `<li class="list-group-item">\${content}</li>`;
 				}else if(code.substring(0,2) == 'fr' && status == 'T'){
-					alarmLi = `<li >${al.content}</li>`;
+					alarmLi = `<li class="list-group-item list-group-item-secondary">\${content}</li>`;
 				}else{
-					alarmLi = `<li >${al.content}</li>`;
+					alarmLi = `<li class="list-group-item list-group-item-secondary">\${content}</li>`;
 				}
-				console.log(alarmLi);
 				$alarmUl.append(alarmLi);
 			});
 		},
@@ -225,6 +214,7 @@ const moreAlarm = () => {
 	});
 	cPage++;
 };
+</c:if>
 
 $(".change-profile").click((e) => {
 	if(confirm('프사를 바꾸시게요?')){
