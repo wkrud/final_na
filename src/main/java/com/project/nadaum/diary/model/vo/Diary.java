@@ -15,6 +15,7 @@ public class Diary implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private String code;
+	private String title;
 	private String id;
 	private String content;
 	private Date regDate;

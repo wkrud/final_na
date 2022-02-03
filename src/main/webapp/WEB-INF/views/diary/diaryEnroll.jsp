@@ -63,7 +63,7 @@
 </style>
 <div id="diaryEnroll-container">
 	<div id="diaryEnroll">
-		<form action="" method="post">
+		<form method="post">
 			<div id="diaryTitle">
 				<label>
 					<input type= "radio" name="emotion" value="<%= emotion %>">
@@ -79,6 +79,8 @@
 			</div>
 			<div id="diaryContent-container">
 				<input type="hidden" name="isPublic" value='N' id="isPublic" checked="checked"/>
+				<label for="title">제목</label>						
+				<input type="text" class="form-control" name="title" id="title"	placeholder="제목을 입력해주세요" required>
 				<textarea id="diaryContent" name="content" required></textarea>
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 			</div>
@@ -94,6 +96,10 @@
 </div>
 <script>
 $("#diaryBtn").click((e) => {
+	if($("#title").val() == ''){
+		alert('제목을 작성해 주세요');
+		return false;
+	}
 	if($("#limite_normal").text() == ''){
 		alert('질문 내용을 작성해 주세요');
 		return false;
@@ -198,7 +204,8 @@ const deleteImg = (url) => {
 		data: {val: url},
 		success(resp){
 			console.log(resp);
-		}
+		},
+		error: console.log
 	});
 };	
 	
