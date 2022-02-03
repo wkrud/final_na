@@ -20,7 +20,7 @@ public interface MemberDao {
 
 	int updateMember(Member member);
 
-	List<Map<String, Object>> selectAllAlarm(Member member);
+	List<Map<String, Object>> selectAllAlarm(Map<String, Object> param);
 
 	List<Map<String, Object>> selectAllMyQuestions(Map<String, Object> param);
 
@@ -69,8 +69,6 @@ public interface MemberDao {
 	int deleteFriend(Map<String, Object> nicknames);
 
 	int insertRequestFriend(Map<String, Object> nicknames);
-
-	Attachment selectMemberProfile(Member member);
 
 	int updateMemberNickname(Member member);
 

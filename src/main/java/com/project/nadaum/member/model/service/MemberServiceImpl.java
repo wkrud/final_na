@@ -44,8 +44,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public List<Map<String, Object>> selectAllAlarm(Member member) {
-		return memberDao.selectAllAlarm(member);
+	public List<Map<String, Object>> selectAllAlarm(Map<String, Object> param) {
+		return memberDao.selectAllAlarm(param);
 	}
 
 	@Override
@@ -166,11 +166,6 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public int insertRequestFriend(Map<String, Object> nicknames) {
 		return memberDao.insertRequestFriend(nicknames);
-	}
-
-	@Override
-	public Attachment selectMemberProfile(Member member) {
-		return memberDao.selectMemberProfile(member);
 	}
 
 	@Override

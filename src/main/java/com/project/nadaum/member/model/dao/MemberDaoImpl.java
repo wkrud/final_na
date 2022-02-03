@@ -46,8 +46,12 @@ public class MemberDaoImpl implements MemberDao {
 	}
 
 	@Override
-	public List<Map<String, Object>> selectAllAlarm(Member member) {
-		return session.selectList("member.selectAllAlarm", member);
+	public List<Map<String, Object>> selectAllAlarm(Map<String, Object> param) {
+		int offset = (int) param.get("offset");
+		int limit = (int) param.get("limit");
+		Member member = (Member) param.get("member");
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("member.selectAllAlarm", member, rowBounds);
 	}
 
 	@Override
@@ -176,12 +180,7 @@ public class MemberDaoImpl implements MemberDao {
 	public int insertRequestFriend(Map<String, Object> nicknames) {
 		return session.insert("member.insertRequestFriend", nicknames);
 	}
-
-	@Override
-	public Attachment selectMemberProfile(Member member) {
-		return session.selectOne("member.selectMemberProfile", member);
-	}
-
+	
 	@Override
 	public int updateMemberNickname(Member member) {
 		return session.update("member.updateMemberNickname", member);

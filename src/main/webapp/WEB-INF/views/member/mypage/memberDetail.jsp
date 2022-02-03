@@ -88,6 +88,39 @@
 						
 					</div>				
 				</div>
+				<div class="hobby-wrap">
+					<div class="my-hobby-wrap-title">
+						<span>내 취미</span>
+					</div>
+					<div class="my-hobby-wrap">
+					
+					</div>
+					<div class="hobby-wrap-title">
+						<span>취미</span>
+					</div>
+					<div class="hobby-select-form">
+						<form action="">
+							<label for="lol">롤</label>
+							<input type="checkbox" name="lol" id="lol" />
+							<label for="game">게임</label>
+							<input type="checkbox" name="game" id="game" />
+							<label for="book">독서</label>
+							<input type="checkbox" name="book" id="book" />
+							<label for="write">글쓰기</label>
+							<input type="checkbox" name="write" id="write" />
+							<label for="coding">코딩</label>
+							<input type="checkbox" name="coding" id="coding" />
+							<label for="bowling">볼링</label>
+							<input type="checkbox" name="bowling" id="bowling" />
+							<label for="basketball">농구</label>
+							<input type="checkbox" name="basketball" id="basketball" />
+							<label for="goodrestaurant">맛집탐방</label>
+							<input type="checkbox" name="goodrestaurant" id="goodrestaurant" />
+							<label for="etc">직접입력</label>
+							<input type="text" name="etc" id="etc"/>
+						</form>
+					</div>
+				</div>
 				
 				
 			
@@ -131,24 +164,68 @@
 			</c:if>
 			<c:if test="${param.tPage eq 'alarm'}">
 				<div class="alarm-wrap">
-					<ul class="list-group">
-						<c:forEach items="${alarmList}" var="al">
+					<ul >
+						<%-- <c:forEach items="${alarmList}" var="al">
 							<c:if test="${al.status eq 'F'}">
 								<li class="list-group-item">${al.content}</li>
 							</c:if>
 							<c:if test="${al.status eq 'T'}">
 								<li class="list-group-item list-group-item-secondary">${al.content}</li>
 							</c:if>
-						</c:forEach>
+						</c:forEach> --%>
 					</ul>
 				</div>
-	  			
+	  			<div class="more-alarm-btn-wrap">
+	  				<button type="button" id="more-alarm-btn" class="btn btn-primary">더보기</button>
+	  			</div>
 			</c:if>
 		</div>
 		
 	</div>
 </div>
 <script>
+var cPage = 1;
+$(() => {
+	moreAlarm();
+});
+$("#more-alarm-btn").click((e) => {
+	moreAlarm();
+});
+const moreAlarm = () => {
+	
+	$.ajax({
+		url: "${pageContext.request.contextPath}/member/mypage/memberAlarm.do",
+		data: {'cPage':cPage},
+		success(resp){
+			
+			const $alarmUl = $(".alarm-wrap ul");
+			
+			$(resp).each((i, v) => {
+				const {no, code, id, status, content, reg_date} = v;
+				console.log(code);
+				
+				let alarmLi = '';					
+				
+				if(code.substring(0,2) == 'he' && status == 'F'){
+					alarmLi = `<li ><a href="${pageContext.request.contextPath}/member/mypage/memberHelpDetail.do?code=\${code}">\${content}</a></li>`;
+				}else if(code.substring(0,2) == 'he' && status == 'T'){
+					alarmLi = `<li ><a href="${pageContext.request.contextPath}/member/mypage/memberHelpDetail.do?code=\${code}">\${content}</a></li>`;
+				}else if(code.substring(0,2) == 'fr' && status == 'F'){
+					alarmLi = `<li >${al.content}</li>`;
+				}else if(code.substring(0,2) == 'fr' && status == 'T'){
+					alarmLi = `<li >${al.content}</li>`;
+				}else{
+					alarmLi = `<li >${al.content}</li>`;
+				}
+				console.log(alarmLi);
+				$alarmUl.append(alarmLi);
+			});
+		},
+		error: console.log
+	});
+	cPage++;
+};
+
 $(".change-profile").click((e) => {
 	if(confirm('프사를 바꾸시게요?')){
 		location.href="${pageContext.request.contextPath}/member/mypage/memberChangeProfile.do";

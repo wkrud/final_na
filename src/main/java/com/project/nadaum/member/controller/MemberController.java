@@ -538,19 +538,28 @@ public class MemberController {
 	@GetMapping("/mypage/memberDetail.do")
 	public void memberDetail(@AuthenticationPrincipal Member member, @RequestParam String tPage, Model model, RedirectAttributes redirectAttr) {
 		try {
-			log.debug("tPage = {}", tPage);
-			Attachment attach = memberService.selectMemberProfile(member);
-			List<Map<String, Object>> alarm = memberService.selectAllAlarm(member);
-			log.debug("alarm = {}", alarm);
-			log.debug("attach = {}", attach);
-			model.addAttribute("attach", attach);
-			model.addAttribute("alarmList", alarm);
+			log.debug("tPage = {}", tPage);			
+			
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			throw e;
-		}
-	}
+		}		
+	}	
 	
+	@GetMapping("/mypage/memberAlarm.do")
+	public ResponseEntity<?> memberAlarm(@AuthenticationPrincipal Member member, @RequestParam(defaultValue = "1") int cPage){
+		log.debug("cPage = ", cPage);
+		int limit = 5;
+		int offset = (cPage - 1) * limit;
+		Map<String, Object> param = new HashMap<>();
+		param.put("limit", limit);
+		param.put("offset", offset);
+		param.put("member", member);
+		List<Map<String, Object>> alarm = memberService.selectAllAlarm(param);
+		log.debug("alarm = {}", alarm);
+		
+		return ResponseEntity.ok(alarm);
+	}
 	
 	@GetMapping("/mypage/memberMyHelp.do")
 	public void memberMyHelp(@RequestParam(defaultValue = "1") int cPage, HttpServletRequest request, @AuthenticationPrincipal Member member, Model model){

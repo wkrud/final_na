@@ -83,7 +83,14 @@
 			</div>
 		</div>
 	</div>
-	<div class="chat-room"></div>
+	<div class="search-right-wrap">
+		<div class="search-right">
+			<form action="">
+				<label for="search">검색여부</label>
+				<input type="checkbox" name="search" id="search" />
+			</form>
+		</div>
+	</div>
 </div>
 <script>
 $(function(){

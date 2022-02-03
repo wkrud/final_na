@@ -44,10 +44,6 @@
 		update member set profile = #{profile} where id = #{id}
 	</update>
 	
-	<select id="selectMemberProfile" resultType="attachment">
-		select * from attachment where code = #{id}
-	</select>
-	
 	<update id="updateMemberNickname">
 		update member set nickname = #{nickname} where id = #{id}
 	</update>
@@ -128,11 +124,11 @@
 	<!-- 친구 crud 시작 -->	
 	
 	<select id="selectSearchMemberNickname" resultType="string">
-		select nickname from member where nickname like '%'||#{value}||'%'
+		select nickname from member where search = 'T' and nickname like '%'||#{value}||'%'
 	</select>
 	
 	<select id="selectOneMemberNicknameNotMe" resultType="member">
-		select * from member where nickname = #{friendNickname} and not id = #{id}
+		select * from member where search = 'T' and nickname = #{friendNickname} and not id = #{id}
 	</select>
 	
 	<select id="selectFollower" resultMap="requestFriendMap">
