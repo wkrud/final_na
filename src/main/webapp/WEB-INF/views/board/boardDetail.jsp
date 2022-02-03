@@ -3,8 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@ taglib prefix="sec"
-	uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="게시판상세보기" name="title" />
@@ -37,31 +36,25 @@ div#board-container label.custom-file-label {
 
 		<div id="detailcontent-container" class="form-horizontal">
 			<!-- 넘겨주어야하는 값 -->
-			<input type="hidden" name="code" value="${board.code }" /> <input
-				type="hidden" name="id" id="id" value="${loginMember.id}" /> <input
-				type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+			<input type="hidden" name="code" value="${board.code }" /> 
+			<input type="hidden" name="id" id="id" value="${loginMember.id}" /> 
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
-			<label for="title" class="col-sm-2 control-label">제목</label> <input
-				type="text" class="form-control" name="boardTitle" id="title"
-				value="${board.title}" readonly> <label for="writer"
-				class="col-sm-2 control-label">작성자</label> <input type="text"
-				class="form-control" id="writer" name="id" value="${board.id}"
-				readonly> <label for="regDate"
-				class="col-sm-2 control-label">등록일자</label> <input
-				type="datetime-local" class="form-control" name="regDate"
-				id="regDate"
-				value='<fmt:formatDate value="${board.regDate}" pattern="yyyy-MM-dd'T'HH:mm"/>'
-				readonly> <label for="readCount"
-				class="col-sm-2 control-label">조회수</label> <input type="number"
-				class="form-control" id="readCount" name="readCount" title="조회수"
-				value="${board.readCount}" readonly>
+			<label for="title" class="col-sm-2 control-label">제목</label> 
+			<input type="text" class="form-control" name="boardTitle" id="title" value="${board.title}" readonly> 
+			<label for="writer" class="col-sm-2 control-label">작성자</label> 
+			<input type="text" class="form-control" id="writer" name="id" value="${board.id}" readonly> 
+			<label for="regDate" class="col-sm-2 control-label">등록일자</label> 
+			<input type="datetime-local" class="form-control" name="regDate" id="regDate"
+				value='<fmt:formatDate value="${board.regDate}" pattern="yyyy-MM-dd'T'HH:mm"/>'	readonly> 
+			<label for="readCount" class="col-sm-2 control-label">조회수</label> 
+			<input type="number" class="form-control" id="readCount" name="readCount" title="조회수" value="${board.readCount}" readonly>
 
 			<!-- 나중에 꼭 삭제하기 -->
 			<%-- <input type="text" class="form-control" name="memberId" value="${member.name} (${member.id})" readonly required> --%>
 
 			<label for="content" class="col-sm-2 control-label">내용</label>
-			<textarea class="form-control mt-3" name="content" placeholder="내용"
-				id="content" readonly>
+			<textarea class="form-control mt-3" name="content" placeholder="내용" id="content" readonly>
 				<c:out value="${board.content}" />
 			</textarea>
 			
@@ -71,23 +64,20 @@ div#board-container label.custom-file-label {
 						data-board-code="${board.code}"
 						data-id="${board.id}"
 						data-like-yes-no="${likeYesNo}">좋아요</button>
-						
+						${board.likeCount}
 			<!-- 좋아요 -->	
 
 		</div>
 		<div id="btn-container">
-			<%-- 작성자와 마지막행 수정/삭제버튼이 보일수 있게 할 것 --%>
-			<%-- <c:if test="${loginMember.id == board.id}"> --%>
-
 			<input type="button" class="btn btn-warning" id="listbtn" value="목록 "
 				onclick="location.href ='${pageContext.request.contextPath}/board/boardList.do'">
+				
+			<%-- 작성자와 마지막행 수정/삭제버튼이 보일수 있게 할 것 --%>
+			<c:if test="${loginMember.id eq board.id}">
 			<input type="button" class="btn btn-warning" id=" updatebtn"
-				value="수정"
-				onclick="location.href ='${pageContext.request.contextPath}/board/boardUpdateView.do?code=${board.code}'">
-			<input type="button" class="btn btn-warning" id="deletebtn"
-				value="삭제" onclick="deleteBoard()">
-
-			<%-- </c:if> --%>
+				value="수정"	onclick="location.href ='${pageContext.request.contextPath}/board/boardUpdateView.do?code=${board.code}'">
+			<input type="button" class="btn btn-warning" id="deletebtn"	value="삭제" onclick="deleteBoard()">
+			</c:if>
 		</div>
 
 	</div>

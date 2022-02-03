@@ -77,11 +77,14 @@ $(() => {
 				</tr>
 			</c:forEach>
 			</table>
-			<input	type="hidden" name="id" id="id" value="${loginMember.id}" />
+			<input type="hidden" name="id" id="id" value="${loginMember.id}" />
 			<sec:authentication property="principal" var="loginMember" />
 			<input type="button" value="글쓰기" id="btn-add"	class="btn btn-outline-success" onclick="goBoardForm();" /> 
 		
 		${pagebar}
 	</section>
 </body>
+<script>
+
+</script>
 <%-- <jsp:include page="/WEB-INF/views/common/footer.jsp"/> --%>

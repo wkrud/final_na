@@ -123,7 +123,7 @@ $(document).ready(function() {
 	  ];
 
 	var setting = {
-			placeholder: '질문을 작성하세요',
+			placeholder: '내용을 작성하세요',
             height : 600,
             minHeight : null,
             maxHeight : null,
