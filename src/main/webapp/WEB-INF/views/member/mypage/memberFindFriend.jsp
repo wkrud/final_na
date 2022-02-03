@@ -56,6 +56,14 @@
 	
 <script>
 var dest = '${loginMember.nickname}';
+const $search = $("#searchFriend");
+$search.on('keyup', function(e){
+	if($search.val() != ''){
+		if(e.key === 'Enter' || e.keyCode === 13){
+			$("#search-friend-start").trigger('click');
+		}
+	}
+});
 $("#search-friend-start").click((e) => {
 	if($("#searchFriend").val() == ''){
 		alert("닉네임을 입력해주세요");
