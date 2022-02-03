@@ -164,7 +164,7 @@ input[id="switch"]{
 										<img src="${pageContext.request.contextPath}/resources/upload/member/profile/default_profile_cat.png" alt="" style="width:45px; height:45px; object-fit:cover;" />
 									</c:if>						
 									<c:if test="${loginMember.profileStatus eq 'Y'}">		
-										<img src="${pageContext.request.contextPath}/resources/upload/member/profile/${attach.renamedFilename}" alt="" style="width:45px; height:45px; object-fit:cover;" />										 		
+										<img src="${pageContext.request.contextPath}/resources/upload/member/profile/${loginMember.profile}" alt="" style="width:45px; height:45px; object-fit:cover;" />										 		
 									</c:if>								
 								</c:if>								
 							</div>						    
