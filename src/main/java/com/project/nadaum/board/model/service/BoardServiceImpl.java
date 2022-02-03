@@ -106,13 +106,29 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public int insertBoareComment(BoardComment bc) {
+	public int insertBoardComment(BoardComment bc) {
 		return boardDao.insertBoardComment(bc);
 	}
 
 	@Override
 	public int boardCommentDelete(String commentCode) {
 		return boardDao.boardCommentDelete(commentCode);
+	}
+
+	//좋아요
+	@Override
+	public int boardLikeAdd(Map<String, Object> param) {
+		return boardDao.boardLikeAdd(param);
+	}
+
+	@Override
+	public int selectCountLikes(String code) {
+		return boardDao.selectCountLikes(code);
+	}
+
+	@Override
+	public int boardLikeDelete(Map<String, Object> param) {
+		return boardDao.boardLikeDelete(param);
 	}
 
 	

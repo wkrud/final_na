@@ -5,15 +5,12 @@
 <mapper namespace="board">
 
 	<!-- 게시글 -->
-	<select id="selectBoardList" resultType="board">
-		select
-			*
-		from
-			board
-		order by
-			code desc
-	</select>
 	
+	<select id="selectBoardList" resultType="board">
+		select	* from board
+		
+		order by code desc;
+	</select>
 	<select id="selectTotalContent" resultType="_int">
 		select
 			count(*)
@@ -123,9 +120,31 @@
 		where 
 			code = #{code}
 	</update>
+	<!-- 추천 -->
+	<select id="selectCountLikes">
+		select 
+			*
+		from
+			like
+		where
+			code = #{code}
+	</select>
+	
+	<insert id="boardLikeAdd">
+	insert into
+		like
+	values(
+		default, #{id}, #{code}
+	)
+	</insert>
+	
+	<delete id="boardLikeDelete">
+		delete from like where id = #{id} and code = #{code}
+	</delete>
+	
 	
 	<!-- 게시글 댓글조회 -->
-	<!-- <select id="selectBoardCommentList">
+	<select id="selectBoardCommentList" resultMap="boardCommentMap">
 		select
 			 * 
 		from
@@ -135,12 +154,20 @@
 			start with 
 				comment_level = 1 
 			connect by prior 
-				#{comment_code} = #{comment_ref} 
+				comment_code = comment_ref
 			order siblings by comment_code	
-	</select> -->
-	
+	</select>
+	<resultMap type="boardComment" id="boardCommentMap">
+		<id column="comment_code" property="commentCode"/>
+		<result column="id" property="id"/>
+		<result column="code" property="code"/>
+		<result column="content" property="content"/>
+		<result column="comment_level" property="commentLevel"/>
+		<result column="comment_ref" property="commentRef"/>
+		<result column="reg_date" property="regDate"/>
+	</resultMap>
 	<!-- 게시물 댓글 -->
-	<select id="selectBoardCommentList" resultType="boardComment">
+	<!-- <select id="selectBoardCommentList" resultType="boardComment">
 		select
 			 * 
 		from
@@ -148,7 +175,7 @@
 		where 
 			code = #{code} 		
 		order by comment_code			
-	</select>
+	</select> -->
 	
 	<insert id="insertBoardComment">
 		insert into
@@ -157,8 +184,8 @@
 			concat('bc-',seq_board_comment_no.nextval),
 			 #{id}, #{code}, #{content}, #{commentLevel}, 
 			 <choose>
-			 	<when test="commentRef == 0">null,</when>
-			 	<when test="commentRef != 0">#{commentRef},</when>
+			 	<when test="commentRef == ''">null,</when>
+			 	<when test="commentRef != ''">#{commentRef},</when>
 			 </choose>
 			 
 			 default)

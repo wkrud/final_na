@@ -35,9 +35,16 @@ public interface BoardService {
 	//댓글
 	List<BoardComment> selectBoardCommentList(String code);
 
-	int insertBoareComment(BoardComment bc);
+	int insertBoardComment(BoardComment bc);
 
 	int boardCommentDelete(String commentCode);
+
+	//좋아요
+	int boardLikeAdd(Map<String, Object> param);
+
+	int selectCountLikes(String code);
+
+	int boardLikeDelete(Map<String, Object> param);
 
 
 

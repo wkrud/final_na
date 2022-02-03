@@ -37,6 +37,12 @@ public interface BoardDao {
 
 	int boardCommentDelete(String commentCode);
 
+	int boardLikeAdd(Map<String, Object> param);
+
+	int selectCountLikes(String code);
+
+	int boardLikeDelete(Map<String, Object> param);
+
 	
 
 

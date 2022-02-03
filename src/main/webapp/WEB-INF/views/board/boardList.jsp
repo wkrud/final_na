@@ -67,8 +67,8 @@ $(() => {
 				<tr value="${board.code}">
 					<td class="boardCode">${board.code}</td>
 					<td>
-						<a href="${pageContext.request.contextPath}/board/boardDetail.do?code=${board.code}"
-							>	${board.title} </a>
+						<a href="${pageContext.request.contextPath}/board/boardDetail.do?code=${board.code}">${board.title} </a>
+						<%-- <c:if test="${board.commentCount gt 0 ? board.commentCount : ""}"></c:if>  --%>
 					</td>
 					<td>${board.id}</td>
 					<td>${board.content}</td>

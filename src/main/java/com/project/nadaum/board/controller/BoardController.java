@@ -2,6 +2,7 @@ package com.project.nadaum.board.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +47,50 @@ public class BoardController {
 	private ServletContext application;
 	
 	
+	
 	//추천수
+	@ResponseBody
+	@GetMapping("/freeboardLikeDelete")
+	public Map<String, Object> boardLikeDelete(@RequestParam String code, @RequestParam String id){
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("code", code);
+		param.put("id", id);
+		
+		int result = boardService.boardLikeDelete(param);
+		log.debug("좋아요 삭제 result = {}", result);
+		
+		// 좋아요 삭제하고 새로 추가된 좋아요 갯수 받아오기
+		int selectCountLikes = boardService.selectCountLikes(code);
+		log.debug("좋아요 수 삭제해서 0이어야함 = {}", selectCountLikes);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("result", result);
+		map.put("selectCountLikes", selectCountLikes);
+		
+		return map;
+	}
+	
+	@ResponseBody
+	@GetMapping("/boardLike.do")
+	public Map<String, Object> boardLikeAdd(@RequestParam String code, @RequestParam String id) {
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("code", code);
+		param.put("id", id);
+
+		int result = boardService.boardLikeAdd(param);
+		log.debug("좋아요 추가 result = {}", result);
+		
+		// 좋아요 추가하고 새로 추가된 좋아요 갯수 받아오기
+		int selectCountLikes = boardService.selectCountLikes(code); 
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("result", result);
+		map.put("selectCountLikes", selectCountLikes);
+		
+		return map;
+	}
 	
 	//게시물 댓글삭제
 	@PostMapping("/boardCommentDelete.do")
@@ -70,20 +114,26 @@ public class BoardController {
 			@AuthenticationPrincipal Member member,
 			@RequestParam String code,
 			@RequestParam int commentLevel, //댓글-1, 대댓글-2 확인
-			@RequestParam String commentRef, //참조하는 댓글코드 (대댓글인 경우 참고하는 댓글zhem, 댓글인 경우 null)
+			@RequestParam String commentRef, //참조하는 댓글코드 (대댓글인 경우 참고하는 댓글코드, 댓글인 경우 null)
 //			@RequestParam String id,
 			@RequestParam String content,
 			HttpSession session,
 			BoardComment commentList) throws Exception{
-		
+		try {
 		String id = (String) session.getAttribute("");
 		BoardComment bc = new BoardComment("", id, code, content, commentLevel, commentRef, null);
 		log.debug("bc = {}", bc);
 		
-		int result = boardService.insertBoareComment(bc);
+		int result = boardService.insertBoardComment(bc);
 		log.debug("commentList = {}", commentList);
 		
 		return "redirect:/board/boardDetail.do?code="+code;
+		
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			return "redirect:error.do";
+		}
+
 	}
 	
 	//게시물 삭제하기

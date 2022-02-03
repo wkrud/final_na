@@ -78,7 +78,7 @@ public class BoardDaoImpl implements BoardDao {
 	//조회수
 	@Override
 	public int updateBoardReadCount(String code) {
-		return session.update("updateBoardReadCount", code);
+		return session.update("board.updateBoardReadCount", code);
 	}
 
 	//게시판 댓글
@@ -94,7 +94,23 @@ public class BoardDaoImpl implements BoardDao {
 
 	@Override
 	public int boardCommentDelete(String commentCode) {
-		return session.delete("boardCommentDelete", commentCode);
+		return session.delete("board.boardCommentDelete", commentCode);
+	}
+
+	//좋아요
+	@Override
+	public int boardLikeAdd(Map<String, Object> param) {
+		return session.insert("board.boardLikeAdd", param);
+	}
+
+	@Override
+	public int selectCountLikes(String code) {
+		return session.selectOne("board.selectCountLikes", code);
+	}
+
+	@Override
+	public int boardLikeDelete(Map<String, Object> param) {
+		return session.delete("board.boardLikeDelete", param);
 	}
 
 	
