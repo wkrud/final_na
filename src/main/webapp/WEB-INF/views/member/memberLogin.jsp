@@ -26,7 +26,7 @@
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
 	integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
 	crossorigin="anonymous">
-
+<link href='${pageContext.request.contextPath}/resources/css/member/login.css' rel='stylesheet' />
 <script>
 $(() => {	
 	$(loginModal)
@@ -37,6 +37,11 @@ $(() => {
 	
 });
 </script>
+<style>
+.modal-backdrop{
+	background-image: url("${pageContext.request.contextPath}/resources/upload/member/profile/default_profile_cat.png");
+}
+</style>
 </head>
 <body>
 
@@ -46,7 +51,7 @@ $(() => {
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">로그인</h5>
+				<h5 class="modal-title" id="exampleModalLabel">나:다움 로그인</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -68,38 +73,47 @@ $(() => {
 				action="${pageContext.request.contextPath}/member/memberLogin.do"
 				method="post">
 				<div class="modal-body">
-					<input type="hidden" name="id" id="submit-id" />
-					<input type="hidden" name="password" id="submit-password" />
+					<!-- <input type="hidden" name="id" id="submit-id" />
+					<input type="hidden" name="password" id="submit-password" /> -->
 					<c:if test="${param.error != null}">
 						<span class="text-danger">아이디 또는 비밀번호가 일치하지 않습니다.</span>
 					</c:if>
 					<input
-						type="text" class="form-control" value="testid" id="input-id"
+						type="text" class="form-control" name="id" value="testid" id="input-id"
 						placeholder="아이디" required>					
 					<br /> 
 					<input
-						type="password" class="form-control" value="qwer1234" id="input-password"
+						type="password" class="form-control" name="password" value="qwer1234" id="input-password"
 						placeholder="비밀번호" required>
 				</div>
 				<div class="modal-footer">
-					<div>
-						<input type="checkbox" class="form-check-input" name="remember-me" id="remember-me" />
-						<label for="remember-me">자동 로그인</label>
-					</div>
-					<div>
-						<a href="${pageContext.request.contextPath}/member/memberFindPassword.do">비밀번호 찾기</a>
-						<a href="${pageContext.request.contextPath}/member/memberFindId.do">아이디 찾기</a>
-						<a href="${pageContext.request.contextPath}/member/memberEnrollAgreement.do">처음이신가요?</a>
-					</div>
-					<div>
-						<button type="submit" id="main-login-btn" class="btn btn-outline-success">로그인</button>
-						<button type="button" class="btn btn-outline-danger" data-dismiss="modal">닫기</button>
+					<div class="login-things-wrap">
+						<div class="remember-find-wrap">
+							<div class="remember-me-wrap">
+								<input type="checkbox" class="form-check-input" name="remember-me" id="remember-me" />
+								<label for="remember-me">remember me</label>
+							</div>
+							<div class="find-wrap">
+								<div class="find-id">
+									<a href="${pageContext.request.contextPath}/member/memberFindId.do">Find ID</a>
+								</div>
+								<div class="find-pw">
+									<a href="${pageContext.request.contextPath}/member/memberFindPassword.do">Find PW</a>
+								</div>
+							</div>
+						</div>
+						<div class="login-btn-wrap">
+							<button type="submit" id="main-login-btn" class="btn btn-outline-success">로그인</button>
+						</div>
 					</div>
 				</div>
-				<div>
+				<div class="kakao-login-wrap">
 					<div id="kakao-login">
 						<img src="${pageContext.request.contextPath}/resources/images/member/kakao_login_medium_wide.png" alt="" />
 					</div>
+				</div>
+				<div class="enroll-wrap">						
+					<a href="${pageContext.request.contextPath}/member/memberEnrollAgreement.do">처음이신가요?</a>
 				</div>
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 			</form>
