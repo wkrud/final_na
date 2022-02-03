@@ -10,21 +10,47 @@
 	<jsp:param value="나:다움 Diary" name="title"/>
 </jsp:include>
 <style>
-#diaryMain-container {backgroundColor : yellow;}
- [type=radio] { 
-  position: absolute;
-  opacity: 0;
-  width: 0;
-  height: 0;
+#diaryPreview-container {
+	padding-top: 15px;
+    display: flex;
+    justify-content: center;
+    background-color: cornsilk;
+    padding: 50px;
+}
+#diaryMain-container {
+    display: flex;
+    padding-top: 90px;
+    /* padding-bottom: 7px; */
+    flex-direction: column;
+    align-items: center;
+    margin: 10px;
+}
+#diaryMonth{padding: 30px;}
+#diaryPreviewContent {    
+	display: flex;
+    flex-direction: row;
+}
+#diarySearch-container { padding-bottom: 15px; }
+[type=radio] { 
+	position: absolute;
+	opacity: 0;
+	width: 0;
+	height: 0;
 } 
 [type=radio] + div { cursor: pointer; }
-
 [type=radio]:checked + div { height:160px; }
-
 .form-group { 
 	text-align: center; display: flex;
     flex-direction: column;
     align-items: center;
+}
+.badge-warning {
+    color: #212529;
+    font-size: 23px;
+    background-color: #ffc107;
+    height: 35px;
+    width: 41px;
+    cursor: pointer;
 }
 
 .emotionChoose { 
@@ -56,66 +82,132 @@
     content:url("${pageContext.request.contextPath}/resources/images/diary/emotion/eat.png");
     height:130px;
 }
-
+.col-8 {width: 600px; /* place-self: center; 일기내용 중앙정렬*/}
+#list-tab {
+	width: 287px;
+    height: 376px;
+    overflow: auto;
+    scroll-snap-type: y proximity;
+}
+.list-group-item {scroll-snap-align: start;}
 </style>
 
 <div id="diaryMain-container">
+	<div id="diaryMonth">	
+		<span class="badge badge-pill badge-warning">1</span>
+		<span class="badge badge-pill badge-warning">2</span>
+		<span class="badge badge-pill badge-warning">3</span>
+		<span class="badge badge-pill badge-warning">4</span>
+		<span class="badge badge-pill badge-warning">5</span>
+		<span class="badge badge-pill badge-warning">6</span>
+		<span class="badge badge-pill badge-warning">7</span>
+		<span class="badge badge-pill badge-warning">8</span>
+		<span class="badge badge-pill badge-warning">9</span>
+		<span class="badge badge-pill badge-warning">10</span>
+		<span class="badge badge-pill badge-warning">11</span>
+		<span class="badge badge-pill badge-warning">12</span>
+	</div>
 	<div id="diaryPreview-container">
-		<div id="diarySearch-container">
-			<input type="text" class="diarySearch" name="diarySearch" id="diarySearch" placeholder="검색">
-			<button type="button" class="searchBtn" id="searchBtn">검색</button>		
-			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">+</button>
-			<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			  <div class="modal-dialog">
-			    <div class="modal-content">
-			      <div class="modal-header">
-			        <h4 class="modal-title" id="exampleModalLabel">New Diary</h4>
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			      </div>
-			      <div class="modal-body">
-			        <form action="${pageContext.request.contextPath}/diary/diaryEnroll.do">			     
-			          <div class="form-group">
-			            <label for="recipient-name" id="emotionTitle" class="control-label">오늘의 감정을 골라보세요</label>
-			            <input type="date" name="regDate" id="reg_date" />
-			          </div>
-			          <div class="emotionChoose">
-			          	<label><input type= "radio" name="emotion" value="blanket"><div class="blanket"></div></input></label>
-			          	<label><input type= "radio" name="emotion" value="daechoong"><div class="daechoong"></div></input></label>
-			          	<label><input type= "radio" name="emotion" value="gogo"><div class="gogo"></div></input></label>
-			          	<label><input type= "radio" name="emotion" value="happy"><div class="happy"></div></input></label>
-			          	<label><input type= "radio" name="emotion" value="trash"><div class="trash"></div></input></label>
-			          	<label><input type= "radio" name="emotion" value="eat"><div class="eat"></div></input></label>
-			          	<input type="hidden" name="id" id="id" value="${loginMember.id}" />
-						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-			          </div>
-				      <div class="modal-footer">
-				        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				        <input type="submit" class="btn btn-primary" value="전송">
+		<div id="diaryPreviewContent">
+			<div id="diaryPreview">
+				<div id="diarySearch-container">
+				<input type="text" class="diarySearch" name="diarySearch" id="diarySearch" placeholder="검색">
+				<button type="button" class="searchBtn" id="searchBtn">검색</button>		
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">+</button>
+				<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				  <div class="modal-dialog">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h4 class="modal-title" id="exampleModalLabel">New Diary</h4>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				      </div>
-			        </form>
-			      </div>
+				      <!-- 모달 -->
+				      <div class="modal-body">
+				        <form action="${pageContext.request.contextPath}/diary/diaryEnroll.do">			     
+				          <div class="form-group">
+				            <label for="recipient-name" id="emotionTitle" class="control-label">오늘의 감정을 골라보세요</label>
+				            <input type="date" name="regDate" id="reg_date" />
+				          </div>
+				          <div class="emotionChoose">
+				          	<label><input type= "radio" name="emotion" value="blanket"><div class="blanket"></div></input></label>
+				          	<label><input type= "radio" name="emotion" value="daechoong"><div class="daechoong"></div></input></label>
+				          	<label><input type= "radio" name="emotion" value="gogo"><div class="gogo"></div></input></label>
+				          	<label><input type= "radio" name="emotion" value="happy"><div class="happy"></div></input></label>
+				          	<label><input type= "radio" name="emotion" value="trash"><div class="trash"></div></input></label>
+				          	<label><input type= "radio" name="emotion" value="eat"><div class="eat"></div></input></label>
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+				          </div>
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					        <input type="submit" class="btn btn-primary" value="전송">
+					      </div>
+				        </form>
+				      </div>
+				      
+				    </div>
+				  </div>
+				</div>
+			</div>			
+			<!-- 일기 목록 -->
+			<div class="row">
+			  <div class="col-4">
+			    <div class="list-group" id="list-tab" role="tablist">
+			    <c:forEach items="${diaryList}" var="diary" varStatus="vs">
+			    	<c:choose>
+			    		<c:when test="${vs.first}">
+					      <a class="list-group-item list-group-item-action active" id="${diary.code}-list" data-toggle="list" href="#${diary.code}" role="tab" aria-controls="${diary.code}">
+					      <h4><fmt:formatDate value="${diary.regDate}" pattern="dd일 E"/>요일</h4><h5>${diary.title}</h5></a>
+			    		</c:when>
+			    		<c:otherwise>
+					      <a class="list-group-item list-group-item-action" id="${diary.code}-list" data-toggle="list" href="#${diary.code}" role="tab" aria-controls="${diary.code}">
+					      <h4><fmt:formatDate value="${diary.regDate}" pattern="dd일 E"/>요일</h4><h5>${diary.title}</h5></a>
+			    		</c:otherwise>
+			    	</c:choose>
+				   </c:forEach>
+			    </div>
+			  </div>
+			  <div class="col-8">
+			    <div class="tab-content" id="nav-tabContent">
+			    	<c:forEach items="${diaryList}" var="diary" varStatus="vs">
+				    	<c:choose>
+				    		<c:when test="${vs.first}">
+						      <div class="tab-pane fade show active" id="${diary.code}" role="tabpanel" aria-labelledby="${diary.code}-list">
+						      	<h4><fmt:formatDate value="${diary.regDate}" pattern="dd일 E"/>요일</h4>
+						      	<h5>${diary.title}</h5>
+						      	${diary.content}
+						      </div>
+				    		</c:when>
+				    		<c:otherwise>
+						      <div class="tab-pane fade show" id="${diary.code}" role="tabpanel" aria-labelledby="${diary.code}-list">
+						      	<h4><fmt:formatDate value="${diary.regDate}" pattern="dd일 E"/>요일</h4>
+						      	<h5>${diary.title}</h5>
+						      	${diary.content}
+						      </div>
+				    		</c:otherwise>
+				    	</c:choose>
+			    	</c:forEach>
+			      <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">proooooooooooo</div>
+			      <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">meeeeeeeeeeeeee</div>
+			      <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">settttpppptttttttttt</div>
 			    </div>
 			  </div>
 			</div>
+		</div>		
+				
+			</div>
+		</div>
+	</div>
 
-		</div>
-		<div id="diaryPreviewContent">
-			다이어리 프리뷰
-		</div>
-	</div>
-	<div id="recentlyDiary">
-		다이어리 최근 포스트
-	</div>
-</div>
 
 <script>
 window.onload = function() {
-    //가계부 insert 모달창에 date 기본값 오늘 날짜로 뜨게 설정
-    today = new Date();
-    today = today.toISOString().slice(0, 10);
-    bir = document.getElementById("reg_date");
-    bir.value = today;
+	today = new Date();
+	today = today.toISOString().slice(0, 10);
+	bir = document.getElementById("reg_date");
+	bir.value = today;
 }
+
+
 </script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
