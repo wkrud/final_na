@@ -56,6 +56,14 @@
 	
 <script>
 var dest = '${loginMember.nickname}';
+const $search = $("#searchFriend");
+$search.on('keyup', function(e){
+	if($search.val() != ''){
+		if(e.key === 'Enter' || e.keyCode === 13){
+			$("#search-friend-start").trigger('click');
+		}
+	}
+});
 $("#search-friend-start").click((e) => {
 	if($("#searchFriend").val() == ''){
 		alert("닉네임을 입력해주세요");
@@ -107,7 +115,7 @@ $("#search-friend-start").click((e) => {
 						<button type="button" class="btn btn-warning btn-sm following">친구신청중</button>`;
 				}
 				$resultDiv.append(searched);
-				send('friend', resp.check, '${loginMember.id}', resp.nickname);
+				friendAlarm('friend', resp.check, '${loginMember.nickname}', resp.nickname);
 				updateFriend(resp.check, resp.nickname);
 			});
 		},
@@ -183,17 +191,17 @@ $(() => {
 		}
 	});
 });
-var socket = new SockJS("http://localhost:9090/nadaum/chat");
-	stompClient = Stomp.over(socket);
 
-function send(type, flag, id, friendNickname){
+var socket = new SockJS("http://localhost:9090/nadaum/chat");
+stompClient = Stomp.over(socket);
+function friendAlarm(type, status, myNickname, friendNickname){
 	var sendData = {
 		'type':type,
-		'flag':flag,
-		'senderId':'${loginMember.id}',
-		'friendNickname':friendNickname
+		'status':status,
+		'myNickname':myNickname,
+		'friendNickname': friendNickname
 	};
-	stompClient.send("/nadaum/chat/alarm/" + friendNickname,{},JSON.stringify(sendData));
+	stompClient.send("/nadaum/chat/friendStatus/" + friendNickname,{},JSON.stringify(sendData));
 };
 </script>
 </body>

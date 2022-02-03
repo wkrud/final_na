@@ -92,7 +92,7 @@ $(() => {
 						<a href="${pageContext.request.contextPath}/member/memberEnrollAgreement.do">처음이신가요?</a>
 					</div>
 					<div>
-						<button type="submit" class="btn btn-outline-success">로그인</button>
+						<button type="submit" id="main-login-btn" class="btn btn-outline-success">로그인</button>
 						<button type="button" class="btn btn-outline-danger" data-dismiss="modal">닫기</button>
 					</div>
 				</div>

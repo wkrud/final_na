@@ -9,6 +9,8 @@
 	<jsp:param value="나:다움 친구관리" name="title"/>
 </jsp:include>
 <sec:authentication property="principal" var="loginMember"/>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
 <div class="member-body">
 	<button type="button" class="btn btn-outline-warning" id="searchFriendBtn">친구검색</button>
 	<div class="friend-list-wrap">
@@ -81,21 +83,57 @@
 			</div>
 		</div>
 	</div>
-	<div class="chat-room"></div>
+	<div class="search-right-wrap">
+		<div class="search-right">
+			<form action="">
+				<label for="search">검색여부</label>
+				<input type="checkbox" name="search" id="search" />
+			</form>
+		</div>
+	</div>
 </div>
 <script>
+$(function(){
+	$(".friends-section").slick({
+		infinite: true,
+		slidesToShow: 10,
+		slidesToScroll: 1,
+		speed: 100,
+		arrows: true,
+		autoplay: false,
+		vertical: false,
+		prevArrow : "<button type='button' class='slick-prev'>Previous</button>",		
+		nextArrow : "<button type='button' class='slick-next'>Next</button>"
+	});
+	$(".followers-section").slick({
+		infinite: true,
+		slidesToShow: 10,
+		slidesToScroll: 1,
+		speed: 100,
+		arrows: true,
+		autoplay: false,
+		vertical: false,
+		prevArrow : "<button type='button' class='slick-prev'>Previous</button>",		
+		nextArrow : "<button type='button' class='slick-next'>Next</button>"
+	});
+});
+
 $(".friend-wrap").click((e) => {
-	let guest = $(e.currentTarget).find('span.friend-name').html();
-	if(confirm(guest + '님과 DM을 하시겠습니까?')){
-		var room = Math.floor(Math.random() * 100000);
-		console.log('room = ' + room);
-		chatInvite('chat', '${loginMember.nickname}', guest, room);
-		
-		let chatRoom = `
-        <iframe id="nadaumChat" title="Nadaum Chat" src="${pageContext.request.contextPath}/member/mypage/chat.do?room=\${room}" >
-		</iframe>`;
-		$(".chat-section").append(chatRoom);
-		$("#chatwrap").css("display", "block");
+	if(!$("#nadaumChat").length){
+		let guest = $(e.currentTarget).find('span.friend-name').html();
+		if(confirm(guest + '님과 DM을 하시겠습니까?')){
+			var room = Math.floor(Math.random() * 100000);
+			console.log('room = ' + room);
+			chatInvite('chat', '${loginMember.nickname}', guest, room);
+			
+			let chatRoom = `
+	        <iframe id="nadaumChat" title="Nadaum Chat" src="${pageContext.request.contextPath}/member/mypage/chat.do?room=\${room}" >
+			</iframe>`;
+			$(".chat-section").append(chatRoom);
+			$("#chatwrap").css("display", "block");
+		}
+	}else{
+		alert('채팅방은 한개만 만들 수 있습니다.');
 	}
 });
 
@@ -107,13 +145,13 @@ $(searchFriendBtn).click((e) => {
 
 $("#friend-with-follower").click((e) => {
 	let nickname = $(".follower-name").text();
-	alarmSave('fr', 'follower', '${loginMember.id}', nickname);
+	friendAlarm('friend', 'follower', '${loginMember.nickname}', nickname);
 	updateFriend('follower', nickname);
 });
 
 $("#end-friend").click((e) => {
 	let nickname = $(".friend-name").text();
-	alarmSave('fr', 'friend', '${loginMember.id}', nickname);
+	friendAlarm('friend', 'friend', '${loginMember.nickname}', nickname);
 	updateFriend('friend', nickname);
 });
 

@@ -32,7 +32,7 @@ $(() => {
 	$(myQuestions)
 		.modal()
 		.on("hide.bs.modal", (e) => {
-			location.href='${empty header.referer ? pageContext.request.contextPath : header.referer}';
+			location.href='${pageContext.request.contextPath}/member/mypage/memberDetail.do?tPage=myPage';
 		});
 });
 </script>
@@ -56,6 +56,7 @@ $(() => {
 						</a>
 					</c:forEach>
 				</div>			
+				${pagebar}
 			</div>
 		</div>
 	</div>
