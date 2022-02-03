@@ -288,7 +288,7 @@ input[id="switch"]{
 							count++;
 							
 							let alarmDiv = `<div class="card card-body alarmContent">\${content}</div>`;
-							if("code:contains('he-')"){
+							if(code.substring(0,2) == 'he'){
 								alarmDiv = `<div class="card card-body alarmContent">
 								<a href="${pageContext.request.contextPath}/member/mypage/memberHelpDetail.do?code=\${code}">\${content}</a>								
 								</div>`;
