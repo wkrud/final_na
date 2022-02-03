@@ -7,7 +7,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Data
 @AllArgsConstructor
@@ -21,8 +23,8 @@ public class AccountBook implements Serializable {
    private String detail;
    private int price;
    @DateTimeFormat(pattern="yyyy-MM-dd")
-   private Date reg_date;
-   private String income_expense;
+   private Date regDate;
+   private String incomeExpense;
    private String payment;
    private String category;
 }

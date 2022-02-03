@@ -2,6 +2,8 @@ package com.project.nadaum.diary.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
@@ -11,12 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.JsonObject;
 import com.project.nadaum.common.NadaumUtils;
@@ -37,8 +41,8 @@ public class DiaryController {
 	@Autowired
 	private ServletContext application;
 	
-	@GetMapping("/diaryMain.do")
-	public void DiaryMain() {}
+//	@GetMapping("/diaryMain.do")
+//	public void diaryMain() {}
 	
 	@GetMapping("/diaryEnroll.do")
 	public void DiaryEnroll() {}
@@ -82,12 +86,14 @@ public class DiaryController {
 		return jsonObject.toString();
 	}
 	
-	@PostMapping(value="/deleteSummernoteImageFile.do")
+	@PostMapping(value="/deleteImageFile.do")
 	public ResponseEntity<?> deleteImageFile(@RequestParam Map<String, Object> map)  {
 		log.debug("map = {}", map);
 		
 		String fileRoot = application.getRealPath("/resources/upload/diary/img/");
 		String url = (String) map.get("val");
+		log.debug("url = {}", url);
+		
 		String[] strs = url.split("/");
 		String filename = strs[strs.length - 1];
 		
@@ -99,4 +105,17 @@ public class DiaryController {
 		
 		return ResponseEntity.ok(1);
 	}
+	
+	@GetMapping("/diaryMain.do")
+	public void recentlyDiary(@AuthenticationPrincipal Member member, Model model) {
+		String id = member.getId();
+		log.debug("id = {}", id);
+		
+		List<Diary> diaryList = diaryService.recentlyDiary(id);
+		log.debug("diaryList = {}", diaryList);
+		model.addAttribute("diaryList", diaryList);
+		
+	}
+	
+	
 }

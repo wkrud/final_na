@@ -1,0 +1,143 @@
+@charset "UTF-8";
+* {
+	margin : 0;
+	padding : 0;
+	box-sizing: border-box;
+	position: relative;
+}
+
+
+/* 영역 확인용 박스 */
+.box {
+	border : 1px solid black;
+}
+
+/* 페이지 전체 감싸고 있는 div */
+.wrapper {
+	margin-top : 50px;
+	position : relative;
+	background-color: #FFFBF5;
+}
+
+/* 사이드 메뉴 */
+.side-nav {
+  position: relative;
+  z-index: 999;
+  top : 20%;
+  left : -7%;
+  display: inline-block;
+  width : 200px;
+}
+
+.side-nav:hover {
+  animation-name: slide;
+  animation-duration: 0.5s;
+  left : 1%;
+  cursor: pointer;
+}
+
+@keyframes slide {
+  from {
+    left : -7%;
+  }
+  to {
+    left : 1%;
+  }
+}
+
+.side-nav ul {
+  list-style: none;
+  display: inline-block;
+  padding : 0;
+  float: right;
+}
+
+.side-nav ul li {
+  width : 150px;
+  height: 50px;
+  font-size: 20px;
+  text-align: center;
+  margin : 2px;
+  background-color: #E5E5E5;
+  color : #F6953C;
+  border-radius: 0px 15px 15px 0px;
+}
+
+.side-nav ul li:hover{
+  background-color: #F6953C;
+  color : #E5E5E5;
+}
+
+/* 가운데 메인 위젯 영역 */
+.m_center {
+  width: 90%;
+  height: 600px;
+  margin : auto;
+  background-color: #F5F5F5;
+  position : relative;
+  top : 80px;
+}
+
+/* 북마크 디자인 */
+.m_center::before{
+  content: '';
+  position: absolute;
+  top: -20px;
+  right: 50px;
+  width : 50px;
+  height: 250px;
+  background-color: #F6953C;
+  border-radius: 20px;
+  border-top-right-radius: 0px;
+}
+
+.m_center::after{
+  content: '';
+  position: absolute;
+  top: -20px;
+  right: 30px;
+  width : 20px;
+  height: 20px;
+  background-color: #F6953C;
+  border-top-right-radius: 20px;
+}
+
+/* 위젯 */
+.todoList {
+  width : 350px;
+  height: 400px;
+  position: relative;
+  background : white;
+  box-shadow: 0 25px 45px rgba(0, 0, 0, 0.1);
+  border : 1px solid rgba(225, 225, 225, 0.5);
+  border-radius: 10px;
+  top : 30px;
+  left : 50px;
+  padding : 20px;
+  backdrop-filter: blur(25px);
+  display: inline-block;
+  overflow:auto;
+}
+
+
+/* 투두리스트 모달 */
+ .modal-background{
+  background-color: rgba(0, 0, 0, 0.5);
+  position : fixed;
+  z-index : 5;
+  width : 100%;
+  height : 100%;
+/*   display : none;
+ */  margin-top : -100px;
+  padding : 0;
+}
+
+.insertTodoList{
+  background-color: #fff;
+  width : 30%;
+  margin : 100px auto;
+  padding : 20px;
+  border-radius: 10px;
+  position : relative;
+  text-align : center;
+}

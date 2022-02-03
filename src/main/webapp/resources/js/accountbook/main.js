@@ -4,6 +4,7 @@
 	var $id = $("#id").val();
 	var $income = $("#income").val();
 	var $expense = $("#expense").val();
+	var $contextPath = $("#contextPath").val(); //contextPath jsp에서 가져온 값(js파일에서 el을 못 씀)
 	
 	//option 배열
 	var income = ["급여","용돈","기타"];
@@ -30,7 +31,7 @@
 		$(".modal-background").fadeOut();
 	});
 		
-	$("#btn1").on('click', function(){
+	$("#insertBtn").on('click', function(){
 		$(".modal-background").fadeIn();
 	});
 		
@@ -42,23 +43,22 @@
 			return "지출";
 	}
 	
-	//거래내역 입력시 날짜 기본값 세팅
+	//페이지 처음 로딩시 실행 함수
 	window.onload = function() {
+		//가계부 전체리스트 출력
+		AllList();
+		//가계부 insert 모달창에 date 기본값 오늘 날짜로 뜨게 설정
 		today = new Date();
 		today = today.toISOString().slice(0, 10);
-		bir = document.getElementById("reg_date");
+		bir = document.getElementById("regDate");
 		bir.value = today;
-	}
-	
-	//페이지 로딩시 가계부 전체리스트 출력
-	window.onload = function() {
-		AllList();
 	}
 
 	//원화표시 정규식
 	function numberWithCommas(n) {
     	return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}
+
 	
 	//대분류 선택에 따른 소분류 출력 - 검색
 	$("#mainCategory").change(function() {
@@ -102,51 +102,52 @@
 	
    //가계부 전체 리스트 조회
   function AllList() {	
+	var startNum = ("#account_list tr").length; //마지막 리스트 번호
+	
+	
  	$.ajax({
-		url: "/nadaum/accountbook/selectAllAccountList.do",
+		url: $contextPath+"/accountbook/selectAllAccountList.do",
 		type: "GET",
 		data: {
 			id : $id
 		},
-		dataType : "json",
-		contentType : "application/json; charset=UTF-8",
-		success : function(accountList){
-			console.log(accountList);
-			$.each(accountList, function(i, account) {
-			var result = `
-				<tr>
-					<td rowspan="2">`+IE(`${account.incomeExpense}`)+`</td>
-					<td colspan="2">`+timeConvert(`${account.regDate}`)+`</td>
-					<td>`+numberWithCommas(`${account.price}`)+`</td>
-				</tr>		
-				<tr>
-					<td>${account.detail}</td>
-					<td><button class="deleteBtn" onclick="`+deleteDetail(`${account.code}`)+`">삭제하기</button></td>
-					<input type="hidden" name="code" value="${account.code}" />
-				</tr>
-				`
-			$('#account_list').append(result);
-			})
-			
+/*		dataType : "json",
+*/		contentType : "application/json; charset=UTF-8",
+		success : function(result){
+			$("#account_list").html(result);
+
 		},
-		error : function(data){
-			console.log(data);
-			console.log("어디가 문제일까,,,,,,,,,,,");
-		}	
+		error(xhr, testStatus, err) {
+				console.log("error", xhr, testStatus, err);
+				alert("조회에 실패했습니다.");
+			}	
 	});
 }
-	
-
-	//삭제 -> 코드 받아와야 함,,,,,,,,,,,,,,,,,
-	function deleteDetail(n) {
-		$('.deleteBtn').click(function(){
-			console.log(n);
+	//삭제
+	function deleteDetail(code) {
+		var code = {"code" : code};
+  		$.ajax ({
+			url : $contextPath+"/accountbook/accountDelete.do",
+			type : "POST",
+			data : JSON.stringify(code),
+			dataType : "json",
+			contentType : "application/json; charset=UTF-8",
+			headers : headers,
+			success(result) {
+				location.reload();
+			},
+			error(xhr, testStatus, err) {
+				console.log("error", xhr, testStatus, err);
+				alert("조회에 실패했습니다.");
+			}
 		})
-	}
+	};
+		
+
 	
 	//수입 지출 금액 조회
     $.ajax({
-		url: "/nadaum/accountbook/monthlyTotalIncome.do",
+		url: $contextPath+"/accountbook/monthlyTotalIncome.do",
 		type: "GET",
 		data: {
 			id : $id
@@ -159,14 +160,17 @@
 				<td><span style="color:red"> -`+numberWithCommas(incomeList[0].total)+`</span></td>`	
 				
 			$('.user_income_expense').append(result);
-
-		}
+		},
+		error(xhr, testStatus, err) {
+				console.log("error", xhr, testStatus, err);
+				alert("조회에 실패했습니다.");
+			}
 	});
 	
     
     //이달의 총 자산
     $.ajax({
-		url: "/nadaum/accountbook/monthlyAccount.do",
+		url: $contextPath+"/accountbook/monthlyAccount.do",
 		type: "GET",
 		data: {
 			id : $id
@@ -177,39 +181,25 @@
 			var result = 
 					`<td colspan="2" style="font-size:40px">`+numberWithCommas(monthlyAccount)+`원 </td>`
 			$('#total_income').append(result);
-
-		}
+		},
+		error(xhr, testStatus, err) {
+				console.log("error", xhr, testStatus, err);
+				alert("조회에 실패했습니다.");
+			}
 	});
 
 	
 	//수입 필터링 -> 지출 필터링이랑 if문으로 var data의 값만 변경해주고 싶은데 어케 수정해야 하나,,,,
 	$('#incomeFilterBtn').click(function() {
-		var data = {"id" : $id, "income_expense" : $income};
+		var data = {"id" : $id, "incomeExpense" : $income};
 		$.ajax({
-			url : '/nadaum/accountbook/incomeExpenseFilter.do',
+			url : $contextPath+'/accountbook/incomeExpenseFilter.do',
 			type : "POST",
 			data : JSON.stringify(data),
-			dataType : "json",
 			contentType : "application/json; charset=UTF-8",
 			headers : headers,
-			success(incomeList) {
-				$("#account_list").empty();
-				$.each(incomeList, function(i, account) {
-			var result = `
-				<tr>
-					<td rowspan="2">`+IE(`${account.incomeExpense}`)+`</td>
-					<td colspan="2">`+timeConvert(`${account.regDate}`)+`</td>
-					<td>`+numberWithCommas(`${account.price}`)+`</td>
-				</tr>		
-				<tr>
-					<td>${account.detail}</td>
-					<td><button class="deleteBtn" onclick="`+deleteDetail(`${account.code}`)+`">삭제하기</button></td>
-					<input type="hidden" name="code" value="${account.code}" />
-				</tr>
-				`
-				$('#account_list').append(result);
-				})
-				
+			success(result) {
+				$("#account_list").html(result);
 			},
 			error(xhr, testStatus, err) {
 				console.log("error", xhr, testStatus, err);
@@ -221,31 +211,15 @@
 	
 	//지출
 	$('#expenseFilterBtn').click(function() {
-		var data = {"id" : $id, "income_expense" : $expense};
+		var data = {"id" : $id, "incomeExpense" : $expense};
 		$.ajax({
 			url : '/nadaum/accountbook/incomeExpenseFilter.do',
 			type : "POST",
 			data : JSON.stringify(data),
-			dataType : "json",
 			contentType : "application/json; charset=UTF-8",
 			headers : headers,
-			success(incomeList) {
-				$("#account_list").empty();
-				$.each(incomeList, function(i, account) {
-			var result = `
-				<tr>
-					<td rowspan="2">`+IE(`${account.incomeExpense}`)+`</td>
-					<td colspan="2">`+timeConvert(`${account.regDate}`)+`</td>
-					<td>`+numberWithCommas(`${account.price}`)+`</td>
-				</tr>		
-				<tr>
-					<td>${account.detail}</td>
-					<td><button class="deleteBtn" onclick="`+deleteDetail(`${account.code}`)+`">삭제하기</button></td>
-					<input type="hidden" name="code" value="${account.code}" />
-				</tr>
-				`
-				$('#account_list').append(result);
-				})
+			success(result) {
+				$("#account_list").html(result);
 			},
 			error(xhr, testStatus, err) {
 				console.log("error", xhr, testStatus, err);
@@ -255,5 +229,110 @@
 	});
 	
 	//검색
+	$('#searchBtn').click(function() {
+		var data = $("#searchFrm").serialize();
+		$.ajax({
+			url : $contextPath+'/accountbook/searchList.do',
+			type : "POST",
+			data : JSON.stringify(data),
+			headers : headers,
+			success(result) {
+				$("#account_list").html(result);
+			},
+			error(xhr, testStatus, err) {
+				console.log("error", xhr, testStatus, err);
+				alert("조회에 실패했습니다.");
+			}
+			});
+	});
+	
+	//차트
+	//차트 로딩하는 메소드
+	google.charts.load('visualization', '1', {'packages':['corechart']});
+	//구글 시각화 api가 로딩되면 인자로 전달된 콜백함수를 내부적으로 호출해서 차트를 그림
+	google.charts.setOnLoadCallback(drawExpenseChart);
+	google.charts.setOnLoadCallback(drawIncomeChart);
+	
+	//차트 그리는 함수
+	function drawExpenseChart() {
+		var firstData = {"id" : $id, "incomeExpense" : $expense};
+		//차트에 구성되는 데이터는 [['Header','Header']['', ''], ['','']] 타입으로 배열의 배열 형식. 
+		//Header는 각 배열을 설명할 수 있는 필수값. ['String', 'String']
+		//json 데이터 ajax로 받아오기
+		$.ajax({
+			url : $contextPath+'/accountbook/incomeChart.do',
+			type : "POST",
+			data : JSON.stringify(firstData),
+			contentType : "application/json; charset=UTF-8",
+			headers : headers,
+			dataType : "json",
+			async : false, //ajax는 비동기 통신이기 때문에 해당 옵션을 동기식으로 변경해서 차트가 그려지기 전에 다른 작업을 못하도록 막음
+			success(data) {
+				console.log(data);
+				let outer =[['Category', 'Total']];
+				for(const obj in data) {
+					let inner = [];
+					inner.push(data[obj].category);
+					inner.push(data[obj].total);
+					outer.push(inner);
+				}
+			var chartData = google.visualization.arrayToDataTable(outer);
+			var options = { 
+			//차트 상단의 제목
+			title: '이달의 지출',
+			 //차트 크기 설정
+			 width : 500,
+			 height : 300,
+			 pieHole : 0.4,
+			};
+			var chart = new google.visualization.PieChart(document.getElementById('expenseChart'));
+			chart.draw(chartData, options);
+			}
+		});
+	};
+	
+	
+	//차트 그리는 함수
+	function drawIncomeChart() {
+		var firstData = {"id" : $id, "incomeExpense" : $income};
+		//차트에 구성되는 데이터 [['', ''], ['','']] 타입으로 배열의 배열 형식. 
+		//json 데이터 ajax로 받아오기
+		$.ajax({
+			url : $contextPath+'/accountbook/incomeChart.do',
+			type : "POST",
+			data : JSON.stringify(firstData),
+			contentType : "application/json; charset=UTF-8",
+			headers : headers,
+			dataType : "json",
+			async : false, //ajax는 비동기 통신이기 때문에 해당 옵션을 동기식으로 변경해서 차트가 그려지기 전에 다른 작업을 못하도록 막음
+			success(data) {
+				console.log(data);
+				let outer =[['Category', 'Total']];
+				for(const obj in data) {
+					let inner = [];
+					inner.push(data[obj].category);
+					inner.push(data[obj].total);
+					outer.push(inner);
+				}
+			var chartData = google.visualization.arrayToDataTable(outer);
+			var options = { 
+			//차트 상단의 제목
+			title: '이달의 수입',
+			 //차트 크기 설정
+			 width : 500,
+			 height : 300,
+			 pieHole : 0.4,
+			};
+			var chart = new google.visualization.PieChart(document.getElementById('incomeChart'));
+			chart.draw(chartData, options);
+			}
+		});
+	};
+	
+	
+	
+	
+	
+	
 	
 	

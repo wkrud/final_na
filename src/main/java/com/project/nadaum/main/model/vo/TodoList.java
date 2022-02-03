@@ -1,7 +1,9 @@
-package com.project.nadaum.diary.model.vo;
+package com.project.nadaum.main.model.vo;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,16 +12,16 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Diary implements Serializable {
-
+public class TodoList implements Serializable {
+	
 	private static final long serialVersionUID = 1L;
 	
-	private String code;
-	private String title;
+	private int no;
 	private String id;
+	private String title;
 	private String content;
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date regDate;
-	private int emotionNo;
-	private String isPublic;
+	private String finish;
 
 }
