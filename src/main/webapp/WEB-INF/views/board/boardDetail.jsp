@@ -318,7 +318,7 @@ $(".btn-reply").click((e) => {
 
 /* 좋아요 */
  $(document).on('click', '#likeButton', function(e) {
-	console.log("좋아요 도착하나요?");
+	console.log("좋아요 나왕?");
 	
 	const $boardCode = $(e.target).data("boardCode");
 	const $memberId = $(e.target).data("id");
