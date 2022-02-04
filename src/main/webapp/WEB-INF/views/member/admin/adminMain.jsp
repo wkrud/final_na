@@ -6,9 +6,11 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <fmt:requestEncoding value="utf-8" />
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="나:다움 관리자페이지" name="title"/>
 </jsp:include>
+<script src="${pageContext.request.contextPath}/resources/js/admin/chart.js"></script>
 <div class="admin-body">
 	<div class="admin-main-body">
 		<div class="admin-main-sidebar">
@@ -21,9 +23,13 @@
 			</div>
 		</div>
 		<div class="admin-main-section">
-		
+			<div class="admin-main-title-wrap">
+				<span>홈페이지 관리</span>
+			</div>
+			<div class="admin-chart-wrap">
+				<div id="member-enroll-chart"></div>
+			</div>
 		</div>
 	</div>
 </div>
-
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />

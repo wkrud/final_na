@@ -121,6 +121,11 @@ public class AdminServiceImpl implements AdminService {
 	public int countAllMember(Map<String, Object> param) {
 		return adminDao.countAllMember(param);
 	}
+
+	@Override
+	public List<Map<String, Object>> selectMonthEnrollCount() {
+		return adminDao.selectMonthEnrollCount();
+	}
 	
 	
 	

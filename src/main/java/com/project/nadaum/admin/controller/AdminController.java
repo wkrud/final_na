@@ -9,12 +9,9 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.collections.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +30,6 @@ import com.project.nadaum.common.NadaumUtils;
 import com.project.nadaum.common.vo.CategoryEnum;
 import com.project.nadaum.member.model.service.MemberService;
 import com.project.nadaum.member.model.vo.Member;
-import com.project.nadaum.member.model.vo.MemberRole;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -277,6 +273,13 @@ public class AdminController {
 			throw e;
 		}
 		return ResponseEntity.ok(1);
+	}
+	
+	@GetMapping("/chart.do")
+	public ResponseEntity<?> chart(){
+		List<Map<String, Object>> list = adminService.selectMonthEnrollCount();
+			
+		return ResponseEntity.ok(list);
 	}
 
 }
