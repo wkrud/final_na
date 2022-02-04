@@ -4,7 +4,7 @@
 	width: 100%;
 }
 .absolute-left{
-	width: 200px;
+	width: 250px;
 	
 }
 .absolute-left ul li{
@@ -29,6 +29,14 @@
 	display: flex;
 	justify-content: space-between;
 }
+
+.info-update-btn{
+	display:flex;
+	justify-content:flex-end;
+	margin-top: 10px;
+}
+
+
 
 /* 프사 관리 */
 .profile-div{

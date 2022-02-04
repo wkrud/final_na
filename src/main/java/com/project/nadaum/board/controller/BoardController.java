@@ -279,7 +279,7 @@ public class BoardController {
 		//pagebar 영역
 		int totalContent = boardService.selectTotalContent();
 		String url = request.getRequestURI();
-		String pagebar = NadaumUtils.getPagebar(cPage, limit, totalContent, url);
+		String pagebar = NadaumUtils.getPagebar(cPage, limit, totalContent, url, null );
 				
 		model.addAttribute("list", list);
 		model.addAttribute("pagebar", pagebar);

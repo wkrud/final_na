@@ -41,6 +41,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.JsonObject;
 import com.project.nadaum.admin.model.vo.Announcement;
+import com.project.nadaum.admin.model.vo.Help;
 import com.project.nadaum.common.NadaumUtils;
 import com.project.nadaum.common.vo.Attachment;
 import com.project.nadaum.common.vo.CategoryEnum;
@@ -250,13 +251,16 @@ public class MemberController {
 	
 	@GetMapping("/mypage/memberInfo.do")
 	public void memberInfo(Model model) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("category", "all");
 		List<Map<String, Object>> list = memberService.selectMostHelp();
-		List<Map<String, Object>> helps = memberService.selectAllMembersQuestions();
+		List<Help> helps = memberService.selectAllMembersQuestions(map);
+		log.debug("helps = {}", helps);
 		log.debug("list = {}", list);
-		List<Map<String, Object>> mostHelps = new ArrayList<>();
+		List<Help> mostHelps = new ArrayList<>();
 		for(int i = 0; i < helps.size(); i++) {
 			for(int j = 0; j < list.size(); j++) {
-				if(helps.get(i).get("code").equals(list.get(j).get("CODE"))) {
+				if(helps.get(i).getCode().equals(list.get(j).get("CODE"))) {
 					mostHelps.add(helps.get(i));
 				}
 			}
@@ -267,7 +271,8 @@ public class MemberController {
 	
 	@GetMapping("/mypage/memberHelpOneCategory.do")
 	public void memberHelpOneCategory(@RequestParam String category, @RequestParam(defaultValue="1") int cPage, Model model, HttpServletRequest request) {
-					
+		
+		log.debug("category = {}", category);
 		int limit = 10;
 		int offset = (cPage - 1) * limit;
 		Map<String, Object> param = new HashMap<>();
@@ -279,7 +284,7 @@ public class MemberController {
 		int totalContent = memberService.countHelpOneCategoryCount(category);
 		log.debug("totalContent = {}", totalContent);
 		String url = request.getRequestURI();
-		String pagebar = NadaumUtils.getPagebar(cPage, limit, totalContent, url);
+		String pagebar = NadaumUtils.getPagebar(cPage, limit, totalContent, url, category);
 		String check = CategoryEnum._valueOf(category).toString();
 		
 		model.addAttribute("check", check);
@@ -534,33 +539,63 @@ public class MemberController {
 	@GetMapping("/mypage/memberDetail.do")
 	public void memberDetail(@AuthenticationPrincipal Member member, @RequestParam String tPage, Model model, RedirectAttributes redirectAttr) {
 		try {
-			log.debug("tPage = {}", tPage);
-			Attachment attach = memberService.selectMemberProfile(member);
-			List<Map<String, Object>> alarm = memberService.selectAllAlarm(member);
-			log.debug("alarm = {}", alarm);
-			log.debug("attach = {}", attach);
-			model.addAttribute("attach", attach);
-			model.addAttribute("alarmList", alarm);
+			log.debug("tPage = {}", tPage);			
+			
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			throw e;
-		}
+		}		
+	}	
+	
+	@GetMapping("/mypage/memberAlarm.do")
+	public ResponseEntity<?> memberAlarm(@AuthenticationPrincipal Member member, @RequestParam(defaultValue = "1") int cPage){
+		log.debug("cPage = ", cPage);
+		int limit = 5;
+		int offset = (cPage - 1) * limit;
+		Map<String, Object> param = new HashMap<>();
+		param.put("limit", limit);
+		param.put("offset", offset);
+		param.put("member", member);
+		List<Map<String, Object>> alarm = memberService.selectAllAlarm(param);
+		log.debug("alarm = {}", alarm);
+		
+		return ResponseEntity.ok(alarm);
 	}
 	
-	
 	@GetMapping("/mypage/memberMyHelp.do")
-	public void memberMyHelp(@AuthenticationPrincipal Member member, Model model){
-		List<Map<String, Object>> myHelpList = memberService.selectAllMyQuestions(member);
+	public void memberMyHelp(@RequestParam(defaultValue = "1") int cPage, HttpServletRequest request, @AuthenticationPrincipal Member member, Model model){
+		int limit = 5;
+		int offset = (cPage - 1) * limit;
+		Map<String, Object> param = new HashMap<>();
+		param.put("limit", limit);
+		param.put("offset", offset);
+		param.put("member", member);
+		
+		List<Map<String, Object>> myHelpList = memberService.selectAllMyQuestions(param);
+		int totalContent = memberService.countAllMyHelp(member);
+		String category = "all";
+		String url = request.getRequestURI();
+		String pagebar = NadaumUtils.getPagebar(cPage, limit, totalContent, url, category);
 		log.debug("myHelpList = {}", myHelpList);		
 		model.addAttribute("myHelpList", myHelpList);
+		model.addAttribute("pagebar", pagebar);
 	}
 	
 	@GetMapping("/mypage/memberHelp.do")
 	public void memberHelp(Model model){
-		List<Map<String, Object>> helpList = memberService.selectAllMembersQuestions();
-		log.debug("helpList = {}", helpList);
+		// 다이어리 dy, 가계부 ab, 문화생활 cu, 오디오북, 롤전적, 캘린더 , 친구 fr, 메모 me
+		Map<String, Object> map = new HashMap<>();
+		map.put("category", "dy");
+		List<Help> helpDyList = memberService.selectAllMembersDyQuestions(map);
+		map.put("category", "ab");
+		List<Help> helpAbList = memberService.selectAllMembersAbQuestions(map);
+		map.put("category", "fr");
+		List<Help> helpFrList = memberService.selectAllMembersFrQuestions(map);
+		log.debug("helpList = {}", helpDyList);
 		
-		model.addAttribute("helpList", helpList);		
+		model.addAttribute("helpDyList", helpDyList);		
+		model.addAttribute("helpAbList", helpAbList);		
+		model.addAttribute("helpFrList", helpFrList);			
 	}
 	
 	@GetMapping("/mypage/searchHelpTitle.do")
@@ -616,6 +651,7 @@ public class MemberController {
 			reverse.put("friendId", member.getId());
 			
 			alarm.put("id", friendInfo.getId());
+			alarm.put("code", "fr");
 			
 			if("follower".equals(check)) {
 				// -> friend
@@ -754,8 +790,9 @@ public class MemberController {
 		int totalContent = memberService.countAllAnnouncementList();
 		log.debug("totalContent = {}", totalContent);
 		
+		String category = "all";
 		String url = request.getRequestURI();
-		String pagebar = NadaumUtils.getPagebar(cPage, limit, totalContent, url);
+		String pagebar = NadaumUtils.getPagebar(cPage, limit, totalContent, url, category);
 			
 		model.addAttribute("pagebar", pagebar);
 		model.addAttribute("announceList", announceList);

@@ -164,7 +164,7 @@ input[id="switch"]{
 										<img src="${pageContext.request.contextPath}/resources/upload/member/profile/default_profile_cat.png" alt="" style="width:45px; height:45px; object-fit:cover;" />
 									</c:if>						
 									<c:if test="${loginMember.profileStatus eq 'Y'}">		
-										<img src="${pageContext.request.contextPath}/resources/upload/member/profile/${attach.renamedFilename}" alt="" style="width:45px; height:45px; object-fit:cover;" />										 		
+										<img src="${pageContext.request.contextPath}/resources/upload/member/profile/${loginMember.profile}" alt="" style="width:45px; height:45px; object-fit:cover;" />										 		
 									</c:if>								
 								</c:if>								
 							</div>						    
@@ -278,16 +278,23 @@ input[id="switch"]{
 		    	$.ajax({
 					url: `${pageContext.request.contextPath}/websocket/wsCountAlarm.do`,
 					success(resp){
-						
 						const $alarmList = $("#alarmList");
 						const $bedgeWrap = $(".bedge-wrap");
 						$alarmList.empty();
 						$bedgeWrap.empty();
-						
 						let count = 0;
 						$(resp).each((i, v) => {
+							const {no, code, id, status, content, regDate} = v;
 							count++;
-							let alarmDiv = `<div class="card card-body alarmContent">\${v.content}</div>`;
+							
+							let alarmDiv = `<div class="card card-body alarmContent">\${content}</div>`;
+							if(code.substring(0,2) == 'he'){
+								alarmDiv = `<div class="card card-body alarmContent">
+								<a href="${pageContext.request.contextPath}/member/mypage/memberHelpDetail.do?code=\${code}">\${content}</a>								
+								</div>`;
+							}else{
+								alarmDiv = `<div class="card card-body alarmContent">\${content}</div>`;
+							}
 							$alarmList.append(alarmDiv);
 						});						
 						

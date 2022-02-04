@@ -12,14 +12,18 @@ function connect(){
 				console.log('count');
 			}else if(resp.type == 'chat'){
 				if(confirm(resp.host + '님이 채팅을 신청하셨습니다.')){
-					let room = `http://localhost:9090/nadaum/member/mypage/chat.do?room=${resp.room}`;
-					let chatRoomLink = `
-			        <iframe id="nadaumChat" title="Nadaum Chat" src=${room}>
-					</iframe>`;
-					$(".chat-section").append(chatRoomLink);
-					$("#chatwrap").css("display", "block");
-					console.log(room);
+					if(!$("#nadaumChat").length){
+						let room = `http://localhost:9090/nadaum/member/mypage/chat.do?room=${resp.room}`;
+						let chatRoomLink = `
+				        <iframe id="nadaumChat" title="Nadaum Chat" src=${room}>
+						</iframe>`;
+						$(".chat-section").append(chatRoomLink);
+						$("#chatwrap").css("display", "block");					
+					}
 				}
+			}else if(resp.type == 'help'){
+				countBedge();
+				console.log('카운트배지실행됨');
 			}
 		});
 	});
@@ -33,4 +37,24 @@ function chatInvite(type, host, guest, room){
 		'room': room
 	};
 	stompClient.send("/nadaum/chat/invite/" + guest,{},JSON.stringify(sendData));
+};
+
+function friendAlarm(type, status, myNickname, friendNickname){
+	var sendData = {
+		'type':type,
+		'status':status,
+		'myNickname':myNickname,
+		'friendNickname': friendNickname
+	};
+	stompClient.send("/nadaum/chat/friendStatus/" + friendNickname,{},JSON.stringify(sendData));
+};
+
+function answerAlarm(type, code, guest, title){
+	var sendData = {
+		'type':type,
+		'flag':code,
+		'guest':guest,
+		'title': title,
+	};
+	stompClient.send("/nadaum/chat/answerAlarm/" + guest,{},JSON.stringify(sendData));
 };

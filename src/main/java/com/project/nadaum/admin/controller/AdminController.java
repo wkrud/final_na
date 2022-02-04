@@ -108,8 +108,9 @@ public class AdminController {
 		int totalContent = memberService.countAllAnnouncementList();
 		log.debug("totalContent = {}", totalContent);
 		
+		String category = "all";
 		String url = request.getRequestURI();
-		String pagebar = NadaumUtils.getPagebar(cPage, limit, totalContent, url);
+		String pagebar = NadaumUtils.getPagebar(cPage, limit, totalContent, url, category);
 			
 		model.addAttribute("pagebar", pagebar);
 		model.addAttribute("announceList", announceList);
@@ -128,8 +129,9 @@ public class AdminController {
 		param.put("id", member.getId());
 		int totalContent = adminService.countAllMember(param);
 
+		String category = "all";
 		String url = request.getRequestURI();
-		String pagebar = NadaumUtils.getPagebar(cPage, limit, totalContent, url);
+		String pagebar = NadaumUtils.getPagebar(cPage, limit, totalContent, url, category);
 		model.addAttribute("pagebar", pagebar);
 		model.addAttribute("list", list);
 	}
@@ -145,8 +147,9 @@ public class AdminController {
 			List<Help> listMap = adminService.selectAllHelp(param);
 			int totalContent = adminService.countAllHelp();
 			
+			String category = "all";
 			String url = request.getRequestURI();
-			String pagebar = NadaumUtils.getPagebar(cPage, limit, totalContent, url);
+			String pagebar = NadaumUtils.getPagebar(cPage, limit, totalContent, url, category);
 			log.debug("listMap = {}", listMap);
 			model.addAttribute("listMap", listMap);
 			model.addAttribute("pagebar", pagebar);
@@ -164,7 +167,13 @@ public class AdminController {
 			String check = (String) map.get("check");
 			if("help".equals(check)) {
 				Help help = adminService.selectOneHelp(map);
-				model.addAttribute("help", help);				
+				
+				Map<String, Object> param = new HashMap<>();
+				param.put("id", help.getId());
+				Member member = memberService.selectOneMember(param);
+				model.addAttribute("flag", (String)map.get("flag"));
+				model.addAttribute("help", help);	
+				model.addAttribute("member", member);
 			}else if("announcement".equals(check)) {
 				String code = (String)map.get("code");
 				if(!"".equals(code)) {
@@ -190,12 +199,19 @@ public class AdminController {
 				help.setCode((String)map.get("code"));
 				help.setATitle((String)map.get("aTitle"));
 				help.setAContent((String)map.get("aContent"));
+				help.setId((String)map.get("id"));
 				log.debug("help = {}", help);
 				result = adminService.updateHelpAnswer(help);	
 				
 				String content = "[" + (String)map.get("title") + "]에 답변이 등록되었습니다.";
 				map.put("content", content);
-				result = memberService.insertAlarm(map);
+				
+				if((String)map.get("flag") != null && "modify".equals((String)map.get("flag"))) {
+					result = memberService.updateAlarm(map);					
+				}else {
+					result = memberService.insertAlarm(map);					
+				}
+					
 				redirectAttr.addFlashAttribute("msg", "성공");
 				return "redirect:/member/admin/adminAllHelp.do";
 			}else if("announcement".equals(check)) {

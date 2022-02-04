@@ -17,12 +17,16 @@ public class Alarm implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private String type;
+	private String status;
 	private String flag;
-	private String senderId;
+	private String id;
+	private String title;
+	private String myNickname;
 	private String friendNickname;
 	private String message;
 	private String host;
 	private String guest;
 	private String room;
+	
 
 }
