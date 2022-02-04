@@ -6,73 +6,219 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <sec:authentication property="principal" var="loginMember"/>
+
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="게시판 상세보기" name="title"/>
 </jsp:include>
+
 <!-- <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/culture/cultureDetail.css" />
  -->
+ 
+ <script src="https://kit.fontawesome.com/4123702f4b.js" crossorigin="anonymous"></script>
 <style>
+.form-control{
+display: inline-block;
+}
+
 #culture-container{
-padding-top: 100px;
+    padding: 60px;
+    margin: 120px;
+    background: white;
+    width: 50%;
+    border-radius: 5%;
+    box-shadow: lightgrey 2px 10px 30px 5px;
+}
+
+}
+.fa-heart{
+font-size: 30px;
+}
+.wrap{
+margin: 0 auto;
+/* position: relative;
+z-index: 1; */
+}
+.wrap:after{
+/* /* background-image: url("${culture.imgUrl}"); 
+opacity: 0.4;
+z-index: -1; */
+}
+#insertCommentFrm{
+text-align: center;
+}
+#comment-table{
+    margin-left: 10%;
+    width: 100%;
+    margin-top: 50px;
+}
+#comment-delete{
+	width: 30%;
+}
+.kakao-map:before{
+margin: 0 auto;
+}
+#promiseFrm{
+    margin-top: 180px;
 }
 </style>
-<section class="content">
-	<div id="culture-container" class="mx-auto text-center">
+
+<script>
+//cultureDetail
+$(() => {
 		
+		//날짜 넣기
+		const value = new Date();
+		
+		const f = n => n < 10 ? "0" + n : n;
+		// yyyy-mm-dd
+		const today = `\${value.getFullYear()}-\${f(value.getMonth() + 1)}-\${f(value.getDate())}`;
+		console.log(today);
+		
+		schedule = document.getElementById("schedule-date");
+		schedule.value = today;
+});
+
+
+
+</script>
+<body>
+	<c:forEach var="culture" items="${list}">
+	<div class="wrap" style="">
+	</c:forEach>
+	<div id="culture-container" class="mx-auto text-center">
 		<!-- 상세내용 -->
 		 <c:forEach var="culture" items="${list}">
 			<div class="culture_detail">
-			<h1>${culture.title}</h1>
+			<h1 id="culture-title">${culture.title}</h1>
 			
 			<span><fmt:parseDate value="${culture.startDate}" var="startDateParse" pattern="yyyyMMdd"/>
 			<fmt:formatDate value="${startDateParse}" pattern="yyyy년 MM월 dd일"/>
 			<span>~</span>
 			</span><fmt:parseDate value="${culture.endDate}" var="endDateParse" pattern="yyyyMMdd"/>
 			<fmt:formatDate value="${endDateParse}" pattern="yyyy년 MM월 dd일"/>
-			
-			<p><img src="${culture.imgUrl}" alt="" style="width: 20%;"/></p>
+			<br />
+			<img src="${culture.imgUrl}" alt="" style="width: 50%;"/>
+			<br />
 			<span>${culture.area}</span>
 			<span>${culture.realmName}</span>
-			<span>${culture.placeAddr}</span>
+			<br />
+			<span id="placeAddr">${culture.placeAddr}</span>
 			<br />
 			<span>${culture.price}</span>
-			
-			<span>${culture.placeUrl}</span>
+			<br />
+			<a href="${culture.placeUrl}">${culture.placeUrl}</a>
 			</div>
+		 <button type="button" class="btn btn-secondary" onclick="location.href='${culture.bookingUrl}'">예매하기</button>
 		</c:forEach>
-	<!-- culture-container 끝 -->
-	<hr />
-<h1>댓글</h1>
-	<div class="insert-comment">
-		<form id="insertCommentFrm">
-			<input type="hidden" name="apiCode" value="${apiCode}"/>
-            <input type="hidden" name="id" value="${loginMember.id}" />
-            <input type="hidden" name="commentLevel" value="1" />
-            <input type="hidden" name="commentRef" value="" />    
-            <input type="text" name="star" value="4" />
-			<textarea name="content" cols="60" rows="3"></textarea>
-            <button type="submit" class="btn btn-light">등록</button>
+		<br />
+		
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-calander">
+ 		캘린더에 추가
+		</button>
+		
+		<!-- Modal -->
+		<div class="modal fade" id="add-calander" tabindex="-1" role="dialog" aria-labelledby="add-calander" aria-hidden="true">
+		  <form id="promiseFrm">
+		    <div class="modal-dialog modal-dialog-centered" role="document">
+		      <div class="modal-content">
+		        <div class="modal-header">
+		          <h5 class="modal-title" id="add-calanderTitle">약 속</h5>
+		          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		            <span aria-hidden="true">&times;</span>
+		          </button>
+		        </div>
+		        <div class="modal-body">
+		         <span>약속일</span>
+		         <input type="date" id="schedule-date" />
+		         <br />
+		         <br />
+		         <span>@친구</span>
+		         <input type="text" />
+		        </div>
+		        <div class="modal-footer">
+		          <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+		          <button type="button" class="btn btn-primary">추가</button>
+		        </div>
+		      </div>
+		    </div>
+		  </form>
+		</div>
+		<form id="likeFrm">
+			<input type="hidden" name="apiCode" value="${apiCode}" />
+			<input type="hidden" name="id" value="${loginMember.id}" />
+		 	<button type="submit" class="btn btn-danger" id="like-btn">스크랩 하기
+		 	</button>
 		</form>
+		
+		
+	<hr>
+	<!-- kakao 지도 -->
+	<div class="kakao-map">
+		<p >
+		    <em class="link">
+		        <a href="javascript:void(0);" onclick="window.open('http://fiy.daum.net/fiy/map/CsGeneral.daum', '_blank', 'width=981, height=650')">
+		        </a>
+		    </em>
+		</p>
+		<div id="map" style="width:80%;height:400px; margin: 0 auto;"></div>
 	</div>
+		
+	</div>
+	<!-- culture-container 끝 -->
 	
-	<table id="comment-table">
-	<c:forEach var="comment" items="${commentList}">
-			<tr class="level1">
-				<td id="comment">
-					<input type="hidden" name="code" value="${comment.code}"></input>
-					<sub class="comment-writer"></sub>
-					<sub class="comment-date">
-					<fmt:formatDate value="${comment.regDate}" pattern="yyyy/MM/dd"/>
-					</sub>
-					<sub class="star">${comment.star}</sub>
-					<br />
-					${comment.content}
-					<br />
-			    		<input type="submit" value="삭제" >
-				</td>		
-			</tr>
-			</c:forEach>
-			</table>
+	<div class="container">
+	<hr />
+	<br />
+		<div class="insert-comment">
+			<form id="insertCommentFrm">
+				<input type="hidden" name="apiCode" value="${apiCode}"/>
+	            <input type="hidden" name="id" value="${loginMember.id}" />
+	            <input type="hidden" name="commentLevel" value="1" />
+	            <input type="hidden" name="commentRef" value="" />    
+		           <select name="star">
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+					</select>
+				<textarea name="content"class="form-control col-sm-6" rows="3" ></textarea>
+	            <button type="submit" class="btn btn-light">등록</button>
+			</form>
+		</div>
+		<table id="comment-table">
+		<c:forEach var="comment" items="${commentList}">
+				<tr class="level1">
+					<td id="comment">
+						
+						<sub class="comment-writer"></sub>
+						<sub class="comment-date">
+						<fmt:formatDate value="${comment.regDate}" pattern="yyyy/MM/dd"/>
+						</sub>
+						<sub class="star">${comment.star}</sub>
+						<br />
+						${comment.content}
+						<br />
+						
+				    	<%-- <form id="updateCommentFrm">
+				    		<input type="hidden" name="code" value="${comment.code}"/>
+				    		<input type="submit" id="updateComment-btn" value="수정" >
+				    	</form>
+				    	 --%>
+					</td>		
+					<td id="comment-delete">
+						<form id="deleteCommentFrm">
+							<input type="hidden" name="code" value="${comment.code}"></input>
+							<button type="submit" class="btn btn-outline-danger" id="deleteComment-btn">삭제</button>
+				    	</form>
+					</td>
+				</tr>
+				
+				</c:forEach>
+				</table>
+				</div>
+				</div>
+			</body>
 	<script>
 			//댓글 등록
 			$(insertCommentFrm).submit((e) => {
@@ -98,29 +244,61 @@ padding-top: 100px;
 				
 			});
 			
+			
+			
 			//댓글삭제
-			 $(deleteCommentFrm).submit((e) => {
+			$(deleteCommentFrm).submit((e) => {
 				e.preventDefault();
 				const code = $(e.target).find("[name=code]").val();
 				console.log(code);
 				
+				const csrfHeader = "${_csrf.headerName}";
+		        const csrfToken = "${_csrf.token}";
+		        const headers = {};
+		        headers[csrfHeader] = csrfToken;
+				var data = {"code" : code};
+		        
 				$.ajax({
-					url:`${pageContext.request.contextPath}/culture/board/view/${apiCode}`,
+					url:`${pageContext.request.contextPath}/culture/board/view/${apiCode}/\${code}`,
 					method: "DELETE",
+					headers : headers, 
+					type : "POST",
+					data : JSON.stringify(data),
 					success(resp){
 						console.log(resp);
-						alert(resp.msp);
+						location.reload();
+						alert(resp.msg);
 					},
 					error(xhr,statusText){
 						switch(xhr.status){
 						case 404: alert("해당 댓글이 존재하지않습니다."); break;
-						default: console.log(xhr, statusText,err);
+						default: console.log(xhr, statusText);
 						}				
 					}
 				});
-			}); 
-			
-			//댓글수정
+			});  
+			$(likeFrm).submit((e) => {
+				e.preventDefault();
+
+				const csrfHeader = "${_csrf.headerName}";
+		        const csrfToken = "${_csrf.token}";
+		        const headers = {};
+		        headers[csrfHeader] = csrfToken;
+				
+				$.ajax({
+					url:`${pageContext.request.contextPath}/culture/board/view/${apiCode}/likes`,
+					method: "POST",
+					headers : headers, 
+					data : $(likeFrm).serialize(),
+					success(resp){
+						console.log(resp);
+						location.reload();
+						alert(resp.msg);
+					},
+					error: console.log
+				});
+			});
+			/* //댓글수정
 			$(updateCommentFrm).submit((e) => {
 				
 				e.preventDefault();
@@ -143,24 +321,9 @@ padding-top: 100px;
 					error: console.log
 				});
 				
-			});
+			}); */
 			</script>
 
-
-<!-- kakao 지도 
-
-	<hr style="border: solid 2px grey;">
-	<div class="kakao-map">
-		<p style="margin-top:-12px">
-		    <em class="link">
-		        <a href="javascript:void(0);" onclick="window.open('http://fiy.daum.net/fiy/map/CsGeneral.daum', '_blank', 'width=981, height=650')">
-		        </a>
-		    </em>
-		</p>
-		<div id="map" style="width:80%;height:400px;"></div>
-	</div>
-
-</section>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=457ac91e7faa203823d1c0761486f8d7&libraries=services"></script>
 <script>
 var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
@@ -175,8 +338,21 @@ var map = new kakao.maps.Map(mapContainer, mapOption);
 // 주소-좌표 변환 객체를 생성합니다
 var geocoder = new kakao.maps.services.Geocoder();
 
+var list = new Array();
+
+<c:forEach var="culture" items="${list}">
+	list.push("${culture.place}");
+	list.push("${culture.placeAddr}");
+</c:forEach>
+console.log(list);
+
+var place = list[0];
+var placeAddr = list[1];
+console.log(place);
+console.log(placeAddr);
+
 // 주소로 좌표를 검색합니다
-geocoder.addressSearch('서울특별시 서초구 강남대로39길 15-3 2층 301호', function(result, status) {
+geocoder.addressSearch(placeAddr, function(result, status) {
 
     // 정상적으로 검색이 완료됐으면 
      if (status === kakao.maps.services.Status.OK) {
@@ -191,7 +367,8 @@ geocoder.addressSearch('서울특별시 서초구 강남대로39길 15-3 2층 30
 
         // 인포윈도우로 장소에 대한 설명을 표시합니다
         var infowindow = new kakao.maps.InfoWindow({
-            content: '<div style="width:150px;text-align:center;padding:6px 0;">전시회</div>'
+            content: '<div style="width:150px;text-align:center;padding:6px 0;">'+ place +
+            '</div>'
         });
         infowindow.open(map, marker);
 
@@ -199,5 +376,5 @@ geocoder.addressSearch('서울특별시 서초구 강남대로39길 15-3 2층 30
         map.setCenter(coords);
     } 
 });    
-</script>-->
+</script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

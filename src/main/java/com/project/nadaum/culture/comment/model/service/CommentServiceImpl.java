@@ -23,11 +23,6 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public int deleteCultureComment(String code) {
-		return commentDao.deleteCultureComment(code);
-	}
-
-	@Override
 	public int insertCultureComment(Map<String, Object> map) {
 		return commentDao.insertCultureComment(map);
 	}
@@ -35,6 +30,11 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public int updateCultureComment(Map<String, Object> map) {
 		return commentDao.updateCultureComment(map);
+	}
+
+	@Override
+	public int deleteCultureComment(String code) {
+		return commentDao.deleteCultureComment(code);
 	}
 
 }

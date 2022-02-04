@@ -7,8 +7,9 @@
 	<jsp:param value="문화" name="title"/>
 </jsp:include>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/culture/cultureBoardList.css" />
-
 <style>
+section#content{
+}
 .search-form label{
 padding-right: 8px;
 }
@@ -28,24 +29,45 @@ padding: 15px;
     overflow: hidden;
     width: 300px;
 }
+.paging li{
+
+    list-style: none;
+}
+.paging a{
+    color: black;
+}
+.form-group{
+padding-left: 20px;
+}
 </style>
 <script>
 //cultureDetail
 $(() => {
-	$(".card").click((e) => {
-		 //console.log(e.target); // td
-		const $card = $(e.target).parent().parent();
-		const code = $card.data("code");
-		location.href = `${pageContext.request.contextPath}/culture/board/view/\${code}`;
-	});
-	//$(function(){
-	//const paramString = window.location.href;
-    //var param = paramString.split("/"); 
-    //param = param[param.length - 1];
-    //console.log(param);
-	//});
-
+		$(".card").click((e) => {
+			/* const code = $card.data("code"); */
+			const code = $(e.target).find("[name=code]").val();
+			const $card = $(e.target).parent().parent();
+			location.href = `${pageContext.request.contextPath}/culture/board/view/\${code}`;
+		});
+		
+		//날짜 넣기
+		const value = new Date();
+		
+		const f = n => n < 10 ? "0" + n : n;
+		// yyyy-mm-dd
+		const today = `\${value.getFullYear()}-\${f(value.getMonth() + 1)}-\${f(value.getDate())}`;
+		console.log(today);
+		
+		start = document.getElementById("startDate");
+		start.value = today;
+		
+		const after_month = `\${value.getFullYear()}-\${f(value.getMonth() + 2)}-\${f(value.getDate())}`;
+		console.log(after_month);
+		end = document.getElementById("endDate");
+		end.value = after_month;
 });
+
+
 
 </script>
 <body>
@@ -62,28 +84,29 @@ $(() => {
 				    <input type="date" class="form-control" id="endDate">
 				  </div>
 				  <div class="form-group">
-				    <label for="TRL" class="control-label">지역</label>
-				      <select class="form-control" name="TRL" id="TRL">
+				    <label for="area" class="control-label">지역</label>
+				      <select class="form-control" name="search-area" id="search-area">
+				        <option value="all">모두</option>
 				        <option value="1">서울</option>
 				        <option value="2">경기</option>
-				        <option value="3">3</option>
-				        <option value="4">4</option>
-				        <option value="5">5</option>
+				        <option value="3">기타</option>
 				      </select>
 				  </div>
 				  <div class="form-group">
-				    <label for="TRL" class="control-label">장르</label>
-				      <select class="form-control" name="TRL" id="TRL">
-				        <option value="1">1</option>
-				        <option value="2">2</option>
-				        <option value="3">3</option>
-				        <option value="4">4</option>
-				        <option value="5">5</option>
+				    <label for="genre" class="control-label">장르</label>
+				      <select class="form-control" name="search-genre" id="search-genre">
+				      	<option value="all">모두</option>
+				        <option value="1">연극</option><!-- A연극 -->
+				        <option value="2">음악</option><!-- B 음악  -->
+				        <option value="3">무용</option><!-- C 무용-->
+				        <option value="4">미술</option><!-- D 미술  -->
+				        
 				      </select>
 				  </div>
 				  <button type="submit" class="btn orange btn-default">Search</button>
 			</form>
 		</div>
+		
 	<div id="culture-container">
 	    <br />
 	    
@@ -93,8 +116,9 @@ $(() => {
 	       
 	     <c:forEach var="culture" items="${list}">
 	    	<div class="col-md-4" style="padding: 15px;">
-	          <div class="card" data-code="${culture.seq}">
+	         <div class="card"> 
 	            <div class="card-block">
+	            <input type="hidden" name="code" value="${culture.seq}" />
 	              <h4 class="card-title">${culture.title}</h4>
 	              <p class="card-text p-y-1">${culture.area}</p>
 	              <p class="card-text p-y-1">${culture.place}</p>
@@ -108,12 +132,25 @@ $(() => {
 	    		</div>
 	    	</div>
 	    	<div class="paging">
-	    		<input type="button" onclick='nextPage'  />
+	    		<ul>
+	    			<c:if test="${page != 1}">
+	    				<li><a href="${pageContext.request.contextPath}/culture/board/1">첫 페이지</a></li>	    			
+	    			</c:if>
+	    			<c:if test="${page-1 != 0}">
+	    				<li><a href="${pageContext.request.contextPath}/culture/board/${page-1}">이전 페이지</a></li>	    			
+	    			</c:if>
+	    			<li>${page}/20</li>
+	    			<c:if test="${page+1 < 21}">
+	    				<li><a href="${pageContext.request.contextPath}/culture/board/${page+1}">다음 페이지</a></li>
+	    			</c:if>
+	    			<c:if test="${page != 20}">
+	    				<li><a href="${pageContext.request.contextPath}/culture/board/20">마지막 페이지</a></li>	    			
+	    			</c:if>
+	    		</ul>
 	    	</div>
 		<!-- culture-container 끝 -->
 		</div>
 	</div>
-	
 </body>
 
   <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
