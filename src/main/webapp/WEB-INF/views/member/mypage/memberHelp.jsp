@@ -130,6 +130,13 @@
 	</div>
 </div>
 <script>
+$("#searchHelp").on('keyup', function(e){
+	if($("#searchHelp").val() != ''){
+		if(e.key === 'Enter' || e.keyCode === 13){
+			$("#search-help-start").trigger('click');
+		}
+	}
+});
 
 $("#search-help-start").click((e) => {
 	if($("#searchHelp").val() == ''){

@@ -271,7 +271,8 @@ public class MemberController {
 	
 	@GetMapping("/mypage/memberHelpOneCategory.do")
 	public void memberHelpOneCategory(@RequestParam String category, @RequestParam(defaultValue="1") int cPage, Model model, HttpServletRequest request) {
-					
+		
+		log.debug("category = {}", category);
 		int limit = 10;
 		int offset = (cPage - 1) * limit;
 		Map<String, Object> param = new HashMap<>();
@@ -283,7 +284,7 @@ public class MemberController {
 		int totalContent = memberService.countHelpOneCategoryCount(category);
 		log.debug("totalContent = {}", totalContent);
 		String url = request.getRequestURI();
-		String pagebar = NadaumUtils.getPagebar(cPage, limit, totalContent, url);
+		String pagebar = NadaumUtils.getPagebar(cPage, limit, totalContent, url, category);
 		String check = CategoryEnum._valueOf(category).toString();
 		
 		model.addAttribute("check", check);
@@ -572,9 +573,9 @@ public class MemberController {
 		
 		List<Map<String, Object>> myHelpList = memberService.selectAllMyQuestions(param);
 		int totalContent = memberService.countAllMyHelp(member);
-		
+		String category = "all";
 		String url = request.getRequestURI();
-		String pagebar = NadaumUtils.getPagebar(cPage, limit, totalContent, url);
+		String pagebar = NadaumUtils.getPagebar(cPage, limit, totalContent, url, category);
 		log.debug("myHelpList = {}", myHelpList);		
 		model.addAttribute("myHelpList", myHelpList);
 		model.addAttribute("pagebar", pagebar);
@@ -789,8 +790,9 @@ public class MemberController {
 		int totalContent = memberService.countAllAnnouncementList();
 		log.debug("totalContent = {}", totalContent);
 		
+		String category = "all";
 		String url = request.getRequestURI();
-		String pagebar = NadaumUtils.getPagebar(cPage, limit, totalContent, url);
+		String pagebar = NadaumUtils.getPagebar(cPage, limit, totalContent, url, category);
 			
 		model.addAttribute("pagebar", pagebar);
 		model.addAttribute("announceList", announceList);
