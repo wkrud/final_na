@@ -12,8 +12,8 @@
 			#{id},
 			#{detail},
 			#{price},
-			#{reg_date},
-			#{income_expense},
+			#{regDate},
+			#{incomeExpense},
 			#{payment},
 			#{category}
 		)	
@@ -26,7 +26,7 @@
 			code = #{code}
 	</delete>
 	
-	<select id="selectAllAccountList" resultMap="accountbookMap">
+	<select id="selectAllAccountList" resultType="com.project.nadaum.accountbook.model.vo.AccountBook">
 		select
     		*
     	from 
@@ -90,12 +90,117 @@
 		where
 	    	id = #{id}
 			and 
-			income_expense = #{income_expense}
+			income_expense = #{incomeExpense}
 		order by
 			reg_date desc
 	</select>
-		
 	
+	<select id="searchList" resultMap="accountbookMap">
+		select
+	   	 *
+		from
+		    account_book
+		<where>
+		    id = #{id}
+		   	<if test="category != null and category != ''">
+		    and
+		    category=#{category}
+		   	</if>
+		 	<if test="incomeExpense != null and incomeExpense != ''">
+		 	and
+		 	income_expense=#{incomeExpense}
+		 	</if>
+		 	<if test="detail != null and detail !=''">
+		 	and
+	  		detail like '%' || #{detail} || '%'
+		 	</if>
+		</where>
+	  	order by
+	  		reg_date desc
+	</select>
+	
+	<select id="chartValue" resultMap="chartListMap">
+	
+		select
+		    sum(price) as total,
+		    category
+		from
+		    (select
+		        *
+		    from
+		        account_book
+		    where
+		        to_char(reg_date, 'mm') = to_char((sysdate), 'mm')
+		        and
+		        id = #{id}
+		        and
+		        income_expense = #{incomeExpense}
+		    )
+	group by category
+	</select>
+	
+	<select id="countAccountList" resultType="int">
+		select 
+			count(*) 
+		from 
+			account_book 
+		where id=#{id}
+	</select>
+	
+	<select id="detailMonthlyChart" resultMap="monthlyChart">
+		select
+		    monthly,
+		    nvl(sum(case when income_expense='I' then price end), 0) as income,
+		    nvl(sum(case when income_expense='E' then price end), 0) as expense
+		from (
+			select
+			    to_char(reg_date,'yyyy-mm') as monthly,
+			    price,
+			    income_expense
+			from
+			    account_book
+			where
+			    id=#{id}
+			)
+		group by 
+		    monthly
+		order by 
+		    monthly
+		
+	</select>
+	
+	<select id="monthlyCountList" resultMap="monthlyCountList">
+		select
+		    sum(price) as sum,
+		    count(*) as count
+		from (
+			select
+			    *
+			from
+			    account_book
+			where
+			    to_char(reg_date, 'mm') = to_char(add_months(sysdate, #{monthly}), 'mm')
+			    and
+			    id = #{id}
+		)
+	</select>
+	
+	<resultMap type="Map" id="monthlyCountList">
+		<result column="sum" property="sum"/>
+		<result column="count" property="count"/>
+	</resultMap>
+		
+	<resultMap type="Map" id="monthlyChart">
+		<result column="monthly" property="monthly"/>
+		<result column="income" property="income"/>
+		<result column="expense" property="expense"/>
+	</resultMap>	
+	
+	<resultMap type="Map" id="chartListMap">
+		<result column="total" property="total"/>
+		<result column="income_expense" property="incomeExpense"/>
+		<result column="category" property="category"/>
+	</resultMap>
 	
 	<resultMap type="Map" id="accountbookMap">
 		<id column="code" property="code"/>

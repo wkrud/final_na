@@ -19,4 +19,10 @@ public class RiotServiceImpl implements RiotService {
 		return riotDao.insertSummoner(summoner);
 	}
 
+	@Override
+	public Summoner selectOneSummoner(String puuid) {
+		
+		return riotDao.selectOneSummoner(puuid);
+	}
+
 }

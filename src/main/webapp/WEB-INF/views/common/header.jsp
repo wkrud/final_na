@@ -29,6 +29,9 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/member/stomp.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/member/info.js"></script>
 <!-- bootstrap css -->
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
@@ -161,7 +164,7 @@ input[id="switch"]{
 										<img src="${pageContext.request.contextPath}/resources/upload/member/profile/default_profile_cat.png" alt="" style="width:45px; height:45px; object-fit:cover;" />
 									</c:if>						
 									<c:if test="${loginMember.profileStatus eq 'Y'}">		
-										<img src="${pageContext.request.contextPath}/resources/upload/member/profile/${attach.renamedFilename}" alt="" style="width:45px; height:45px; object-fit:cover;" />										 		
+										<img src="${pageContext.request.contextPath}/resources/upload/member/profile/${loginMember.profile}" alt="" style="width:45px; height:45px; object-fit:cover;" />										 		
 									</c:if>								
 								</c:if>								
 							</div>						    
@@ -236,10 +239,24 @@ input[id="switch"]{
 				</iframe>
 			</div>
 		</div>
-		<script>
-			$(() => {				
-				countBedge();	
+		
+		<div id="chatwrap" style="display:none;">
+			<div id="chatwrapheader">
+				<div class="chat-title">			
+					<h1>채팅방</h1>
+					<button type="button" id="closeChat" class="close" data-dismiss="modal" aria-label="Close">
+			        	<span aria-hidden="true">&times;</span>
+			        </button>
+				</div>
+				<div class="chat-section"></div>
+			</div>
+		</div>
+		<script>			
+			$(() => {	
+				connect();
+				countBedge();
 			});
+			var dest = '${loginMember.nickname}';
 			
 			$("#profile").click(function(){
 				if($("#alarmList").hasClass("show")){
@@ -255,81 +272,29 @@ input[id="switch"]{
 			$("#main-link").click(function(){
 				alert("나중에 우리 포털 메인으로!");
 			});
+								
 			
-						
-			/*실제 넣을 코드 : 알람 영역 있을때 클릭시 알람표시 사라짐*/
-			/* const $alarmList = $(".alarm-list");
-			$alarmList.hide();
-			$("#profile").click((e) => {
-				$alarmList.show();
-			});
-			
- 			$("#profile").click(function(){
-				$("#bg-alarm").css("display","none");
-				
-				
-				$("#bg-alarm").text(alarm_num);
-			});  */
-			
-
-			
-			/* 비동기 통신할 영역
-			    - 알람보낼부분이 없거나 사용자 클릭시 .css("display","none");
-			    - 알람보낼부분이 있다면 .css("display","");
-			    - 알람보낼개수는 .text(alarm_num);		
-			*/
-			/*$.ajax()*/			
-			
-			/*비동기 통신하고 알람영역 보이게 할때 다음 함수 적용하세요  */
-			/*  
-			$("#profile").click(function(){
-				$("#bg-alarm").css("display","");
-				let alarm_num = 5; 여기에서 알람 보낼 갯수 받아온걸 매핑하시면 됩니다!
-				$("#bg-alarm").text(alarm_num);
-			*/
-	
-			var socket = null;
-
-		    $(document).ready(function (){
-			    connectWs();
-		    });
-		    function connectWs(){
-			   	sock = new SockJS("<c:url value='/echo'/>");
-			   	socket = sock;
-	
-			   	sock.onopen = function() {
-		           console.log('info: connection opened.');
-			   	};
-			
-				sock.onmessage = function(evt) {
-					var data = evt.data;
-					console.log("ReceivMessage : " + data + "\n");
-					
-					countBedge();
-					
-				};
-				sock.onclose = function() {
-			      	console.log('connect close');
-			      	/* setTimeout(function(){conntectWs();} , 1000); */
-			    };
-	
-			    sock.onerror = function (err) {console.log('Errors : ' , err);};
-		    };
-		    
 		    const countBedge = () => {
 		    	$.ajax({
 					url: `${pageContext.request.contextPath}/websocket/wsCountAlarm.do`,
 					success(resp){
-						
 						const $alarmList = $("#alarmList");
 						const $bedgeWrap = $(".bedge-wrap");
 						$alarmList.empty();
 						$bedgeWrap.empty();
-						
 						let count = 0;
 						$(resp).each((i, v) => {
+							const {no, code, id, status, content, regDate} = v;
 							count++;
-							let alarmDiv = `<div class="card card-body alarmContent">\${v.content}</div>`;
+							
+							let alarmDiv = `<div class="card card-body alarmContent">\${content}</div>`;
+							if(code.substring(0,2) == 'he'){
+								alarmDiv = `<div class="card card-body alarmContent">
+								<a href="${pageContext.request.contextPath}/member/mypage/memberHelpDetail.do?code=\${code}">\${content}</a>								
+								</div>`;
+							}else{
+								alarmDiv = `<div class="card card-body alarmContent">\${content}</div>`;
+							}
 							$alarmList.append(alarmDiv);
 						});						
 						
@@ -362,48 +327,15 @@ input[id="switch"]{
 		    $("#closeInfo").click((e) => {
 		    	$("#infowrap").css("display","none");
 			});
+		    $("#closeChat").click((e) => {
+		    	$("#chatwrap").css("display","none");
+		    	$(".chat-section").empty();
+			});
 		    
 		    /* iframe 드래그 */
+		    dragElement(document.getElementById("chatwrap"));
 		    dragElement(document.getElementById("infowrap"));
-		  	
-		  	function dragElement(element) {		  		
-		  	
-		  		var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-		  		if(document.getElementById(element.id + "header")){
-		  			document.getElementById(element.id + "header").onmousedown = dragMouseDown;
-		  		}else{
-		  			element.onmousedown = dragMouseDown;
-		  		}
-		  			  	
-			  	function dragMouseDown(e){
-			  		e = e || window.event;
-			  		e.preventDefault();
-			  		pos3 = e.clientX;
-			  		pos4 = e.clientY;
-			  		document.onmouseup = closeDragElement;
-			  		document.onmousemove = elementDrag;
-			  	};
-			  	
-			  	function elementDrag(e) {
-			  		e = e || window.event;
-			        e.preventDefault();
-			        pos1 = pos3 - e.clientX;
-			        pos2 = pos4 - e.clientY;
-			        pos3 = e.clientX;
-			        pos4 = e.clientY;
-			        element.style.top = (element.offsetTop - pos2) + "px";
-			        element.style.left = (element.offsetLeft - pos1) + "px";
-			  	};
-			  	
-			  	function closeDragElement() {
-			  		document.onmouseup = null;
-			        document.onmousemove = null;
-			  	};
-		  	
-		  	};
-			
-		    
-		    
+		   
 		</script>
 </sec:authorize>
 		<section id="content">

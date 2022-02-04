@@ -4,6 +4,8 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import lombok.extern.slf4j.Slf4j;
+
 public class NadaumUtils {
 	
 	public static String rename(String originalFilename) {
@@ -19,10 +21,11 @@ public class NadaumUtils {
 		return sdf.format(new Date()) + df.format(Math.random() * 999) + ext;
 	}
 	
-	public static String getPagebar(int cPage, int limit, int totalContent, String url) {
+	public static String getPagebar(int cPage, int limit, int totalContent, String url, String category) {
 		
 		StringBuilder pagebar = new StringBuilder();
 		
+		String categoryUrl = url + "?category=" + category + "&cPage=";
 		url = url + "?cPage=";
 		
 		int pagebarSize = 5;
@@ -36,7 +39,7 @@ public class NadaumUtils {
 					 + "<ul class=\"pagination\">");
 		
 		if(cPage == 1) {
-			pagebar.append("<li class='page-item disabled'><a class='page-link' href=" + "?cPage=" + (cPage - 1) + ">Previous</a></li>\n");
+			pagebar.append("<li class='page-item disabled'><a class='page-link' href=" + "javascript:paging(" + (cPage - 1) + ")" + ">Previous</a></li>\n");
 		}else {
 			pagebar.append("<li class='page-item'><a class='page-link' href=" + "javascript:paging(" + (cPage - 1) + ")" + ">Previous</a></li>\n");
 		}
@@ -44,9 +47,9 @@ public class NadaumUtils {
 		// pageNo
 		while(pageNo <= pageEnd) {
 			if(pageNo == cPage) {
-				pagebar.append("<li class='page-item active'><a class='page-link' href=" + "?cPage=" + pageNo + ">" + pageNo +"</a></li>\n");
+				pagebar.append("<li class='page-item active'><a class='page-link' href=" + "javascript:paging(" + pageNo + ")" + ">" + pageNo +"</a></li>\n");
 			} else {
-				pagebar.append("<li class='page-item'><a class='page-link' href=" + "?cPage=" + pageNo + ">" + pageNo +"</a></li>\n");
+				pagebar.append("<li class='page-item'><a class='page-link' href=" + "javascript:paging(" + pageNo + ")" + ">" + pageNo +"</a></li>\n");
 			}
 			
 			pageNo++;
@@ -54,17 +57,26 @@ public class NadaumUtils {
 		
 		// [다음]
 		if(cPage == totalPage) {
-			pagebar.append("<li class='page-item disabled'><a class='page-link' href=" + "?cPage=" + (cPage + 1) + ">Next</a></li>\n");
+			pagebar.append("<li class='page-item disabled'><a class='page-link' href=" +"javascript:paging(" + pageNo + ")" + ">Next</a></li>\n");
 		} else {
 			pagebar.append("<li class='page-item'><a class='page-link' href=" + "javascript:paging(" + pageNo + ")" + ">Next</a></li>\n");
 		}
 		
-		pagebar.append(" </ul>\r\n"
-				+ "</nav>"
-				+ "<script>"
-				+ "const paging = (pageNo) => {location.href=`" + url + "${pageNo}`;};"
-				+ "</script>"
-				);
+		if("all".equals(category)) {
+			pagebar.append(" </ul>\r\n"
+					+ "</nav>"
+					+ "<script>"
+					+ "const paging = (pageNo) => {location.href=`" + url + "${pageNo}`;};"
+					+ "</script>"
+					);			
+		}else {
+			pagebar.append(" </ul>\r\n"
+					+ "</nav>"
+					+ "<script>"
+					+ "const paging = (pageNo) => {location.href=`" + categoryUrl + "${pageNo}`;};"
+					+ "</script>"
+					);	
+		}
 		
 		return pagebar.toString();
 	}

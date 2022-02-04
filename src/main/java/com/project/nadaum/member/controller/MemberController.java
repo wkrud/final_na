@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -28,6 +29,7 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,6 +40,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.JsonObject;
+import com.project.nadaum.admin.model.vo.Announcement;
+import com.project.nadaum.admin.model.vo.Help;
 import com.project.nadaum.common.NadaumUtils;
 import com.project.nadaum.common.vo.Attachment;
 import com.project.nadaum.common.vo.CategoryEnum;
@@ -92,6 +96,78 @@ public class MemberController {
 	
 	@GetMapping("/mypage/changePassword.do")
 	public void changePassword() {}
+	
+	@GetMapping("/mypage/memberChangeProfile.do")
+	public void memberChangeProfile() {}
+	
+	@PostMapping("/mypage/memberChangeProfile.do")
+	public String memberChangeProfile(@RequestParam(name="profile") MultipartFile profile, @RequestParam String flag, @AuthenticationPrincipal Member member) throws Exception {
+//		log.debug("profile = {}", profile);
+//		log.debug("profileO = {}", profile.getOriginalFilename());
+//		log.debug("flag = {}", flag);
+		
+		try {
+			String saveDirectory = application.getRealPath("/resources/upload/member/profile");
+			if(member.getProfile() != null) {
+				File dest = new File(saveDirectory, member.getProfile());
+				boolean bool = dest.delete();
+				log.debug("bool = {}", bool);
+			}
+			String originalFilename = profile.getOriginalFilename();
+			String renamedFilename = "";
+			if(!originalFilename.isEmpty()) {
+				renamedFilename = NadaumUtils.rename(originalFilename);
+				File dest = new File(saveDirectory, renamedFilename);
+				profile.transferTo(dest);				
+			}
+			
+			Map<String, Object> map = new HashMap<>();
+			map.put("id", member.getId());
+			map.put("profile", renamedFilename);
+			map.put("flag", flag);
+			int result = memberService.updateProfile(map);
+			
+			String profileStatus = "";
+			if("yes".equals(flag))
+				profileStatus = "Y";
+			else
+				profileStatus = "N";
+			member.setProfile(renamedFilename);
+			member.setProfileStatus(profileStatus);
+			Authentication newAuthentication = new UsernamePasswordAuthenticationToken(member, member.getPassword(), member.getAuthorities());		
+			SecurityContextHolder.getContext().setAuthentication(newAuthentication);
+		} catch (IllegalStateException | IOException e) {
+			log.error(e.getMessage(), e);
+			throw e;
+		}
+		return "redirect:/member/mypage/memberDetail.do?tPage=myPage";
+	}
+
+	@GetMapping("/mypage/announcementDetail.do")
+	public String announcementDetail(@RequestParam String board, Model model, @CookieValue(value="announceCount", required=false, defaultValue="0") String value, HttpServletRequest request, HttpServletResponse response) {
+		try {
+			// 쿠키로 조회수 관리
+			log.debug(value);
+			if("0".equals(value)) {
+				int result = memberService.updateAnnounceReadCount(board);
+				value = board;
+				Cookie cookie = new Cookie("announceCount", value);
+				cookie.setMaxAge(60 * 60 * 24 * 30);
+				cookie.setPath(request.getContextPath() + "/member/mypage/announcementDetail.do");
+				response.addCookie(cookie);
+				log.debug("쿠키 배포 완료 = {}", cookie);			
+			}
+			Map<String, Object> param = new HashMap<>();
+			param.put("code", board);
+			Announcement announce = memberService.selectOneAnnouncement(param);
+			log.debug("announcement = {}", announce);
+			model.addAttribute("announce", announce);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw e;
+		}
+		return "member/mypage/announcementDetail";
+	}
 	
 	@GetMapping("/mypage/membershipWithdrawal.do")
 	public void membershipWithdrawal(@AuthenticationPrincipal Member member, Model model) {
@@ -175,13 +251,16 @@ public class MemberController {
 	
 	@GetMapping("/mypage/memberInfo.do")
 	public void memberInfo(Model model) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("category", "all");
 		List<Map<String, Object>> list = memberService.selectMostHelp();
-		List<Map<String, Object>> helps = memberService.selectAllMembersQuestions();
+		List<Help> helps = memberService.selectAllMembersQuestions(map);
+		log.debug("helps = {}", helps);
 		log.debug("list = {}", list);
-		List<Map<String, Object>> mostHelps = new ArrayList<>();
+		List<Help> mostHelps = new ArrayList<>();
 		for(int i = 0; i < helps.size(); i++) {
 			for(int j = 0; j < list.size(); j++) {
-				if(helps.get(i).get("code").equals(list.get(j).get("CODE"))) {
+				if(helps.get(i).getCode().equals(list.get(j).get("CODE"))) {
 					mostHelps.add(helps.get(i));
 				}
 			}
@@ -192,7 +271,8 @@ public class MemberController {
 	
 	@GetMapping("/mypage/memberHelpOneCategory.do")
 	public void memberHelpOneCategory(@RequestParam String category, @RequestParam(defaultValue="1") int cPage, Model model, HttpServletRequest request) {
-					
+		
+		log.debug("category = {}", category);
 		int limit = 10;
 		int offset = (cPage - 1) * limit;
 		Map<String, Object> param = new HashMap<>();
@@ -204,7 +284,7 @@ public class MemberController {
 		int totalContent = memberService.countHelpOneCategoryCount(category);
 		log.debug("totalContent = {}", totalContent);
 		String url = request.getRequestURI();
-		String pagebar = NadaumUtils.getPagebar(cPage, limit, totalContent, url);
+		String pagebar = NadaumUtils.getPagebar(cPage, limit, totalContent, url, category);
 		String check = CategoryEnum._valueOf(category).toString();
 		
 		model.addAttribute("check", check);
@@ -459,33 +539,63 @@ public class MemberController {
 	@GetMapping("/mypage/memberDetail.do")
 	public void memberDetail(@AuthenticationPrincipal Member member, @RequestParam String tPage, Model model, RedirectAttributes redirectAttr) {
 		try {
-			log.debug("tPage = {}", tPage);
-			Attachment attach = memberService.selectMemberProfile(member);
-			List<Map<String, Object>> alarm = memberService.selectAllAlarm(member);
-			log.debug("alarm = {}", alarm);
-			log.debug("attach = {}", attach);
-			model.addAttribute("attach", attach);
-			model.addAttribute("alarmList", alarm);
+			log.debug("tPage = {}", tPage);			
+			
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			throw e;
-		}
+		}		
+	}	
+	
+	@GetMapping("/mypage/memberAlarm.do")
+	public ResponseEntity<?> memberAlarm(@AuthenticationPrincipal Member member, @RequestParam(defaultValue = "1") int cPage){
+		log.debug("cPage = ", cPage);
+		int limit = 5;
+		int offset = (cPage - 1) * limit;
+		Map<String, Object> param = new HashMap<>();
+		param.put("limit", limit);
+		param.put("offset", offset);
+		param.put("member", member);
+		List<Map<String, Object>> alarm = memberService.selectAllAlarm(param);
+		log.debug("alarm = {}", alarm);
+		
+		return ResponseEntity.ok(alarm);
 	}
 	
-	
 	@GetMapping("/mypage/memberMyHelp.do")
-	public void memberMyHelp(@AuthenticationPrincipal Member member, Model model){
-		List<Map<String, Object>> myHelpList = memberService.selectAllMyQuestions(member);
+	public void memberMyHelp(@RequestParam(defaultValue = "1") int cPage, HttpServletRequest request, @AuthenticationPrincipal Member member, Model model){
+		int limit = 5;
+		int offset = (cPage - 1) * limit;
+		Map<String, Object> param = new HashMap<>();
+		param.put("limit", limit);
+		param.put("offset", offset);
+		param.put("member", member);
+		
+		List<Map<String, Object>> myHelpList = memberService.selectAllMyQuestions(param);
+		int totalContent = memberService.countAllMyHelp(member);
+		String category = "all";
+		String url = request.getRequestURI();
+		String pagebar = NadaumUtils.getPagebar(cPage, limit, totalContent, url, category);
 		log.debug("myHelpList = {}", myHelpList);		
 		model.addAttribute("myHelpList", myHelpList);
+		model.addAttribute("pagebar", pagebar);
 	}
 	
 	@GetMapping("/mypage/memberHelp.do")
 	public void memberHelp(Model model){
-		List<Map<String, Object>> helpList = memberService.selectAllMembersQuestions();
-		log.debug("helpList = {}", helpList);
+		// 다이어리 dy, 가계부 ab, 문화생활 cu, 오디오북, 롤전적, 캘린더 , 친구 fr, 메모 me
+		Map<String, Object> map = new HashMap<>();
+		map.put("category", "dy");
+		List<Help> helpDyList = memberService.selectAllMembersDyQuestions(map);
+		map.put("category", "ab");
+		List<Help> helpAbList = memberService.selectAllMembersAbQuestions(map);
+		map.put("category", "fr");
+		List<Help> helpFrList = memberService.selectAllMembersFrQuestions(map);
+		log.debug("helpList = {}", helpDyList);
 		
-		model.addAttribute("helpList", helpList);		
+		model.addAttribute("helpDyList", helpDyList);		
+		model.addAttribute("helpAbList", helpAbList);		
+		model.addAttribute("helpFrList", helpFrList);			
 	}
 	
 	@GetMapping("/mypage/searchHelpTitle.do")
@@ -541,6 +651,7 @@ public class MemberController {
 			reverse.put("friendId", member.getId());
 			
 			alarm.put("id", friendInfo.getId());
+			alarm.put("code", "fr");
 			
 			if("follower".equals(check)) {
 				// -> friend
@@ -679,8 +790,9 @@ public class MemberController {
 		int totalContent = memberService.countAllAnnouncementList();
 		log.debug("totalContent = {}", totalContent);
 		
+		String category = "all";
 		String url = request.getRequestURI();
-		String pagebar = NadaumUtils.getPagebar(cPage, limit, totalContent, url);
+		String pagebar = NadaumUtils.getPagebar(cPage, limit, totalContent, url, category);
 			
 		model.addAttribute("pagebar", pagebar);
 		model.addAttribute("announceList", announceList);

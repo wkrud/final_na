@@ -12,6 +12,10 @@
 		select * from member where nickname = #{nickname}
 	</select>
 	
+	<select id="selectOneAnnouncement" resultType="announcement">
+		select * from announcement where code = #{code}
+	</select>
+	
 	<select id="selectAllAnnouncement" resultMap="announcementMap">
 		select * from announcement order by reg_date desc
 	</select>
@@ -40,10 +44,6 @@
 		update member set profile = #{profile} where id = #{id}
 	</update>
 	
-	<select id="selectMemberProfile" resultType="attachment">
-		select * from attachment where code = #{id}
-	</select>
-	
 	<update id="updateMemberNickname">
 		update member set nickname = #{nickname} where id = #{id}
 	</update>
@@ -51,6 +51,21 @@
 	<delete id="deleteMember">
 		delete from member where id = #{id}
 	</delete>
+	
+	<update id="updateAnnounceReadCount">
+		update announcement set read_count = read_count + 1 where code = #{code}
+	</update>
+	
+	<!--  -->
+	<update id="updateProfile">
+		update member set 
+		<if test="flag == 'yes'">
+			profile = #{profile}, profile_status = 'Y' where id = #{id}		
+		</if>
+		<if test="flag == 'no'">
+			profile = null, profile_status = 'N' where id = #{id}		
+		</if>
+	</update>
 	
 	<!-- 전화번호 등록 -->
 	
@@ -109,11 +124,11 @@
 	<!-- 친구 crud 시작 -->	
 	
 	<select id="selectSearchMemberNickname" resultType="string">
-		select nickname from member where nickname like '%'||#{value}||'%'
+		select nickname from member where search = 'T' and nickname like '%'||#{value}||'%'
 	</select>
 	
 	<select id="selectOneMemberNicknameNotMe" resultType="member">
-		select * from member where nickname = #{friendNickname} and not id = #{id}
+		select * from member where search = 'T' and nickname = #{friendNickname} and not id = #{id}
 	</select>
 	
 	<select id="selectFollower" resultMap="requestFriendMap">
@@ -137,9 +152,17 @@
 	</insert>
 	
 	<insert id="insertAlarm">
-		insert into alarm (no, id, content)
-		values(seq_alarm_no.nextval, #{id}, #{content})
+		insert into alarm
+		values(seq_alarm_no.nextval,
+		<if test="code != null">
+			#{code},
+		</if>
+		#{id}, default, #{content}, default)
 	</insert>
+	
+	<update id="updateAlarm">
+		update alarm set status = 'F' where code = #{code}
+	</update>
 	
 	<delete id="deleteRequestFriend">
 		delete from request_friend where my_id = #{id} and follower_id = #{friendId}
@@ -162,8 +185,31 @@
 		select * from help where id = #{id}
 	</select>
 	
-	<select id="selectAllMembersQuestions" resultMap="helpMap">
-		select * from help order by status desc
+	<select id="countAllMyHelp" resultType="int">
+		select count(*) from help where id = #{id}
+	</select>
+	
+	<select id="selectAllMembersQuestions" resultType="help">
+		select
+			*
+		from(
+			select 
+				* 
+			from 
+				help
+			where
+				<if test="category != 'all'">
+					category = #{category}
+					and
+				</if>
+				status = 'T'
+			order by
+				reg_date desc
+		)
+		<if test="category != 'all'">
+		where
+			rownum <![CDATA[<=]]> 4
+		</if>
 	</select>
 	
 	<select id="selectAllHelpTitle" resultType="string">
@@ -177,7 +223,10 @@
 	<select id="selectOneSelectedHelp" resultMap="helpNicknameMap">
 		select
 			h.*,
-			m.nickname nickname
+			m.nickname nickname,
+			m.profile profile,
+			m.login_type logintype,
+			m.profile_status profilestatus
 		from
 			help h join member m
 				on h.id = m.id
@@ -289,6 +338,9 @@
 		<result column="A_CONTENT" property="aContent"/>
 		<result column="A_REG_DATE" property="aRegDate"/>
 		<result column="NICKNAME" property="nickname"/>
+		<result column="PROFILE" property="profile"/>
+		<result column="LOGINTYPE" property="loginType"/>
+		<result column="PROFILESTATUS" property="profileStatus"/>
 	</resultMap>
 	
 	<resultMap type="map" id="announcementMap">

@@ -3,3 +3,21 @@
 	margin-top: 100px;
 	padding: 10px;
 }
+
+/* 친구관리 */
+.friend{
+	margin-left: 15px;
+}
+.friend-btn button{
+	
+}
+
+.slick-list{
+	background-color: ghostwhite;
+}
+
+
+
+.follower{
+	margin-left: 15px;
+}
