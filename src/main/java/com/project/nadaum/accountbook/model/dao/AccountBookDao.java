@@ -31,5 +31,7 @@ public interface AccountBookDao {
 
 	List<AccountBook> monthlyCountList(Map<String, Object> param);
 
+	List<Map<String, Object>> categoryChart(Map<String, Object> map);
+
 
 }

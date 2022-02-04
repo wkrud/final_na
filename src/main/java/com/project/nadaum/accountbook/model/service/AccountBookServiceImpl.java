@@ -72,6 +72,11 @@ public class AccountBookServiceImpl implements AccountBookService {
 		return accountBookDao.monthlyCountList(param);
 	}
 
+	@Override
+	public List<Map<String, Object>> categoryChart(Map<String, Object> map) {
+		return accountBookDao.categoryChart(map);
+	}
+
 	
 	
 	

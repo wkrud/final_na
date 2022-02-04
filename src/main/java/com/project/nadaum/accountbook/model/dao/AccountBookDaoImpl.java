@@ -73,6 +73,11 @@ public class AccountBookDaoImpl implements AccountBookDao {
 	public List<AccountBook> monthlyCountList(Map<String, Object> param) {
 		return session.selectList("accountbook.monthlyCountList", param);
 	}
+
+	@Override
+	public List<Map<String, Object>> categoryChart(Map<String, Object> map) {
+		return session.selectList("accountbook.categoryChart", map);
+	}
 	
 	
 

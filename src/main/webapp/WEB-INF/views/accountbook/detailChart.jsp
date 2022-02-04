@@ -19,25 +19,50 @@
 
 <%
 	Date date = new Date();
-	SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 M월");
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 M월 d일");
 	SimpleDateFormat sdf2 = new SimpleDateFormat("M월");
 	String today = sdf.format(date);
 	String today_m = sdf2.format(date);
 %>
 
 <div class=wrapper>
-	<div class="box yearly_total">
-		<button type="button" onclick='count("minus")'>지난달 테스트</button>
-		<c:forEach items="${countList}" var="list" >
-		<div><p>${loginMember.name}님의 <%= today %> 총 거래내역 : <span>${list.count}</span>건</p></div>
-		<div><p>누적 거래 금액 : <span><fmt:formatNumber value="${list.sum}" type="number"/></span>원</p></div>
-		</c:forEach>
-		<button type="button" onclick='count("plus")'>담달 테스트</button>
+	<form action="">
+	<div class="analyze-ac box">
+		<div class="analyze-header">
+			<p>${loginMember.name}님의</p> 
+			<p><%= today_m %> 가계부가 도착했어요♪</p>
+		</div>
+<%-- 		<div class="analyze-date">
+			<p><%= today %></p>
+		</div> --%>
+		<div class="analyze-income">
+			<h3>이 달의 수입 패턴</h3>
+			<table>
+				<tr>
+					<td>현금 %</td>
+					<td>카드 %</td>
+				</tr>
+			</table>
+			<div id="incomeChartArea" class="box"></div>
+			<div class="incomeAnalyzeArea box"></div>
+		</div>
+		<div class="analyze-expense">
+			<h3>이 달의 지출 패턴</h3>
+			<table>
+				<tr>
+					<td>현금 %</td>
+					<td>카드 %</td>
+				</tr>
+			</table>
+			<div id="expenseChartArea" class="box"></div>
+			<div class="expenseAnalyzeArea box"></div>
+		</div>
+		<div class="analyze-monthly">
+			<h3>한눈에 보는 월별 차트</h3>
+			<div id="monthly_chart"></div>
+		</div>
 	</div>
-	<div id="yearly_chart" class="box">
-	</div>
-	<div class="category-chart category-income box"></div>
-	<div class="category-chart category-expense box"></div>
+	</form>
 </div>
 <input type="hidden" id="contextPath" value="${pageContext.request.contextPath}" />
 <script src='${pageContext.request.contextPath}/resources/js/accountbook/chart.js'></script>
