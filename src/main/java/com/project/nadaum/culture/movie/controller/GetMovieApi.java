@@ -40,7 +40,7 @@ public class GetMovieApi {
 	public void getMovieApi(Model model) {
 		int page = 1;
 
-		List<Object> list = new ArrayList<>();
+		List<Map<String, Object>> list = new ArrayList<>();
 			try {
 				
 			while(true){
@@ -101,12 +101,11 @@ public class GetMovieApi {
 																
 						list.add(map);
 						
-						log.debug("list = {}", list);
-						System.out.println(list);
+						
 					}	// if end
 					
 				}	// for end
-				model.addAttribute("list",list);
+				
 				page += 1;
 				System.out.println("page number : "+page);
 	
@@ -114,7 +113,12 @@ public class GetMovieApi {
 					break;
 				}
 			}	// while end
-		
+			
+			model.addAttribute("list",list);
+			
+			for(Map<String, Object> map : list) {
+				System.out.println(map);
+			}
 			
 			} catch (Exception e){	
 			e.printStackTrace();
