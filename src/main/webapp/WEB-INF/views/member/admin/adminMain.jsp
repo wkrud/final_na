@@ -28,6 +28,7 @@
 			</div>
 			<div class="admin-chart-wrap">
 				<div id="member-enroll-chart"></div>
+				<div id="member-hobby-chart"></div>
 			</div>
 		</div>
 	</div>

@@ -112,17 +112,17 @@
         	FROM 
         		member
             WHERE 
-            	reg_date BETWEEN TO_DATE('2022-01', 'yyyy-mm')
-                             AND TO_DATE('2022-12', 'yyyy-mm') 
+            	reg_date BETWEEN TO_DATE(#{year}||'-01', 'yyyy-mm')
+                             AND TO_DATE(#{year}||'-12', 'yyyy-mm') 
           	GROUP BY reg_date
         	) a,
       		(
       		SELECT 
-      			TO_DATE('2022-01-01','YYYY-MM-DD') + LEVEL AS dt
+      			TO_DATE(#{year}||'-01-01','YYYY-MM-DD') + LEVEL AS dt
             FROM 
             	dual 
-            CONNECT BY LEVEL <![CDATA[<=]]> (TO_DATE('2022-12-31','YYYY-MM-DD') 
-                            - TO_DATE('2022-01-01','YYYY-MM-DD'))
+            CONNECT BY LEVEL <![CDATA[<=]]> (TO_DATE(#{year}||'-12-31','YYYY-MM-DD') 
+                            - TO_DATE(#{year}||'-01-01','YYYY-MM-DD'))
 	        ) b
 		WHERE TO_CHAR(b.dt, 'YYYY-MM-DD') = a.regdate(+)
 		GROUP BY TO_CHAR(b.dt, 'MM')

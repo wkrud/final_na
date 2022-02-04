@@ -123,8 +123,8 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public List<Map<String, Object>> selectMonthEnrollCount() {
-		return adminDao.selectMonthEnrollCount();
+	public List<Map<String, Object>> selectMonthEnrollCount(Map<String, Object> yearMap) {
+		return adminDao.selectMonthEnrollCount(yearMap);
 	}
 	
 	

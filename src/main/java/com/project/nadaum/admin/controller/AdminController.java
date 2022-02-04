@@ -2,6 +2,8 @@ package com.project.nadaum.admin.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -277,9 +279,20 @@ public class AdminController {
 	
 	@GetMapping("/chart.do")
 	public ResponseEntity<?> chart(){
-		List<Map<String, Object>> list = adminService.selectMonthEnrollCount();
-			
-		return ResponseEntity.ok(list);
+		
+		Date d = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+		String year = sdf.format(d);
+		log.debug("year = {}", year);
+		
+		Map<String, Object> yearMap = new HashMap<>();
+		yearMap.put("year", year);
+		
+		List<Map<String, Object>> list = adminService.selectMonthEnrollCount(yearMap);
+		Map<String, Object> map = new HashMap<>();
+		map.put("list", list);
+		map.put("hi", "hi");
+		return ResponseEntity.ok(map);
 	}
 
 }

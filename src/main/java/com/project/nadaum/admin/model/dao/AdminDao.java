@@ -43,6 +43,6 @@ public interface AdminDao {
 
 	int countAllMember(Map<String, Object> param);
 
-	List<Map<String, Object>> selectMonthEnrollCount();
+	List<Map<String, Object>> selectMonthEnrollCount(Map<String, Object> yearMap);
 
 }

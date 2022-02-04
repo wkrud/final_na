@@ -107,8 +107,8 @@ public class AdminDaoImpl implements AdminDao {
 	}
 
 	@Override
-	public List<Map<String, Object>> selectMonthEnrollCount() {
-		return session.selectList("admin.selectMonthEnrollCount");
+	public List<Map<String, Object>> selectMonthEnrollCount(Map<String, Object> yearMap) {
+		return session.selectList("admin.selectMonthEnrollCount", yearMap);
 	}
 	
 	
