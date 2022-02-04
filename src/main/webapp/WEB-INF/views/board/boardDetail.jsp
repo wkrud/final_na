@@ -8,6 +8,7 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="게시판상세보기" name="title" />
 </jsp:include>
+<sec:authentication property="principal" var="loginMember"/>
 <style>
 div#board-container {
 	position: absolute;
