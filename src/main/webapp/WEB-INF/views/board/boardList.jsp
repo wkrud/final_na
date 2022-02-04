@@ -9,6 +9,7 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="게시판" name="title" />
 </jsp:include>
+<sec:authentication property="principal" var="loginMember"/>
 <style>
 input#btn-add {
 	float: right;
@@ -70,7 +71,7 @@ $(() => {
 						<a href="${pageContext.request.contextPath}/board/boardDetail.do?code=${board.code}">${board.title} </a>
 						<%-- <c:if test="${board.commentCount gt 0 ? board.commentCount : ""}"></c:if>  --%>
 					</td>
-					<td>${board.id}</td>
+					<td><c:out value="${board.member.id}"></c:out></td>
 					<td>${board.content}</td>
 					<td><fmt:formatDate value="${board.regDate}" pattern="yy/MM/dd HH:mm" /></td>
 					<td>${board.readCount}</td>
@@ -79,8 +80,7 @@ $(() => {
 			</table>
 			<input type="hidden" name="id" id="id" value="${loginMember.id}" />
 			<sec:authentication property="principal" var="loginMember" />
-			<input type="button" value="글쓰기" id="btn-add"	class="btn btn-outline-success" onclick="goBoardForm();" /> 
-		
+			<input type="button" value="글쓰기" id="btn-add"	class="btn btn-outline-success" onclick="goBoardForm();" /> 	
 		${pagebar}
 	</section>
 </body>

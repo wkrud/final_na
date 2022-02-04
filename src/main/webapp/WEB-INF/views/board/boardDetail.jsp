@@ -98,7 +98,7 @@ div#board-container label.custom-file-label {
 								<label for="replyId"><i
 									class="fa fa-user-circle-o fa-2x"></i></label>
 							</div>
-							<form:form
+							<form
 								action="${pageContext.request.contextPath}/board/boardCommentEnroll.do"
 								method="post" name="boardCommentFrm" id="commentForm">
 
@@ -117,7 +117,7 @@ div#board-container label.custom-file-label {
 									class="btn btn-warning" onClick="fn_comment('${board.code}')">등록</button>
 
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-							</form:form>
+							</form>
 						</li>
 					</ul>
 				</div>
@@ -157,12 +157,12 @@ div#board-container label.custom-file-label {
 												value="${comment.commentCode}">답글</button>
 											&nbsp;
 											<%-- 회원이고 글쓴이 본인일 경우 댓글 삭제 버튼--%>
-											<%-- <c:if test="${comment.id eq loginMember.id}"> --%>
+											<c:if test="${comment.id eq loginMember.id}">
 											<button type="button"
 												class="btn btn-warning btnCommentDelete btn-delete"
 												value="${comment.commentCode}">삭제</button>
 											&nbsp;
-											<%-- </c:if> --%>
+											</c:if>
 										</div>
 
 									</li>
@@ -185,14 +185,14 @@ div#board-container label.custom-file-label {
 										<div class="row float-right">
 
 											<!-- 회원이고 글쓴이 본인일 경우 -->
-											<%-- <sec:authorize access="">
-												<c:if test="${comment.id eq member.id}"> --%>
+											<sec:authorize access="">
+												<c:if test="${comment.id eq member.id}">
 											<button type="button"
 												class="btn btn-warning btnCommentDelete btn-delete"
 												value="${comment.commentCode}">삭제</button>
 											&nbsp;
-											<%-- </c:if>
-											</sec:authorize> --%>
+											 </c:if>
+											</sec:authorize>
 										</div>
 									</li>
 								</ul>
