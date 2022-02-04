@@ -185,9 +185,31 @@
 		)
 	</select>
 	
+	<select id="categoryChart" resultMap="monthlyCountList">
+		select
+		    category,
+		    count(category) as count
+		from
+		    (select
+		        to_char(add_months(sysdate, #{monthly}), 'yyyy-mm') as monthly,
+		        category
+		    from
+		        account_book
+		    where
+		        to_char(reg_date, 'yyyy-mm') = to_char(add_months(sysdate, #{monthly}), 'yyyy-mm')
+		        and
+		        id = #{id}
+		        and
+		        income_expense=#{incomeExpense}
+		    )
+		group by monthly, category
+	</select>
+	
+	
 	<resultMap type="Map" id="monthlyCountList">
 		<result column="sum" property="sum"/>
 		<result column="count" property="count"/>
+		<result column="category" property="category"/>
 	</resultMap>
 		
 	<resultMap type="Map" id="monthlyChart">
