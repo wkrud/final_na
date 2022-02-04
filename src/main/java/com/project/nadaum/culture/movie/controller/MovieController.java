@@ -4,14 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.google.gson.JsonObject;
 import com.project.nadaum.culture.movie.model.service.MovieService;
-import com.project.nadaum.culture.movie.model.vo.Movie;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,7 +26,9 @@ public class MovieController {
 
 	@Autowired
 	private MovieService movieService;
-		
+	
+	@Autowired
+	private GetMovieDetailApi getMovieDetailApi;
 	
 //	@GetMapping("/movieList.do")
 //	public void MovieList(Model model) {
@@ -45,8 +46,16 @@ public class MovieController {
 //		Map<String, Object> map = new HashMap<>();	
 //	}
 
-
-
+	
+//	 @GetMapping("/movieDetail.do?movieCd={movieCd}")
+//	 public ResponseEntity<?>
+//	 goToDetail (@PathVariable String movieCd) { 
+//		log.debug(movieCd);
+//		String result = getMovieDetailApi.getMovieDetailApi(movieCd, null);
+//	  
+//		Map<String, Object> map = new HashMap<>();
+//	 }
+	 
 
 
 }

@@ -11,8 +11,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -53,19 +53,26 @@ public class GetMovieDetailApi {
 		
 		return String.join(",", tagArr);
 	}
-
+//@RequestParam(value="movieCd", required=false) String movieCd
+	
 	// 영화 상세정보API
-	@GetMapping("/movieDetail?movieCd={movieCode}")
-	public void getMovieDetailApi(@PathVariable String movieCode, Model model) {
+	@GetMapping("/movieDetail.do")
+	public void getMovieDetailApi(@RequestParam String movieCd, Model model) {
+		log.debug("movieCd = {} ", movieCd);
+		
 		List<Object> list = new ArrayList<>();
+		
 		try {
 
 			// parsing할 url 지정(API 키 포함해서)
 			// 영화상세api
 			String url = "http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieInfo.xml"
 					+ "?key=2707c14a032dacdea9d8b690c3f99d19" 
-					+ "&movieCd="+ movieCode;
-
+					+ "&movieCd="+ movieCd;
+			
+			
+			log.debug(movieCd);
+			
 			DocumentBuilderFactory dbFactoty = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactoty.newDocumentBuilder();
 			Document doc = dBuilder.parse(url);
@@ -86,7 +93,7 @@ public class GetMovieDetailApi {
 				
 				//getTagvalues메소드로 자식태그까지 탐색가능
 				Element movieInfoElem = (Element) movieInfoNode;
-				String movieCd = getTagValues("movieCd", movieInfoElem);
+//				String movieCd = getTagValues("movieCd", movieInfoElem);
 				String movieNm = getTagValues("movieNm", movieInfoElem);
 				String openDt = getTagValues("openDt", movieInfoElem);
 				String nationNm = getTagValues("nationNm", movieInfoElem);
@@ -95,7 +102,7 @@ public class GetMovieDetailApi {
 				System.out.println(nationNm); // 한국
 				System.out.println(genreNm); // 사극, 드라마
 
-				map.put("movieCd", movieCd);
+//				map.put("movieCd", movieCd);
 				map.put("movieNm", movieNm);
 				map.put("openDt", openDt);
 				map.put("nation", nationNm);
@@ -131,5 +138,7 @@ public class GetMovieDetailApi {
 		}
 
 	}
+
+
 
 }
