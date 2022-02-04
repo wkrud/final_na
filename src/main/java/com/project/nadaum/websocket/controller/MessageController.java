@@ -114,7 +114,7 @@ public class MessageController {
 		template.convertAndSend("/topic/" + alarm.getGuest(), gson.toJson(alarm));
 	}
 	
-	@MessageMapping("/chat/alarm/{friendNickname}")
+	@MessageMapping("/chat/friendStatus/{friendNickname}")
 	@SendTo("/topic/{friendNickname}")
 	public void friendAlarm(@Payload Alarm alarm) {
 		
@@ -122,6 +122,16 @@ public class MessageController {
 		
 		template.convertAndSend("/topic/" + alarm.getFriendNickname(), gson.toJson(alarm));
 	}
+	
+	@MessageMapping("/chat/answerAlarm/{guest}")
+	@SendTo("/topic/{guest}")
+	public void answerAlarm(@Payload Alarm alarm) {
+		log.debug("answerAlarm = {}", alarm);
+		Gson gson = new GsonBuilder().create();
+		
+		template.convertAndSend("/topic/" + alarm.getGuest(), gson.toJson(alarm));
+	}
+	
 	
 	
 	

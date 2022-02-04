@@ -1,3 +1,8 @@
+.help-detail-body{
+	width: 700px;
+}
+
+
 .question-list-wrap{
 	display:flex;
 	justify-content: center;

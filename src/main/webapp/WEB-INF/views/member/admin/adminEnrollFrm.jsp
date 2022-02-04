@@ -32,9 +32,11 @@
 					<textarea name="aContent" id="admin-summernote" required></textarea>
 					<div><span id="limite_normal"></span><span id="limite_vermelho" style="color:red"></span>/500</div>
 					<button type="submit" id="admin-submit-btn" class="btn btn-success">답변등록</button>
+					<input type="hidden" name="flag" value="${flag}" />
 					<input type="hidden" name="code" value="${help.code}" />
 					<input type="hidden" name="aCode" value="${help.ACode}" />
-					<input type="hidden" name="id" value="${help.id}" />
+					<input type="hidden" name="nickname" value="${member.nickname}" />
+					<input type="hidden" name="id" value="${member.id}" />
 					<input type="hidden" name="title" value="${help.title}" />
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 				</form>	
@@ -72,15 +74,10 @@ $("#admin-submit-btn").click((e) => {
 		return false;
 	}
 	<c:if test="${check eq 'help'}">
-		alarmSave('ah', $("input[name=id]").val(), $("input[name=title]").val());
+		answerAlarm('help', $("input[name=code]").val(), $("input[name=nickname]").val(), $("input[name=title]").val());
 	</c:if>
 	return true;
 });
-
-const answerAlarm = (type, id, title) => {
-	let socketMsg = type + "," + id + "," + title;
-	socket.send(socketMsg);		
-};
 
 $(document).ready(function() {
 	
