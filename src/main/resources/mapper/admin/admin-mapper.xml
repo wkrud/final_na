@@ -98,6 +98,42 @@
 	<delete id="deleteRole">
 		delete from authority where member_id = #{id} and authority = 'ROLE_ADMIN'
 	</delete>
+	
+	<!-- chart -->
+	
+	<select id="selectMonthEnrollCount" resultType="map">
+		SELECT 
+			TO_CHAR(b.dt, 'MM') AS regdate,
+		    NVL(SUM(a.cnt), 0) cnt
+		FROM ( 
+			SELECT 
+				TO_char(reg_date, 'YYYY-MM-DD') AS regdate,
+		        COUNT(*) cnt
+        	FROM 
+        		member
+            WHERE 
+            	reg_date BETWEEN TO_DATE(#{year}||'-01', 'yyyy-mm')
+                             AND TO_DATE(#{year}||'-12', 'yyyy-mm') 
+          	GROUP BY reg_date
+        	) a,
+      		(
+      		SELECT 
+      			TO_DATE(#{year}||'-01-01','YYYY-MM-DD') + LEVEL AS dt
+            FROM 
+            	dual 
+            CONNECT BY LEVEL <![CDATA[<=]]> (TO_DATE(#{year}||'-12-31','YYYY-MM-DD') 
+                            - TO_DATE(#{year}||'-01-01','YYYY-MM-DD'))
+	        ) b
+		WHERE TO_CHAR(b.dt, 'YYYY-MM-DD') = a.regdate(+)
+		GROUP BY TO_CHAR(b.dt, 'MM')
+		ORDER BY TO_CHAR(b.dt, 'MM')
+	</select>
+	
+	<select id="selectAllMemberForHobby" resultType="member">
+		select hobby from member where not id = 'admin'
+	</select>
+	
+	<!-- chart end -->
 		
 	<resultMap type="map" id="helpMap">
 		<id column="code" property="code"/>

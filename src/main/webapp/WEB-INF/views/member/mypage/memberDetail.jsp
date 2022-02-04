@@ -1,3 +1,7 @@
+<%@page import="java.util.List"%>
+<%@page import="java.util.Arrays"%>
+<%@page import="org.springframework.security.core.context.SecurityContextHolder"%>
+<%@page import="com.project.nadaum.member.model.vo.Member"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -5,6 +9,12 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%
+	Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	String[] hobby = member.getHobby();
+	List<String> hobbyList = hobby != null ? Arrays.asList(hobby) : null;
+	pageContext.setAttribute("hobbyList", hobbyList);
+%>
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="나:다움 회원정보" name="title"/>
 </jsp:include>
@@ -89,42 +99,113 @@
 					</div>				
 				</div>
 				<div class="hobby-wrap">
-					<div class="my-hobby-wrap-title">
-						<span>내 취미</span>
+					<div class="selected-hobby-wrap">
+						<div class="my-hobby-wrap-title">
+							<span>내 취미</span>
+						</div>
+						<div class="my-hobby-wrap">							
+							<c:forEach items="${hobbyList}" var="hobby">
+								<c:if test="${hobby eq '롤'}">
+									${hobby}
+								</c:if>
+								<c:if test="${hobby eq '게임'}">
+									${hobby}
+								</c:if>
+								<c:if test="${hobby eq '독서'}">
+									${hobby}
+								</c:if>
+								<c:if test="${hobby eq '글쓰기'}">
+									${hobby}
+								</c:if>
+								<c:if test="${hobby eq '코딩'}">
+									${hobby}
+								</c:if>
+								<c:if test="${hobby eq '볼링'}">
+									${hobby}
+								</c:if>
+								<c:if test="${hobby eq '농구'}">
+									${hobby}
+								</c:if>
+								<c:if test="${hobby eq '맛집탐방'}">
+									${hobby}
+								</c:if>
+								<c:if test="${hobby ne '맛집탐방' && hobby ne '롤' && hobby ne '게임' && hobby ne '독서' && hobby ne '글쓰기' && hobby ne '코딩' && hobby ne '볼링' && hobby ne '농구'}">
+									${hobby}
+								</c:if>
+							</c:forEach>
+						</div>
 					</div>
-					<div class="my-hobby-wrap">
-					
+					<div class="modify-hobby-wrap">
+						<div class="hobby-wrap-title">
+							<span>취미</span>
+						</div>
+						<div class="hobby-select-form">
+							<form id="modifyHobbyFrm" method="post" onsubmit="return false;">
+								<input type="hidden" name="id" value="${loginMember.id}" />
+								<label for="lol">롤</label>
+								<input type="checkbox" name="hobby" id="lol" value="롤" ${hobbyList.contains('롤') ? 'checked' : ''}/>
+								<label for="game">게임</label>
+								<input type="checkbox" name="hobby" id="game" value="게임" ${hobbyList.contains('게임') ? 'checked' : ''}/>
+								<label for="book">독서</label>
+								<input type="checkbox" name="hobby" id="book" value="독서" ${hobbyList.contains('독서') ? 'checked' : ''}/>
+								<label for="write">글쓰기</label>
+								<input type="checkbox" name="hobby" id="write" value="글쓰기" ${hobbyList.contains('글쓰기') ? 'checked' : ''}/>
+								<label for="coding">코딩</label>
+								<input type="checkbox" name="hobby" id="coding" value="코딩" ${hobbyList.contains('코딩') ? 'checked' : ''}/>
+								<label for="bowling">볼링</label>
+								<input type="checkbox" name="hobby" id="bowling" value="볼링" ${hobbyList.contains('볼링') ? 'checked' : ''}/>
+								<label for="basketball">농구</label>
+								<input type="checkbox" name="hobby" id="basketball" value="농구" ${hobbyList.contains('농구') ? 'checked' : ''}/>
+								<label for="goodrestaurant">맛집탐방</label>
+								<input type="checkbox" name="hobby" id="goodrestaurant" value="맛집탐방" ${hobbyList.contains('맛집탐방') ? 'checked' : ''}/>
+								<c:forEach items="${hobbyList}" var="hobby" varStatus="vs">
+									<c:if test="${hobby ne '' && hobby ne '맛집탐방' && hobby ne '롤' && hobby ne '게임' && hobby ne '독서' && hobby ne '글쓰기' && hobby ne '코딩' && hobby ne '볼링' && hobby ne '농구'}">
+										<label for="etc${vs.count}">${hobby}</label>
+										<input type="checkbox" name="hobby" id="etc${vs.count}" value="${hobby}" ${hobbyList.contains(hobby) ? 'checked' : ''}/>
+									</c:if>
+								</c:forEach>
+								<label for="etc">직접입력</label>
+								<input type="text" name="hobby" id="etc"/>							
+							</form>
+						</div>
 					</div>
-					<div class="hobby-wrap-title">
-						<span>취미</span>
-					</div>
-					<div class="hobby-select-form">
-						<form action="">
-							<label for="lol">롤</label>
-							<input type="checkbox" name="lol" id="lol" />
-							<label for="game">게임</label>
-							<input type="checkbox" name="game" id="game" />
-							<label for="book">독서</label>
-							<input type="checkbox" name="book" id="book" />
-							<label for="write">글쓰기</label>
-							<input type="checkbox" name="write" id="write" />
-							<label for="coding">코딩</label>
-							<input type="checkbox" name="coding" id="coding" />
-							<label for="bowling">볼링</label>
-							<input type="checkbox" name="bowling" id="bowling" />
-							<label for="basketball">농구</label>
-							<input type="checkbox" name="basketball" id="basketball" />
-							<label for="goodrestaurant">맛집탐방</label>
-							<input type="checkbox" name="goodrestaurant" id="goodrestaurant" />
-							<label for="etc">직접입력</label>
-							<input type="text" name="etc" id="etc"/>
-						</form>
-					</div>
-				</div>
-				
-				
-			
+				</div>		
 				<script>
+				/* $(".modify-hobby-wrap").hide(); */
+				
+				$("#etc").on('keyup', function(e) {					
+					if(e.keyCode === 13 || e.key === 'Enter'){
+						modifyAjax();
+						e.preventDefault();
+					}
+				});
+				
+				$(".hobby-select-form input").change((e) => {					
+					modifyAjax();
+				});
+				
+				const modifyAjax = () => {
+					const csrfHeader = "${_csrf.headerName}";
+					const csrfToken = "${_csrf.token}";
+					const headers = {};
+					headers[csrfHeader] = csrfToken;
+					$.ajax({
+						url:'${pageContext.request.contextPath}/member/mypage/modifyMemberHobby.do',
+						data: $("#modifyHobbyFrm").serialize(),
+						headers: headers,
+						method: 'POST',
+						success(resp){
+							
+							let hobbyInput = `<label for="lol">롤</label>
+								<input type="checkbox" name="hobby" id="lol" value="롤" ${hobbyList.contains('롤') ? 'checked' : ''}/>`;
+							console.log(resp);
+							location.reload();
+						},
+						error: console.log
+					});
+				};
+				
+				
 				$("#enrollPhone").click((e) => {
 					if(!/01[016789][^0][0-9]{2,3}[0-9]{3,4}/.test($("#ePhone").val())){
 						alert('유효하지 않은 번호입니다.');

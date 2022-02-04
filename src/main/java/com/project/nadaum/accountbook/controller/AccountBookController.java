@@ -49,16 +49,48 @@ public class AccountBookController {
 	@RequestMapping(value="/accountbook.do")
 	public void accountbook() {}
 	
+	@RequestMapping(value="/accountbookCopy.do")
+	public void accountbookCopy(@AuthenticationPrincipal Member member, Model model) {
+		String id = member.getId(); 
+		List<AccountBook> accountList = accountBookService.selectAllAccountList(id);
+		model.addAttribute("accountList",accountList);
+	}
+	
+	/*
+	 * @RequestMapping(value="/detailChart.do") public void
+	 * detailChart(@RequestParam(defaultValue="0") int
+	 * monthly, @AuthenticationPrincipal Member member, Model model) {
+	 * 
+	 * Map<String, Object> param = new HashMap<>(); param.put("monthly", monthly);
+	 * param.put("id", member.getId());
+	 * 
+	 * List<AccountBook> countList = accountBookService.monthlyCountList(param);
+	 * log.info("countList={}",countList); model.addAttribute("countList",
+	 * countList); }
+	 */
 	@RequestMapping(value="/detailChart.do")
 	public void detailChart(@RequestParam(defaultValue="0") int monthly, @AuthenticationPrincipal Member member, Model model) {
+		
 		Map<String, Object> param = new HashMap<>();
 		param.put("monthly", monthly);
 		param.put("id", member.getId());
+		param.put("incomeExpense", "I");
+		log.debug("param={}",param);
+		List<Map<String, Object>> list_I = accountBookService.categoryChart(param);
+		log.debug("list_I={}", list_I);
 		
-		List<AccountBook> countList = accountBookService.monthlyCountList(param);
-		log.info("countList={}",countList);
-		model.addAttribute("countList", countList);	
-		}
+		Map<String, Object> param2 = new HashMap<>();
+		param2.put("monthly", monthly);
+		param2.put("id", member.getId());
+		param2.put("incomeExpense", "E");
+		log.debug("param2={}",param2);
+		List<Map<String, Object>> list_E = accountBookService.categoryChart(param2);
+		log.debug("list_E={}", list_E);
+		
+		model.addAttribute("list_I", list_I);
+		model.addAttribute("list_E", list_E);	
+	}
+	
 	
 	
 	 //전체 리스트 출력
@@ -169,7 +201,22 @@ public class AccountBookController {
 			List<Map<String, Object>> list = accountBookService.detailMonthlyChart(map);
 			log.debug("list={}", list);
 			return list;
+		}
+		
+		//categoryChart
+		@ResponseBody
+		@PostMapping(value="/categoryChart.do", produces="application/json; charset=UTF-8")
+		public List<Map<String, Object>> categoryChart(@RequestParam(defaultValue="0") int monthly, @AuthenticationPrincipal Member member, @RequestBody Map<String, Object> param, Model model) {
+			Map<String, Object> map = new HashMap<>(); 
+			map.put("monthly", monthly);
+			map.put("id", member.getId());		
+			map.put("incomeExpense", param.get("incomeExpense"));
 			
+			List<Map<String, Object>> list = accountBookService.categoryChart(map);
+			log.debug("list={}", list);
+			
+			model.addAttribute("list", list);
+			return list;
 		}
 			  
 		//엑셀
@@ -248,6 +295,7 @@ public class AccountBookController {
 			}
 		
 		}
+	
 
 }
 	 

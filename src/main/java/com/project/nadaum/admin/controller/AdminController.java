@@ -2,6 +2,8 @@ package com.project.nadaum.admin.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,12 +11,9 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.collections.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +32,6 @@ import com.project.nadaum.common.NadaumUtils;
 import com.project.nadaum.common.vo.CategoryEnum;
 import com.project.nadaum.member.model.service.MemberService;
 import com.project.nadaum.member.model.vo.Member;
-import com.project.nadaum.member.model.vo.MemberRole;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -277,6 +275,71 @@ public class AdminController {
 			throw e;
 		}
 		return ResponseEntity.ok(1);
+	}
+	
+	@GetMapping("/chart.do")
+	public ResponseEntity<?> chart(){
+		
+		Date d = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+		String year = sdf.format(d);
+		log.debug("year = {}", year);
+		
+		Map<String, Object> yearMap = new HashMap<>();
+		yearMap.put("year", year);
+		
+		List<Map<String, Object>> list = adminService.selectMonthEnrollCount(yearMap);
+		
+		List<Member> members = adminService.selectAllMemberForHobby();
+		String hobby = "";
+		int lol = 0;
+		int game = 0;
+		int book = 0;
+		int write = 0;
+		int coding = 0;
+		int bowling = 0;
+		int basketball = 0;
+		int goodRestaurant = 0;
+		int etc = 0;
+		
+		log.debug("members = {}", members);
+		if(members != null && !members.isEmpty()) {
+			for(int i = 0; i < members.size(); i++) {
+				if(members.get(i) != null) {
+					for(int j = 0; j < members.get(i).getHobby().length; j++) {
+						hobby = members.get(i).getHobby()[j];					
+						log.debug("hobby = {}", hobby);
+						switch(hobby) {
+						case "롤": lol++; break;
+						case "게임": game++; break;
+						case "독서": book++; break;
+						case "글쓰기": write++; break;
+						case "코딩": coding++; break;
+						case "볼링": bowling++; break;
+						case "농구": basketball++; break;
+						case "맛집탐방": goodRestaurant++; break;
+						default : etc++; break;
+						}
+					}
+				}
+			}
+		}
+		
+		Map<String, Object> hobbyCount = new HashMap<>();
+		hobbyCount.put("lol", lol);
+		hobbyCount.put("game", game);
+		hobbyCount.put("book", book);
+		hobbyCount.put("write", write);
+		hobbyCount.put("coding", coding);
+		hobbyCount.put("bowling", bowling);
+		hobbyCount.put("basketball", basketball);
+		hobbyCount.put("goodRestaurant", goodRestaurant);		
+		hobbyCount.put("etc", etc);		
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("list", list);
+		map.put("hobbyCount", hobbyCount);
+		return ResponseEntity.ok(map);
 	}
 
 }

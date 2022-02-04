@@ -133,10 +133,11 @@ input[id="switch"]{
                         	data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <!-- 각자페이지 링크거시면 됩니다 -->
-                                <a class="dropdown-item" href="https://www.naver.com">메인</a> 
+                                <a class="dropdown-item" href="${pageContext.request.contextPath}/main/main.do">메인</a> 
                                 <a class="dropdown-item" href="${pageContext.request.contextPath}/accountbook/accountbook.do">가계부</a> 
                                 <a class="dropdown-item" href="${pageContext.request.contextPath}/culture/board/1">문화생활</a>
                                 <a class="dropdown-item" href="${pageContext.request.contextPath}/movie/movieList.do">영화</a> 
+                                <a class="dropdown-item" href="${pageContext.request.contextPath}/board/boardList.do">게시판</a> 
                                 <a class="dropdown-item" href="https://audioclip.naver.com">오디오북</a> 
                                 <a class="dropdown-item" href="${pageContext.request.contextPath}/riot/riotheader.do">롤전적</a>
                                 <a class="dropdown-item" href="${pageContext.request.contextPath}/calendar/calendarView.do">캘린더</a>
