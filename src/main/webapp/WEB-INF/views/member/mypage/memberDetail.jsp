@@ -103,8 +103,36 @@
 						<div class="my-hobby-wrap-title">
 							<span>내 취미</span>
 						</div>
-						<div class="my-hobby-wrap">
-						
+						<div class="my-hobby-wrap">							
+							<c:forEach items="${hobbyList}" var="hobby">
+								<c:if test="${hobby eq '롤'}">
+									${hobby}
+								</c:if>
+								<c:if test="${hobby eq '게임'}">
+									${hobby}
+								</c:if>
+								<c:if test="${hobby eq '독서'}">
+									${hobby}
+								</c:if>
+								<c:if test="${hobby eq '글쓰기'}">
+									${hobby}
+								</c:if>
+								<c:if test="${hobby eq '코딩'}">
+									${hobby}
+								</c:if>
+								<c:if test="${hobby eq '볼링'}">
+									${hobby}
+								</c:if>
+								<c:if test="${hobby eq '농구'}">
+									${hobby}
+								</c:if>
+								<c:if test="${hobby eq '맛집탐방'}">
+									${hobby}
+								</c:if>
+								<c:if test="${hobby ne '맛집탐방' && hobby ne '롤' && hobby ne '게임' && hobby ne '독서' && hobby ne '글쓰기' && hobby ne '코딩' && hobby ne '볼링' && hobby ne '농구'}">
+									${hobby}
+								</c:if>
+							</c:forEach>
 						</div>
 					</div>
 					<div class="modify-hobby-wrap">
@@ -112,7 +140,7 @@
 							<span>취미</span>
 						</div>
 						<div class="hobby-select-form">
-							<form id="modifyHobbyFrm" method="post">
+							<form id="modifyHobbyFrm" method="post" onsubmit="return false;">
 								<input type="hidden" name="id" value="${loginMember.id}" />
 								<label for="lol">롤</label>
 								<input type="checkbox" name="hobby" id="lol" value="롤" ${hobbyList.contains('롤') ? 'checked' : ''}/>
@@ -130,6 +158,14 @@
 								<input type="checkbox" name="hobby" id="basketball" value="농구" ${hobbyList.contains('농구') ? 'checked' : ''}/>
 								<label for="goodrestaurant">맛집탐방</label>
 								<input type="checkbox" name="hobby" id="goodrestaurant" value="맛집탐방" ${hobbyList.contains('맛집탐방') ? 'checked' : ''}/>
+								<c:forEach items="${hobbyList}" var="hobby" varStatus="vs">
+									<c:if test="${hobby ne '' && hobby ne '맛집탐방' && hobby ne '롤' && hobby ne '게임' && hobby ne '독서' && hobby ne '글쓰기' && hobby ne '코딩' && hobby ne '볼링' && hobby ne '농구'}">
+										<label for="etc${vs.count}">${hobby}</label>
+										<input type="checkbox" name="hobby" id="etc${vs.count}" value="${hobby}" ${hobbyList.contains(hobby) ? 'checked' : ''}/>
+									</c:if>
+								</c:forEach>
+								<label for="etc">직접입력</label>
+								<input type="text" name="hobby" id="etc"/>							
 							</form>
 						</div>
 					</div>
@@ -137,7 +173,15 @@
 				<script>
 				/* $(".modify-hobby-wrap").hide(); */
 				
-				$(".hobby-select-form input").click((e) => {					
+				$("#etc").on('keyup', function(e) {					
+					if(e.keyCode === 13 || e.key === 'Enter'){
+						modifyAjax();
+						e.preventDefault();
+						return false;
+					}
+				});
+				
+				$(".hobby-select-form input").change((e) => {					
 					modifyAjax();
 				});
 				
@@ -152,7 +196,11 @@
 						headers: headers,
 						method: 'POST',
 						success(resp){
-							console.log(resp)
+							
+							let hobbyInput = `<label for="lol">롤</label>
+								<input type="checkbox" name="hobby" id="lol" value="롤" ${hobbyList.contains('롤') ? 'checked' : ''}/>`;
+							console.log(resp);
+							location.reload();
 						},
 						error: console.log
 					});

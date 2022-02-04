@@ -45,4 +45,6 @@ public interface AdminDao {
 
 	List<Map<String, Object>> selectMonthEnrollCount(Map<String, Object> yearMap);
 
+	List<Member> selectAllMemberForHobby();
+
 }
