@@ -17,9 +17,7 @@
 .form-control{
 display: inline-block;
 }
-html{
-/* background-color: #FFFBF5; */
-}
+
 #culture-container{
     padding: 60px;
     margin: 120px;
@@ -36,6 +34,7 @@ font-size: 30px;
 .wrap{
 margin: 0 auto;
 /* background-color: #FFFBF5; */
+/* background-image: url("${pageContext.request.contextPath}/resources/images/culture/background.jpg") */
 }
 #insertCommentFrm{
 text-align: center;
@@ -62,7 +61,7 @@ margin: 0 auto;
 		<!-- 상세내용 -->
 		 <c:forEach var="culture" items="${list}">
 			<div class="culture_detail">
-			<h1>${culture.title}</h1>
+			<h1 id="culture-title">${culture.title}</h1>
 			
 			<span><fmt:parseDate value="${culture.startDate}" var="startDateParse" pattern="yyyyMMdd"/>
 			<fmt:formatDate value="${startDateParse}" pattern="yyyy년 MM월 dd일"/>
@@ -74,7 +73,7 @@ margin: 0 auto;
 			<span>${culture.area}</span>
 			<span>${culture.realmName}</span>
 			<br />
-			<span>${culture.placeAddr}</span>
+			<span id="placeAddr">${culture.placeAddr}</span>
 			<br />
 			<span>${culture.price}</span>
 			<br />
@@ -306,8 +305,13 @@ var map = new kakao.maps.Map(mapContainer, mapOption);
 // 주소-좌표 변환 객체를 생성합니다
 var geocoder = new kakao.maps.services.Geocoder();
 
+const title = $(e.target).find("[id=culture-title]").val();
+const place = $(e.target).find("[id=placeAddr]").val();
+
+console.log(title);
+console.log(place);
 // 주소로 좌표를 검색합니다
-geocoder.addressSearch('서울특별시 서초구 강남대로39길 15-3 2층 301호', function(result, status) {
+geocoder.addressSearch(place, function(result, status) {
 
     // 정상적으로 검색이 완료됐으면 
      if (status === kakao.maps.services.Status.OK) {
@@ -322,7 +326,8 @@ geocoder.addressSearch('서울특별시 서초구 강남대로39길 15-3 2층 30
 
         // 인포윈도우로 장소에 대한 설명을 표시합니다
         var infowindow = new kakao.maps.InfoWindow({
-            content: '<div style="width:150px;text-align:center;padding:6px 0;">전시회</div>'
+            content: '<div style="width:150px;text-align:center;padding:6px 0;">'
+            '</div>'
         });
         infowindow.open(map, marker);
 
