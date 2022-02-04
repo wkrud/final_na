@@ -118,6 +118,8 @@ public interface MemberService {
 
 	int countAllMyHelp(Member member);
 
+	int updateMemberHobby(Member member);
+
 
 
 }
