@@ -1,13 +1,14 @@
 package com.project.nadaum.culture.show.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.project.nadaum.culture.show.model.vo.Culture;
 
 public interface CultureDao {
 
-	Culture selectOneCulture(String code);
+	int insertCultureLike(Map<String, Object> map);
 
-	List<Culture> selectCultureList();
+	int deleteCultureLike(String apiCode);
 
 }

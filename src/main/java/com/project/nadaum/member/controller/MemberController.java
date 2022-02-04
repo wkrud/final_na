@@ -858,6 +858,17 @@ public class MemberController {
 		return ResponseEntity.ok(map);
 	}
 	
+	@PostMapping("/mypage/modifyMemberHobby.do")
+	public ResponseEntity<?> modifyMemberHobby(Member member, @AuthenticationPrincipal Member oldMember){
+		log.debug("hobby = {}", member);
+		int result = memberService.updateMemberHobby(member);
+		log.debug("result = {}", result);
+		oldMember.setHobby(member.getHobby());
+		Authentication newAuthentication = new UsernamePasswordAuthenticationToken(oldMember, oldMember.getPassword(), oldMember.getAuthorities());		
+		SecurityContextHolder.getContext().setAuthentication(newAuthentication);
+		return ResponseEntity.ok(1);
+	}
+	
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 		try {

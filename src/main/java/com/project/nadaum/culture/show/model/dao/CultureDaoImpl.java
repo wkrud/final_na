@@ -1,6 +1,7 @@
 package com.project.nadaum.culture.show.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,14 +18,15 @@ public class CultureDaoImpl implements CultureDao {
 	@Autowired
 	private SqlSessionTemplate session;
 
+
 	@Override
-	public List<Culture> selectCultureList() {
-		return session.selectList("culture.selectCultureList");
+	public int deleteCultureLike(String apiCode) {
+		return session.delete("culture.deleteCultureLike", apiCode);
 	}
 
 	@Override
-	public Culture selectOneCulture(String code) {
-		return session.selectOne("culture.selectOneCulture", code);
+	public int insertCultureLike(Map<String, Object> map) {
+		return session.insert("culture.insertCultureLike", map);
 	}
 
 }

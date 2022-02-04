@@ -1,6 +1,5 @@
 package com.project.nadaum.member.model.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -11,9 +10,11 @@ import org.springframework.stereotype.Repository;
 
 import com.project.nadaum.admin.model.vo.Announcement;
 import com.project.nadaum.admin.model.vo.Help;
-import com.project.nadaum.common.vo.Attachment;
 import com.project.nadaum.member.model.vo.Member;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Repository
 public class MemberDaoImpl implements MemberDao {
 	
@@ -302,6 +303,14 @@ public class MemberDaoImpl implements MemberDao {
 	@Override
 	public int countAllMyHelp(Member member) {
 		return session.selectOne("member.countAllMyHelp", member);
+	}
+
+	@Override
+	public int updateMemberHobby(Member member) {
+		log.debug("hobby dao");
+		int result = session.update("member.updateMemberHobby", member);
+		log.debug("hobby dao out");
+		return result;
 	}
 
 	
