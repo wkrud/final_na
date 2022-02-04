@@ -87,7 +87,6 @@ public class CultureController {
 					if(nNode.getNodeType() == Node.ELEMENT_NODE){
 						
 						Element eElement = (Element) nNode;
-						System.out.println("######################");
 						
 //						System.out.println(eElement.getTextContent());
 						String seq = getTagValue("seq", eElement);
@@ -111,17 +110,17 @@ public class CultureController {
 						
 						list.add(map);
 						
-						System.out.println(list);
 					}	// for end
 					
 				}	// if end
+				System.out.println(list);
 				model.addAttribute("list",list);
-				page += 1;
 				System.out.println("page number : "+page);
-	
-				if(page > 1){	
-					break;
-				}
+				model.addAttribute("page",page);
+				 
+				
+				if(page > 0){ break; }
+				 
 			}	// while end
 			
 			} catch (Exception e){	

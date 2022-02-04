@@ -214,7 +214,7 @@ margin: 0 auto;
 			
 			
 			//댓글삭제
-			 $(deleteCommentFrm).submit((e) => {
+			/*  $(deleteCommentFrm).submit((e) => {
 				e.preventDefault();
 				const code = $(e.target).find("[name=code]").val();
 				console.log(code);
@@ -243,7 +243,7 @@ margin: 0 auto;
 						}				
 					}
 				});
-			}); 
+			});  */
 			$(likeFrm).submit((e) => {
 				e.preventDefault();
 
@@ -305,13 +305,21 @@ var map = new kakao.maps.Map(mapContainer, mapOption);
 // 주소-좌표 변환 객체를 생성합니다
 var geocoder = new kakao.maps.services.Geocoder();
 
-const title = $(e.target).find("[id=culture-title]").val();
-const place = $(e.target).find("[id=placeAddr]").val();
+var list = new Array();
+
+<c:forEach var="culture" items="${list}">
+	list.push("${culture.title}");
+	list.push("${culture.placeAddr}");
+</c:forEach>
+console.log(list);
+
+var title = list[0];
+var placeAddr = list[1];
 
 console.log(title);
-console.log(place);
+console.log(placeAddr);
 // 주소로 좌표를 검색합니다
-geocoder.addressSearch(place, function(result, status) {
+geocoder.addressSearch(placeAddr, function(result, status) {
 
     // 정상적으로 검색이 완료됐으면 
      if (status === kakao.maps.services.Status.OK) {
@@ -326,7 +334,7 @@ geocoder.addressSearch(place, function(result, status) {
 
         // 인포윈도우로 장소에 대한 설명을 표시합니다
         var infowindow = new kakao.maps.InfoWindow({
-            content: '<div style="width:150px;text-align:center;padding:6px 0;">'
+            content: '<div style="width:150px;text-align:center;padding:6px 0;">'+ title +
             '</div>'
         });
         infowindow.open(map, marker);

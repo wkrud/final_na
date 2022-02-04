@@ -104,7 +104,15 @@ $(() => {
 	    		</div>
 	    	</div>
 	    	<div class="paging">
-	    		<input type="button" onclick='javascript:moreList();'  />
+	    		<ul>
+	    			<c:if test="${page-1 != 0}">
+	    				<li><a href="${pageContext.request.contextPath}/culture/board/${page-1}">이전 페이지</a></li>	    			
+	    			</c:if>
+	    			<li>${page}/20</li>
+	    			<c:if test="${page+1 < 21}">
+	    				<li><a href="${pageContext.request.contextPath}/culture/board/${page+1}">다음 페이지</a></li>
+	    			</c:if>
+	    		</ul>
 	    	</div>
 		<!-- culture-container 끝 -->
 		</div>
