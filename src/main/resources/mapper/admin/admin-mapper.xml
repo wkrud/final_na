@@ -129,6 +129,10 @@
 		ORDER BY TO_CHAR(b.dt, 'MM')
 	</select>
 	
+	<select id="selectAllMemberForHobby" resultType="member">
+		select hobby from member where not id = 'admin'
+	</select>
+	
 	<!-- chart end -->
 		
 	<resultMap type="map" id="helpMap">
