@@ -27,7 +27,7 @@ input#btn-add {
 }
 
 
- a:link { color: red; text-decoration: none;}
+ a:link { color: black; text-decoration: none;}
  a:visited { color: black; text-decoration: none;}
  a:hover { color: blue; text-decoration: none;}
 

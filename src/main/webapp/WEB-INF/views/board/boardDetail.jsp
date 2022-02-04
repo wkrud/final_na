@@ -97,13 +97,13 @@ div#board-container label.custom-file-label {
 								<label for="replyId"><i
 									class="fa fa-user-circle-o fa-2x"></i></label>
 							</div>
-							<form
+							<form:form
 								action="${pageContext.request.contextPath}/board/boardCommentEnroll.do"
 								method="post" name="boardCommentFrm" id="commentForm">
 
 								<!-- 현재게시글 코드 -->
-								<input type="hidden" name="code" value="${board.code}" /> <input
-									type="hidden" name="id" value="${loginMember.id}" />
+								<input type="hidden" name="code" value="${board.code}" /> 
+								<input type="hidden" name="id" value="${loginMember.id}" />
 								<%-- <input type="hidden" name="writer" value="<c:if test="${loginMember ne null loginMember.id }"/>" /> --%>
 								<!-- 댓글인 경우 1 -->
 								<input type="hidden" name="commentLevel" value="1" />
@@ -113,11 +113,10 @@ div#board-container label.custom-file-label {
 								<textarea name="content" cols="60" rows="3" id="content"
 									class="form-control"></textarea>
 								<button type="submit" id="btn-comment-enroll1"
-									class="btn btn-warning" onClick="fn_comment('${board.code }')">등록</button>
+									class="btn btn-warning" onClick="fn_comment('${board.code}')">등록</button>
 
-								<input type="hidden" name="${_csrf.parameterName}"
-									value="${_csrf.token}" />
-							</form>
+								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+							</form:form>
 						</li>
 					</ul>
 				</div>
@@ -310,12 +309,14 @@ $(".btn-reply").click((e) => {
  $(document).on('click', '#likeButton', function(e) {
 	console.log("좋아요 나왕?");
 	
-	const $boardCode = $(e.target).data("boardCode");
-	const $memberId = $(e.target).data("id");
+	const $code = $(e.target).data("boardCode");
+	const $id = $(e.target).data("id");
 	const likeYesNo = $(e.target).data("likeYesNo");
-	console.log($boardCode);
-	console.log($memberId);
+	console.log($code);
+	console.log($id);
 	console.log(likeYesNo);
+	
+	var data = {"code":$code, "id":$id}
 	
 	if(likeYesNo == 0){
 		

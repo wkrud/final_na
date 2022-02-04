@@ -18,6 +18,7 @@ public class Board extends BoardEntity implements Serializable {/**
 	private static final long serialVersionUID = 1L;
 
 	private MemberEntity member;
+	private Likes like;
 	private int commentCount;
 	private int likeCount;
 	

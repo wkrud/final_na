@@ -11,7 +11,7 @@
 		from
 			board
 		order by
-			code desc
+			reg_date desc
 	</select>
 	
 	<select id="selectTotalContent" resultType="_int">
@@ -145,6 +145,11 @@
 		delete from like where id = #{id} and code = #{code}
 	</delete>
 	
+	<resultMap type="map" id="likesMap">
+		<id column="no" property="no"/>
+		<result column="id" property="id"/>
+		<result column="code" property="code"/>
+	</resultMap>
 	
 	<!-- 게시글 댓글조회 -->
 	<select id="selectBoardCommentList" resultMap="boardCommentMap">

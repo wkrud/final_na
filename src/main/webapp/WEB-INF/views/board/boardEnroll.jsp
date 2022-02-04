@@ -50,10 +50,6 @@ function boardValidate(){
 		<label for="title">제목</label>						
 		<input type="text" class="form-control" name="title" id="title"	placeholder="제목을 입력해주세요" required>
 		
-		<input type="text" class="form-control"	name="id" value="${loginMember.id}" readonly required>
-		<!-- 나중에 지우기 -->
-		<input type="text" class="form-control"	name="id" value="${board.id}" readonly required>
-		
 		<input type="hidden" name="category" />
 		<select id="category-select" class="form-select" aria-label="Default select example">
 			<option selected>카테고리</option>
