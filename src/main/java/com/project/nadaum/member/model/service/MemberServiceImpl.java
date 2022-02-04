@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 
 import com.project.nadaum.admin.model.vo.Announcement;
 import com.project.nadaum.admin.model.vo.Help;
-import com.project.nadaum.common.vo.Attachment;
 import com.project.nadaum.member.model.dao.MemberDao;
 import com.project.nadaum.member.model.vo.Member;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class MemberServiceImpl implements MemberService {
 
@@ -286,6 +288,12 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public int countAllMyHelp(Member member) {
 		return memberDao.countAllMyHelp(member);
+	}
+
+	@Override
+	public int updateMemberHobby(Member member) {
+		log.debug("hobby service");
+		return memberDao.updateMemberHobby(member);
 	}
 
 	

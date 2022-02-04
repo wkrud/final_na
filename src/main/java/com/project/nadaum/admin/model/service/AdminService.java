@@ -37,4 +37,8 @@ public interface AdminService {
 
 	int countAllMember(Map<String, Object> param);
 
+	List<Map<String, Object>> selectMonthEnrollCount(Map<String, Object> yearMap);
+
+	List<Member> selectAllMemberForHobby();
+
 }

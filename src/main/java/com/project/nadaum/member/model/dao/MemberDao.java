@@ -118,6 +118,8 @@ public interface MemberDao {
 
 	int countAllMyHelp(Member member);
 
+	int updateMemberHobby(Member member);
+
 
 
 
