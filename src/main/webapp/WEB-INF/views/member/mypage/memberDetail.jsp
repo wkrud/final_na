@@ -177,7 +177,6 @@
 					if(e.keyCode === 13 || e.key === 'Enter'){
 						modifyAjax();
 						e.preventDefault();
-						return false;
 					}
 				});
 				
