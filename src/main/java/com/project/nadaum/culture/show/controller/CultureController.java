@@ -164,11 +164,9 @@ public class CultureController {
 							String realmName = getTagValue("realmName", eElement);
 							String price = getTagValue("price", eElement);
 							String phone = getTagValue("phone", eElement);
+							String bookingUrl = getTagValue("url", eElement);
 							String imgUrl = getTagValue("imgUrl", eElement);
 							String placeUrl = getTagValue("placeUrl", eElement);
-							String contents1 = getTagValue("contents1", eElement);
-							String contents2 = getTagValue("contents2", eElement);
-
 							Map<String, Object> map = new HashMap<>();
 							
 							map.put("title", title);
@@ -180,10 +178,9 @@ public class CultureController {
 							map.put("realmName", realmName);
 							map.put("price", price);
 							map.put("phone", phone);
+							map.put("bookingUrl", bookingUrl);
 							map.put("imgUrl", imgUrl);
 							map.put("placeUrl", placeUrl);
-							map.put("contents1", contents1);
-							map.put("contents2", contents2);
 							
 							list.add(map);
 							

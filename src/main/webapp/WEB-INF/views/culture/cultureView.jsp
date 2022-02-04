@@ -10,8 +10,10 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="게시판 상세보기" name="title"/>
 </jsp:include>
+
 <!-- <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/culture/cultureDetail.css" />
  -->
+ 
  <script src="https://kit.fontawesome.com/4123702f4b.js" crossorigin="anonymous"></script>
 <style>
 .form-control{
@@ -33,8 +35,13 @@ font-size: 30px;
 }
 .wrap{
 margin: 0 auto;
-/* background-color: #FFFBF5; */
-/* background-image: url("${pageContext.request.contextPath}/resources/images/culture/background.jpg") */
+/* position: relative;
+z-index: 1; */
+}
+.wrap:after{
+/* /* background-image: url("${culture.imgUrl}"); 
+opacity: 0.4;
+z-index: -1; */
 }
 #insertCommentFrm{
 text-align: center;
@@ -47,16 +54,37 @@ text-align: center;
 #comment-delete{
 	width: 30%;
 }
-#deleteComment-btn{
-    border: 0;
-    outline: 0;
-    background: none;
-}
 .kakao-map:before{
 margin: 0 auto;
 }
+#promiseFrm{
+    margin-top: 180px;
+}
 </style>
-		<div class="wrap">
+
+<script>
+//cultureDetail
+$(() => {
+		
+		//날짜 넣기
+		const value = new Date();
+		
+		const f = n => n < 10 ? "0" + n : n;
+		// yyyy-mm-dd
+		const today = `\${value.getFullYear()}-\${f(value.getMonth() + 1)}-\${f(value.getDate())}`;
+		console.log(today);
+		
+		schedule = document.getElementById("schedule-date");
+		schedule.value = today;
+});
+
+
+
+</script>
+<body>
+	<c:forEach var="culture" items="${list}">
+	<div class="wrap" style="">
+	</c:forEach>
 	<div id="culture-container" class="mx-auto text-center">
 		<!-- 상세내용 -->
 		 <c:forEach var="culture" items="${list}">
@@ -68,8 +96,9 @@ margin: 0 auto;
 			<span>~</span>
 			</span><fmt:parseDate value="${culture.endDate}" var="endDateParse" pattern="yyyyMMdd"/>
 			<fmt:formatDate value="${endDateParse}" pattern="yyyy년 MM월 dd일"/>
-			
-			<p><img src="${culture.imgUrl}" alt="" style="width: 20%;"/></p>
+			<br />
+			<img src="${culture.imgUrl}" alt="" style="width: 50%;"/>
+			<br />
 			<span>${culture.area}</span>
 			<span>${culture.realmName}</span>
 			<br />
@@ -77,27 +106,30 @@ margin: 0 auto;
 			<br />
 			<span>${culture.price}</span>
 			<br />
-			<span>${culture.placeUrl}</span>
+			<a href="${culture.placeUrl}">${culture.placeUrl}</a>
 			</div>
+		 <button type="button" class="btn btn-secondary" onclick="location.href='${culture.bookingUrl}'">예매하기</button>
 		</c:forEach>
 		<br />
-		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+		
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-calander">
  		캘린더에 추가
 		</button>
-				<!-- Modal -->
-		<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-		  <form >
+		
+		<!-- Modal -->
+		<div class="modal fade" id="add-calander" tabindex="-1" role="dialog" aria-labelledby="add-calander" aria-hidden="true">
+		  <form id="promiseFrm">
 		    <div class="modal-dialog modal-dialog-centered" role="document">
 		      <div class="modal-content">
 		        <div class="modal-header">
-		          <h5 class="modal-title" id="exampleModalCenterTitle">약 속</h5>
+		          <h5 class="modal-title" id="add-calanderTitle">약 속</h5>
 		          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		            <span aria-hidden="true">&times;</span>
 		          </button>
 		        </div>
 		        <div class="modal-body">
 		         <span>약속일</span>
-		         <input type="date" />
+		         <input type="date" id="schedule-date" />
 		         <br />
 		         <br />
 		         <span>@친구</span>
@@ -114,14 +146,13 @@ margin: 0 auto;
 		<form id="likeFrm">
 			<input type="hidden" name="apiCode" value="${apiCode}" />
 			<input type="hidden" name="id" value="${loginMember.id}" />
-		 	<c:if test="">
-		 	
-		 	</c:if><button type="submit" id="like-btn">스크랩하기</button>
+		 	<button type="submit" class="btn btn-danger" id="like-btn">스크랩 하기
+		 	</button>
 		</form>
-		<i class="far fa-heart"></i>
 		
 		
 	<hr>
+	<!-- kakao 지도 -->
 	<div class="kakao-map">
 		<p >
 		    <em class="link">
@@ -134,7 +165,7 @@ margin: 0 auto;
 		
 	</div>
 	<!-- culture-container 끝 -->
-	</div>
+	
 	<div class="container">
 	<hr />
 	<br />
@@ -178,7 +209,7 @@ margin: 0 auto;
 					<td id="comment-delete">
 						<form id="deleteCommentFrm">
 							<input type="hidden" name="code" value="${comment.code}"></input>
-				    		<input type="submit" id="deleteComment-btn" value="삭제" >
+							<button type="submit" class="btn btn-outline-danger" id="deleteComment-btn">삭제</button>
 				    	</form>
 					</td>
 				</tr>
@@ -186,6 +217,8 @@ margin: 0 auto;
 				</c:forEach>
 				</table>
 				</div>
+				</div>
+			</body>
 	<script>
 			//댓글 등록
 			$(insertCommentFrm).submit((e) => {
@@ -214,7 +247,7 @@ margin: 0 auto;
 			
 			
 			//댓글삭제
-			/*  $(deleteCommentFrm).submit((e) => {
+			$(deleteCommentFrm).submit((e) => {
 				e.preventDefault();
 				const code = $(e.target).find("[name=code]").val();
 				console.log(code);
@@ -243,7 +276,7 @@ margin: 0 auto;
 						}				
 					}
 				});
-			});  */
+			});  
 			$(likeFrm).submit((e) => {
 				e.preventDefault();
 
@@ -308,16 +341,16 @@ var geocoder = new kakao.maps.services.Geocoder();
 var list = new Array();
 
 <c:forEach var="culture" items="${list}">
-	list.push("${culture.title}");
+	list.push("${culture.place}");
 	list.push("${culture.placeAddr}");
 </c:forEach>
 console.log(list);
 
-var title = list[0];
+var place = list[0];
 var placeAddr = list[1];
-
-console.log(title);
+console.log(place);
 console.log(placeAddr);
+
 // 주소로 좌표를 검색합니다
 geocoder.addressSearch(placeAddr, function(result, status) {
 
@@ -334,7 +367,7 @@ geocoder.addressSearch(placeAddr, function(result, status) {
 
         // 인포윈도우로 장소에 대한 설명을 표시합니다
         var infowindow = new kakao.maps.InfoWindow({
-            content: '<div style="width:150px;text-align:center;padding:6px 0;">'+ title +
+            content: '<div style="width:150px;text-align:center;padding:6px 0;">'+ place +
             '</div>'
         });
         infowindow.open(map, marker);
