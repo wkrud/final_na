@@ -45,8 +45,6 @@
 	
 	//페이지 처음 로딩시 실행 함수
 	window.onload = function() {
-		//가계부 전체리스트 출력
-		AllList();
 		//가계부 insert 모달창에 date 기본값 오늘 날짜로 뜨게 설정
 		today = new Date();
 		today = today.toISOString().slice(0, 10);
@@ -102,9 +100,6 @@
 	
    //가계부 전체 리스트 조회
   function AllList() {	
-	var startNum = ("#account_list tr").length; //마지막 리스트 번호
-	
-	
  	$.ajax({
 		url: $contextPath+"/accountbook/selectAllAccountList.do",
 		type: "GET",

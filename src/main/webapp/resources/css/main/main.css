@@ -1,81 +1,20 @@
 @charset "UTF-8";
-* {
-	margin : 0;
-	padding : 0;
-	box-sizing: border-box;
-	position: relative;
-}
 
-
-/* 영역 확인용 박스 */
-.box {
-	border : 1px solid black;
-}
-
-/* 페이지 전체 감싸고 있는 div */
 .wrapper {
-	margin-top : 50px;
-	position : relative;
-	background-color: #FFFBF5;
-}
-
-/* 사이드 메뉴 */
-.side-nav {
+  background-color: #FFFBF5;
+  width: 100%;
+  height: 800px;
   position: relative;
-  z-index: 999;
-  top : 20%;
-  left : -7%;
-  display: inline-block;
-  width : 200px;
-}
-
-.side-nav:hover {
-  animation-name: slide;
-  animation-duration: 0.5s;
-  left : 1%;
-  cursor: pointer;
-}
-
-@keyframes slide {
-  from {
-    left : -7%;
-  }
-  to {
-    left : 1%;
-  }
-}
-
-.side-nav ul {
-  list-style: none;
-  display: inline-block;
-  padding : 0;
-  float: right;
-}
-
-.side-nav ul li {
-  width : 150px;
-  height: 50px;
-  font-size: 20px;
-  text-align: center;
-  margin : 2px;
-  background-color: #E5E5E5;
-  color : #F6953C;
-  border-radius: 0px 15px 15px 0px;
-}
-
-.side-nav ul li:hover{
-  background-color: #F6953C;
-  color : #E5E5E5;
 }
 
 /* 가운데 메인 위젯 영역 */
 .m_center {
-  width: 90%;
+  width: 80%;
   height: 600px;
-  margin : auto;
+  position: absolute;
+  left : 10%;
+  top: 120px;
   background-color: #F5F5F5;
-  position : relative;
-  top : 80px;
 }
 
 /* 북마크 디자인 */
@@ -102,10 +41,59 @@
   border-top-right-radius: 20px;
 }
 
+/* 사이드 메뉴 */
+.side_nav {
+  position: relative;
+  z-index: 999;
+  top : 20%;
+  left : -7%;
+  display: inline-block;
+  width : 200px;
+}
+
+.side_nav:hover {
+  animation-name: slide;
+  animation-duration: 0.5s;
+  left : 1%;
+  cursor: pointer;
+}
+
+@keyframes slide {
+  from {
+    left : -7%;
+  }
+  to {
+    left : 1%;
+  }
+}
+
+.side_nav ul {
+  list-style: none;
+  display: inline-block;
+  padding : 0;
+  float: right;
+}
+
+.side_nav ul li {
+  width : 150px;
+  height: 50px;
+  font-size: 20px;
+  text-align: center;
+  margin : 2px;
+  background-color: #E5E5E5;
+  color : #F6953C;
+  border-radius: 0px 15px 15px 0px;
+}
+
+.side_nav ul li:hover{
+  background-color: #F6953C;
+  color : #E5E5E5;
+}
+
 /* 위젯 */
-.todoList {
+.widget_form {
   width : 350px;
-  height: 400px;
+  height: 200px;
   position: relative;
   background : white;
   box-shadow: 0 25px 45px rgba(0, 0, 0, 0.1);
@@ -114,30 +102,38 @@
   top : 30px;
   left : 50px;
   padding : 20px;
+  margin : 30px;
   backdrop-filter: blur(25px);
-  display: inline-block;
-  overflow:auto;
+  float : left;
 }
 
-
-/* 투두리스트 모달 */
- .modal-background{
-  background-color: rgba(0, 0, 0, 0.5);
-  position : fixed;
-  z-index : 5;
-  width : 100%;
-  height : 100%;
-/*   display : none;
- */  margin-top : -100px;
-  padding : 0;
+.widget_form::before{
+  content: '';
+  position: absolute;
+  width : 25px;
+  height: 25px;
+  top : 15px;
+  right : 5px;
+  border-top : 2px solid rgba(225, 225, 225, 0.8);
+  transform: rotate(-45deg)
 }
 
-.insertTodoList{
-  background-color: #fff;
-  width : 30%;
-  margin : 100px auto;
-  padding : 20px;
-  border-radius: 10px;
-  position : relative;
-  text-align : center;
+.widget_form::after{
+  content: '';
+  position: absolute;
+  width : 25px;
+  height: 25px;
+  top : 15px;
+  right : 20px;
+  border-top : 2px solid rgba(225, 225, 225, 0.8);
+  transform: rotate(45deg);
+}
+
+.widget_form:hover {
+  cursor: move;
+}
+
+.editWidget {
+  width : 400px;
+  height : 500px;
 }
