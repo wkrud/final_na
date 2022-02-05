@@ -29,6 +29,21 @@ button {
 div#board-container label.custom-file-label {
 	text-align: left;
 }
+div.col>.detail{
+border:none;
+border-right:0px;
+ border-top:0px; 
+ boder-left:0px; 
+ boder-bottom:0px;
+ 
+ display:inline-block;
+margin : 0px;
+}
+
+.detailcontent{
+padding : 10px;
+}
+
 </style>
 <!-- 게시글 상세보기 -->
 
@@ -41,34 +56,43 @@ div#board-container label.custom-file-label {
 			<input type="hidden" name="id" id="id" value="${loginMember.id}" /> 
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
-			<label for="title" class="col-sm-2 control-label">제목</label> 
-			<input type="text" class="form-control" name="boardTitle" id="title" value="${board.title}" readonly> 
-			<label for="writer" class="col-sm-2 control-label">작성자</label> 
+			
+			<h1 class="display-3" readonly>${board.title}</h1>			
+			
+			<div class="container">
+ 			<div class="row row-cols-4">
+    		<div class="col">작성자 : <input type="text" class="detail" id="writer" name="id" value="${board.id}" readonly></div>
+    		<div class="col">등록일자 : <fmt:formatDate value="${board.regDate}" pattern="yyyy-MM-dd'T'HH:mm"/></div>
+    		<div class="col">조회수 : <input type="number" class="detail" id="readCount" name="readCount" title="조회수" value="${board.readCount}" readonly></div>
+  			</div>
+			</div>			
+			
+			
+			<%-- <label for="writer" class="col-sm-2 control-label">작성자</label> 
 			<input type="text" class="form-control" id="writer" name="id" value="${board.id}" readonly> 
 			<label for="regDate" class="col-sm-2 control-label">등록일자</label> 
-			<input type="datetime-local" class="form-control" name="regDate" id="regDate"
-				value='<fmt:formatDate value="${board.regDate}" pattern="yyyy-MM-dd'T'HH:mm"/>'	readonly> 
+			<input type="datetime-local" class="form-control" name="regDate" id="regDate" value='<fmt:formatDate value="${board.regDate}" pattern="yyyy-MM-dd'T'HH:mm"/>'readonly> 
 			<label for="readCount" class="col-sm-2 control-label">조회수</label> 
-			<input type="number" class="form-control" id="readCount" name="readCount" title="조회수" value="${board.readCount}" readonly>
+			<input type="number" class="form-control" id="readCount" name="readCount" title="조회수" value="${board.readCount}" readonly> --%>
 
-			<!-- 나중에 꼭 삭제하기 -->
-			<%-- <input type="text" class="form-control" name="memberId" value="${member.name} (${member.id})" readonly required> --%>
 
-			<label for="content" class="col-sm-2 control-label">내용</label>
-			<textarea class="form-control mt-3" name="content" placeholder="내용" id="content" readonly>
-				<c:out value="${board.content}" />
-			</textarea>
-			
+			<!-- <label for="content" class="col-sm-2 control-label">내용</label> -->
+			<div class="form-control mt-3 detailcontent" name="content" placeholder="내용" id="content" readonly><p>${board.content}</p></div>
 			
 			<!-- 좋아요 -->
-					<button type="button" class="btn btn-primary" id="likeButton" 
+					<br />
+					<div class="like-container">
+						<button type="button" class="btn btn-primary" id="likeButton" 
 						data-board-code="${board.code}"
 						data-id="${board.id}"
 						data-like-yes-no="${likeYesNo}">좋아요</button>
+						<br />
 						${board.likeCount}
+					</div>
 			<!-- 좋아요 -->	
 
 		</div>
+		<br />
 		<div id="btn-container">
 			<input type="button" class="btn btn-warning" id="listbtn" value="목록 "
 				onclick="location.href ='${pageContext.request.contextPath}/board/boardList.do'">
@@ -104,8 +128,9 @@ div#board-container label.custom-file-label {
 
 								<!-- 현재게시글 코드 -->
 								<input type="hidden" name="code" value="${board.code}" /> 
-								<input type="hidden" name="id" value="${loginMember.id}" />
-								<%-- <input type="hidden" name="writer" value="<c:if test="${loginMember ne null loginMember.id }"/>" /> --%>
+								<%-- <input type="hidden" name="id" value="${loginMember.id}" /> --%>
+								<input type="hidden" name="id" value="<c:if test="${loginMember ne null}">${loginMember.id}</c:if>" />
+								
 								<!-- 댓글인 경우 1 -->
 								<input type="hidden" name="commentLevel" value="1" />
 								<!-- 대댓글인 경우 써여져야함 -->
@@ -126,6 +151,7 @@ div#board-container label.custom-file-label {
 
 
 		<!-- 댓글 목록 시작 -->
+				<c:if test="${null ne commentList  && not empty commentList}">
 		<div class="card mb-2">
 			<div class="card-header bg-light">
 				<i class="fa fa-comment fa"></i> 댓글 목록
@@ -133,7 +159,6 @@ div#board-container label.custom-file-label {
 			<div class="card-body">
 
 				<%-- 댓글이 하나가 되었다면 if구문으로 들어올꺼임 for문 돌면서 level1, ldecel2 태그를 고르고 출력--%>
-				<c:if test="${null ne commentList  && not empty commentList}">
 					<c:forEach items="${commentList}" var="comment">
 						<c:choose>
 
@@ -145,8 +170,7 @@ div#board-container label.custom-file-label {
 											<label for="replyId"> <i
 												class="fa fa-user-circle-o fa-2x"></i>&nbsp;&nbsp;<strong>${comment.id}</strong>
 											</label> &nbsp;&nbsp;
-											<fmt:formatDate value="${comment.regDate}"
-												pattern="yyyy-MM-dd HH:mm" />
+											<fmt:formatDate value="${comment.regDate}"	pattern="yyyy-MM-dd HH:mm" />
 										</div> <textarea class="form-control"
 											id="exampleFormControlTextarea1" rows="1" readonly="readonly">${comment.content}</textarea>
 
@@ -185,14 +209,14 @@ div#board-container label.custom-file-label {
 										<div class="row float-right">
 
 											<!-- 회원이고 글쓴이 본인일 경우 -->
-											<sec:authorize access="">
-												<c:if test="${comment.id eq member.id}">
-											<button type="button"
+											
+											<c:if test="${loginMember.id eq comment.id}">
+												<button type="button"
 												class="btn btn-warning btnCommentDelete btn-delete"
 												value="${comment.commentCode}">삭제</button>
-											&nbsp;
+												&nbsp;
 											 </c:if>
-											</sec:authorize>
+											
 										</div>
 									</li>
 								</ul>

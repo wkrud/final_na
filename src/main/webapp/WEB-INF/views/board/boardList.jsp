@@ -27,12 +27,14 @@ input#btn-add {
 	width : 3500px;
 }
 
-
+.my.pagination > .active > span:focus {
+  background: red;
+  border-color: red;
+}
  a:link { color: black; text-decoration: none;}
  a:visited { color: black; text-decoration: none;}
  a:hover { color: blue; text-decoration: none;}
 
-출처: https://it77.tistory.com/126 [시원한물냉의 사람사는 이야기]
 </style>
 <script>
 function goBoardForm(){
@@ -55,32 +57,39 @@ $(() => {
 <body>
 	<section id="board-container" class="container">
 	
-			<table id="tbl-board" class="table table-striped table-hover">
-				<tr>
+			<nav class="navbar navbar-light bg-light">
+  			<form class="form-inline">
+    			<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+    			<button class="btn btn-warning" type="submit">Search</button>
+  			</form>
+			</nav>
+			
+			<table id="tbl-board" class="table table-striped table-hover ">
+				<tr class="bg-warning">
 					<th>번호</th>
+					<th>카테고리</th>
 					<th>제목</th>
 					<th>작성자</th>
-					<th>내용</th>
 					<th>작성일</th>
 					<th>조회수</th>
 				</tr>
 			<c:forEach items="${list}" var="board">
 				<tr value="${board.code}">
 					<td class="boardCode">${board.code}</td>
+					<td>${board.category}</td>
 					<td>
 						<a href="${pageContext.request.contextPath}/board/boardDetail.do?code=${board.code}">${board.title} </a>
-						<%-- <c:if test="${board.commentCount gt 0 ? board.commentCount : ""}"></c:if>  --%>
+						<c:if test="${board.commentCount gt 0 }">{board.commentCount}</c:if>
 					</td>
-					<td><c:out value="${board.member.id}"></c:out></td>
-					<td>${board.content}</td>
-					<td><fmt:formatDate value="${board.regDate}" pattern="yy/MM/dd HH:mm" /></td>
+					<td><c:out value="${board.nickname}"></c:out></td>
+					<td><fmt:formatDate value="${board.regDate}" pattern="yy/MM/dd" /></td>
 					<td>${board.readCount}</td>
 				</tr>
 			</c:forEach>
 			</table>
 			<input type="hidden" name="id" id="id" value="${loginMember.id}" />
 			<sec:authentication property="principal" var="loginMember" />
-			<input type="button" value="글쓰기" id="btn-add"	class="btn btn-outline-success" onclick="goBoardForm();" /> 	
+			<input type="button" value="글쓰기" id="btn-add"	class="btn btn-outline-warning" onclick="goBoardForm();" /> 	
 		${pagebar}
 	</section>
 </body>
