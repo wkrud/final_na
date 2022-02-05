@@ -120,6 +120,8 @@ public interface MemberDao {
 
 	int updateMemberHobby(Member member);
 
+	int updateHelpReadCount(String code);
+
 
 
 

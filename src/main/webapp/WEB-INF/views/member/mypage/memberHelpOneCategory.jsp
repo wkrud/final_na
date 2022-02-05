@@ -11,26 +11,34 @@
 </jsp:include>
 <div class="member-body">
 	<div class="help-one-category-wrap">
-		<div class="me">
+		<div class="one-category">
 			<div class="help-head-wrap">
 				<div class="help-title">
 					<span>${check}</span>
 				</div>
-				<button type="button" class="btn btn-outline-primary" onclick="location.href='${pageContext.request.contextPath}/member/mypage/memberHelpEnroll.do'">질문하기</button>
+				<div class="write-help-btn-wrap">
+					<button type="button" class="btn btn-outline-primary" onclick="location.href='${pageContext.request.contextPath}/member/mypage/memberHelpEnroll.do'">질문하기</button>
+				</div>
 			</div>
 			<div class="help-list-main">
 				<c:forEach items="${help}" var="he">
 					<ul class="list-group list-group-flush">
 						<li class="list-group-item">
 							<a href="${pageContext.request.contextPath}/member/mypage/memberHelpDetail.do?code=${he.code}" class="list-group-item list-group-item-action">
-								${he.title}<c:if test="${he.status eq 'T'}"> - 답변완료</c:if><span><fmt:formatDate value="${he.regDate}" pattern="yy.MM.dd"/></span>
+								<span class="help-span-title">${he.title}</span>
+								<span class="help-span-info"><c:if test="${he.status eq 'T'}">답변완료 - </c:if><fmt:formatDate value="${he.regDate}" pattern="yy.MM.dd"/></span>
 							</a>						
 						</li>
 					</ul>
 				</c:forEach>
 			</div>
 			<div class="help-list-footer">
-				${pagebar}
+				<div class="back-to-catagory">
+					<button type="button" class="btn btn-outline-primary" onclick="location.href='${pageContext.request.contextPath}/member/mypage/memberHelp.do'">카테고리</button>
+				</div>
+				<div class="help-page-bar">
+					${pagebar}
+				</div>
 			</div>
 		</div>
 	</div>

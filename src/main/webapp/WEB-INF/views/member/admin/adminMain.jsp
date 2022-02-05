@@ -27,8 +27,9 @@
 				<span>홈페이지 관리</span>
 			</div>
 			<div class="admin-chart-wrap">
-				<div id="member-enroll-chart"></div>
 				<div id="member-hobby-chart"></div>
+				<div id="member-help-chart"></div>
+				<div id="member-enroll-chart"></div>
 			</div>
 		</div>
 	</div>

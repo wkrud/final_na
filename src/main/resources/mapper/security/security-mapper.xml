@@ -23,9 +23,9 @@
 		<result column="reg_date" property="regDate"/>
 		<result column="phone" property="phone"/>
 		<result column="nickname" property="nickname"/>
+		<result column="hobby" property="hobby"/>
 		<result column="search" property="search"/>
 		<result column="introduce" property="introduce"/>
-		<!-- <result column="hobby" property="hobby"/> -->
 		<result column="birthday" property="birthday"/>
 		<result column="enabled" property="enabled"/>
 		<result column="profile" property="profile"/>

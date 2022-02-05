@@ -307,10 +307,12 @@ public class MemberDaoImpl implements MemberDao {
 
 	@Override
 	public int updateMemberHobby(Member member) {
-		log.debug("hobby dao");
-		int result = session.update("member.updateMemberHobby", member);
-		log.debug("hobby dao out");
-		return result;
+		return session.update("member.updateMemberHobby", member);
+	}
+
+	@Override
+	public int updateHelpReadCount(String code) {
+		return session.update("member.updateHelpReadCount", code);
 	}
 
 	
