@@ -49,7 +49,7 @@ public class BoardController {
 	
 	//추천수
 	@ResponseBody
-	@GetMapping("/freeboardLikeDelete")
+	@GetMapping("/boardLikeDelete.do")
 	public Map<String, Object> boardLikeDelete(@RequestParam String code, @RequestParam String id){
 		
 		Map<String, Object> param = new HashMap<>();
@@ -108,6 +108,7 @@ public class BoardController {
 	
 	
 	//게시물 댓글등록
+//	@ResponseBody
 	@PostMapping("/boardCommentEnroll.do")
 	public String boardCommentEnroll(
 			@AuthenticationPrincipal Member member,
