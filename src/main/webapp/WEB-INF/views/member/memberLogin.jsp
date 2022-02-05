@@ -45,7 +45,9 @@ function onEnterLogin(){
 </script>
 <style>
 .modal-backdrop{
-	background-image: url("${pageContext.request.contextPath}/resources/upload/member/profile/default_profile_cat.png");
+	background-image: url("https://cdn.discordapp.com/attachments/925643543874244641/939559638326710313/Login_bg.jpg");
+	background-repeat : no-repeat;
+	background-size : cover;
 }
 </style>
 </head>
