@@ -120,6 +120,8 @@ public interface MemberService {
 
 	int updateMemberHobby(Member member);
 
+	int updateHelpReadCount(String code);
+
 
 
 }

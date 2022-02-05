@@ -63,3 +63,43 @@
 	display: flex;
 	cursor: pointer;
 }
+
+
+
+/* 카테고리 더보기 */
+.one-category{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.one-category .help-title{
+	text-align: center;
+}
+.one-category .write-help-btn-wrap{
+	text-align: right;
+	width: 700px;
+	margin-bottom: 10px;
+}
+
+.one-category .help-list-main{
+	width: 700px;
+}
+
+.one-category .list-group-item{
+	padding: 5px;
+}
+
+.one-category .help-span-info{
+	float: right;
+}
+
+.one-category .help-list-footer{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+.back-to-catagory{
+	width: 700px;
+	text-align: left;
+}

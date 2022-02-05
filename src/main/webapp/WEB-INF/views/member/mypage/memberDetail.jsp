@@ -11,8 +11,11 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%
 	Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	System.out.println("member = " + member);
 	String[] hobby = member.getHobby();
+	System.out.println("hobby = " + hobby);
 	List<String> hobbyList = hobby != null ? Arrays.asList(hobby) : null;
+	System.out.println("hobbyList = " + hobbyList);
 	pageContext.setAttribute("hobbyList", hobbyList);
 %>
 <jsp:include page="/WEB-INF/views/common/header.jsp">
@@ -106,6 +109,7 @@
 						<div class="my-hobby-wrap">							
 							<c:forEach items="${hobbyList}" var="hobby">
 								<c:if test="${hobby eq '롤'}">
+								
 									${hobby}
 								</c:if>
 								<c:if test="${hobby eq '게임'}">

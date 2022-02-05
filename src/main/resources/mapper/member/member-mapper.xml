@@ -264,6 +264,10 @@
 		</where>
 	</select>
 	
+	<update id="updateHelpReadCount">
+		update help set read_count = read_count + 1 where code = #{code}
+	</update>
+	
 	<!-- help 끝 -->
 	
 	<!-- 도움말 시작 -->
@@ -341,6 +345,7 @@
 		<result column="A_TITLE" property="aTitle"/>
 		<result column="A_CONTENT" property="aContent"/>
 		<result column="A_REG_DATE" property="aRegDate"/>
+		<result column="READ_COUNT" property="readCount"/>
 		<result column="NICKNAME" property="nickname"/>
 		<result column="PROFILE" property="profile"/>
 		<result column="LOGINTYPE" property="loginType"/>
