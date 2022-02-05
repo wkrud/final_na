@@ -28,6 +28,32 @@ window.onload = function colData(){
 			});
 			google.charts.load('current', {'packages':['corechart']});	
 			
+			/* 질문 */
+			google.charts.setOnLoadCallback(helpChart);
+			function helpChart(){
+				var data = new google.visualization.arrayToDataTable([
+			        ['ID', '질문 공감수', '답변 공감수', '카테고리',     '질문 수'],
+			        ['CAN',    80.66,              1.67,      'North America',  33739900],
+			        ['DEU',    79.84,              1.36,      'Europe',         81902307],
+			        ['DNK',    78.6,               1.84,      'Europe',         5523095],
+			        ['EGY',    72.73,              2.78,      'Middle East',    79716203],
+			        ['GBR',    80.05,              2,         'Europe',         61801570],
+			        ['IRN',    72.49,              1.7,       'Middle East',    73137148],
+			        ['IRQ',    68.09,              4.77,      'Middle East',    31090763],
+			        ['ISR',    81.55,              2.96,      'Middle East',    7485600],
+			        ['RUS',    68.6,               1.54,      'Europe',         141850000],
+			        ['USA',    78.09,              2.05,      'North America',  307007000]
+      			]);
+				
+				var options = {'title':'카테고리별 질문 만족도',
+								hAxis:{title:'질문 공감수'},
+								vAxis:{title:'답변 공감수'},
+								bubble:{textStyle:{fontSize:11}}};
+				
+				var chart = new google.visualization.BubbleChart(document.getElementById('member-help-chart'));
+				chart.draw(data, options);
+			};
+			
 			/* 월별 가입자 */
 			google.charts.setOnLoadCallback(drawChart);
 			function drawChart(){

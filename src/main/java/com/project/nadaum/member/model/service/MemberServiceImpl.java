@@ -292,8 +292,12 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public int updateMemberHobby(Member member) {
-		log.debug("hobby service");
 		return memberDao.updateMemberHobby(member);
+	}
+
+	@Override
+	public int updateHelpReadCount(String code) {
+		return memberDao.updateHelpReadCount(code);
 	}
 
 	
