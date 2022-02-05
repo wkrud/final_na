@@ -345,7 +345,6 @@ input[type="date"]:hover::-webkit-calendar-picker-indicator:hover { opacity:0.15
 	width : 100px;
 	height : 30px;
 	border-radius : 10px;
-	display : none;
 }
 
 .accountTable {
@@ -381,9 +380,9 @@ input[type="date"]:hover::-webkit-calendar-picker-indicator:hover { opacity:0.15
 	color : red;
 }
 
-/* .accountUpdate{
+.accountUpdate{
   width : 400px;
   height: 50px;
   margin-top : 10px;
-} */
+}
 

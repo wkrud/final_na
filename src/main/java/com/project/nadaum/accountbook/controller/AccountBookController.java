@@ -46,28 +46,63 @@ public class AccountBookController {
 	@Autowired
 	private AccountBookService accountBookService;
 
+	//가계부 첫 화면에 보여질 값들
 	@RequestMapping(value="/accountbook.do")
-	public void accountbook() {}
+	public void accountbook(@AuthenticationPrincipal Member member, Model model) {
+		String id = member.getId(); 
+		//로그인한 아이디로 등록된 가계부 전체 목록
+		List<AccountBook> accountList = accountBookService.selectAllAccountList(id);
+		
+		//수입, 지출 계산한 값
+		List<Map<String, Object>> incomeList = accountBookService.monthlyTotalIncome(id);
+			//필요한 값만 맵 객체로 변환
+			Map<String, Object> incomeExpenseList = new HashMap<>();
+			incomeExpenseList.put("income", incomeList.get(1).get("total"));
+			incomeExpenseList.put("expense", incomeList.get(0).get("total"));
+			log.info("incomeExpenseList={}", incomeExpenseList);
+		
+		//월간 총 합계 금액
+		String monthlyAccount = accountBookService.monthlyAccount(id);
+		log.info("monthlyAccount={}", monthlyAccount);
+		//만약 사용자 입력값이 없어서 monthlyAccount합계가 null값이 넘어온다면 해당 변수에 0 대입
+		if (monthlyAccount == null) {
+			monthlyAccount = "0";
+		}
+
+		model.addAttribute("accountList",accountList);
+		model.addAttribute("incomeExpenseList", incomeExpenseList);
+		model.addAttribute("monthlyAccount", monthlyAccount);
+	}
 	
 	@RequestMapping(value="/accountbookCopy.do")
 	public void accountbookCopy(@AuthenticationPrincipal Member member, Model model) {
 		String id = member.getId(); 
+		//로그인한 아이디로 등록된 가계부 전체 목록
 		List<AccountBook> accountList = accountBookService.selectAllAccountList(id);
+		
+		//수입, 지출 계산한 값
+		List<Map<String, Object>> incomeList = accountBookService.monthlyTotalIncome(id);
+			//필요한 값만 맵 객체로 변환
+			Map<String, Object> incomeExpenseList = new HashMap<>();
+			incomeExpenseList.put("income", incomeList.get(1).get("total"));
+			incomeExpenseList.put("expense", incomeList.get(0).get("total"));
+			log.info("incomeExpenseList={}", incomeExpenseList);
+		
+		//월간 총 합계 금액
+		String monthlyAccount = accountBookService.monthlyAccount(id);
+		log.info("monthlyAccount={}", monthlyAccount);
+		//만약 사용자 입력값이 없어서 monthlyAccount합계가 null값이 넘어온다면 해당 변수에 0 대입
+		if (monthlyAccount == null) {
+			monthlyAccount = "0";
+		}
+		
+		
 		model.addAttribute("accountList",accountList);
+		model.addAttribute("incomeExpenseList", incomeExpenseList);
+		model.addAttribute("monthlyAccount", monthlyAccount);
 	}
 	
-	/*
-	 * @RequestMapping(value="/detailChart.do") public void
-	 * detailChart(@RequestParam(defaultValue="0") int
-	 * monthly, @AuthenticationPrincipal Member member, Model model) {
-	 * 
-	 * Map<String, Object> param = new HashMap<>(); param.put("monthly", monthly);
-	 * param.put("id", member.getId());
-	 * 
-	 * List<AccountBook> countList = accountBookService.monthlyCountList(param);
-	 * log.info("countList={}",countList); model.addAttribute("countList",
-	 * countList); }
-	 */
+	//차트 더보기 페이지
 	@RequestMapping(value="/detailChart.do")
 	public void detailChart(@RequestParam(defaultValue="0") int monthly, @AuthenticationPrincipal Member member, Model model) {
 		
@@ -100,7 +135,7 @@ public class AccountBookController {
 		List<AccountBook> accountList = accountBookService.selectAllAccountList(id);
 		model.addAttribute("accountList",accountList);
 	 
-		return "/accountbook/accountList";
+		return "redirect:/accountbook/accountbook.do";
 
 	 }
 	
@@ -122,30 +157,6 @@ public class AccountBookController {
 		return map;
 	}
 	
-	//월간 수입, 지출 금액
-	@ResponseBody
-	@GetMapping(value="/monthlyTotalIncome.do")
-	public List<AccountBook> monthlyTotalIncome(String id, Model model) {
-		List<AccountBook> incomeList = accountBookService.monthlyTotalIncome(id);
-		
-		return incomeList;
-	}
-	
-	//월간 총 합계 금액
-	@ResponseBody
-	@GetMapping(value="/monthlyAccount.do")
-	public String monthlyAccount(String id, Model model) {
-		String monthlyAccount = accountBookService.monthlyAccount(id);
-		log.info("monthlyAccount={}", monthlyAccount);
-		//만약 사용자 입력값이 없어서 monthlyAccount합계가 null값이 넘어온다면 해당 변수에 0 대입
-		if (monthlyAccount == null) {
-			monthlyAccount = "0";
-		}
-		model.addAttribute(monthlyAccount);
-		
-		return monthlyAccount;
-	}
-	
 	// 수입, 지출별 정렬
 	 @PostMapping(value="/incomeExpenseFilter.do") 
 	 public String incomeExpenseFilter(@RequestBody Map<String, Object> param,  Model model) {
@@ -159,25 +170,45 @@ public class AccountBookController {
 		 
 		 return "/accountbook/accountList";
 	  }
+	
 	 
-	 
-	 //검색
-	 @RequestMapping(value="/searchList.do", method=RequestMethod.POST)
-	 public String searchList(@RequestParam Map<String, Object> param, Model model) {
-		 Map<String, Object> map = new HashMap<>();
-		 map.put("incomeExpense", param.get("\"incomeExpense"));
-		 map.put("category", param.get("category"));
-		 map.put("detail", param.get("detail"));
-		 map.put("id", param.get("id"));
-		 log.info("map={}", map);
-			
-		 List<AccountBook> accountList = accountBookService.searchList(map);
-		 log.info("list={}", accountList);
-		 
-		 model.addAttribute("accountList", accountList); 
-		 
-		 return "/accountbook/accountList";
-	 }
+	//검색
+		 @PostMapping(value="/searchList.do")
+		 public String searchList(@AuthenticationPrincipal Member member, @RequestParam Map<String, Object> param, Model model) {
+			 String id = member.getId(); 
+			 
+			 Map<String, Object> map = new HashMap<>();
+			 map.put("incomeExpense", param.get("incomeExpense"));
+			 map.put("category", param.get("category"));
+			 map.put("detail", param.get("detail"));
+			 map.put("id", param.get("id"));
+			 log.info("map={}", map);
+				
+			 List<AccountBook> accountList = accountBookService.searchList(map);
+			 log.info("list={}", accountList);
+			 
+			//수입, 지출 계산한 값
+				List<Map<String, Object>> incomeList = accountBookService.monthlyTotalIncome(id);
+					//필요한 값만 맵 객체로 변환
+					Map<String, Object> incomeExpenseList = new HashMap<>();
+					incomeExpenseList.put("income", incomeList.get(1).get("total"));
+					incomeExpenseList.put("expense", incomeList.get(0).get("total"));
+					log.info("incomeExpenseList={}", incomeExpenseList);
+				
+			//월간 총 합계 금액
+			String monthlyAccount = accountBookService.monthlyAccount(id);
+			log.info("monthlyAccount={}", monthlyAccount);
+			//만약 사용자 입력값이 없어서 monthlyAccount합계가 null값이 넘어온다면 해당 변수에 0 대입
+			if (monthlyAccount == null) {
+				monthlyAccount = "0";
+			}
+				
+			model.addAttribute("incomeExpenseList", incomeExpenseList);
+			model.addAttribute("monthlyAccount", monthlyAccount);
+			model.addAttribute("accountList", accountList); 
+			 
+			return "/accountbook/accountbook";
+		 }
 	 	
 	 	//차트
 		@ResponseBody

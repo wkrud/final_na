@@ -138,52 +138,6 @@
 		})
 	};
 		
-
-	
-	//수입 지출 금액 조회
-    $.ajax({
-		url: $contextPath+"/accountbook/monthlyTotalIncome.do",
-		type: "GET",
-		data: {
-			id : $id
-		},
-		dataType : "json",
-		contentType : "application/json; charset=UTF-8",
-		success(incomeList){		
-			var result = `
-				<td><span style="color:green"> +`+numberWithCommas(incomeList[1].total)+`</span></td>
-				<td><span style="color:red"> -`+numberWithCommas(incomeList[0].total)+`</span></td>`	
-				
-			$('.user_income_expense').append(result);
-		},
-		error(xhr, testStatus, err) {
-				console.log("error", xhr, testStatus, err);
-				alert("조회에 실패했습니다.");
-			}
-	});
-	
-    
-    //이달의 총 자산
-    $.ajax({
-		url: $contextPath+"/accountbook/monthlyAccount.do",
-		type: "GET",
-		data: {
-			id : $id
-		},
-		dataType : "json",
-		contentType : "application/json; charset=UTF-8",
-		success(monthlyAccount){
-			var result = 
-					`<td colspan="2" style="font-size:40px">`+numberWithCommas(monthlyAccount)+`원 </td>`
-			$('#total_income').append(result);
-		},
-		error(xhr, testStatus, err) {
-				console.log("error", xhr, testStatus, err);
-				alert("조회에 실패했습니다.");
-			}
-	});
-
-	
 	//수입 필터링 -> 지출 필터링이랑 if문으로 var data의 값만 변경해주고 싶은데 어케 수정해야 하나,,,,
 	$('#incomeFilterBtn').click(function() {
 		var data = {"id" : $id, "incomeExpense" : $income};
