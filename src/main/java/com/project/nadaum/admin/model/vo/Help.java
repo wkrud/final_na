@@ -30,6 +30,7 @@ public class Help implements Serializable {
 	private String aContent;
 	private String aCount;
 	private Date aRegDate;
+	private int readCount;
 	
 	
 }

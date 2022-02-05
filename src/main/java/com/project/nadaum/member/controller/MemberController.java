@@ -150,12 +150,18 @@ public class MemberController {
 			log.debug(value);
 			if("0".equals(value)) {
 				int result = memberService.updateAnnounceReadCount(board);
-				value = board;
+				value = "[" + board + "]";
 				Cookie cookie = new Cookie("announceCount", value);
 				cookie.setMaxAge(60 * 60 * 24 * 30);
 				cookie.setPath(request.getContextPath() + "/member/mypage/announcementDetail.do");
-				response.addCookie(cookie);
-				log.debug("쿠키 배포 완료 = {}", cookie);			
+				response.addCookie(cookie);		
+			}else if(!value.contains("[" + board + "]")) {
+				int result = memberService.updateAnnounceReadCount(board);
+				value += "[" + board + "]";
+				Cookie cookie = new Cookie("announceCount", value);
+				cookie.setMaxAge(60 * 60 * 24 * 30);
+				cookie.setPath(request.getContextPath() + "/member/mypage/announcementDetail.do");
+				response.addCookie(cookie);	
 			}
 			Map<String, Object> param = new HashMap<>();
 			param.put("code", board);
@@ -615,20 +621,44 @@ public class MemberController {
 	}
 	
 	@GetMapping("/mypage/memberHelpDetail.do")
-	public void memberHelpDetail(@RequestParam String code, Model model, @AuthenticationPrincipal Member member) {
-		Map<String, Object> param = new HashMap<>();
-		log.debug("code = {}", code);
-		Map<String, Object> helpDetail = memberService.selectOneSelectedHelp(code);
-		if("T".equals(helpDetail.get("status")))
-			param.put("aCode", helpDetail.get("aCode"));
-		param.put("code", code);
-		param.put("id", member.getId());
-		List<Map<String, Object>> checkLikes = memberService.selectLikesCheck(param);
-		
-		log.debug("checkLikes = {}", checkLikes);
-		log.debug("helpDetail = {}", helpDetail);
-		model.addAttribute("checkLikes", checkLikes);
-		model.addAttribute("helpDetail", helpDetail);
+	public String memberHelpDetail(@RequestParam String code, Model model, @AuthenticationPrincipal Member member, @CookieValue(value="helpCount", required=false, defaultValue="0") String value, HttpServletRequest request, HttpServletResponse response) {
+		try {
+			// 쿠키로 조회수 관리
+			log.debug(value);
+			if("0".equals(value)) {
+				int result = memberService.updateHelpReadCount(code);
+				value = "[" + code + "]";
+				Cookie cookie = new Cookie("helpCount", value);
+				cookie.setMaxAge(60 * 60 * 24 * 30);
+				cookie.setPath(request.getContextPath() + "/member/mypage/memberHelpDetail.do");
+				response.addCookie(cookie);		
+			}else if(!value.contains("[" + code + "]")) {
+				int result = memberService.updateHelpReadCount(code);
+				value += "[" + code + "]";
+				Cookie cookie = new Cookie("helpCount", value);
+				cookie.setMaxAge(60 * 60 * 24 * 30);
+				cookie.setPath(request.getContextPath() + "/member/mypage/memberHelpDetail.do");
+				response.addCookie(cookie);	
+			}
+			
+			Map<String, Object> param = new HashMap<>();
+			log.debug("code = {}", code);
+			Map<String, Object> helpDetail = memberService.selectOneSelectedHelp(code);
+			if("T".equals(helpDetail.get("status")))
+				param.put("aCode", helpDetail.get("aCode"));
+			param.put("code", code);
+			param.put("id", member.getId());
+			List<Map<String, Object>> checkLikes = memberService.selectLikesCheck(param);
+			
+			log.debug("checkLikes = {}", checkLikes);
+			log.debug("helpDetail = {}", helpDetail);
+			model.addAttribute("checkLikes", checkLikes);
+			model.addAttribute("helpDetail", helpDetail);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw e;
+		}
+		return "member/mypage/memberHelpDetail";
 	}
 	
 	@PostMapping("/mypage/updateFriend.do")

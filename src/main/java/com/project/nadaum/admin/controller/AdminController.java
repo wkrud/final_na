@@ -280,6 +280,7 @@ public class AdminController {
 	@GetMapping("/chart.do")
 	public ResponseEntity<?> chart(){
 		
+		// 가입 수 통계
 		Date d = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
 		String year = sdf.format(d);
@@ -290,6 +291,11 @@ public class AdminController {
 		
 		List<Map<String, Object>> list = adminService.selectMonthEnrollCount(yearMap);
 		
+		// 질문 통계
+		
+		
+		
+		// 취미 통계
 		List<Member> members = adminService.selectAllMemberForHobby();
 		String hobby = "";
 		int lol = 0;
@@ -302,13 +308,11 @@ public class AdminController {
 		int goodRestaurant = 0;
 		int etc = 0;
 		
-		log.debug("members = {}", members);
 		if(members != null && !members.isEmpty()) {
 			for(int i = 0; i < members.size(); i++) {
 				if(members.get(i) != null) {
 					for(int j = 0; j < members.get(i).getHobby().length; j++) {
-						hobby = members.get(i).getHobby()[j];					
-						log.debug("hobby = {}", hobby);
+						hobby = members.get(i).getHobby()[j];		
 						switch(hobby) {
 						case "롤": lol++; break;
 						case "게임": game++; break;
