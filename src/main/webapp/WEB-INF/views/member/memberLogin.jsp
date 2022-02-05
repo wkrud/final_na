@@ -48,6 +48,7 @@ function onEnterLogin(){
 	background-image: url("https://cdn.discordapp.com/attachments/925643543874244641/939559638326710313/Login_bg.jpg");
 	background-repeat : no-repeat;
 	background-size : cover;
+	opacity: 1 !important;
 }
 </style>
 </head>
