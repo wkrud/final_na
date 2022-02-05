@@ -124,7 +124,7 @@ padding : 10px;
 							</div>
 							<form
 								action="${pageContext.request.contextPath}/board/boardCommentEnroll.do"
-								method="post" name="boardCommentFrm" id="commentForm">
+								method="post" name="boardCommentFrm" id="insertCommentFrm">
 
 								<!-- 현재게시글 코드 -->
 								<input type="hidden" name="code" value="${board.code}" /> 
@@ -404,25 +404,33 @@ $(".btn-reply").click((e) => {
 		})
 	}
 });
- 
+
+$("#likeButton").click((e) => {
+	
+});
 /* ajax 비동기로 처리 */
-/* function fn_comment(code){
-    $.ajax({
-        type:'POST',
-        url : "<c:url value='/board/boardCommentEnroll.do'/>",
-        data:$("#commentForm").serialize(),
-        success : function(data){
-            if(data=="success")
-            {
-                getCommentList();
-                $("#content").val("");
-            }
-        },
-        error:function(request,status,error){
-            //alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-       }  
-    });
-} */
+/*  $(insertCommentFrm).submit((e) => {
+				e.preventDefault();
+				
+				const csrfHeader = "${_csrf.headerName}";
+		        const csrfToken = "${_csrf.token}";
+		        const headers = {};
+		        headers[csrfHeader] = csrfToken;
+				$.ajax({
+					headers : headers,
+					url: `${pageContext.request.contextPath}/board/boardCommentEnroll.do`,
+					method: "POST",
+					data: $(insertCommentFrm).serialize(),
+					success(resp){
+						console.log(resp)
+						location.reload();
+						alert(resp.msg);
+						
+					},
+					error: console.log
+				});
+				
+			}); */
 /**
  * 초기 페이지 로딩시 댓글 불러오기
  */
