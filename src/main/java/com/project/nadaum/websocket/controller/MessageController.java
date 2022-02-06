@@ -48,11 +48,10 @@ public class MessageController {
 	private SimpMessagingTemplate template;
 	
 	@GetMapping("/member/mypage/chat.do")
-	public void chatMain(@AuthenticationPrincipal Member member, Model model, @RequestParam String room) {
-		Message message = new Message();
-		message.setMessage(member.getNickname() + "님이 입장하셨습니다.");
-		template.convertAndSend("topic/" + room, message);
-		model.addAttribute("room", room);
+	public void chatMain(Model model, @RequestParam Map<String, Object> map) {
+		
+		model.addAttribute("room", (String)map.get("room"));
+		model.addAttribute("guest", (String) map.get("guest"));
 	}
 	
 	@MessageMapping("/chat/join")
@@ -67,8 +66,7 @@ public class MessageController {
 		SimpleDateFormat sdf = new SimpleDateFormat("HH.mm");
 		String now = sdf.format(d);
 		
-		message.setGreeting(member.getNickname() + "님이 입장했습니다.");
-		message.setWriter(member.getNickname());
+		message.setGreeting(message.getWriter() + "님이 입장했습니다.");
 		message.setTime(now);
 		message.setType("GREETING");
 		gson.toJson(message);

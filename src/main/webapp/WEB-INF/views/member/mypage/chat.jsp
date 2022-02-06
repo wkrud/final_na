@@ -54,7 +54,16 @@
 <script>
 $(() => {
 	connect();
+	$(".chat-wrap").hide();
+	if('${guest}' == 'guest'){
+		$(".chat-wrap").show();
+	}
 });
+
+$(window).on('beforeunload', function(){
+   confirm('닫아?');
+});
+
 const $msgArea = $("#msgArea");
 const $msg = $("#chat-msg-input");
 
@@ -101,6 +110,7 @@ function connect() {
 				<div class="greeting-time">\${resp.time}</div>
 				</div>
 				</div>`;
+				$(".chat-wrap").show();
 			}else if(resp.writer == '${loginMember.nickname}' && resp.type != 'GREETING'){
 				msg = `<div class='host-msg'>
 				<div class="chat-time-wrap">

@@ -16,7 +16,7 @@ function connect(){
 				
 				const name = "chatRoom";
 				const spec = "left=500px, top=500px, width=450px, height=650px";
-				const url = `http://localhost:9090/nadaum/member/mypage/chat.do?room=${resp.room}`;
+				const url = `http://localhost:9090/nadaum/member/mypage/chat.do?room=${resp.room}&guest=guest`;
 								
 				if(windowObjHistorySearch == null){
 					if(confirm(resp.host + '님이 채팅을 신청하셨습니다.')){
