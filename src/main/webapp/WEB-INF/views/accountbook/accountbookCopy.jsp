@@ -23,9 +23,7 @@
 	String today = sdf.format(date);
 %>
 
-<!-- <div class="wrapper">
- -->
-<article class="accountWrapper">
+<div class="accountWrapper">
  <!-- 가계부 입력 모달창 -->
 	<div class="modal-background">
 	<div class="insertAccountModal">
@@ -207,7 +205,7 @@
 			<button id="insertBtn"><i class="fas fa-plus plus"></i><br />거래내역 입력하기</button>
 		</div>
 	</section>
-</article>
+</div>
 
 <input type="hidden" id="chartData" value="${chartData}" />
 <input type="hidden" id="contextPath" value="${pageContext.request.contextPath}" />

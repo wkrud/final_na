@@ -7,18 +7,18 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <fmt:requestEncoding value="utf-8" />
 <link href='${pageContext.request.contextPath}/resources/css/main/main.css' rel='stylesheet' />
-<jsp:include page="/WEB-INF/views/common/header.jsp">
+<jsp:include page="/WEB-INF/views/common/header2.jsp">
 	<jsp:param value="나:다움" name="title"/>
 </jsp:include>
 <meta id="_csrf" name="_csrf" content="${_csrf.token}" />
 <meta id="_csrf_header" name="_csrf_header" content="${_csrf.headerName}" />
 <sec:authentication property="principal" var="loginMember"/>
 
-<div class="wrapper">
+<article class="wrapper">
 	<div class="side_nav">
         <ul>
           <li draggable="true" class="test" id="editWidget">위젯편집</li>
-          <li draggable="true" class="test" id="cal">Calender</li>
+          <li draggable="true" class="test" id="cal">Calendar</li>
           <li draggable="true" class="test" id="account">AccounBook</li>
           <li draggable="true" class="test" id="todo">TodoList</li>
           <li draggable="true" class="test" id="memo">Memo</li>
@@ -29,7 +29,7 @@
       </div>
       <section class="m_center dragZone">
       </section>
-</div>
+</article>
 
 
 <script>
@@ -100,4 +100,4 @@
 	}
 
 </script>
-<jsp:include page="/WEB-INF/views/common/footer.jsp" />
+<jsp:include page="/WEB-INF/views/common/footer2.jsp" />
