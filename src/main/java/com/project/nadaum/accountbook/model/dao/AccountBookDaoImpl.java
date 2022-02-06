@@ -34,7 +34,7 @@ public class AccountBookDaoImpl implements AccountBookDao {
 	}
 
 	@Override
-	public List<AccountBook> monthlyTotalIncome(String id) {
+	public List<Map<String, Object>> monthlyTotalIncome(String id) {
 		return session.selectList("accountbook.monthlyTotalIncome", id);
 	}
 
