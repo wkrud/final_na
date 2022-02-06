@@ -15,7 +15,7 @@ public interface AccountBookDao {
 
 	int deleteAccount(Map<String, Object> code);
 
-	List<AccountBook> monthlyTotalIncome(String id);
+	List<Map<String, Object>> monthlyTotalIncome(String id);
 
 	String monthlyAccount(String id);
 

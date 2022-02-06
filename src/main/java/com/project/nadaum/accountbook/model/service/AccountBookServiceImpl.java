@@ -33,7 +33,7 @@ public class AccountBookServiceImpl implements AccountBookService {
 	}
 
 	@Override
-	public List<AccountBook> monthlyTotalIncome(String id) {
+	public List<Map<String, Object>> monthlyTotalIncome(String id) {
 		return accountBookDao.monthlyTotalIncome(id);
 	}
 

@@ -13,10 +13,10 @@
 }
 
 /* 페이지 전체 감싸고 있는 div */
-.wrapper {
+/* .wrapper {
 	margin-top : 100px;
 	position : relative;
-}
+} */
 
 /* selectbox, textbox css */
 select, input[type=text] {
@@ -54,7 +54,7 @@ select:disabled {
 /* 버튼 기본 설정 */
 .defaultBtn{
 	border : none;
-	background : white;	
+	background : #F2F2E6;	
 	outline:0;
 }
 
@@ -148,6 +148,7 @@ input[type="date"]:hover::-webkit-calendar-picker-indicator:hover { opacity:0.15
 	float: left;
  	padding : 20px;
  	text-align : right;
+ 	overflow : hidden;
 }
 
 #detailChartLink {
@@ -161,25 +162,35 @@ input[type="date"]:hover::-webkit-calendar-picker-indicator:hover { opacity:0.15
 /* 중앙 메인 섹션 */
 .search_list_section,.infoSection{
   width : 35%;
-  height: 600px;
+  height: 100%;
   float: left;
   position: relative;
   padding : 20px;
+  /* overflow : hidden; */
 }
 
 .search_box {
 	padding : 5px;
-	margin-bottom : 40px;
+	margin-bottom : 10px;
 }
 
 #searchBtn {
 	width : 30px;
 	height : 30px;
 	font-size : 20px;
+	background-color : #F2F2E6;
+}
+
+.search-selectbox, .search-inputbox {
+	display : block;
+}
+
+.search-inputbox {
+	margin : 20px;
+	margin-left : 100px;
 }
 
 .fillterSection {
-	margin : 20px 0px;
 	padding : 5px;
 	border-bottom : 1px solid #aaa;
 	position : relative;
