@@ -2,7 +2,6 @@ package com.project.nadaum.board.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +10,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +28,7 @@ import com.google.gson.JsonObject;
 import com.project.nadaum.board.model.service.BoardService;
 import com.project.nadaum.board.model.vo.Board;
 import com.project.nadaum.board.model.vo.BoardComment;
+import com.project.nadaum.common.BoardUtils;
 import com.project.nadaum.common.NadaumUtils;
 import com.project.nadaum.member.model.vo.Member;
 
@@ -50,7 +49,7 @@ public class BoardController {
 	
 	//추천수
 	@ResponseBody
-	@GetMapping("/freeboardLikeDelete")
+	@GetMapping("/boardLikeDelete.do")
 	public Map<String, Object> boardLikeDelete(@RequestParam String code, @RequestParam String id){
 		
 		Map<String, Object> param = new HashMap<>();
@@ -109,18 +108,19 @@ public class BoardController {
 	
 	
 	//게시물 댓글등록
+//	@ResponseBody
 	@PostMapping("/boardCommentEnroll.do")
 	public String boardCommentEnroll(
 			@AuthenticationPrincipal Member member,
 			@RequestParam String code,
 			@RequestParam int commentLevel, //댓글-1, 대댓글-2 확인
 			@RequestParam String commentRef, //참조하는 댓글코드 (대댓글인 경우 참고하는 댓글코드, 댓글인 경우 null)
-//			@RequestParam String id,
+			@RequestParam String id,
 			@RequestParam String content,
-			HttpSession session,
+//			HttpSession session,
 			BoardComment commentList) throws Exception{
 		try {
-		String id = (String) session.getAttribute("");
+//		id = (String) session.getAttribute("");
 		BoardComment bc = new BoardComment("", id, code, content, commentLevel, commentRef, null);
 		log.debug("bc = {}", bc);
 		
@@ -222,16 +222,6 @@ public class BoardController {
 			System.out.println("[BoardViewServlet] 조회수 증가 및 boardCookie 생성");
 							
 			}
-//			//쿠키로 조회수 +1
-//			if("0".equals(value)) {
-//				int result = boardService.updateBoardReadCount(code);
-//				value = code;
-//				Cookie cookie = new Cookie("boardCount", value);
-//				cookie.setMaxAge(365 * 24 * 60 * 60); //365일 짜리 영속쿠키
-//				cookie.setPath(request.getContextPath() + "/board/boardDetail.do");
-//				response.addCookie(cookie);
-//				log.debug("게시판쿠키 = {}", cookie);	
-//			}
 			
 			//게시글 가져오기
 			Board board = boardService.selectOneBoard(code);
@@ -243,7 +233,7 @@ public class BoardController {
 			List<BoardComment> commentList = boardService.selectBoardCommentList(code);
 			log.debug("commentList = {} ", commentList);
 			
-			
+//			String nickname = boardService.boardGetNickname()
 			
 			model.addAttribute("board", board);
 			model.addAttribute("commentList", commentList);
@@ -279,8 +269,11 @@ public class BoardController {
 		//pagebar 영역
 		int totalContent = boardService.selectTotalContent();
 		String url = request.getRequestURI();
-		String pagebar = NadaumUtils.getPagebar(cPage, limit, totalContent, url, null );
-				
+//		String pagebar = NadaumUtils.getPagebar(cPage, limit, totalContent, url, null );
+		String pagebar = BoardUtils.getPagebar(cPage, limit, totalContent, url );
+		
+//		int commentCount = boardService.boardCommentCount(code);
+		
 		model.addAttribute("list", list);
 		model.addAttribute("pagebar", pagebar);
 	}
