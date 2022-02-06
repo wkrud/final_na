@@ -115,7 +115,8 @@
 		select
 			 * 
 		from
-			board_comment 
+			board_comment
+			inner join member using (id)
 		where 
 			code = #{code} 
 			start with 

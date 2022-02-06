@@ -37,6 +37,16 @@ border-right:0px;
  display:inline-block;
 margin : 0px;
 }
+.id-detail{border:none;
+border-right:0px;
+ border-top:0px; 
+ boder-left:0px; 
+ boder-bottom:0px;
+ background-color:transparent;
+ display:inline-block;
+margin : 0px;
+font-size:20px;
+}
 
 .detailcontent{
 padding : 10px;
@@ -118,7 +128,9 @@ padding : 10px;
 						<li class="list-group-item" id="comment-li">
 							<div class="form-inline mb-2">
 								<label for="replyId"><i
-									class="fa fa-user-circle-o fa-2x"></i></label>
+									class="fa fa-user-circle-o fa-2x">
+									<input type="text" class="id-detail" name="id" id="id" value="${loginMember.id}" /></i>
+									</label>
 							</div>
 							<form
 								action="${pageContext.request.contextPath}/board/boardCommentEnroll.do"
@@ -133,7 +145,7 @@ padding : 10px;
 								<input type="hidden" name="commentLevel" value="1" />
 								<!-- 대댓글인 경우 써여져야함 -->
 								<input type="hidden" name="commentRef" value="" />
-
+								
 								<textarea name="content" cols="60" rows="3" id="content"
 									class="form-control"></textarea>
 								<button type="submit" id="btn-comment-enroll1"
