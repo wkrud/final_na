@@ -28,29 +28,28 @@
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
 	integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
 	crossorigin="anonymous">
-<script src="${pageContext.request.contextPath}/resources/js/member/stomp.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member/mypage/chat.css" />
 </head>
 <body>
 	<div class="chat-body">
-			<div class="chat-wrap">
-				<div id="msgArea" class="col">
-					<div class="guest-msg-wrap">
-					
-					</div>
-					<div class="host-msg-wrap">
-					
-					</div>
+		<div class="chat-wrap">
+			<div id="msgArea" class="col">
+				<div class="guest-msg-wrap">
+				
 				</div>
-				<div class="chat-send-btn-wrap">
-					<div class="input-group mb-3">
-						<input type="text" id="chat-msg-input" class="form-control" aria-label="Recipient's username" aria-describedby="basic-addon2">
-						<div class="input-group-append">
-							<button class="btn btn-outline-secondary" id="chat-send-btn" type="button">전송</button>
-						</div>
+				<div class="host-msg-wrap">
+				
+				</div>
+			</div>
+			<div class="chat-send-btn-wrap">
+				<div class="input-group mb-3">
+					<input type="text" id="chat-msg-input" class="form-control" aria-label="Recipient's username" aria-describedby="basic-addon2">
+					<div class="input-group-append">
+						<button class="btn btn-outline-secondary" id="chat-send-btn" type="button">전송</button>
 					</div>
 				</div>
 			</div>
+		</div>
 	</div>
 <script>
 $(() => {
@@ -77,16 +76,17 @@ $("#chat-send-btn").on("click", function(e) {
 
 
 var room = '${room}';
-var invite = {
-	'room':room	
-};
+
 
 function connect() {
 	var socket = new SockJS("http://localhost:9090/nadaum/chat");
 	stompClient = Stomp.over(socket);
 	
 	stompClient.connect({}, function(frame){
-		stompClient.send('/nadaum/chat/join', {}, JSON.stringify(room));
+		stompClient.send('/nadaum/chat/join', {}, JSON.stringify({
+			'room':room,
+			'writer': '${loginMember.nickname}'
+		}));
 		stompClient.subscribe("/topic/" + room, function(response){
 			console.log('response = ' + response);
 			console.log(JSON.parse(response.body));

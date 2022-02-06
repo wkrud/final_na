@@ -132,14 +132,11 @@ $(".friend-wrap").click((e) => {
 			if(windowObjHistorySearch == null){
 				chatInvite('chat', '${loginMember.nickname}', guest, room);
 				windowObjHistorySearch = window.open(url, name, spec);	
-				windowObjHistorySearch.focus();
+			}else if(windowObjHistorySearch.closed){
+				chatInvite('chat', '${loginMember.nickname}', guest, room);
+				windowObjHistorySearch = window.open(url, name, spec);			
 			}else{
-				if(windowObjHistorySearch.closed){
-					chatInvite('chat', '${loginMember.nickname}', guest, room);
-					windowObjHistorySearch = window.open(url, name, spec);
-					windowObjHistorySearch.focus();
-				}
-				alert('채팅방은 한개만 열 수 있습니다.');
+				alert('채팅방은 한개만 열 수 있습니다.');				
 			}
 			
 			

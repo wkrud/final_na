@@ -56,7 +56,7 @@ public class MessageController {
 	}
 	
 	@MessageMapping("/chat/join")
-	public Message sendMsg(Message message, Model model, @AuthenticationPrincipal Member member) {
+	public Message sendMsg(Message message, @AuthenticationPrincipal Member member) {
 		
 		log.debug("message = {}", message);
 		log.debug("member = {}", member);
@@ -73,7 +73,6 @@ public class MessageController {
 		message.setType("GREETING");
 		gson.toJson(message);
 		
-		model.addAttribute("message", message);
 		
 		template.convertAndSend("/topic/" + message.getRoom(), gson.toJson(message));
 		return message;
