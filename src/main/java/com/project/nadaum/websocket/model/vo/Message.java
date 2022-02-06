@@ -22,5 +22,7 @@ public class Message implements Serializable {
 	private String type;
 	private String profile;
 	private String time;
+	private String greeting;
+	private String out;
 
 }

@@ -54,7 +54,16 @@
 <script>
 $(() => {
 	connect();
+	$(".chat-wrap").hide();
+	if('${guest}' == 'guest'){
+		$(".chat-wrap").show();
+	}
 });
+
+$(window).on('beforeunload', function(){
+   confirm('닫아?');
+});
+
 const $msgArea = $("#msgArea");
 const $msg = $("#chat-msg-input");
 
@@ -75,7 +84,7 @@ $("#chat-send-btn").on("click", function(e) {
 
 
 
-var room = '1';
+var room = '${room}';
 
 
 function connect() {
@@ -85,7 +94,7 @@ function connect() {
 	stompClient.connect({}, function(frame){
 		stompClient.send('/nadaum/chat/join', {}, JSON.stringify({
 			'room':room,
-			'nickname': '${loginMember.nickname}'
+			'writer': '${loginMember.nickname}'
 		}));
 		stompClient.subscribe("/topic/" + room, function(response){
 			console.log('response = ' + response);
@@ -97,10 +106,11 @@ function connect() {
 			if(resp.writer != '${loginMember.nickname}' && resp.type == 'GREETING'){
 				msg = `<div class="greeting-msg-wrap">
 				<div class="greeting-body">
-				<div class="greeting-msg"><span>\${resp.message}</span></div>
+				<div class="greeting-msg"><span>\${resp.greeting}</span></div>
 				<div class="greeting-time">\${resp.time}</div>
 				</div>
 				</div>`;
+				$(".chat-wrap").show();
 			}else if(resp.writer == '${loginMember.nickname}' && resp.type != 'GREETING'){
 				msg = `<div class='host-msg'>
 				<div class="chat-time-wrap">
