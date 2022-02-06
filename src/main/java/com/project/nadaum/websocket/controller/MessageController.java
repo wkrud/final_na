@@ -56,8 +56,8 @@ public class MessageController {
 	}
 	
 	@MessageMapping("/chat/join")
-	public Message sendMsg(@AuthenticationPrincipal Member member, String info, Message message) {
-		log.debug("room = {}", info);
+	public Message sendMsg(Message message, Model model, @AuthenticationPrincipal Member member) {
+		
 		log.debug("message = {}", message);
 		log.debug("member = {}", member);
 				
@@ -67,11 +67,13 @@ public class MessageController {
 		SimpleDateFormat sdf = new SimpleDateFormat("HH.mm");
 		String now = sdf.format(d);
 		
-		message.setMessage(member.getNickname() + "님이 입장했습니다.");
+		message.setGreeting(member.getNickname() + "님이 입장했습니다.");
 		message.setWriter(member.getNickname());
 		message.setTime(now);
 		message.setType("GREETING");
 		gson.toJson(message);
+		
+		model.addAttribute("message", message);
 		
 		template.convertAndSend("/topic/" + message.getRoom(), gson.toJson(message));
 		return message;

@@ -124,19 +124,36 @@ $(".friend-wrap").click((e) => {
 		if(confirm(guest + '님과 DM을 하시겠습니까?')){
 			var room = Math.floor(Math.random() * 100000);
 			console.log('room = ' + room);
-			chatInvite('chat', '${loginMember.nickname}', guest, room);
 			
-			let chatRoom = `
+			const name = "chatRoom";
+			const spec = "left=500px, top=500px, width=450px, height=650px";
+			const url = `${pageContext.request.contextPath}/member/mypage/chat.do?room=\${room}`;
+			
+			if(windowObjHistorySearch == null){
+				chatInvite('chat', '${loginMember.nickname}', guest, room);
+				windowObjHistorySearch = window.open(url, name, spec);	
+				windowObjHistorySearch.focus();
+			}else{
+				if(windowObjHistorySearch.closed){
+					chatInvite('chat', '${loginMember.nickname}', guest, room);
+					windowObjHistorySearch = window.open(url, name, spec);
+					windowObjHistorySearch.focus();
+				}
+				alert('채팅방은 한개만 열 수 있습니다.');
+			}
+			
+			
+			
+			/* let chatRoom = `
 	        <iframe id="nadaumChat" title="Nadaum Chat" src="${pageContext.request.contextPath}/member/mypage/chat.do?room=\${room}" >
 			</iframe>`;
 			$(".chat-section").append(chatRoom);
-			$("#chatwrap").css("display", "block");
+			$("#chatwrap").css("display", "block"); */
 		}
 	}else{
 		alert('채팅방은 한개만 만들 수 있습니다.');
 	}
 });
-
 
 $(searchFriendBtn).click((e) => {
 	const spec = "left=500px, top=500px, width=400px, height=150px";
