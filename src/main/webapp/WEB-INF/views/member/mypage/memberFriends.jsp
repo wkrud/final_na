@@ -36,8 +36,15 @@
 										</c:if>	
 									</c:if>
 								</div>
-								<div class="friend-name-wrap">
-									<span class="friend-name">${ml.nickname}</span>								
+								<div class="friend-name-wrap dropdown show">
+									<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<span class="friend-name">${ml.nickname}</span>
+									</a>	
+									 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+										<a class="dropdown-item" href="#">Action</a>
+										<a class="dropdown-item" href="#">Another action</a>
+										<a class="dropdown-item" href="#">Something else here</a>
+									</div>							
 								</div>
 								<div class="friend-btn">
 									<button type="button" id="end-friend" class="btn btn-outline-danger">친구삭제</button>
@@ -138,14 +145,6 @@ $(".friend-wrap").click((e) => {
 			}else{
 				alert('채팅방은 한개만 열 수 있습니다.');				
 			}
-			
-			
-			
-			/* let chatRoom = `
-	        <iframe id="nadaumChat" title="Nadaum Chat" src="${pageContext.request.contextPath}/member/mypage/chat.do?room=\${room}" >
-			</iframe>`;
-			$(".chat-section").append(chatRoom);
-			$("#chatwrap").css("display", "block"); */
 		}
 	}else{
 		alert('채팅방은 한개만 만들 수 있습니다.');
