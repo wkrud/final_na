@@ -8,13 +8,13 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <fmt:requestEncoding value="utf-8" />
-<jsp:include page="/WEB-INF/views/common/header.jsp">
+<jsp:include page="/WEB-INF/views/common/header2.jsp">
 	<jsp:param value="가계부" name="title"/>
 </jsp:include>
 <meta id="_csrf" name="_csrf" content="${_csrf.token}" />
 <meta id="_csrf_header" name="_csrf_header" content="${_csrf.headerName}" />
 <sec:authentication property="principal" var="loginMember"/>
-<link href='${pageContext.request.contextPath}/resources/css/accountbook/main.css' rel='stylesheet' />
+<link href='${pageContext.request.contextPath}/resources/css/accountbook/main2.css' rel='stylesheet' />
 <link href='https://use.fontawesome.com/releases/v5.0.6/css/all.css' rel='stylesheet'>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <%
@@ -23,7 +23,7 @@
 	String today = sdf.format(date);
 %>
 
-<div class="wrapper">
+<div class="accountWrapper">
 <!-- 가계부 입력 모달창 -->
 	<div class="modal-background">
 	<div class="insertAccountModal">
@@ -112,7 +112,7 @@
 		<!-- 검색창 -->
 		<div class="search_box">
 			<form 
-				action=""
+				action="${pageContext.request.contextPath}/accountbook/searchList.do"
 				method="POST"
 				name = "searchFrm"
 				id="searchFrm">
@@ -128,7 +128,7 @@
 				<input type="hidden" name="id" value="${loginMember.id}" />
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 				<!-- <input type="button" id="searchBtn" value="검색" /> -->
- 				<button type="button" id="searchBtn" class="defaultBtn"><i class="fas fa-search"></i></button>
+ 				<button id="searchBtn" class="defaultBtn"><i class="fas fa-search"></i></button>
 			</form>
 		</div>
 		<!-- 필터링 -->
@@ -140,6 +140,34 @@
 		</div>
 		<!-- 가계부 리스트 -->
 		<div id="account_list">
+			<c:forEach items="${accountList}" var = "account">
+				<div class="accountListDiv">
+				<table class="accountTable">
+					<tr class="account_side_column">
+						<td><span class="accountRegDate"><fmt:formatDate value="${account.regDate}" pattern="yyyy/MM/dd"/></span></td>
+						<td rowspan="2" class="accountPrice">
+							<c:choose>
+								<c:when test="${accountList eq null}">
+									
+								</c:when>
+								<c:when test="${account.incomeExpense eq 'I' }">
+									<span class="income"><fmt:formatNumber value="${account.price}" type="number"/></span>
+								</c:when>
+								<c:when test="${account.incomeExpense eq 'E' }">
+									<span class="expense"><fmt:formatNumber value="-${account.price}" type="number"/></span>
+								</c:when>
+							</c:choose>
+						</td>
+					</tr>
+					<tr>
+						<td class="accountDetail">${account.detail}</td>
+					</tr>
+					</table>
+				</div>
+				<div class="accountUpdate">
+					<button class="deleteBtn" onclick="deleteDetail('${account.code}')">삭제</button>
+				</div>
+			</c:forEach>
 		</div>
 	</section>
 	<!-- 사용자별 가계부 월별 금액 -->
@@ -153,12 +181,19 @@
 					<td colspan="2"><%= today %> 총 자산</td>
 				</tr>
 				<tr id="total_income">
+					<td colspan="2" style="font-size:40px"><fmt:formatNumber value="${monthlyAccount}" type="number"/>원</td>
 				</tr>
 				<tr>
 					<td>수입</td>
 					<td>지출</td>
 				</tr>
 				<tr class="user_income_expense">
+					<td>
+						<span class="income"><fmt:formatNumber value="${incomeExpenseList.income}" type="number"/></span>
+					</td>
+					<td>
+						<span class="expense"><fmt:formatNumber value="${incomeExpenseList.expense}" type="number"/></span>
+					</td>
 				</tr>
 			</table>
 		</div>
@@ -172,4 +207,4 @@
 <input type="hidden" id="contextPath" value="${pageContext.request.contextPath}" />
 <script src='${pageContext.request.contextPath}/resources/js/accountbook/main.js'></script>
 
-<%-- <jsp:include page="/WEB-INF/views/common/footer.jsp" /> --%>
+<jsp:include page="/WEB-INF/views/common/footer2.jsp" />

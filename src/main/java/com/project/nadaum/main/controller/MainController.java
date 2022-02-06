@@ -26,6 +26,11 @@ public class MainController {
 		
 	}
 	
+	@RequestMapping(value="/main2.do")
+	public void main2(@AuthenticationPrincipal Member member, Model model) {
+		
+	}
+	
 	@PostMapping(value="/insertTodoList.do")
 	public String insertTodoList(TodoList todoList, Model model) {
 		int insertTodoList = mainService.insertTodoList(todoList);
