@@ -31,6 +31,7 @@
   position : relative;
 }
 
+/* 사이드 nav */
 .header{
   width : 13%;
   height : 100vh;
@@ -39,6 +40,7 @@
   /* display : inline-block; */
   float : left;
   z-index : 50;
+  letter-spacing : 2px;
 }
 ::-webkit-scrollbar {
   display: none !important;
@@ -54,10 +56,14 @@
   
 }
 
-.header a {
+.header a, .header li {
   color : rgb(228, 226, 226);
   text-decoration: none;
   padding : 5px;
+}
+
+.header i {
+	padding-right : 5px;
 }
 
 .header ul {
@@ -81,6 +87,8 @@
    color : #38383b; 
 }
 
+/* 상단 헤더 - 프로필부분 */
+
 .nadaum-header {
 	width : 85%;
 	height : 80px;
@@ -88,8 +96,8 @@
 	clear : both;
 	text-align : right;
 	padding : 20px;
-	position : fixed;
-	position : relative;
+ 	position : sticky; 
+ 	top : 0;
 }
 
 .user-factors {
@@ -101,4 +109,31 @@
 	width : 87%;
 	height : 89vh;
 	overflow : auto;
+}
+
+.personal-main:hover, .culture-main:hover {
+	cursor : pointer;
+}
+
+.personal-main i, .culture-main i {
+	padding : 5px;
+}
+
+.personal-sub, .culture-sub{
+	display : none;
+	font-size : 15px;
+}
+
+.personal-sub li, .culture-sub li {
+	font-size : 15px;
+	margin-left : 40px;
+}
+
+.help-nav li {
+	float : right;
+	margin-top : 20px;
+} 
+
+.help-nav a {
+	font-size : 15px;
 }

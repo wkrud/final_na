@@ -86,27 +86,14 @@
           </ul>
           </div>
           <hr style="width: 100%; border-top: 1px solid #4b4b4b;" />
-          <!-- 도움말 -->
-          <div>
-          <ul class="help-nav">
-            <li class="nav-list">
-              <a href="">
-                <i class="far fa-question-circle"></i>
-                <span>도움말</span></a>
-            </li>
-          </ul>
-          </div>
-          <hr style="width: 100%; border-top: 1px solid #4b4b4b;" />
-          <div>
           <!-- 메뉴 -->
+          <div>
           <ul class="menu-nav">
-            <li class="nav-list">
-              <a href="">
+            <li class="nav-list personal-main">
                 <i class="far fa-address-book"></i>
                 <span>퍼스널</span>
-              </a>
             </li>
-              <div>
+              <div class="personal-sub">
                 <ul>
                   <li>
                   	<a href="${pageContext.request.contextPath}/diary/diaryMain.do"><span>일기</span></a>
@@ -116,13 +103,11 @@
                   </li>
                 </ul>
               </div>
-            <li class="nav-list">
-              <a href="">
+            <li class="nav-list culture-main">
                 <i class="fas fa-user-friends"></i>
                 <span>문화</span>
-              </a>
             </li>
-            <div>
+            <div class="culture-sub">
               <ul>
                 <li>
                 	<a href="${pageContext.request.contextPath}/culture/board/1"><span>전시</span></a>
@@ -146,6 +131,17 @@
             </li>
           </ul>
         </div>
+                  <!-- 도움말 -->
+          <div>
+          <ul class="help-nav">
+            <li class="nav-list">
+              <a id="help" class="nav-link">
+                <i class="far fa-question-circle"></i>
+                <!-- <span>도움말</span> -->
+               </a>
+            </li>
+          </ul>
+          </div>
       </nav>
         <!-- 헤더 -->
       <header class="nadaum-header">
@@ -181,7 +177,7 @@
 			<div class="collapse" id="alarmList"></div>
 		</div>
 		<!-- 도움말 버튼 -->
-		<div class="user-factors">
+		<!-- <div class="user-factors">
 		<ul class="navbar-nav justify-content-end">
 			<li class="nav-item">											
 				<a id="help" class="nav-link">					
@@ -192,7 +188,7 @@
 				</a>
 			</li>
 		</ul>
-		</div>
+		</div> -->
 		<!--로그아웃  -->
 		<div class="user-factors">
 		<ul class="navbar-nav justify-content-end">
@@ -313,6 +309,15 @@
 		    	$("#chatwrap").css("display","none");
 		    	$(".chat-section").empty();
 			});
+		    
+		    $(".personal-main").click((e) => {
+		    	$(".personal-sub").slideToggle();
+		    });
+		    
+		    $(".culture-main").click((e) => {
+		    	$(".culture-sub").slideToggle();
+		    });
+		    
 		    
 		    /* iframe 드래그 */
 		    dragElement(document.getElementById("chatwrap"));
