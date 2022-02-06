@@ -1,21 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <fmt:requestEncoding value="utf-8" />
-<jsp:include page="/WEB-INF/views/common/header.jsp">
-	<jsp:param value="나:다움 질문 등록" name="title"/>
+<jsp:include page="/WEB-INF/views/common/header2.jsp">
+	<jsp:param value="나:다움 질문 등록" name="title" />
 </jsp:include>
 <style>
-.board-container{
-position: absolute;
-width: 715px;
-height: 927px;
-left: 158px;
-top: 238px;
+.board-container {
+	width: 715px;
+	height: 927px;
+	left: 500px;
 }
 </style>
 <script>
@@ -44,33 +43,40 @@ function boardValidate(){
 </script>
 
 <div class="board-container">
-	<form method="POST" 
-	action="${pageContext.request.contextPath}/board/boardEnroll.do"
-	onsubmit="return boardValidate();">
-		<label for="title">제목</label>						
-		<input type="text" class="form-control" name="title" id="title"	placeholder="제목을 입력해주세요" required>
+	<form method="POST"	action="${pageContext.request.contextPath}/board/boardEnroll.do"
+		onsubmit="return boardValidate();">
 		
-		<input type="text" class="form-control"	name="id" value="${loginMember.id}" readonly required>
-		<!-- 나중에 지우기 -->
-		<input type="text" class="form-control"	name="id" value="${board.id}" readonly required>
+		<div class="form-group row" >
+		<label for="title" class="col-sm-2 col-form-label">제목</label>
+		<div class="col-sm-10">
+			<input type="text" class="form-control" id="title" name="title" placeholder="제목을 입력해주세요" required >
+		</div>
+		</div>
 		
-		<input type="hidden" name="category" />
-		<select id="category-select" class="form-select" aria-label="Default select example">
+		<div class="form-group row">
+		<label for="category" class="col-sm-2 col-form-label">카테고리</label>
+		<div class="col-sm-10">
+			<input type="hidden" class="form-control" name="category" >
+			<select id="category-select" class="form-control" aria-label="Default select example">
 			<option selected>카테고리</option>
-			<option value="dy">자유게시판</option>
-			<option value="ab">문화</option>
-			<option value="mo">영화</option>
+			<option value="자유">자유게시판</option>
+			<option value="문화">문화</option>
+			<option value="영화">영화</option>
 		</select>
+		</div>
+		</div>
 		
 		<textarea name="content" id="board-content-summernote" required></textarea>
-		<div><span id="limite_normal"></span><span id="limite_vermelho" style="color:red"></span>/500</div>
+		<div>
+			<span id="limite_normal"></span><span id="limite_vermelho"
+				style="color: red"></span>/500
+		</div>
 		
 		<br />
-		<button type="submit" id="submit-btn" class="btn btn-success">등록</button>
-		<!-- <input type="submit" class="btn btn-outline-success" id="submit-btn" value="저장"> -->
+		<button type="submit" id="submit-btn" class="btn btn-warning">등록</button>
 		
-		<input type="hidden" name="id" id="id" value="${loginMember.id}" />
-		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+		<input type="hidden" name="id" id="id" value="${loginMember.id}" /> 
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	</form>
 </div>
 
@@ -120,10 +126,12 @@ $(document).ready(function() {
 	    ['insert',['picture','link','video']],
 	    // 코드보기, 확대해서보기, 도움말
 	    ['view', ['codeview','fullscreen', 'help']]
+	    
 	  ];
-
+	
+	
 	var setting = {
-			placeholder: '질문을 작성하세요',
+			placeholder: '내용을 작성하세요',
             height : 600,
             minHeight : null,
             maxHeight : null,
@@ -203,4 +211,4 @@ const deleteImg = (url) => {
 };
 </script>
 
-<jsp:include page="/WEB-INF/views/common/footer.jsp" />
+<jsp:include page="/WEB-INF/views/common/footer2.jsp" />

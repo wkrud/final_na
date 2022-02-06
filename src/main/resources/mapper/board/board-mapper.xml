@@ -6,19 +6,13 @@
 
 	<!-- 게시글 -->
 	<select id="selectBoardList" resultType="board">
-		select
-			*
-		from
-			board
-		order by
-			code desc
+		select * from board
+		inner join member using (id)
+		order by code desc
 	</select>
 	
 	<select id="selectTotalContent" resultType="_int">
-		select
-			count(*)
-		from
-			board
+		select count(*) from board
 	</select>
 	
 	<insert id="insertBoard">
@@ -26,16 +20,12 @@
 			board (code, title, id, content, category)
 		values(
 		concat('bo-',seq_board_no.nextval),
-		#{title},
-		#{id},
-		#{content},
-		#{category}
+		#{title}, #{id}, #{content}, #{category}
 		)		
 	</insert>
 	
 	<update id="updateBoard" >
-		update
-			board
+		update board
 		set
 			title = #{title},
 			content = #{content},
@@ -45,10 +35,7 @@
 	</update>
 	
 	<delete id="deleteBoard">
-		delete from
-			board
-		where
-			code = #{code}			
+		delete from board where	code = #{code}			
 	</delete>
 	
 	<select id="selectOneBoardCollection" resultMap="boardCollectionMap">
@@ -62,30 +49,7 @@
 		where
 			b.code = #{code}
 	</select>
-	<resultMap type="board" id="boardCollectionMap">
-		<id column="code" property="code"/>
-		<result column="title" property="title"/>
-		<result column="id" property="id"/>
-		<result column="content" property="content"/>
-		<result column="category" property="category"/>
-		<result column="read_count" property="readCount"/>
-		<result column="reg_date" property="regDate"/>
-		<association property="member" javaType="member">
-		<id column="id" property="id"/>
-		<result column="name" property="name"/>
-		</association>
-		<collection property="attachments" ofType="attachment">
-			<id column="attach_no" property="no"/>
-			<result column="board_no" property="boardNo"/>
-			<result column="original_filename" property="originalFilename"/>
-			<result column="renamed_filename" property="renamedFilename"/>
-			<result column="upload_date" property="uploadDate"/>
-			<result column="download_count" property="downloadCount"/>
-			<result column="status" property="status"/>
-		</collection>
-	</resultMap>
-	
-	
+
 <!-- 	<insert id="insertAttachment">
 		insert into
 			attachment(no, code, original_filename, renamed_filename, reg_date)
@@ -114,6 +78,7 @@
 		where
 			code = #{code}
 	</select> -->
+	
 	<!-- 조회수 -->
 	<update id="updateBoardReadCount">
 		update 
@@ -145,13 +110,13 @@
 		delete from like where id = #{id} and code = #{code}
 	</delete>
 	
-	
 	<!-- 게시글 댓글조회 -->
 	<select id="selectBoardCommentList" resultMap="boardCommentMap">
 		select
 			 * 
 		from
-			board_comment 
+			board_comment
+			inner join member using (id)
 		where 
 			code = #{code} 
 			start with 
@@ -160,25 +125,6 @@
 				comment_code = comment_ref
 			order siblings by comment_code	
 	</select>
-	<resultMap type="boardComment" id="boardCommentMap">
-		<id column="comment_code" property="commentCode"/>
-		<result column="id" property="id"/>
-		<result column="code" property="code"/>
-		<result column="content" property="content"/>
-		<result column="comment_level" property="commentLevel"/>
-		<result column="comment_ref" property="commentRef"/>
-		<result column="reg_date" property="regDate"/>
-	</resultMap>
-	<!-- 게시물 댓글 -->
-	<!-- <select id="selectBoardCommentList" resultType="boardComment">
-		select
-			 * 
-		from
-			board_comment 
-		where 
-			code = #{code} 		
-		order by comment_code			
-	</select> -->
 	
 	<insert id="insertBoardComment">
 		insert into
@@ -198,5 +144,44 @@
 		delete from board_comment where comment_code = #{commentCode}
 	</delete>
 	
+	<!-- resultMap -->
+	<resultMap type="board" id="boardCollectionMap">
+		<id column="code" property="code"/>
+		<result column="title" property="title"/>
+		<result column="id" property="id"/>
+		<result column="content" property="content"/>
+		<result column="category" property="category"/>
+		<result column="read_count" property="readCount"/>
+		<result column="reg_date" property="regDate"/>
+		<association property="member" javaType="member">
+		<id column="id" property="id"/>
+		<result column="name" property="name"/>
+		</association>
+		<collection property="attachments" ofType="attachment">
+			<id column="attach_no" property="no"/>
+			<result column="board_no" property="boardNo"/>
+			<result column="original_filename" property="originalFilename"/>
+			<result column="renamed_filename" property="renamedFilename"/>
+			<result column="upload_date" property="uploadDate"/>
+			<result column="download_count" property="downloadCount"/>
+			<result column="status" property="status"/>
+		</collection>
+	</resultMap>
+	
+	<resultMap type="map" id="likesMap">
+		<id column="no" property="no"/>
+		<result column="id" property="id"/>
+		<result column="code" property="code"/>
+	</resultMap>
+	
+	<resultMap type="boardComment" id="boardCommentMap">
+		<id column="comment_code" property="commentCode"/>
+		<result column="id" property="id"/>
+		<result column="code" property="code"/>
+		<result column="content" property="content"/>
+		<result column="comment_level" property="commentLevel"/>
+		<result column="comment_ref" property="commentRef"/>
+		<result column="reg_date" property="regDate"/>
+	</resultMap>
 </mapper>
 
