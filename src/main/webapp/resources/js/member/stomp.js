@@ -15,7 +15,7 @@ function connect(){
 			}else if(resp.type == 'chat'){
 				
 				const name = "chatRoom";
-				const spec = "left=500px, top=500px, width=450px, height=650px";
+				const spec = "left=500px, top=500px, width=450px, height=620px";
 				const url = `http://localhost:9090/nadaum/member/mypage/chat.do?room=${resp.room}&guest=guest`;
 								
 				if(windowObjHistorySearch == null){

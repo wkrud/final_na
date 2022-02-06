@@ -11,6 +11,15 @@
 		update alarm set status = 'T' where id = #{id}
 	</update>
 	
+	<select id="selectAllEmotion" resultMap="emotionMap">
+		select * from emotion
+	</select>
+	
+	<resultMap type="map" id="emotionMap">
+		<id column="no" property="no"/>
+		<result column="emotion_filename" property="emotion"/>
+	</resultMap>
+	
 	<resultMap type="map" id="alarmMap">
 		<id column="no" property="no"/>
 		<result column="code" property="code"/>

@@ -1,11 +1,13 @@
+*{
+	font-family: 'SUIT-Medium';
+}
 .chat-wrap{
-	width: 320px;
-	height: 500px;
-	border: 1px solid black;
+	width: 450px;
+	height: 619px;
 }
 #msgArea{
-	width: 320px;
-	height: 460px;
+	width: 450px;
+	height: 580px;
 	overflow: scroll;
 	overflow-x:hidden;
 	padding: 0;
@@ -69,7 +71,7 @@
 	align-items: flex-end;
 }
 .chat-time{
-	font-size: .5rem;
+	font-size: .7rem;
 	color: gainsboro;
 }
 
@@ -78,4 +80,44 @@
 }
 
 
+.emotion-wrap{
+	width: 100%;
+	height: 200px;
+	position: fixed;
+	background: aliceblue;
+	bottom: 38px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	align-items: center;
+}
 
+.emotion-img-wrap{
+	width: 120px;
+	height: 95px;
+}
+
+.blanket{
+	background: url("../../../images/diary/emotion/blanket.png") no-repeat 0 0;
+	background-size: 100% 100%;	
+}
+.daechoong{
+	background: url("../../../images/diary/emotion/daechoong.png") no-repeat 0 0;
+	background-size: 100% 100%;	
+}
+.gogo{
+	background: url("../../../images/diary/emotion/gogo.png") no-repeat 0 0;
+	background-size: 100% 100%;	
+}
+.happy{
+	background: url("../../../images/diary/emotion/happy.png") no-repeat 0 0;
+	background-size: 100% 100%;	
+}
+.trash{
+	background: url("../../../images/diary/emotion/trash.png") no-repeat 0 0;
+	background-size: 100% 100%;	
+}
+.eat{
+	background: url("../../../images/diary/emotion/eat.png") no-repeat 0 0;
+	background-size: 100% 100%;	
+}

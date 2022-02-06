@@ -126,7 +126,7 @@ $(".friend-wrap").click((e) => {
 			console.log('room = ' + room);
 			
 			const name = "chatRoom";
-			const spec = "left=500px, top=500px, width=450px, height=650px";
+			const spec = "left=500px, top=500px, width=450px, height=620px";
 			const url = `${pageContext.request.contextPath}/member/mypage/chat.do?room=\${room}`;
 			
 			if(windowObjHistorySearch == null){
