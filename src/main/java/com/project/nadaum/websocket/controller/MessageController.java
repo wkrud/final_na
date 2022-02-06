@@ -3,6 +3,7 @@ package com.project.nadaum.websocket.controller;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -48,16 +49,16 @@ public class MessageController {
 	private SimpMessagingTemplate template;
 	
 	@GetMapping("/member/mypage/chat.do")
-	public void chatMain(@AuthenticationPrincipal Member member, Model model, @RequestParam String room) {
-		Message message = new Message();
-		message.setMessage(member.getNickname() + "님이 입장하셨습니다.");
-		template.convertAndSend("topic/" + room, message);
-		model.addAttribute("room", room);
+	public void chatMain(Model model, @RequestParam Map<String, Object> map) {
+		List<Map<String, Object>> emotion = websocketService.selectAllEmotion();
+		model.addAttribute("emotion", emotion);
+		model.addAttribute("room", (String)map.get("room"));
+		model.addAttribute("guest", (String) map.get("guest"));
 	}
 	
 	@MessageMapping("/chat/join")
-	public Message sendMsg(@AuthenticationPrincipal Member member, String info, Message message) {
-		log.debug("room = {}", info);
+	public Message sendMsg(Message message, @AuthenticationPrincipal Member member) {
+		
 		log.debug("message = {}", message);
 		log.debug("member = {}", member);
 				
@@ -67,11 +68,11 @@ public class MessageController {
 		SimpleDateFormat sdf = new SimpleDateFormat("HH.mm");
 		String now = sdf.format(d);
 		
-		message.setMessage(member.getNickname() + "님이 입장했습니다.");
-		message.setWriter(member.getNickname());
+		message.setGreeting(message.getWriter() + "님이 입장했습니다.");
 		message.setTime(now);
 		message.setType("GREETING");
 		gson.toJson(message);
+		
 		
 		template.convertAndSend("/topic/" + message.getRoom(), gson.toJson(message));
 		return message;
@@ -97,12 +98,26 @@ public class MessageController {
 			message.setProfile(member.getProfile());
 		}
 		message.setTime(now);
-		message.setType("CHAT_TYPE");
+		
+		if(message.getType() != null && "EMOTION".equals(message.getType())) {
+			
+		}else {
+			message.setType("CHAT_TYPE");			
+		}
 		
 		log.debug("message = {}", message);
 		
 		template.convertAndSend("/topic/" + message.getRoom(), gson.toJson(message));
 		
+	}
+	
+	@MessageMapping("/chat/out/{room}")
+	@SendTo("/topic/{room}")
+	public void out(Message message) {
+		log.debug("out message = {}", message);
+		message.setOut(message.getWriter() + "님이 퇴장하셨습니다.");
+		message.setType("OUT");
+		template.convertAndSend("/topic/" + message.getRoom(), new Gson().toJson(message));
 	}
 	
 	@MessageMapping("/chat/invite/{guest}")

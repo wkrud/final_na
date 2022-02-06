@@ -25,6 +25,11 @@ public class WebsocketServiceImpl implements WebsocketService {
 		return websocketDao.updateAlarm(member);
 	}
 
+	@Override
+	public List<Map<String, Object>> selectAllEmotion() {
+		return websocketDao.selectAllEmotion();
+	}
+
 	
 	
 }
