@@ -25,4 +25,11 @@ public class WebsocketDaoImpl implements WebsocketDao {
 		return session.update("ws.updateAlarm", member);
 	}
 
+	@Override
+	public List<Map<String, Object>> selectAllEmotion() {
+		return session.selectList("ws.selectAllEmotion");
+	}
+	
+	
+
 }

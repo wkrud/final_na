@@ -3,6 +3,7 @@ package com.project.nadaum.websocket.controller;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -49,7 +50,8 @@ public class MessageController {
 	
 	@GetMapping("/member/mypage/chat.do")
 	public void chatMain(Model model, @RequestParam Map<String, Object> map) {
-		
+		List<Map<String, Object>> emotion = websocketService.selectAllEmotion();
+		model.addAttribute("emotion", emotion);
 		model.addAttribute("room", (String)map.get("room"));
 		model.addAttribute("guest", (String) map.get("guest"));
 	}
@@ -96,12 +98,26 @@ public class MessageController {
 			message.setProfile(member.getProfile());
 		}
 		message.setTime(now);
-		message.setType("CHAT_TYPE");
+		
+		if(message.getType() != null && "EMOTION".equals(message.getType())) {
+			
+		}else {
+			message.setType("CHAT_TYPE");			
+		}
 		
 		log.debug("message = {}", message);
 		
 		template.convertAndSend("/topic/" + message.getRoom(), gson.toJson(message));
 		
+	}
+	
+	@MessageMapping("/chat/out/{room}")
+	@SendTo("/topic/{room}")
+	public void out(Message message) {
+		log.debug("out message = {}", message);
+		message.setOut(message.getWriter() + "님이 퇴장하셨습니다.");
+		message.setType("OUT");
+		template.convertAndSend("/topic/" + message.getRoom(), new Gson().toJson(message));
 	}
 	
 	@MessageMapping("/chat/invite/{guest}")

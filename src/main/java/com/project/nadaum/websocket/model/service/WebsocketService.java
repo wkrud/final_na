@@ -11,4 +11,6 @@ public interface WebsocketService {
 
 	int updateAlarm(Member member);
 
+	List<Map<String, Object>> selectAllEmotion();
+
 }
