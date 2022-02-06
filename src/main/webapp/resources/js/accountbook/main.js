@@ -230,9 +230,10 @@
 			//차트 상단의 제목
 			title: '이달의 지출',
 			 //차트 크기 설정
-			 width : 500,
+			 width : 400,
 			 height : 300,
 			 pieHole : 0.4,
+			 backgroundColor : '#F2F2E6',
 			};
 			var chart = new google.visualization.PieChart(document.getElementById('expenseChart'));
 			chart.draw(chartData, options);
@@ -268,9 +269,10 @@
 			//차트 상단의 제목
 			title: '이달의 수입',
 			 //차트 크기 설정
-			 width : 500,
+			 width : 400,
 			 height : 300,
 			 pieHole : 0.4,
+			 backgroundColor : '#F2F2E6',
 			};
 			var chart = new google.visualization.PieChart(document.getElementById('incomeChart'));
 			chart.draw(chartData, options);

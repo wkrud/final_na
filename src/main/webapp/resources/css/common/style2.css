@@ -1,0 +1,104 @@
+@charset "UTF-8";
+
+@font-face {
+  font-family: 'SUIT-Medium';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Medium.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+*{
+  margin : 0;
+  padding : 0;
+  box-sizing: border-box;
+  position: relative;
+  /* font-family: 'GongGothicMedium'; */
+  /* font-family: 'SLEIGothicTTF'; */
+  /* font-family: 'Pretendard-Regular'; */
+  /* font-family: 'OTWelcomeRA'; */
+  font-family: 'SUIT-Medium';
+}
+
+.box {
+  border : 1px solid black;
+}
+
+.wrapper {
+  width : 100%;
+  height : 100vh;
+  background-color: #F2F2E6;
+  /* background-color: #fffff7; */
+  position : relative;
+}
+
+.header{
+  width : 13%;
+  height : 100vh;
+  background-color: #0A1F33; 
+  overflow: auto;
+  /* display : inline-block; */
+  float : left;
+  z-index : 50;
+}
+::-webkit-scrollbar {
+  display: none !important;
+}
+
+.logo {
+  font-size: 2rem;
+  display: inline-flex;
+  text-align: center;
+  margin : 25px;
+  margin-top: 50px;
+  letter-spacing: 5px;
+  
+}
+
+.header a {
+  color : rgb(228, 226, 226);
+  text-decoration: none;
+  padding : 5px;
+}
+
+.header ul {
+  list-style-type: none;
+  margin : 10px 0px;
+}
+
+.main-nav li, .help-nav li, .menu-nav li{
+  padding : 12px;
+  font-size : 20px;
+}
+
+.active {
+/*   background-color: #f2f2e65e;
+ */  background-color: white;
+  border-radius: 20px;
+}
+
+.active a {
+  /* color : rgb(248, 239, 160); */
+   color : #38383b; 
+}
+
+.nadaum-header {
+	width : 85%;
+	height : 80px;
+	display : inline-block;
+	clear : both;
+	text-align : right;
+	padding : 20px;
+	position : fixed;
+	position : relative;
+}
+
+.user-factors {
+	display : inline-flex;
+ 	margin : 0px 10px; 
+}
+
+.accountWrapper {
+	width : 87%;
+	height : 89vh;
+	overflow : auto;
+}
