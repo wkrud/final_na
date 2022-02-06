@@ -31,6 +31,7 @@
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"ajax csrf 토큰
 	integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
 	crossorigin="anonymous">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member/mypage/findFriend.css" />
 </head>
 
 <body>
@@ -38,14 +39,21 @@
 
 <div class="find-friend-wrap">
 	<div class="find-friend-search">
-		<h1>친구 찾기</h1>
+		<div class="find-friend-title">
+			<span>친구 찾기</span>
+		</div>
 		<div class="input-group mb-3">
 			<div class="input-group-prepend">
-				<button id="search-friend-start" class="btn btn-outline-secondary" type="button">검색</button>
 				<input id="searchFriend" type="text" name="title" class="form-control" required placeholder="닉네임을 입력하세요" aria-label="" aria-describedby="basic-addon1">
+				<button id="search-friend-start" class="btn btn-outline-secondary" type="button">검색</button>
 			</div>
 		</div>
 		<div class="search-result-list">
+			<div class="list-group">
+			
+			</div>
+		</div>
+		<div class="recommend-list">
 			<div class="list-group">
 			
 			</div>

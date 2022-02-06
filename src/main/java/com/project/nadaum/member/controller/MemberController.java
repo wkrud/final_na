@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.ibatis.annotations.ResultMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.http.ResponseEntity;
@@ -751,7 +752,9 @@ public class MemberController {
 			log.debug("param = {}", param);
 			if(friendInfo == null) {			
 				return ResponseEntity.ok(0);
-			}else {
+			}else {		
+				if(friendInfo.getProfile() != null)
+					resultMap.put("profile", friendInfo.getProfile());
 				param.put("friendId", friendInfo.getId());
 				Map<String, Object> isFollower = memberService.selectFollower(param);
 				Map<String, Object> isFollowing = memberService.selectFollowing(param);

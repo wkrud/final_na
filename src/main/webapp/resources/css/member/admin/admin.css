@@ -9,6 +9,7 @@
 }
 .admin-main-sidebar{
 	margin-right: 10px;
+	margin-left: 50px;
 }
 
 .admin-main-section{
@@ -22,4 +23,5 @@
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: center;
+	width: 850px;
 }
