@@ -36,15 +36,8 @@
 										</c:if>	
 									</c:if>
 								</div>
-								<div class="friend-name-wrap dropdown show">
-									<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										<span class="friend-name">${ml.nickname}</span>
-									</a>	
-									 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-										<a class="dropdown-item" href="#">Action</a>
-										<a class="dropdown-item" href="#">Another action</a>
-										<a class="dropdown-item" href="#">Something else here</a>
-									</div>							
+								<div class="friend-name-wrap">
+									<span class="friend-name">${ml.nickname}</span>								
 								</div>
 								<div class="friend-btn">
 									<button type="button" id="end-friend" class="btn btn-outline-danger">친구삭제</button>
@@ -133,7 +126,7 @@ $(".friend-wrap").click((e) => {
 			console.log('room = ' + room);
 			
 			const name = "chatRoom";
-			const spec = "left=500px, top=500px, width=450px, height=620px";
+			const spec = "left=500px, top=500px, width=450px, height=650px";
 			const url = `${pageContext.request.contextPath}/member/mypage/chat.do?room=\${room}`;
 			
 			if(windowObjHistorySearch == null){

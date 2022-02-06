@@ -14,12 +14,22 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js"
 	integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
 	crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-<!-- bootstrap js: jquery load 이후에 작성할것.-->
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
 	integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
 	crossorigin="anonymous"></script>
+<!-- 부트스트랩 js/css -->
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+	integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+	crossorigin="anonymous"></script> 
+
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+	integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
+	crossorigin="anonymous">
+
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -30,6 +40,8 @@
 <script src="${pageContext.request.contextPath}/resources/js/member/info.js"></script>
 
 <script src="https://kit.fontawesome.com/cd5e4bcf92.js" crossorigin="anonymous"></script>
+
+
 
 <!-- 사용자작성 css -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/style2.css" /> 
@@ -71,13 +83,13 @@
                 <span>홈</span>
               </a>
             </li>
-            <li class="nav-list">
+            <li class="nav-list accept-drag">
               <a href="">
                 <i class="fas fa-comment-dots"></i>
                 <span>피드</span>
               </a>
             </li>
-            <li class="nav-list">
+            <li class="nav-list accept-drag" id="calendar">
               <a href="${pageContext.request.contextPath}/calendar/calendarView.do">
                 <i class="far fa-calendar-alt"></i>
                 <span>캘린더</span>
@@ -101,11 +113,17 @@
             </li>
               <div class="personal-sub">
                 <ul>
-                  <li>
-                  	<a href="${pageContext.request.contextPath}/diary/diaryMain.do"><span>일기</span></a>
+                  <li class="nav-list" id="diary">
+                  	<a href="${pageContext.request.contextPath}/diary/diaryMain.do" class="accept-drag"><span>일기</span></a>
                   </li>
-                  <li>
-                  	<a href="${pageContext.request.contextPath}/accountbook/accountbook.do"><span>가계부</span></a>
+                  <li class="nav-list" id="accountBook">
+                  	<a href="${pageContext.request.contextPath}/accountbook/accountbook.do" class="accept-drag"><span>가계부</span></a>
+                  </li>
+                  <li class="nav-list" id="memo">
+                  	<a href="${pageContext.request.contextPath}/accountbook/accountbook.do" class="accept-drag"><span>메모</span></a>
+                  </li>
+                  <li class="nav-list" id="todoList">
+                  	<a href="${pageContext.request.contextPath}/accountbook/accountbook.do" class="accept-drag"><span>투두리스트</span></a>
                   </li>
                 </ul>
               </div>
@@ -115,15 +133,15 @@
             </li>
             <div class="culture-sub">
               <ul>
-                <li>
+                <li class="nav-list">
                 	<a href="${pageContext.request.contextPath}/culture/board/1"><span>전시</span></a>
                 </li>
-                <li>
+                <li class="nav-list">
                 	<a href="${pageContext.request.contextPath}/movie/movieList.do"><span>영화</span></a>
                 </li>
               </ul>
             </div>
-            <li class="nav-list">
+            <li class="nav-list accept-drag" id="game">
               <a href="${pageContext.request.contextPath}/riot/riotheader.do">
                 <i class="fas fa-gamepad"></i>
                 <span>게임</span>
@@ -213,19 +231,7 @@
 			</iframe>
 		</div>
 	</div>
-	<!-- 채팅창 -->
-	<div id="chatwrap" style="display:none;">
-		<div id="chatwrapheader">
-			<div class="chat-title">			
-				<h1>채팅방</h1>
-				<button type="button" id="closeChat" class="close" data-dismiss="modal" aria-label="Close">
-		        	<span aria-hidden="true">&times;</span>
-		        </button>
-			</div>
-			<div class="chat-section"></div>
-		</div>
-	</div>
-
+	
 <script>			
 	$(() => {	
 		connect();
@@ -296,10 +302,6 @@
     $("#closeInfo").click((e) => {
     	$("#infowrap").css("display","none");
 	});
-    $("#closeChat").click((e) => {
-    	$("#chatwrap").css("display","none");
-    	$(".chat-section").empty();
-	});
     
     $(".personal-main").click((e) => {
     	$(".personal-sub").slideToggle();
@@ -311,7 +313,6 @@
     
     
     /* iframe 드래그 */
-    dragElement(document.getElementById("chatwrap"));
     dragElement(document.getElementById("infowrap"));
 </script>
 </sec:authorize>
