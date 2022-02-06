@@ -50,12 +50,12 @@ $(() => {
 <body>
 	<section id="board-container" class="container">
 	
-			<nav class="navbar navbar-light bg-light">
+			<%-- <nav class="navbar navbar-light bg-light">
   			<form class="form-inline">
     			<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
     			<button class="btn btn-warning" type="submit">Search</button>
   			</form>
-			</nav>
+			</nav> --%>
 			
 			<table id="tbl-board" class="table table-striped table-hover ">
 				<tr class="bg-warning">
