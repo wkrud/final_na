@@ -30,6 +30,16 @@
 	integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
 	crossorigin="anonymous">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member/mypage/chat.css" type="text/css" charset="UTF-8" />
+<script>
+function fnReloadBlock(){
+	if(event.keyCode === 116){
+		event.keyCode = 0;
+		event.cancelBubble = true;
+		event.returnValue = false;
+	}
+}
+document.onkeydown = fnReloadBlock;
+</script>
 </head>
 <body>
 	<div class="chat-body">
@@ -55,24 +65,30 @@
 				</div>
 				<div class="input-group mb-3 chat-btn-group-wrap">
 					<div class="input-group-append">
-						<button class="btn btn-outline-primary" id="emotion" type="button">이모티콘</button>
+						<button class="btn btn-secondary" id="emotion" type="button">이모티콘</button>
 					</div>
 					<input type="text" id="chat-msg-input" class="form-control" aria-label="Recipient's username" aria-describedby="basic-addon2">
 					<div class="input-group-append">
 						<button class="btn btn-outline-secondary" id="chat-send-btn" type="button">전송</button>
 					</div>
 				</div>
+				<div class="invite-btn-wrap">
+					<button type="button" class="btn btn-outline-dark invite-again-btn">다시 초대하기</button>
+				</div>
 			</div>
 		</div>
 	</div>
 <script>
 var room = '${room}';
+var guestNickname = '';
 const $msgArea = $("#msgArea");
 const $msg = $("#chat-msg-input");
+
 $(() => {
 	connect();
 	$(".chat-btn-group-wrap").hide();
 	if('${guest}' == 'guest'){
+		$(".invite-btn-wrap").hide();
 		$(".chat-btn-group-wrap").show();
 	}
 	$(".emotion-wrap").hide();
@@ -96,6 +112,10 @@ window.onbeforeunload = function(e) {
 	return;
 };
 
+$(".invite-again-btn").click((e) => {
+	reInvite('chat', '${loginMember.nickname}', guestNickname, room);	
+});
+
 /* 엔터로 메세지 전송 */
 $msg.on('keyup', function(e) {
 	if($msg.val() != ''){
@@ -112,6 +132,7 @@ $("#chat-send-btn").on("click", function(e) {
 		$msg.val('');		
 	}
 });
+
 
 function connect() {
 	var socket = new SockJS("http://localhost:9090/nadaum/chat");
@@ -133,9 +154,11 @@ function connect() {
 				msg = `<div class="greeting-msg-wrap">
 				<div class="greeting-body">
 				<div class="greeting-msg"><span>\${resp.greeting}</span></div>
-				<div class="greeting-time">\${resp.time}</div>
 				</div>
 				</div>`;
+				guestNickname = resp.writer;
+				console.log('guestNickname = ' + guestNickname);
+				$(".invite-btn-wrap").hide();
 				$(".chat-btn-group-wrap").show();
 			}else if(resp.writer != '${loginMember.nickname}' && resp.type == 'EMOTION'){
 				msg = `<div class='guest-msg'>
@@ -144,9 +167,9 @@ function connect() {
 							<img class="chat-profile" src="\${resp.profile}" alt="" />			
 						</div>
 						<div class="profile-nickname">
-							\${resp.writer}
+							<span>\${resp.writer}</span>
 							<div class="guest-chat-wrap">
-								<div class="emotion-img-wrap \${resp.message}"></div>
+								<div class="emotion-img-chat \${resp.message}"></div>
 								<div class="chat-time-wrap">
 									<div class="chat-time">\${resp.time}</div>
 								</div>
@@ -159,14 +182,14 @@ function connect() {
 				<div class="chat-time-wrap">
 					<div class="chat-time">\${resp.time}</div>
 				</div>
-				<div class="emotion-img-wrap \${resp.message}"></div>
+				<div class="emotion-img-chat \${resp.message}"></div>
 				</div>`;
 			}else if(resp.writer == '${loginMember.nickname}' && resp.type != 'GREETING'){
 				msg = `<div class='host-msg'>
 				<div class="chat-time-wrap">
 					<div class="chat-time">\${resp.time}</div>
 				</div>
-				<div class="chat-msg-wrap">\${resp.message}</div>
+				<div class="chat-msg-wrap me">\${resp.message}</div>
 				</div>`;
 			}else if(resp.type == 'CHAT_TYPE'){
 				msg = `<div class='guest-msg'>
@@ -175,9 +198,9 @@ function connect() {
 							<img class="chat-profile" src="\${resp.profile}" alt="" />			
 						</div>
 						<div class="profile-nickname">
-							\${resp.writer}
+							<span>\${resp.writer}</span>
 							<div class="guest-chat-wrap">
-								<div class="chat-msg-wrap"><p>\${resp.message}</p></div>
+								<div class="chat-msg-wrap guest">\${resp.message}</div>
 								<div class="chat-time-wrap">
 									<div class="chat-time">\${resp.time}</div>
 								</div>
@@ -191,7 +214,9 @@ function connect() {
 				<div class="greeting-msg"><span>\${resp.out}</span></div>
 				</div>
 				</div>`;
+				guestNickname = resp.writer;
 				$(".chat-btn-group-wrap").hide();
+				$(".invite-btn-wrap").show();
 			}
 			showMsg(msg);
 		});
@@ -225,6 +250,16 @@ function emotionSend(emo){
 		};
 	stompClient.send("/nadaum/chat/" + room,{},JSON.stringify(emotionData));
 }
+
+function reInvite(type, host, guest, room){
+	var sendData = {
+		'type':type,
+		'host':host,
+		'guest':guest,
+		'room': room
+	};
+	stompClient.send("/nadaum/chat/invite/" + guest,{},JSON.stringify(sendData));
+};
 
 function out(){
 	var outData = {
