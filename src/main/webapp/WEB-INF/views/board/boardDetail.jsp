@@ -6,16 +6,13 @@
 <%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <sec:authentication property="principal" var="loginMember"/>
-<jsp:include page="/WEB-INF/views/common/header.jsp">
+<jsp:include page="/WEB-INF/views/common/header2.jsp">
 	<jsp:param value="게시판상세보기" name="title" />
 </jsp:include>
 <sec:authentication property="principal" var="loginMember"/>
 <style>
 div#board-container {
-	position: absolute;
-	height: 669px;
-	left: 400px;
-	top: 100px;
+	
 	width: 1000px;
 }
 
@@ -36,7 +33,7 @@ border-right:0px;
  border-top:0px; 
  boder-left:0px; 
  boder-bottom:0px;
- 
+ background-color:transparent;
  display:inline-block;
 margin : 0px;
 }
@@ -443,4 +440,4 @@ $(function(){
 
 </script>
 </html>
-<%-- <jsp:include page="/WEB-INF/views/common/footer.jsp"/> --%>
+<jsp:include page="/WEB-INF/views/common/footer2.jsp"/>

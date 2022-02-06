@@ -6,7 +6,7 @@
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<jsp:include page="/WEB-INF/views/common/header.jsp">
+<jsp:include page="/WEB-INF/views/common/header2.jsp">
 	<jsp:param value="게시판" name="title" />
 </jsp:include>
 <sec:authentication property="principal" var="loginMember"/>
@@ -18,13 +18,6 @@ input#btn-add {
 
 .board-title {
 	cursor: pointer;
-}
-
-#board-container {
-	position: absolute;
-	left: 400px;
-	top: 100px;
-	width : 3500px;
 }
 
 .my.pagination > .active > span:focus {
@@ -89,11 +82,12 @@ $(() => {
 			</table>
 			<input type="hidden" name="id" id="id" value="${loginMember.id}" />
 			<sec:authentication property="principal" var="loginMember" />
-			<input type="button" value="글쓰기" id="btn-add"	class="btn btn-outline-warning" onclick="goBoardForm();" /> 	
+			<input type="button" value="글쓰기" id="btn-add"	class="btn btn-outline-warning" onclick="goBoardForm();" />
+			<br />
 		${pagebar}
 	</section>
 </body>
 <script>
 
 </script>
-<%-- <jsp:include page="/WEB-INF/views/common/footer.jsp"/> --%>
+<jsp:include page="/WEB-INF/views/common/footer2.jsp"/>

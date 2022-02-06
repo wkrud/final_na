@@ -7,16 +7,16 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <fmt:requestEncoding value="utf-8" />
 <sec:authentication property="principal" var="loginMember"/>
-<jsp:include page="/WEB-INF/views/common/header.jsp">
+<jsp:include page="/WEB-INF/views/common/header2.jsp">
 	<jsp:param value="나:다움 질문 등록" name="title"/>
 </jsp:include>
 <style>
 .board-container{
-position: absolute;
+
 width: 715px;
 height: 927px;
-left: 158px;
-top: 238px;
+left: 500px;
+
 }
 </style>
 <script>
@@ -60,7 +60,6 @@ top: 238px;
 		<textarea name="content" id="board-content-summernote" required>${board.content}</textarea>
 		<div><span id="limite_normal"></span><span id="limite_vermelho" style="color:red"></span>/500</div>
 		
-		<br />
 		<button type="submit" id="submit-btn" class="btn btn-warning">수정</button>
 		<button type="button" id="cancle-btn" class="btn btn-warning" onclick="location.href ='${pageContext.request.contextPath}/board/boardList.do'">취소</button>
 		
@@ -184,4 +183,4 @@ const deleteImg = (url) => {
 };
 </script>
 
-<jsp:include page="/WEB-INF/views/common/footer.jsp" />
+<jsp:include page="/WEB-INF/views/common/footer2.jsp" />
