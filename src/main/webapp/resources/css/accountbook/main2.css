@@ -162,10 +162,11 @@ input[type="date"]:hover::-webkit-calendar-picker-indicator:hover { opacity:0.15
 /* 중앙 메인 섹션 */
 .search_list_section,.infoSection{
   width : 35%;
-  height: 600px;
+  height: 100%;
   float: left;
   position: relative;
   padding : 20px;
+  /* overflow : hidden; */
 }
 
 .search_box {

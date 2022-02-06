@@ -25,7 +25,7 @@
 
 <!-- <div class="wrapper">
  -->
- <div class="accountWrapper">
+<article class="accountWrapper">
  <!-- 가계부 입력 모달창 -->
 	<div class="modal-background">
 	<div class="insertAccountModal">
@@ -207,10 +207,10 @@
 			<button id="insertBtn"><i class="fas fa-plus plus"></i><br />거래내역 입력하기</button>
 		</div>
 	</section>
-</div>
+</article>
 
 <input type="hidden" id="chartData" value="${chartData}" />
 <input type="hidden" id="contextPath" value="${pageContext.request.contextPath}" />
 <script src='${pageContext.request.contextPath}/resources/js/accountbook/main.js'></script>
 
-<%-- <jsp:include page="/WEB-INF/views/common/footer.jsp" /> --%>
+<jsp:include page="/WEB-INF/views/common/footer2.jsp" /> 
