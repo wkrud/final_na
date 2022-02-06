@@ -31,9 +31,9 @@ input#btn-add {
   background: red;
   border-color: red;
 }
- a:link { color: black; text-decoration: none;}
- a:visited { color: black; text-decoration: none;}
- a:hover { color: blue; text-decoration: none;}
+ .movetodetail:link { color: black; text-decoration: none;}
+ .movetodetail:visited { color: black; text-decoration: none;}
+ .movetodetail:hover { color: blue; text-decoration: none;}
 
 </style>
 <script>
@@ -78,7 +78,7 @@ $(() => {
 					<td class="boardCode">${board.code}</td>
 					<td>${board.category}</td>
 					<td>
-						<a href="${pageContext.request.contextPath}/board/boardDetail.do?code=${board.code}">${board.title} </a>
+						<a class="movetodetail" href="${pageContext.request.contextPath}/board/boardDetail.do?code=${board.code}">${board.title} </a>
 						<c:if test="${board.commentCount gt 0 }">{board.commentCount}</c:if>
 					</td>
 					<td><c:out value="${board.nickname}"></c:out></td>
