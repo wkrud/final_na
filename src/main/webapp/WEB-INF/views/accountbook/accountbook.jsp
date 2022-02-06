@@ -8,13 +8,13 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <fmt:requestEncoding value="utf-8" />
-<jsp:include page="/WEB-INF/views/common/header.jsp">
+<jsp:include page="/WEB-INF/views/common/header2.jsp">
 	<jsp:param value="가계부" name="title"/>
 </jsp:include>
 <meta id="_csrf" name="_csrf" content="${_csrf.token}" />
 <meta id="_csrf_header" name="_csrf_header" content="${_csrf.headerName}" />
 <sec:authentication property="principal" var="loginMember"/>
-<link href='${pageContext.request.contextPath}/resources/css/accountbook/main.css' rel='stylesheet' />
+<link href='${pageContext.request.contextPath}/resources/css/accountbook/main2.css' rel='stylesheet' />
 <link href='https://use.fontawesome.com/releases/v5.0.6/css/all.css' rel='stylesheet'>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <%
@@ -23,7 +23,7 @@
 	String today = sdf.format(date);
 %>
 
-<div class="wrapper">
+<div class="accountWrapper">
 <!-- 가계부 입력 모달창 -->
 	<div class="modal-background">
 	<div class="insertAccountModal">
@@ -207,4 +207,4 @@
 <input type="hidden" id="contextPath" value="${pageContext.request.contextPath}" />
 <script src='${pageContext.request.contextPath}/resources/js/accountbook/main.js'></script>
 
-<%-- <jsp:include page="/WEB-INF/views/common/footer.jsp" /> --%>
+<jsp:include page="/WEB-INF/views/common/footer2.jsp" />

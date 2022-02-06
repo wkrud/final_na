@@ -21,6 +21,7 @@
 			<li><span>팀장</span> <a href="">김재경</a></li>
 			<li>
 				<span>팀원</span> 
+				<a href="">김미래</a>					
 				<a href="">신중규</a>					
 				<a href="">이혜미</a>					
 				<a href="">장희연</a>					
