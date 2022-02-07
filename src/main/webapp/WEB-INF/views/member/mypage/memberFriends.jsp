@@ -145,7 +145,7 @@ $(".friend-wrap").click((e) => {
 });
 
 $(searchFriendBtn).click((e) => {
-	const spec = "left=500px, top=500px, width=400px, height=150px";
+	const spec = "left=500px, top=500px, width=265px, height=285px";
 	const popup = open('${pageContext.request.contextPath}/member/mypage/memberFindFriend.do', '친구찾기', spec);
 });
 
