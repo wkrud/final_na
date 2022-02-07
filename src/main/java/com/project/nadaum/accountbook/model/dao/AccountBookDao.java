@@ -11,7 +11,7 @@ public interface AccountBookDao {
 
 	int insertAccount(AccountBook account);
 
-	List<AccountBook> selectAllAccountList(String id);
+	List<AccountBook> selectAllAccountList(Map<String, Object> param);
 
 	int deleteAccount(Map<String, Object> code);
 

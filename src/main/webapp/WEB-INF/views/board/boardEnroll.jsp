@@ -7,7 +7,7 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <fmt:requestEncoding value="utf-8" />
-<jsp:include page="/WEB-INF/views/common/header2.jsp">
+<jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="나:다움 질문 등록" name="title" />
 </jsp:include>
 <style>
@@ -211,4 +211,4 @@ const deleteImg = (url) => {
 };
 </script>
 
-<jsp:include page="/WEB-INF/views/common/footer2.jsp" />
+<jsp:include page="/WEB-INF/views/common/footer.jsp" />

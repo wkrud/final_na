@@ -178,7 +178,7 @@
 	});
 	
 	//검색
-	$('#searchBtn').click(function() {
+/*	$('#searchBtn').click(function() {
 		var data = $("#searchFrm").serialize();
 		$.ajax({
 			url : $contextPath+'/accountbook/searchList.do',
@@ -193,7 +193,7 @@
 				alert("조회에 실패했습니다.");
 			}
 			});
-	});
+	});*/
 	
 	//차트
 	//차트 로딩하는 메소드
