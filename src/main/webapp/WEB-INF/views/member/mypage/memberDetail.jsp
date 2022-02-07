@@ -294,6 +294,8 @@ const moreAlarm = () => {
 				}
 				$alarmUl.append(alarmLi);
 			});
+			
+			
 		},
 		error: console.log
 	});

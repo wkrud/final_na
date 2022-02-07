@@ -1,3 +1,6 @@
+.profile-wrap{
+	top:-15px;
+}
 #profile{
 	background-color:transparent;
 	border: 0;
@@ -21,43 +24,13 @@
 
 #alarmList{
 	position:absolute;
+	top: 50px;
+	right: -80px;
+	width: 200px;
 }
 
 .alarmContent{
 	padding: 5px;
-}
-
-/* 채팅방 */
-#chatwrap{
-	position: absolute;
-	z-index: 9;
-	text-align: center;
-	top: 65px;	
-}
-#chatwrapheader{
-	cursor: move;
-	border: 1px solid gainsboro;
-	border-radius: 10px;
-	overflow: hidden;
-}
-.chat-title{
-	padding-top: 10px;
-	background-color: #FFF;
-}
-.chat-title h1{
-	display: inline-block;
-	font-size: 1.8rem;
-}
-.chat-title button{
-	width: 50px;
-	height: 50px;
-	position: absolute;
-	right: 5px;
-	top: 5px;
-}
-#chatwrapheader iframe{
-	width: 330px;
-	height: 510px;
 }
 
 /* 도움말 */
@@ -65,7 +38,8 @@
 	position: absolute;
 	z-index: 9;
 	text-align: center;
-	top: 65px;	
+	top: 300px;	
+	left: 300px; 
 }
 #infowrapheader{
 	cursor: move;
