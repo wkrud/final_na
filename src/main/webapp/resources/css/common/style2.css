@@ -37,8 +37,8 @@
   margin : 0;
   padding : 0;
   box-sizing: border-box;
-  position: relative;
-  /* font-family: 'GongGothicMedium'; */
+/*   position: relative;
+ */  /* font-family: 'GongGothicMedium'; */
   /* font-family: 'SLEIGothicTTF'; */
    /*font-family: 'Pretendard-Regular'; */ 
   /* font-family: 'OTWelcomeRA'; */
@@ -57,7 +57,7 @@
 .wrapper {
   width : 100%;
   height : 100vh;
-  background-color: #F2F2E6;
+   background-color: #F2F2E6; 
   /* background-color: #fffff7; */
   position : relative;
 }
@@ -68,7 +68,7 @@
 }
 
 /* 사이드 nav */
-.header{
+.nadaum_header{
   width : 13%;
   height : 100vh;
   background-color: #0A1F33; 
@@ -89,17 +89,17 @@
   
 }
 
-.header a, .header li {
+.nadaum_header a, .nadaum_header li {
   color : rgb(228, 226, 226);
   text-decoration: none;
   padding : 5px;
 }
 
-.header i {
+.nadaum_header i {
 	padding-right : 5px;
 }
 
-.header ul {
+.nadaum_header ul {
   list-style-type: none;
   margin : 10px 0px;
 }
@@ -137,13 +137,13 @@
 	font-size : 20px;
 }
 
-.active {
+.activeOn {
 /*   background-color: #f2f2e65e;
  */  background-color: white;
   border-radius: 20px;
 }
 
-.active a {
+.activeOn a {
   /* color : rgb(248, 239, 160); */
    color : #38383b; 
 }
@@ -165,6 +165,7 @@
 .user-factors {
 	display : inline-flex;
  	margin : 0px 10px; 
+ 	position : relative;
 }
 
 #sign-out {
@@ -180,6 +181,10 @@
 	font-size : 20px;
 	top : -15px;
 	text-decoration : none;
+}
+
+.profile-wrap {
+	top : -15px;
 }
 
 /* 사이드바, 헤더 제외한 본문 영역 */

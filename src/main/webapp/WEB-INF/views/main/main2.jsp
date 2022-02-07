@@ -7,7 +7,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <fmt:requestEncoding value="utf-8" />
 <link href='${pageContext.request.contextPath}/resources/css/main/main2.css' rel='stylesheet' />
-<jsp:include page="/WEB-INF/views/common/header2.jsp">
+<jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="나:다움" name="title"/>
 </jsp:include>
 <meta id="_csrf" name="_csrf" content="${_csrf.token}" />
@@ -102,4 +102,4 @@ function dragEnd() {
 
 
 
-<jsp:include page="/WEB-INF/views/common/footer2.jsp" />
+<jsp:include page="/WEB-INF/views/common/footer.jsp" />

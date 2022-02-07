@@ -71,13 +71,13 @@
  <!-- 전체 영역 -->
   <div class="wrapper">
     <!-- 내비게이션 영역 -->
-      <nav class="header box">
+      <nav class="nadaum_header">
         <a href="${pageContext.request.contextPath}/main/main.do" class="logo">나:다움</a>
         <!-- 메뉴 -->
           <!-- 개인 메뉴 -->
         <div>
           <ul class="main-nav">
-            <li class="nav-list active">
+            <li class="nav-list activeOn">
               <a href="${pageContext.request.contextPath}/main/main.do">
                 <i class="fas fa-home"></i>
                 <span>홈</span>

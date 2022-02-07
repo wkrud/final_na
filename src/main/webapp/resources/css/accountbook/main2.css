@@ -252,7 +252,7 @@ input[type="date"]:hover::-webkit-calendar-picker-indicator:hover { opacity:0.15
   width : 300px;
   height: 150px;
   position: relative;
-  bottom: -20px;
+  bottom: -100px;
   background : rgba(225, 225, 225, 0.1);
   box-shadow: 0 25px 45px rgba(0, 0, 0, 0.1);
   border : 1px solid rgba(225, 225, 225, 0.5);
@@ -395,15 +395,21 @@ input[type="date"]:hover::-webkit-calendar-picker-indicator:hover { opacity:0.15
   width : 400px;
   height: 50px;
   margin-top : 10px;
+  display : none;
+}
+
+.accountPage {
+	width : 300px;
+	height : 50px;
+	position : relative;
+	margin : 30px auto;
 }
 
 
 /* 디테일 차트 */
-/* 디테일 차트 */
 .analyze-ac {
-	width : 60%;
-	height : 1800px;
-	margin : auto;
+	width : 85%;
+	height : 100%;
 }
 
 .analyze-header {

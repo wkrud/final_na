@@ -48,55 +48,54 @@ public class AccountBookController {
 
 	//가계부 첫 화면에 보여질 값들
 	@RequestMapping(value="/accountbook.do")
-	public void accountbook(@AuthenticationPrincipal Member member, Model model) {
+	public void accountbook(@RequestParam(defaultValue = "1") int cPage, 
+				@AuthenticationPrincipal Member member, Model model, HttpServletRequest request) {
+		int limit = 4;
+		int offset = (cPage-1) * limit;
 		String id = member.getId(); 
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("offset", offset);
+		param.put("limit", limit);
+		param.put("id", id);
 		//로그인한 아이디로 등록된 가계부 전체 목록
-		List<AccountBook> accountList = accountBookService.selectAllAccountList(id);
+		List<AccountBook> accountList = accountBookService.selectAllAccountList(param);
+		
+		//전체리스트 개수
+		int totalAccountList = accountBookService.countAccountList(param);
+		
+		String category = "all";
+		String url = request.getRequestURI();
+		String pagebar = NadaumUtils.getPagebar(cPage, limit, totalAccountList, url, category);
+			
+		model.addAttribute("pagebar", pagebar);
 		
 		//수입, 지출 계산한 값
 		List<Map<String, Object>> incomeList = accountBookService.monthlyTotalIncome(id);
 			//필요한 값만 맵 객체로 변환
 			Map<String, Object> incomeExpenseList = new HashMap<>();
-			incomeExpenseList.put("income", incomeList.get(1).get("total"));
-			incomeExpenseList.put("expense", incomeList.get(0).get("total"));
+			
+			if(incomeList.get(0) == null) {
+				incomeExpenseList.put("expense", "0");
+			} else {
+				incomeExpenseList.put("expense", incomeList.get(0).get("total"));				
+			}
+			
+			if(incomeList.get(1) == null) {
+				incomeExpenseList.put("income", "0");				
+			} else {
+				incomeExpenseList.put("income", incomeList.get(1).get("total"));				
+			}
 			log.info("incomeExpenseList={}", incomeExpenseList);
 		
 		//월간 총 합계 금액
 		String monthlyAccount = accountBookService.monthlyAccount(id);
-		log.info("monthlyAccount={}", monthlyAccount);
-		//만약 사용자 입력값이 없어서 monthlyAccount합계가 null값이 넘어온다면 해당 변수에 0 대입
-		if (monthlyAccount == null) {
-			monthlyAccount = "0";
-		}
+			//만약 사용자 입력값이 없어서 monthlyAccount합계가 null값이 넘어온다면 해당 변수에 0 대입
+			if (monthlyAccount == null) {
+				monthlyAccount = "0";
+			}
+			log.info("monthlyAccount={}", monthlyAccount);
 
-		model.addAttribute("accountList",accountList);
-		model.addAttribute("incomeExpenseList", incomeExpenseList);
-		model.addAttribute("monthlyAccount", monthlyAccount);
-	}
-	
-	@RequestMapping(value="/accountbookCopy.do")
-	public void accountbookCopy(@AuthenticationPrincipal Member member, Model model) {
-		String id = member.getId(); 
-		//로그인한 아이디로 등록된 가계부 전체 목록
-		List<AccountBook> accountList = accountBookService.selectAllAccountList(id);
-		
-		//수입, 지출 계산한 값
-		List<Map<String, Object>> incomeList = accountBookService.monthlyTotalIncome(id);
-			//필요한 값만 맵 객체로 변환
-			Map<String, Object> incomeExpenseList = new HashMap<>();
-			incomeExpenseList.put("income", incomeList.get(1).get("total"));
-			incomeExpenseList.put("expense", incomeList.get(0).get("total"));
-			log.info("incomeExpenseList={}", incomeExpenseList);
-		
-		//월간 총 합계 금액
-		String monthlyAccount = accountBookService.monthlyAccount(id);
-		log.info("monthlyAccount={}", monthlyAccount);
-		//만약 사용자 입력값이 없어서 monthlyAccount합계가 null값이 넘어온다면 해당 변수에 0 대입
-		if (monthlyAccount == null) {
-			monthlyAccount = "0";
-		}
-		
-		
 		model.addAttribute("accountList",accountList);
 		model.addAttribute("incomeExpenseList", incomeExpenseList);
 		model.addAttribute("monthlyAccount", monthlyAccount);
@@ -126,17 +125,32 @@ public class AccountBookController {
 		model.addAttribute("list_E", list_E);	
 	}
 	
-	
-	
 	 //전체 리스트 출력
 	 @RequestMapping(value="/selectAllAccountList.do") 
-	 public String selectAllAccountList (@AuthenticationPrincipal Member member, Model model) {
+	 public String selectAllAccountList (@RequestParam(defaultValue = "1") int cPage, 
+				@AuthenticationPrincipal Member member, Model model, HttpServletRequest request) {
+		int limit = 4;
+		int offset = (cPage-1) * limit;
 		String id = member.getId(); 
-		List<AccountBook> accountList = accountBookService.selectAllAccountList(id);
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("offset", offset);
+		param.put("limit", limit);
+		param.put("id", id);
+		//로그인한 아이디로 등록된 가계부 전체 목록
+		List<AccountBook> accountList = accountBookService.selectAllAccountList(param);
+		
+		//전체리스트 개수
+		int totalAccountList = accountBookService.countAccountList(param);
+		
+		String category = "all";
+		String url = request.getRequestURI();
+		String pagebar = NadaumUtils.getPagebar(cPage, limit, totalAccountList, url, category);
+			
+		model.addAttribute("pagebar", pagebar);
 		model.addAttribute("accountList",accountList);
 	 
 		return "redirect:/accountbook/accountbook.do";
-
 	 }
 	
 	 // 가계부 추가
@@ -173,27 +187,50 @@ public class AccountBookController {
 	
 	 
 	//검색
-		 @PostMapping(value="/searchList.do")
-		 public String searchList(@AuthenticationPrincipal Member member, @RequestParam Map<String, Object> param, Model model) {
-			 String id = member.getId(); 
-			 
-			 Map<String, Object> map = new HashMap<>();
-			 map.put("incomeExpense", param.get("incomeExpense"));
-			 map.put("category", param.get("category"));
-			 map.put("detail", param.get("detail"));
-			 map.put("id", param.get("id"));
-			 log.info("map={}", map);
-				
-			 List<AccountBook> accountList = accountBookService.searchList(map);
-			 log.info("list={}", accountList);
-			 
-			//수입, 지출 계산한 값
-				List<Map<String, Object>> incomeList = accountBookService.monthlyTotalIncome(id);
-					//필요한 값만 맵 객체로 변환
-					Map<String, Object> incomeExpenseList = new HashMap<>();
-					incomeExpenseList.put("income", incomeList.get(1).get("total"));
-					incomeExpenseList.put("expense", incomeList.get(0).get("total"));
-					log.info("incomeExpenseList={}", incomeExpenseList);
+	 @GetMapping(value="/searchList.do")
+	 public void searchList(@RequestParam(defaultValue = "1") int cPage, @AuthenticationPrincipal Member member, 
+			 @RequestParam Map<String, Object> param, Model model, HttpServletRequest request) {
+		 int limit = 4;
+		 int offset = (cPage-1) * limit;
+		 String id = member.getId(); 
+		 
+		 Map<String, Object> map = new HashMap<>();
+		 map.put("incomeExpense", param.get("incomeExpense"));
+		 map.put("category", param.get("category"));
+		 map.put("detail", param.get("detail"));
+		 map.put("id", param.get("id"));
+		 map.put("limit", limit);
+		 map.put("offset", offset);
+		 log.info("map={}", map);
+			
+		 List<AccountBook> accountList = accountBookService.searchList(map);
+		 log.info("list={}", accountList);
+		 
+		//전체리스트 개수
+		int totalAccountList = accountBookService.countAccountList(map);
+		
+		String category = (String) param.get("category");
+		String url = request.getRequestURI();
+		String pagebar = NadaumUtils.getPagebar(cPage, limit, totalAccountList, url, category);
+			
+		model.addAttribute("pagebar", pagebar);
+		 
+		//수입, 지출 계산한 값
+		List<Map<String, Object>> incomeList = accountBookService.monthlyTotalIncome(id);
+			//필요한 값만 맵 객체로 변환
+			Map<String, Object> incomeExpenseList = new HashMap<>();
+			if(incomeList.get(0) == null) {
+				incomeExpenseList.put("expense", "0");
+			} else {
+				incomeExpenseList.put("expense", incomeList.get(0).get("total"));				
+			}
+			
+			if(incomeList.get(1) == null) {
+				incomeExpenseList.put("income", "0");				
+			} else {
+				incomeExpenseList.put("income", incomeList.get(1).get("total"));				
+			}
+			log.info("incomeExpenseList={}", incomeExpenseList);
 				
 			//월간 총 합계 금액
 			String monthlyAccount = accountBookService.monthlyAccount(id);
@@ -206,8 +243,6 @@ public class AccountBookController {
 			model.addAttribute("incomeExpenseList", incomeExpenseList);
 			model.addAttribute("monthlyAccount", monthlyAccount);
 			model.addAttribute("accountList", accountList); 
-			 
-			return "/accountbook/accountbook";
 		 }
 	 	
 	 	//차트
@@ -253,9 +288,11 @@ public class AccountBookController {
 		//엑셀
 		@GetMapping("/excel")
 		public void downloadExcel(HttpServletResponse resp, @AuthenticationPrincipal Member member) throws IOException{
+			Map<String, Object> map = new HashMap<>();
 			//엑셀에 담을 리스트 조회
 			String id = member.getId();
-			List<AccountBook> list = accountBookService.selectAllAccountList(id);
+			map.put("id", id);
+			List<AccountBook> list = accountBookService.selectAllAccountList(map);
 			log.debug("list={}",list);
 			
 				//엑셀 파일 생성
