@@ -6,7 +6,7 @@
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<jsp:include page="/WEB-INF/views/common/header2.jsp">
+<jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="게시판" name="title" />
 </jsp:include>
 <sec:authentication property="principal" var="loginMember"/>
@@ -90,4 +90,4 @@ $(() => {
 <script>
 
 </script>
-<jsp:include page="/WEB-INF/views/common/footer2.jsp"/>
+<jsp:include page="/WEB-INF/views/common/footer.jsp"/>

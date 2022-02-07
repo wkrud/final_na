@@ -8,7 +8,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <fmt:requestEncoding value="utf-8" />
-<jsp:include page="/WEB-INF/views/common/header2.jsp">
+<jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="가계부" name="title"/>
 </jsp:include>
 <meta id="_csrf" name="_csrf" content="${_csrf.token}" />
@@ -113,7 +113,7 @@
 		<div class="search_box">
 			<form 
 				action="${pageContext.request.contextPath}/accountbook/searchList.do"
-				method="POST"
+				method="GET"
 				name = "searchFrm"
 				id="searchFrm">
 				<select name="incomeExpense" id="mainCategory">
@@ -125,15 +125,13 @@
 					<option value="">소분류</option>
 				</select>
 				<input type="text" name="detail" id="search"/>
-				<input type="hidden" name="id" value="${loginMember.id}" />
-				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-				<!-- <input type="button" id="searchBtn" value="검색" /> -->
+				<%-- <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/> --%>
  				<button id="searchBtn" class="defaultBtn"><i class="fas fa-search"></i></button>
 			</form>
 		</div>
 		<!-- 필터링 -->
 		<div class="fillterSection">
-			<button id="AllListBtn" class="defaultBtn" onclick="AllList();">전체보기</button>
+			<button id="AllListBtn" class="defaultBtn" onclick="location href=' ${pageContext.request.contextPath}/accountbook/selectAllAccountList.do'">전체보기</button>
 			<button class="FilterBtn defaultBtn" id="incomeFilterBtn">수입</button>
 			<button class="FilterBtn defaultBtn" id="expenseFilterBtn">지출</button>
 			<a href="${pageContext.request.contextPath}/accountbook/excel">엑셀 다운로드</a>
@@ -168,6 +166,7 @@
 					<button class="deleteBtn" onclick="deleteDetail('${account.code}')">삭제</button>
 				</div>
 			</c:forEach>
+			<div class="accountPage">${pagebar}</div>
 		</div>
 	</section>
 	<!-- 사용자별 가계부 월별 금액 -->
@@ -207,4 +206,4 @@
 <input type="hidden" id="contextPath" value="${pageContext.request.contextPath}" />
 <script src='${pageContext.request.contextPath}/resources/js/accountbook/main.js'></script>
 
-<jsp:include page="/WEB-INF/views/common/footer2.jsp" />
+<jsp:include page="/WEB-INF/views/common/footer.jsp" />

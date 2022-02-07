@@ -24,8 +24,11 @@ public class AccountBookDaoImpl implements AccountBookDao {
 	}
 
 	@Override
-	public List<AccountBook> selectAllAccountList(String id) {
-		return session.selectList("accountbook.selectAllAccountList", id);
+	public List<AccountBook> selectAllAccountList(Map<String, Object> param) {
+		int offset = (int) param.get("offset");
+		int limit = (int) param.get("limit");
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("accountbook.selectAllAccountList", param, rowBounds);
 	}
 
 	@Override
@@ -50,7 +53,10 @@ public class AccountBookDaoImpl implements AccountBookDao {
 
 	@Override
 	public List<AccountBook> searchList(Map<String, Object> map) {
-		return session.selectList("accountbook.searchList", map);
+		int offset = (int) map.get("offset");
+		int limit = (int) map.get("limit");
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("accountbook.searchList", map, rowBounds);
 	}
 
 

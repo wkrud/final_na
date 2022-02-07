@@ -7,7 +7,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<jsp:include page="/WEB-INF/views/common/header2.jsp">
+<jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="가계부 차트" name="title"/>
 </jsp:include>
 <meta id="_csrf" name="_csrf" content="${_csrf.token}" />
@@ -16,6 +16,14 @@
 <link href='${pageContext.request.contextPath}/resources/css/accountbook/main2.css' rel='stylesheet' />
 <link href='https://use.fontawesome.com/releases/v5.0.6/css/all.css' rel='stylesheet'>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<style>
+.analyze-ac{
+background-image:
+url('${pageContext.request.contextPath}/resources/images/accountbook/image-from-rawpixel-id-3875546-original.png');
+background-size : cover;
+text-align : center;
+}
+</style>
 
 <%
 	Date date = new Date();
@@ -27,14 +35,11 @@
 
 <div class="accountWrapper">
 	<form action="">
-	<div class="analyze-ac box">
+	<div class="analyze-ac">
 		<div class="analyze-header">
 			<p>${loginMember.name}님의</p> 
 			<p><%= today_m %> 가계부가 도착했어요♪</p>
 		</div>
-<%-- 		<div class="analyze-date">
-			<p><%= today %></p>
-		</div> --%>
 		<div class="analyze-income">
 			<h3>이 달의 수입 패턴</h3>
 			<table>
@@ -61,9 +66,9 @@
 			<h3>한눈에 보는 월별 차트</h3>
 			<div id="monthly_chart"></div>
 		</div>
-	</div>
+	</div> 
 	</form>
 </div>
 <input type="hidden" id="contextPath" value="${pageContext.request.contextPath}" />
 <script src='${pageContext.request.contextPath}/resources/js/accountbook/chart.js'></script>
-<jsp:include page="/WEB-INF/views/common/footer2.jsp" /> 
+<jsp:include page="/WEB-INF/views/common/footer.jsp" /> 
