@@ -48,7 +48,8 @@ window.onload = function colData(){
 				var options = {'title':'카테고리별 질문 만족도',
 								hAxis:{title:'질문 공감수'},
 								vAxis:{title:'답변 공감수'},
-								bubble:{textStyle:{fontSize:11}}};
+								bubble:{textStyle:{fontSize:11}},
+								backgroundColor:{fill:'#F2F2E6'}};
 				
 				var chart = new google.visualization.BubbleChart(document.getElementById('member-help-chart'));
 				chart.draw(data, options);
@@ -61,7 +62,8 @@ window.onload = function colData(){
 				
 				var options = {'title':'월 별 가입 회원 수',
 								'width':650,
-								'height':300};
+								'height':300,
+								backgroundColor:{fill:'#F2F2E6'}};
 				
 				var chart = new google.visualization.ColumnChart(document.getElementById('member-enroll-chart'));
 				chart.draw(data, options);
@@ -73,7 +75,8 @@ window.onload = function colData(){
 				var data = google.visualization.arrayToDataTable(pieCols);
 				
 				var options = {
-					title: '회원 취미'
+					title: '회원 취미',
+					backgroundColor:{fill:'#F2F2E6'}
 				};
 				
 				var chart = new google.visualization.PieChart(document.getElementById('member-hobby-chart'));

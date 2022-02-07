@@ -162,10 +162,10 @@
           </ul>
         </div>
         <!-- 도움말 -->
-        <div>
+        <div class="help-nav-wrap">
         <ul class="help-nav">
-         <li class="nav-list help-nav-">
-          <a href="${pageContext.request.contextPath}/member/mypage/memberDetail.do?tPage=myPage">
+         <li class="nav-list">
+          <a class="nav-link" href="${pageContext.request.contextPath}/member/mypage/memberDetail.do?tPage=myPage">
          	<i class="fas fa-cog"></i>
           </a>
          </li>

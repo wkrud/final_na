@@ -165,7 +165,7 @@
 	</insert>
 	
 	<update id="updateAlarm">
-		update alarm set status = 'F' where code = #{code}
+		update alarm set status = 'F', reg_date = sysdate where code = #{code}
 	</update>
 	
 	<delete id="deleteRequestFriend">
